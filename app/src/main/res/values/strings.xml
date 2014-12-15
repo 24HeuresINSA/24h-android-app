@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">les24heures</string>
-    <string name="hello_world">Hello world!</string>
+    <string name="hello_world">Hello world!\nLéo</string>
     <string name="action_settings">Settings</string>
 
 </resources>
