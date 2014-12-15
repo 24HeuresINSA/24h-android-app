@@ -2,7 +2,7 @@
 <resources>
 
     <string name="app_name">les24heures</string>
-    <string name="hello_world">Hello world!\nNicolas touche ta soeur.</string>
+    <string name="hello_world">Hello world!\nLéo\nNicolas touche ta soeur.</string>
     <string name="action_settings">Settings</string>
 
 </resources>
