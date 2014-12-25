@@ -19,6 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.insalyon.les24heures.fragments.ListFragment;
+import com.insalyon.les24heures.fragments.MapsFragment;
 import com.insalyon.les24heures.utils.OutputType;
 
 import java.util.ArrayList;
@@ -31,6 +33,8 @@ import butterknife.OnClick;
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = MainActivity.class.getCanonicalName();
+
+    FragmentManager fragmentManager;
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -58,6 +62,8 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this, this);
+
+        fragmentManager= getFragmentManager();
 
         setSupportActionBar(toolbar);
 
@@ -115,6 +121,8 @@ public class MainActivity extends ActionBarActivity {
         outputTypeList.setSelected(false);
         drawerLayout.closeDrawer(drawerView);
         //TODO replace fragment
+        Fragment mapsFragment = new MapsFragment();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, mapsFragment).commit();
     }
 
 
@@ -125,6 +133,9 @@ public class MainActivity extends ActionBarActivity {
         outputTypeMaps.setSelected(false);
         drawerLayout.closeDrawer(drawerView);
         //TODO replace fragment
+        Fragment listFragment = new ListFragment();
+        fragmentManager.beginTransaction().replace(R.id.content_frame, listFragment).commit();
+
     }
 
 
@@ -148,14 +159,14 @@ public class MainActivity extends ActionBarActivity {
 
         //TODO pas besoin de remplacement de fragment, juste des events
         // update the main content by replacing fragments
-        Fragment fragment = new DummyFragment();
-        Bundle args = new Bundle();
-        args.putInt(DummyFragment.ARG_MENU_INDEX, position);
-        args.putStringArrayList("categories",categoriesString);
-        fragment.setArguments(args);
-
-        FragmentManager fragmentManager = getFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+//        Fragment fragment = new DummyFragment();
+//        Bundle args = new Bundle();
+//        args.putInt(DummyFragment.ARG_MENU_INDEX, position);
+//        args.putStringArrayList("categories",categoriesString);
+//        fragment.setArguments(args);
+//
+//        FragmentManager fragmentManager = getFragmentManager();
+//        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
 
         // update selected item and title, then close the drawer
         if(categoriesList.isItemChecked(position)){
