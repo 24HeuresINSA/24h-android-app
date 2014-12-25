@@ -19,6 +19,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.insalyon.les24heures.utils.OutputType;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,12 +79,21 @@ public class MainActivity extends ActionBarActivity {
 
 
         if (savedInstanceState != null) {
-            if(savedInstanceState.getString("outputType") == "list"){ //TODO passer par un enum
-                selectList(outputTypeList);
+            if(savedInstanceState.getString("outputType") != null ){ 
+                switch (OutputType.valueOf(savedInstanceState.getString("outputType").toUpperCase())){
+                    case MAPS:
+                        selectMaps(outputTypeMaps);
+                        break;
+                    case LIST:
+                        selectList(outputTypeList);
+                        break;
+                }
             }else{
+                //default
                 selectMaps(outputTypeMaps);
             }
         }else{
+            //default
             selectMaps(outputTypeMaps);
         }
     }
@@ -91,9 +102,9 @@ public class MainActivity extends ActionBarActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if(outputTypeMaps.isSelected()){
-            outState.putString("outputType","maps");  //TODO passer par un enum
+            outState.putString("outputType", OutputType.MAPS.toString());  
         }else {
-            outState.putString("outputType","list");  //TODO passer par un enum
+            outState.putString("outputType",OutputType.LIST.toString());  
         }
     }
 
