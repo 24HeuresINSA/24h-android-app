@@ -40,13 +40,14 @@ public class OutputTypeFragment extends Fragment{
         eventBus.register(this);
 
         if(savedInstanceState != null){
+            //get from restore state (when it's Android which create the fragment)
             if(savedInstanceState.getParcelableArrayList("categoriesSelected") != null){
                 categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
             }else {
                 categoriesSelected = new ArrayList<>();
             }
         }else if(getArguments() != null){
-            //get from arguments
+            //get from arguments (when it's fragmentManager which create the fragment)
             if(getArguments().getParcelableArrayList("categoriesSelected") != null){
                 categoriesSelected = getArguments().getParcelableArrayList("categoriesSelected");
             }else {
