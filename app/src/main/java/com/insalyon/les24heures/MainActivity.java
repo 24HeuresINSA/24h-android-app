@@ -2,6 +2,8 @@ package com.insalyon.les24heures;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -107,8 +109,24 @@ public class MainActivity extends ActionBarActivity {
                 categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
             }
         }else{
-            //default
-            selectMaps(outputTypeMaps);
+            //default get from manifest
+            try {
+                ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
+                Bundle bundle = ai.metaData;
+                String defaultOutput = bundle.getString("outputType");
+                if(defaultOutput.toLowerCase().equals(OutputType.MAPS.toString().toLowerCase())){
+                    selectMaps(outputTypeMaps);
+                } else  if(defaultOutput.toLowerCase().equals(OutputType.LIST.toString().toLowerCase())){
+                    selectList(outputTypeList);
+                }
+            } catch (PackageManager.NameNotFoundException e) {
+                Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
+                selectMaps(outputTypeMaps);
+            } catch (NullPointerException e) {
+                Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
+                selectMaps(outputTypeMaps);
+            }
+
         }
     }
 
