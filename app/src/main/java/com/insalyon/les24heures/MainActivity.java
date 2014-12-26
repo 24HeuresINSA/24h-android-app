@@ -89,7 +89,7 @@ public class MainActivity extends ActionBarActivity {
         resourcesList = new ArrayList<>();
         resourcesList.add(new Resource("se divertir", "les plaisirs c'est bien pour les calins et les chateau coconuts", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
         resourcesList.add(new Resource("se cultiver", "la culture on s'en fout sauf Alexis et Jeaaane", null, new LatLng(45.783514302374, 4.8747852427139), categories.get(1)));
-        resourcesList.add(new Resource("se divertir", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", null, new LatLng(45.784196093864, 4.8747852427139), categories.get(2)));
+        resourcesList.add(new Resource("du sport", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", null, new LatLng(45.784196093864, 4.8747852427139), categories.get(2)));
         resourcesList.add(new Resource("mes favoris", "mes favoris pour bien montrer que j'ai des gouts de merde", null, new LatLng(45.783827609484, 4.8747852427139), categories.get(3)));
         resourcesList.add(new Resource("lieux utiles", "où qu'on boit où qu'on pisse, où qu'on mange", null, new LatLng(45.784196093888, 4.8747852427139), categories.get(4)));
 
@@ -157,7 +157,9 @@ public class MainActivity extends ActionBarActivity {
 
     @OnClick(R.id.outputtype_maps)
     void selectMaps(View view) {
-        view.setSelected(true);
+        if(outputTypeMaps.isSelected()) return;
+
+        outputTypeMaps.setSelected(true);
         outputTypeList.setSelected(false);
         drawerLayout.closeDrawer(drawerView);
 
@@ -175,8 +177,9 @@ public class MainActivity extends ActionBarActivity {
 
     @OnClick(R.id.outputtype_list)
     void selectList(View view) {
-        setTitle(R.string.drawer_outputtype_list);
-        view.setSelected(true);
+        if(outputTypeList.isSelected()) return;
+
+        outputTypeList.setSelected(true);
         outputTypeMaps.setSelected(false);
         drawerLayout.closeDrawer(drawerView);
 
@@ -265,6 +268,10 @@ public class MainActivity extends ActionBarActivity {
 
     public ArrayList<Resource> getResourcesList(){
         return resourcesList;
+    }
+
+    public void displayDrawer(){
+        drawerLayout.openDrawer(drawerView);
     }
 
 }

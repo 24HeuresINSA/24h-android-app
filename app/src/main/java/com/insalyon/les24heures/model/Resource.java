@@ -1,6 +1,7 @@
 package com.insalyon.les24heures.model;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 import java.util.List;
 
@@ -14,6 +15,9 @@ public class Resource {
     LatLng loc;
     String imageUrl;
     Category category;
+
+    //clairement pas cool ca
+    Marker marker;
 
 
 
@@ -80,5 +84,13 @@ public class Resource {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public Marker getMarker() {
+        return marker;
+    }
+
+    public void setMarker(Marker marker) {
+        this.marker = marker;
     }
 }

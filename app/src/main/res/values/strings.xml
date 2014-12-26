@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!--General-->
     <string name="app_name">les24heures</string>
     <string name="action_settings">Settings</string>
 
+    <!--Navigation Drawer-->
 
-    <string-array name="navigation_drawer_categories">
+    <!--Drawer Day-->
+   <string-array name="navigation_drawer_categories">     <!--TODO viendra du backend-->
         <item>se divertir</item>
         <item>se cultiver</item>
         <item>du sport</item>
@@ -19,10 +22,21 @@
 
 
 
-    <string name="hello_world">Hello world!</string>
+
+    <!--Evening Day-->
 
 
+    <!--Output-->
     <string name="drawer_outputtype_maps">Maps</string>
     <string name="drawer_outputtype_list">Listes</string>
+
+    <!--Maps Output-->
+
+    <!--List Output-->
+
+
+
+    <!--TODO should be displayed by MainActivity ??-->
+    <string name="noCategoriesSelectedText">Feel free to select at least one category</string>
 
 </resources>
