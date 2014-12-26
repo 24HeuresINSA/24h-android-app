@@ -8,6 +8,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseBooleanArray;
@@ -19,8 +20,11 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.insalyon.les24heures.eventbus.CategoryEvent;
 import com.insalyon.les24heures.fragments.ListFragment;
 import com.insalyon.les24heures.fragments.MapsFragment;
+import com.insalyon.les24heures.model.Category;
+import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
 
 import java.util.ArrayList;
@@ -29,12 +33,14 @@ import java.util.List;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 
 public class MainActivity extends ActionBarActivity {
     private static final String TAG = MainActivity.class.getCanonicalName();
 
     FragmentManager fragmentManager;
+    EventBus eventBus;
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -53,6 +59,8 @@ public class MainActivity extends ActionBarActivity {
 
 
     private String[] navigationDrawerCategories; //viendra du backend
+    private List<Category> categories;
+    private ArrayList<Category> categoriesSelected;
 
 
 
@@ -62,12 +70,22 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this, this);
+        eventBus = EventBus.getDefault();
+
 
         fragmentManager= getFragmentManager();
 
         setSupportActionBar(toolbar);
 
-        navigationDrawerCategories = getResources().getStringArray(R.array.navigation_drawer_categories); //
+        //viendra du backend
+        categories = new ArrayList<>();
+        navigationDrawerCategories = getResources().getStringArray(R.array.navigation_drawer_categories);
+        for (String navigationDrawerCategory : navigationDrawerCategories) {
+            categories.add(new Category(navigationDrawerCategory));
+        }
+
+        //viendra du cache
+        categoriesSelected = new ArrayList<>();
 
         // set a custom shadow that overlays the main content when the drawer opens
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -85,18 +103,8 @@ public class MainActivity extends ActionBarActivity {
 
 
         if (savedInstanceState != null) {
-            if(savedInstanceState.getString("outputType") != null ){ 
-                switch (OutputType.valueOf(savedInstanceState.getString("outputType").toUpperCase())){
-                    case MAPS:
-                        selectMaps(outputTypeMaps);
-                        break;
-                    case LIST:
-                        selectList(outputTypeList);
-                        break;
-                }
-            }else{
-                //default
-                selectMaps(outputTypeMaps);
+            if(savedInstanceState.getParcelableArrayList("categoriesSelected") != null){
+                categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
             }
         }else{
             //default
@@ -104,25 +112,39 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+
+
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+        //Output state
         if(outputTypeMaps.isSelected()){
             outState.putString("outputType", OutputType.MAPS.toString());  
         }else {
             outState.putString("outputType",OutputType.LIST.toString());  
         }
+
+        //categories state
+        ArrayList<Category> categoriesSelected = getCategoriesSelectedFromView();
+        outState.putParcelableArrayList("categoriesSelected",categoriesSelected);
     }
 
     @OnClick(R.id.outputtype_maps)
     void selectMaps(View view) {
-        setTitle(R.string.drawer_outputtype_maps);
         view.setSelected(true);
         outputTypeList.setSelected(false);
         drawerLayout.closeDrawer(drawerView);
-        //TODO replace fragment
+
         Fragment mapsFragment = new MapsFragment();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, mapsFragment).commit();
+        replaceContentFragment(mapsFragment);
+    }
+
+    private void replaceContentFragment(Fragment fragment) {
+        Bundle bundleArgs = new Bundle();
+        bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        fragment.setArguments(bundleArgs);
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 
 
@@ -132,10 +154,9 @@ public class MainActivity extends ActionBarActivity {
         view.setSelected(true);
         outputTypeMaps.setSelected(false);
         drawerLayout.closeDrawer(drawerView);
-        //TODO replace fragment
-        Fragment listFragment = new ListFragment();
-        fragmentManager.beginTransaction().replace(R.id.content_frame, listFragment).commit();
 
+        Fragment listFragment = new ListFragment();
+        replaceContentFragment(listFragment);
     }
 
 
@@ -148,36 +169,35 @@ public class MainActivity extends ActionBarActivity {
     }
 
     private void selectCategory(int position) {
-        ArrayList<String> categoriesString = new ArrayList<>();
+        categoriesSelected = getCategoriesSelectedFromView();
+
+        CategoryEvent categoryEvent = new CategoryEvent(categoriesSelected);
+
+        // update selected item and title, then close the drawer
+        if(categoriesList.isItemChecked(position)){
+            Log.i(TAG+"selectCategory","categoy added :"+navigationDrawerCategories[position]);
+            categoryEvent.setFilterAction(FilterAction.ADDED);
+            eventBus.post(categoryEvent);
+
+        } else if(!categoriesList.isItemChecked(position)){
+            Log.i(TAG+"selectCategory","categoy removed :"+navigationDrawerCategories[position]);
+            categoryEvent.setFilterAction(FilterAction.REMOVED);
+            eventBus.post(categoryEvent);
+        }
+
+        drawerLayout.closeDrawer(drawerView);
+    }
+
+    private ArrayList<Category> getCategoriesSelectedFromView() {
+        ArrayList<Category> categoriesSelected = new ArrayList<>();
 
         int len = categoriesList.getCount();
         SparseBooleanArray checked = categoriesList.getCheckedItemPositions();
         for (int i = 0; i < len; i++)
             if (checked.get(i)) {
-                categoriesString.add(navigationDrawerCategories[i]);
+                categoriesSelected.add(categories.get(i));
             }
-
-        //TODO pas besoin de remplacement de fragment, juste des events
-        // update the main content by replacing fragments
-//        Fragment fragment = new DummyFragment();
-//        Bundle args = new Bundle();
-//        args.putInt(DummyFragment.ARG_MENU_INDEX, position);
-//        args.putStringArrayList("categories",categoriesString);
-//        fragment.setArguments(args);
-//
-//        FragmentManager fragmentManager = getFragmentManager();
-//        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-
-        // update selected item and title, then close the drawer
-        if(categoriesList.isItemChecked(position)){
-            //TODO event categories
-            Log.i(TAG+"selectCategory","categoy added :"+navigationDrawerCategories[position]);
-        } else if(!categoriesList.isItemChecked(position)){
-            //TODO event categories
-            Log.i(TAG+"selectCategory","categoy removed :"+navigationDrawerCategories[position]);
-        }
-
-        drawerLayout.closeDrawer(drawerView);
+        return categoriesSelected;
     }
 
     @Override
@@ -204,22 +224,13 @@ public class MainActivity extends ActionBarActivity {
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-    //TODO bha, va disparaitre tout simplement
-    public static class DummyFragment extends Fragment {
-        public static final String ARG_MENU_INDEX = "index";
 
-        public DummyFragment() {
-            // Empty constructor required for fragment subclasses
-        }
-
-        @Override
-        public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-            View rootView = inflater.inflate(R.layout.dummy_fragment, container, false);
-            int index = getArguments().getInt(ARG_MENU_INDEX);
-            List<String> categories = getArguments().getStringArrayList("categories");
-            String text = String.format("Categories",categories);
-            ((TextView) rootView.findViewById(R.id.textView)).setText(categories.toString());
-            return rootView;
-        }
+    public List<Category> getCategories() {
+        return categories;
     }
+
+    public ArrayList<Category> getCategoriesSelected() {
+        return categoriesSelected;
+    }
+
 }

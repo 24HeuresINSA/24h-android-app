@@ -25,15 +25,38 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by remi on 26/12/14.
  */
-public class ListFragment extends OutputTypeFragment{
+public class OutputTypeFragment extends Fragment{
+    EventBus eventBus;
 
     View view;
-    @InjectView(R.id.list_categories)
-    TextView categories;
+     ArrayList<Category> categoriesSelected;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
+
+        if(savedInstanceState != null){
+            if(savedInstanceState.getParcelableArrayList("categoriesSelected") != null){
+                categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
+            }else {
+                categoriesSelected = new ArrayList<>();
+            }
+        }else if(getArguments() != null){
+            //get from arguments
+            if(getArguments().getParcelableArrayList("categoriesSelected") != null){
+                categoriesSelected = getArguments().getParcelableArrayList("categoriesSelected");
+            }else {
+                categoriesSelected = new ArrayList<>();
+            }
+
+        } else {
+            categoriesSelected = new ArrayList<>();
+        }
+
 
 
     }
@@ -43,14 +66,7 @@ public class ListFragment extends OutputTypeFragment{
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
-
-        view = inflater.inflate(R.layout.list_fragment, container, false);
-        ButterKnife.inject(this, view);
-
-
-        categories.setText(categoriesSelected.toString());
-
+        view = super.onCreateView(inflater, container, savedInstanceState);
 
         return view;
     }
@@ -58,18 +74,18 @@ public class ListFragment extends OutputTypeFragment{
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((MainActivity)getActivity()).setTitle(R.string.drawer_outputtype_list);
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        //categories state
+        outState.putParcelableArrayList("categoriesSelected",categoriesSelected);
     }
 
     public void onEvent(CategoryEvent event) {
-        super.onEvent(event);
         Log.d("onevent", event.getCategories().toString());
-        categories.setText(event.getCategories().toString());
+        categoriesSelected = (ArrayList<Category>) event.getCategories();
     }
 
 
