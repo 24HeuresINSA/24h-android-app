@@ -93,6 +93,7 @@ public class OutputTypeFragment extends Fragment{
     @Override
     public void onPause() {
         super.onPause();
+        eventBus.unregister(this);
     }
 
     @Override
