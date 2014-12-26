@@ -11,16 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.MapView;
+import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoryEvent;
 import com.insalyon.les24heures.model.Category;
+import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.utils.OutputType;
 
 import java.util.ArrayList;
@@ -39,10 +47,20 @@ public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallba
     @InjectView(R.id.maps_categories)
     TextView categories;
 
+    private ArrayList<Resource> resourcesList;
+    private ArrayList<Marker> markers;
+
+    MapFragment mapFragment;
+    MapView mapView;
+
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        //TODO je ne sais pas si s'il vaut mieux passer par getActivity que de passer par un bundle
+        resourcesList = ((MainActivity) getActivity()).getResourcesList();
+        markers = new ArrayList<>();
 
     }
 
@@ -55,9 +73,11 @@ public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallba
         view = inflater.inflate(R.layout.maps_fragment, container, false);
         ButterKnife.inject(this, view);
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
-                .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
+        MapsInitializer.initialize(getActivity());
+
+        mapView = (MapView) view.findViewById(R.id.map);
+        mapView.onCreate(savedInstanceState);
+        mapView.getMapAsync(this);
 
         categories.setText(categoriesSelected.toString());
 
@@ -65,22 +85,44 @@ public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallba
     }
 
     @Override
-    public void onMapReady(GoogleMap map) {
-        LatLng sydney = new LatLng(-33.867, 151.206);
-
+    public void onMapReady(final GoogleMap map) {
         map.setMyLocationEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(sydney, 13));
 
-        map.addMarker(new MarkerOptions()
-                .title("Sydney")
-                .snippet("The most populous city in Australia.")
-                .position(sydney));
+        if(resourcesList == null) resourcesList = ((MainActivity) getActivity()).getResourcesList();
+        //add markers
+        for (Resource resource : resourcesList) {
+            markers.add(
+                    map.addMarker(
+                            new MarkerOptions()
+                                    .title(resource.getTitle())
+                                    .snippet(resource.getDescription())
+                                    .position(resource.getLoc())));
+        }
+
+
+        //zoom to show all markers
+        final LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        for (Marker marker : markers) {
+            builder.include(marker.getPosition());
+        }
+        map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
+
+            @Override
+            public void onCameraChange(CameraPosition arg0) {
+                // Move camera.
+                map.moveCamera(CameraUpdateFactory.newLatLngBounds(builder.build(), 10));
+                // Remove listener to prevent position reset on camera move.
+                map.setOnCameraChangeListener(null);
+            }
+        });
 
 
         // Other supported types include: MAP_TYPE_NORMAL,
         // MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID and MAP_TYPE_NONE MAP_TYPE_SATELLITE
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
+
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -91,6 +133,8 @@ public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallba
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+
+//        outState.putParcelableArrayList("resourcesList",resourcesList);
     }
 
     public void onEvent(CategoryEvent event) {
@@ -106,16 +150,29 @@ public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallba
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        Fragment fragment = (getFragmentManager().findFragmentById(R.id.map));
-        FragmentTransaction ft = getActivity().getFragmentManager().beginTransaction();
-        ft.remove(fragment);
-        ft.commit();
+    public void onStop() {
+        super.onStop();
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+
+    }
+
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+    }
+    @Override
     public void onDestroy() {
         super.onDestroy();
+        mapView.onDestroy();
+    }
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
     }
 }

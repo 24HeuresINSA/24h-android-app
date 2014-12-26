@@ -10,22 +10,20 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.view.ActionMode;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseBooleanArray;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.insalyon.les24heures.eventbus.CategoryEvent;
 import com.insalyon.les24heures.fragments.ListFragment;
 import com.insalyon.les24heures.fragments.MapsFragment;
 import com.insalyon.les24heures.model.Category;
+import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
 
@@ -63,6 +61,7 @@ public class MainActivity extends ActionBarActivity {
     private String[] navigationDrawerCategories; //viendra du backend
     private List<Category> categories;
     private ArrayList<Category> categoriesSelected;
+    private ArrayList<Resource> resourcesList;
 
 
 
@@ -85,6 +84,14 @@ public class MainActivity extends ActionBarActivity {
         for (String navigationDrawerCategory : navigationDrawerCategories) {
             categories.add(new Category(navigationDrawerCategory));
         }
+
+        //viendra du backend
+        resourcesList = new ArrayList<>();
+        resourcesList.add(new Resource("se divertir", "les plaisirs c'est bien pour les calins et les chateau coconuts", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
+        resourcesList.add(new Resource("se cultiver", "la culture on s'en fout sauf Alexis et Jeaaane", null, new LatLng(45.783514302374, 4.8747852427139), categories.get(1)));
+        resourcesList.add(new Resource("se divertir", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", null, new LatLng(45.784196093864, 4.8747852427139), categories.get(2)));
+        resourcesList.add(new Resource("mes favoris", "mes favoris pour bien montrer que j'ai des gouts de merde", null, new LatLng(45.783827609484, 4.8747852427139), categories.get(3)));
+        resourcesList.add(new Resource("lieux utiles", "où qu'on boit où qu'on pisse, où qu'on mange", null, new LatLng(45.784196093888, 4.8747852427139), categories.get(4)));
 
         //viendra du cache
         categoriesSelected = new ArrayList<>();
@@ -249,6 +256,15 @@ public class MainActivity extends ActionBarActivity {
 
     public ArrayList<Category> getCategoriesSelected() {
         return categoriesSelected;
+    }
+
+    @Override
+    public String getPackageResourcePath() {
+        return super.getPackageResourcePath();
+    }
+
+    public ArrayList<Resource> getResourcesList(){
+        return resourcesList;
     }
 
 }
