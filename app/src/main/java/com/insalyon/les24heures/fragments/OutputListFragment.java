@@ -1,6 +1,5 @@
 package com.insalyon.les24heures.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -10,8 +9,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,22 +17,18 @@ import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoryEvent;
-import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
-import com.insalyon.les24heures.utils.OutputType;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import de.greenrobot.event.EventBus;
 
 /**
  * Created by remi on 26/12/14.
  */
-public class ListFragment extends OutputTypeFragment{
-    private static final String TAG = ListFragment.class.getCanonicalName();
+public class OutputListFragment extends OutputTypeFragment{
+    private static final String TAG = OutputListFragment.class.getCanonicalName();
 
     View view;
     @InjectView(R.id.list_sort_alphabetical)
@@ -59,9 +52,9 @@ public class ListFragment extends OutputTypeFragment{
 
     //SANDBOX
 
-    ResourceAdapter dataAdapter = null;
+    ResourceAdapter resourceAdapter = null;
     public void onTextChanged(CharSequence s, int start, int before, int count) {
-        dataAdapter.getFilter().filter(s.toString());
+        resourceAdapter.getFilter().filter(s.toString());
     }
 
     // /SANDBOX
@@ -87,10 +80,10 @@ public class ListFragment extends OutputTypeFragment{
         resourcesList = ((MainActivity) getActivity()).getResourcesList();
 
         //create an ArrayAdaptar from the String Array
-        dataAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
+        resourceAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
                 R.layout.list_item, resourcesList);
         // Assign adapter to ListView
-        resourceList.setAdapter(dataAdapter);
+        resourceList.setAdapter(resourceAdapter);
 
         //enables filtering for the contents of the given ListView
         resourceList.setTextFilterEnabled(true);
@@ -114,7 +107,7 @@ public class ListFragment extends OutputTypeFragment{
             }
 
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                dataAdapter.getFilter().filter(s.toString());
+                resourceAdapter.getFilter().filter(s.toString());
             }
         });
 
@@ -131,6 +124,9 @@ public class ListFragment extends OutputTypeFragment{
     public void onEvent(CategoryEvent event) {
         super.onEvent(event);
         Log.d(TAG+"onEvent(CategoryEvent)", event.getCategories().toString());
+        resourceAdapter.getCategoryFilter().filter(
+                (event.getCategories().size() != 0) ? event.getCategories().toString() : null
+        ); //TODO is it good to use it like this ?
 
     }
 

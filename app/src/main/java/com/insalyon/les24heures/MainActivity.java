@@ -20,8 +20,8 @@ import android.widget.ListView;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.insalyon.les24heures.eventbus.CategoryEvent;
-import com.insalyon.les24heures.fragments.ListFragment;
-import com.insalyon.les24heures.fragments.MapsFragment;
+import com.insalyon.les24heures.fragments.OutputListFragment;
+import com.insalyon.les24heures.fragments.OutputMapsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.utils.FilterAction;
@@ -164,7 +164,7 @@ public class MainActivity extends ActionBarActivity {
         outputTypeList.setSelected(false);
         drawerLayout.closeDrawer(drawerView);
 
-        Fragment mapsFragment = new MapsFragment();
+        Fragment mapsFragment = new OutputMapsFragment();
         replaceContentFragment(mapsFragment);
     }
 
@@ -184,7 +184,7 @@ public class MainActivity extends ActionBarActivity {
         outputTypeMaps.setSelected(false);
         drawerLayout.closeDrawer(drawerView);
 
-        Fragment listFragment = new ListFragment();
+        Fragment listFragment = new OutputListFragment();
         replaceContentFragment(listFragment);
     }
 

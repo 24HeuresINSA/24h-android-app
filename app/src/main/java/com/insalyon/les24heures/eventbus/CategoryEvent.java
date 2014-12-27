@@ -3,6 +3,7 @@ package com.insalyon.les24heures.eventbus;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.utils.FilterAction;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,6 +27,7 @@ public class CategoryEvent {
         this.categories = categories;
         this.filterAction = filterAction;
     }
+
 
     public FilterAction getFilterAction() {
         return filterAction;

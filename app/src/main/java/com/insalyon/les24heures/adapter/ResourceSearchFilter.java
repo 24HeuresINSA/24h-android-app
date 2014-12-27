@@ -9,13 +9,13 @@ import java.util.ArrayList;
 /**
  * Created by remi on 27/12/14.
  */
-public class ResourceFilter extends Filter {
+public class ResourceSearchFilter extends Filter {
 
     private ArrayList<Resource> originalList;
     private ArrayList<Resource> resourceList;
     ResourceAdapter resourceAdapter;
 
-    public ResourceFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList, ResourceAdapter resourceAdapter) {
+    public ResourceSearchFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList, ResourceAdapter resourceAdapter) {
         this.originalList = originalList;
         this.resourceList = resourceList;
         this.resourceAdapter = resourceAdapter;
@@ -33,6 +33,7 @@ public class ResourceFilter extends Filter {
             for(int i = 0, l = originalList.size(); i < l; i++)
             {
                 Resource resource = originalList.get(i);
+                //effective search pattern
                 if(resource.getTitle().toString().toLowerCase().contains(constraint))
                     filteredItems.add(resource);
             }
@@ -55,7 +56,8 @@ public class ResourceFilter extends Filter {
     protected void publishResults(CharSequence constraint,
                                   FilterResults results) {
 
-        resourceList = (ArrayList<Resource>)results.values;
+        resourceList.clear();
+        resourceList.addAll((ArrayList<Resource>)results.values);
         resourceAdapter.notifyDataSetChanged();
         resourceAdapter.clear();
         for(int i = 0, l = resourceList.size(); i < l; i++)

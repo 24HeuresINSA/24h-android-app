@@ -6,12 +6,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -28,13 +26,12 @@ import com.insalyon.les24heures.model.Resource;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 /**
  * Created by remi on 26/12/14.
  */
-public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallback {
-    private static final String TAG = MapsFragment.class.getCanonicalName();
+public class OutputMapsFragment extends OutputTypeFragment implements OnMapReadyCallback {
+    private static final String TAG = OutputMapsFragment.class.getCanonicalName();
 
 
     View view;
@@ -102,7 +99,7 @@ public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallba
             public void onCameraChange(CameraPosition arg0) {
 //            //to prevent user to throw up
             globalMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803,4.852847680449486), 12));
-                moveCameraAccordingToSelectedCategories();
+                moveCameraAndDisplayResourceAccordingToSelectedCategories();
                 // Remove listener to prevent position reset on camera move.
                 map.setOnCameraChangeListener(null);
             }
@@ -115,10 +112,10 @@ public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallba
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
-    private void moveCameraAccordingToSelectedCategories() {
+    private void moveCameraAndDisplayResourceAccordingToSelectedCategories() {
         try{
             // Move camera
-            globalMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilderSelectedCategories().build(), 70));
+            globalMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilderAndDisplayResourceAcccordingToSelectedCategories().build(), 70));
         }catch (IllegalStateException e){
             //no resources were added to the builder
             //default if no builder - Lyon
@@ -131,8 +128,8 @@ public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallba
         }
     }
 
-    //TODO si probleme de perf au changement de categories, il est possible de faire un getBuilderSelectedCategories intelligent en utilisant plus precisement les events
-    private LatLngBounds.Builder getBuilderSelectedCategories() {
+    //TODO si probleme de perf au changement de categories, il est possible de faire un getBuilderAndDisplayResourceAcccordingToSelectedCategories intelligent en utilisant plus precisement les events
+    private LatLngBounds.Builder getBuilderAndDisplayResourceAcccordingToSelectedCategories() {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
         //include only selected categories
@@ -160,7 +157,7 @@ public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallba
     public void onEvent(CategoryEvent event) {
         super.onEvent(event);
         Log.d(TAG+"onEvent(CategoryEvent)", event.getCategories().toString());
-        moveCameraAccordingToSelectedCategories();
+        moveCameraAndDisplayResourceAccordingToSelectedCategories();
 
     }
 

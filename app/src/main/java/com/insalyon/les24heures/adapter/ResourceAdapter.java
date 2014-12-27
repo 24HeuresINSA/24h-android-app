@@ -21,7 +21,8 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
 
     private ArrayList<Resource> originalList;
     private ArrayList<Resource> resourceList;
-    private ResourceFilter filter;
+    private ResourceSearchFilter resourceSearchFilter;
+    private ResourceCategoryFilter resourceCategoryFilter;
     LayoutInflater vi;
 
     public ResourceAdapter(Context context, int textViewResourceId,
@@ -37,10 +38,18 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
 
     @Override
     public Filter getFilter() {
-        if (filter == null) {
-            filter = new ResourceFilter(originalList,resourceList,this);
+        if (resourceSearchFilter == null) {
+            resourceSearchFilter = new ResourceSearchFilter(originalList,resourceList,this);
         }
-        return filter;
+        return resourceSearchFilter;
+    }
+
+
+    public Filter getCategoryFilter() {
+        if (resourceCategoryFilter == null) {
+            resourceCategoryFilter = new ResourceCategoryFilter(originalList,resourceList,this);
+        }
+        return resourceCategoryFilter;
     }
 
 
