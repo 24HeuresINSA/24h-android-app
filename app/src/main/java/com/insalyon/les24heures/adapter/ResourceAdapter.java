@@ -30,8 +30,8 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
         super(context, textViewResourceId, resources);
         this.resourceList = new ArrayList<Resource>();
         this.resourceList.addAll(resources);
-        this.originalList = new ArrayList<Resource>();
-        this.originalList.addAll(resources);
+        this.originalList = resources;
+       // this.originalList.addAll(resources);
         this.vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
@@ -81,7 +81,8 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Resource resource = resourceList.get(position);
+        Resource resource = originalList.get(position);
+//        Resource resource = resourceList.get(position);
         holder.title.setText(resource.getTitle());
 //        holder.description.setText(resource.getDescription());
         holder.distance.setText("TODO");

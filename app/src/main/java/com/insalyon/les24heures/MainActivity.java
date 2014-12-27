@@ -19,24 +19,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.ExclusionStrategy;
-import com.google.gson.FieldAttributes;
-import com.google.gson.FieldNamingPolicy;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.internal.bind.DateTypeAdapter;
+import com.insalyon.les24heures.DTO.AssomakerDTO;
+import com.insalyon.les24heures.DTO.ResourceDTO;
 import com.insalyon.les24heures.eventbus.CategoryEvent;
+import com.insalyon.les24heures.eventbus.ResourceEvent;
 import com.insalyon.les24heures.fragments.OutputListFragment;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
-import com.insalyon.les24heures.model.ResourceDTO;
 import com.insalyon.les24heures.service.ResourceRetrofitService;
+import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -48,7 +44,6 @@ import retrofit.Callback;
 import retrofit.RestAdapter;
 import retrofit.RetrofitError;
 import retrofit.client.Response;
-import retrofit.converter.GsonConverter;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -95,7 +90,7 @@ public class MainActivity extends ActionBarActivity {
 
         resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
 
-  
+
         fragmentManager = getFragmentManager();
 
         setSupportActionBar(toolbar);
@@ -110,11 +105,45 @@ public class MainActivity extends ActionBarActivity {
         //viendra du backend
         resourcesList = new ArrayList<>();
 
-        resourcesList.add(new Resource("se divertir", "les plaisirs c'est bien pour les calins et les chateau coconuts", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
-        resourcesList.add(new Resource("se cultiver", "la culture on s'en fout sauf Alexis et Jeaaane", null, new LatLng(45.783514302374, 4.8747852427139), categories.get(1)));
-        resourcesList.add(new Resource("du sport", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", null, new LatLng(45.784196093864, 4.8747852427139), categories.get(2)));
-        resourcesList.add(new Resource("mes favoris", "mes favoris pour bien montrer que j'ai des gouts de merde", null, new LatLng(45.783827609484, 4.8747852427139), categories.get(3)));
-        resourcesList.add(new Resource("lieux utiles", "où qu'on boit où qu'on pisse, où qu'on mange", null, new LatLng(45.784196093888, 4.8747852427139), categories.get(4)));
+        //sandbox
+        resourceRetrofitService.getResources(new Callback<AssomakerDTO>() {
+            @Override
+            public void success(AssomakerDTO assomakerDTO, Response response) {
+
+                Log.d("getResources", "sucess");
+
+                ArrayList<ResourceDTO> resourceDTOs = new ArrayList<ResourceDTO>();
+
+                Map<Integer, ArrayList<ResourceDTO>> animations = assomakerDTO.getAnimations();
+                for (ArrayList<ResourceDTO> dtos : animations.values()) {
+                    resourceDTOs.addAll(dtos);
+                }
+                Log.d("getResources",resourceDTOs.toString());
+//                resourcesList.clear();
+//                resourcesList.addAll(ResourceServiceImpl.fromDTO(resourceDTOs));
+
+                ResourceEvent resourceEvent = new ResourceEvent(ResourceServiceImpl.fromDTO(resourceDTOs));
+                eventBus.post(resourceEvent);
+
+
+            }
+
+            @Override
+            public void failure(RetrofitError error) {
+
+                Log.d("getResources", "failure " + error);
+
+            }
+        });
+
+        resourcesList.add(new Resource("Please Wait", "Data are loading", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
+
+
+//        resourcesList.add(new Resource("se divertir", "les plaisirs c'est bien pour les calins et les chateau coconuts", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
+//        resourcesList.add(new Resource("se cultiver", "la culture on s'en fout sauf Alexis et Jeaaane", null, new LatLng(45.783514302374, 4.8747852427139), categories.get(1)));
+//        resourcesList.add(new Resource("du sport", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", null, new LatLng(45.784196093864, 4.8747852427139), categories.get(2)));
+//        resourcesList.add(new Resource("mes favoris", "mes favoris pour bien montrer que j'ai des gouts de merde", null, new LatLng(45.783827609484, 4.8747852427139), categories.get(3)));
+//        resourcesList.add(new Resource("lieux utiles", "où qu'on boit où qu'on pisse, où qu'on mange", null, new LatLng(45.784196093888, 4.8747852427139), categories.get(4)));
 
         //viendra du cache
         categoriesSelected = new ArrayList<>();

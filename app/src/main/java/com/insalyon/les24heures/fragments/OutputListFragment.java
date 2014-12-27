@@ -17,6 +17,7 @@ import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoryEvent;
+import com.insalyon.les24heures.eventbus.ResourceEvent;
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
@@ -134,6 +135,15 @@ public class OutputListFragment extends OutputTypeFragment{
         resourceAdapter.getCategoryFilter().filter(
                 (event.getCategories().size() != 0) ? event.getCategories().toString() : null
         );
+
+    }
+
+    public void onEvent(ResourceEvent event) {
+       // super.onEvent(event);
+        Log.d(TAG+"onEvent(ResourceEvent)", event.getResourceList().toString());
+        resourcesList.clear();
+        resourcesList.addAll(event.getResourceList());
+        resourceAdapter.notifyDataSetChanged();
 
     }
 

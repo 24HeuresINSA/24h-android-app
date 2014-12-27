@@ -1,9 +1,8 @@
 package com.insalyon.les24heures.service;
 
-import com.insalyon.les24heures.model.Resource;
-import com.insalyon.les24heures.model.ResourceDTO;
+import com.insalyon.les24heures.DTO.AssomakerDTO;
+import com.insalyon.les24heures.DTO.ResourceDTO;
 
-import java.util.List;
 import java.util.Map;
 
 
@@ -16,6 +15,6 @@ import retrofit.http.GET;
 public interface ResourceRetrofitService {
 
     @GET("/anim/animations.json")
-    void getResources(Callback< Map< String, Map< Integer , ResourceDTO> > > cb);
+    void getResources(Callback<AssomakerDTO> cb);
 
 }

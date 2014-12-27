@@ -134,12 +134,12 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         //include only selected categories
         for (Resource resource : resourcesList) {
-            if(categoriesSelected.indexOf(resource.getCategory()) == -1){
-                resource.getMarker().setVisible(false);
-            }else {
+//            if(categoriesSelected.indexOf(resource.getCategory()) == -1){
+//                resource.getMarker().setVisible(false);
+//            }else {
                 resource.getMarker().setVisible(true);
                 builder.include(resource.getMarker().getPosition());
-            }
+//            }
         }
 
        return builder;
