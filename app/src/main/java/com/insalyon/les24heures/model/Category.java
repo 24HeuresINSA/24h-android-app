@@ -66,10 +66,7 @@ public class Category implements Parcelable {
 
     @Override
     public String toString() {
-        return "Category{" +
-                "name='" + name + '\'' +
-                ", iconeName='" + iconeName + '\'' +
-                '}';
+        return name;
     }
 
     public String getName() {
