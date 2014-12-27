@@ -72,7 +72,7 @@ public class OutputListFragment extends OutputTypeFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        view = inflater.inflate(R.layout.list_fragment, container, false);
+        view = inflater.inflate(R.layout.output_list_fragment, container, false);
         ButterKnife.inject(this, view);
 
         //SANDBOX
@@ -81,7 +81,7 @@ public class OutputListFragment extends OutputTypeFragment{
 
         //create an ArrayAdaptar from the String Array
         resourceAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
-                R.layout.list_item, resourcesList);
+                R.layout.output_list_item, resourcesList);
         // Assign adapter to ListView
         resourceList.setAdapter(resourceAdapter);
 
@@ -97,6 +97,8 @@ public class OutputListFragment extends OutputTypeFragment{
                         resource.getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
+
+
 
         searchText.addTextChangedListener(new TextWatcher() {
 
@@ -119,6 +121,11 @@ public class OutputListFragment extends OutputTypeFragment{
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ((MainActivity)getActivity()).setTitle(R.string.drawer_outputtype_list);
+
+        //TODO should textSearch filter should be prior over categories filter ?
+        resourceAdapter.getCategoryFilter().filter(
+                (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null
+        );
     }
 
     public void onEvent(CategoryEvent event) {
@@ -126,7 +133,7 @@ public class OutputListFragment extends OutputTypeFragment{
         Log.d(TAG+"onEvent(CategoryEvent)", event.getCategories().toString());
         resourceAdapter.getCategoryFilter().filter(
                 (event.getCategories().size() != 0) ? event.getCategories().toString() : null
-        ); //TODO is it good to use it like this ?
+        );
 
     }
 

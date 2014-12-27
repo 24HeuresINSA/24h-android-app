@@ -60,7 +60,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        view = inflater.inflate(R.layout.maps_fragment, container, false);
+        view = inflater.inflate(R.layout.output_maps_fragment, container, false);
         ButterKnife.inject(this, view);
 
         MapsInitializer.initialize(getActivity());
