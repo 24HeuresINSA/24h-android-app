@@ -114,6 +114,7 @@ public class MainActivity extends ActionBarActivity {
         if (savedInstanceState != null) {
             if(savedInstanceState.getParcelableArrayList("categoriesSelected") != null){
                 categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
+                Log.i(TAG+" onCreate","categoriesSelected from savedInstanceState :"+categoriesSelected);
             }
         }else{
             //default get from manifest

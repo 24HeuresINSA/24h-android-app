@@ -34,6 +34,8 @@ import butterknife.InjectView;
  * Created by remi on 26/12/14.
  */
 public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallback {
+    private static final String TAG = MapsFragment.class.getCanonicalName();
+
 
     View view;
 
@@ -98,13 +100,15 @@ public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallba
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition arg0) {
-//            //to prevent user to throw up 
+//            //to prevent user to throw up
             globalMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803,4.852847680449486), 12));
                 moveCameraAccordingToSelectedCategories();
                 // Remove listener to prevent position reset on camera move.
                 map.setOnCameraChangeListener(null);
             }
         });
+
+
 
         // Other supported types include: MAP_TYPE_NORMAL,
         // MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID and MAP_TYPE_NONE MAP_TYPE_SATELLITE
@@ -155,7 +159,7 @@ public class MapsFragment extends OutputTypeFragment implements OnMapReadyCallba
 
     public void onEvent(CategoryEvent event) {
         super.onEvent(event);
-        Log.d("onevent", event.getCategories().toString());
+        Log.d(TAG+"onEvent(CategoryEvent)", event.getCategories().toString());
         moveCameraAccordingToSelectedCategories();
 
     }

@@ -37,7 +37,6 @@ public class OutputTypeFragment extends Fragment{
 
 
         eventBus = EventBus.getDefault();
-        eventBus.register(this);
 
         if(savedInstanceState != null){
             //get from restore state (when it's Android which create the fragment)
@@ -57,11 +56,7 @@ public class OutputTypeFragment extends Fragment{
         } else {
             categoriesSelected = new ArrayList<>();
         }
-
-
-
     }
-
 
 
     @Nullable
@@ -78,18 +73,24 @@ public class OutputTypeFragment extends Fragment{
     }
 
     @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        //categories state
-        outState.putParcelableArrayList("categoriesSelected",categoriesSelected);
+    public void onResume() {
+        super.onResume();
+        eventBus.register(this);
     }
 
+    /*      Fragment is alive      */
     public void onEvent(CategoryEvent event) {
         Log.d("onevent", event.getCategories().toString());
         categoriesSelected = (ArrayList<Category>) event.getCategories();
     }
 
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //categories state
+        outState.putParcelableArrayList("categoriesSelected",categoriesSelected);
+    }
 
     @Override
     public void onPause() {
