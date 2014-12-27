@@ -19,21 +19,36 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.ExclusionStrategy;
+import com.google.gson.FieldAttributes;
+import com.google.gson.FieldNamingPolicy;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.internal.bind.DateTypeAdapter;
 import com.insalyon.les24heures.eventbus.CategoryEvent;
 import com.insalyon.les24heures.fragments.OutputListFragment;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.ResourceDTO;
+import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
+import retrofit.converter.GsonConverter;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -41,6 +56,8 @@ public class MainActivity extends ActionBarActivity {
 
     FragmentManager fragmentManager;
     EventBus eventBus;
+    RestAdapter restAdapter;
+    ResourceRetrofitService resourceRetrofitService;
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -64,8 +81,6 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<Resource> resourcesList;
 
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -73,8 +88,15 @@ public class MainActivity extends ActionBarActivity {
         ButterKnife.inject(this, this);
         eventBus = EventBus.getDefault();
 
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint("http://cetaitmieuxavant.24heures.org")
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
 
-        fragmentManager= getFragmentManager();
+        resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
+
+  
+        fragmentManager = getFragmentManager();
 
         setSupportActionBar(toolbar);
 
@@ -87,6 +109,7 @@ public class MainActivity extends ActionBarActivity {
 
         //viendra du backend
         resourcesList = new ArrayList<>();
+
         resourcesList.add(new Resource("se divertir", "les plaisirs c'est bien pour les calins et les chateau coconuts", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
         resourcesList.add(new Resource("se cultiver", "la culture on s'en fout sauf Alexis et Jeaaane", null, new LatLng(45.783514302374, 4.8747852427139), categories.get(1)));
         resourcesList.add(new Resource("du sport", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", null, new LatLng(45.784196093864, 4.8747852427139), categories.get(2)));
@@ -112,19 +135,19 @@ public class MainActivity extends ActionBarActivity {
 
 
         if (savedInstanceState != null) {
-            if(savedInstanceState.getParcelableArrayList("categoriesSelected") != null){
+            if (savedInstanceState.getParcelableArrayList("categoriesSelected") != null) {
                 categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
-                Log.i(TAG+" onCreate","categoriesSelected from savedInstanceState :"+categoriesSelected);
+                Log.i(TAG + " onCreate", "categoriesSelected from savedInstanceState :" + categoriesSelected);
             }
-        }else{
+        } else {
             //default get from manifest
             try {
                 ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
                 Bundle bundle = ai.metaData;
                 String defaultOutput = bundle.getString("outputType");
-                if(defaultOutput.toLowerCase().equals(OutputType.MAPS.toString().toLowerCase())){
+                if (defaultOutput.toLowerCase().equals(OutputType.MAPS.toString().toLowerCase())) {
                     selectMaps(outputTypeMaps);
-                } else  if(defaultOutput.toLowerCase().equals(OutputType.LIST.toString().toLowerCase())){
+                } else if (defaultOutput.toLowerCase().equals(OutputType.LIST.toString().toLowerCase())) {
                     selectList(outputTypeList);
                 }
             } catch (PackageManager.NameNotFoundException e) {
@@ -139,26 +162,25 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         //Output state
-        if(outputTypeMaps.isSelected()){
-            outState.putString("outputType", OutputType.MAPS.toString());  
-        }else {
-            outState.putString("outputType",OutputType.LIST.toString());  
+        if (outputTypeMaps.isSelected()) {
+            outState.putString("outputType", OutputType.MAPS.toString());
+        } else {
+            outState.putString("outputType", OutputType.LIST.toString());
         }
 
         //categories state
         ArrayList<Category> categoriesSelected = getCategoriesSelectedFromView();
-        outState.putParcelableArrayList("categoriesSelected",categoriesSelected);
+        outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
     }
 
     @OnClick(R.id.outputtype_maps)
     void selectMaps(View view) {
-        if(outputTypeMaps.isSelected()) return;
+        if (outputTypeMaps.isSelected()) return;
 
         outputTypeMaps.setSelected(true);
         outputTypeList.setSelected(false);
@@ -178,7 +200,7 @@ public class MainActivity extends ActionBarActivity {
 
     @OnClick(R.id.outputtype_list)
     void selectList(View view) {
-        if(outputTypeList.isSelected()) return;
+        if (outputTypeList.isSelected()) return;
 
         outputTypeList.setSelected(true);
         outputTypeMaps.setSelected(false);
@@ -203,13 +225,13 @@ public class MainActivity extends ActionBarActivity {
         CategoryEvent categoryEvent = new CategoryEvent(categoriesSelected);
 
         // update selected item and title, then close the drawer
-        if(categoriesList.isItemChecked(position)){
-            Log.i(TAG+"selectCategory","categoy added :"+navigationDrawerCategories[position]);
+        if (categoriesList.isItemChecked(position)) {
+            Log.i(TAG + "selectCategory", "categoy added :" + navigationDrawerCategories[position]);
             categoryEvent.setFilterAction(FilterAction.ADDED);
             eventBus.post(categoryEvent);
 
-        } else if(!categoriesList.isItemChecked(position)){
-            Log.i(TAG+"selectCategory","categoy removed :"+navigationDrawerCategories[position]);
+        } else if (!categoriesList.isItemChecked(position)) {
+            Log.i(TAG + "selectCategory", "categoy removed :" + navigationDrawerCategories[position]);
             categoryEvent.setFilterAction(FilterAction.REMOVED);
             eventBus.post(categoryEvent);
         }
@@ -267,12 +289,13 @@ public class MainActivity extends ActionBarActivity {
         return super.getPackageResourcePath();
     }
 
-    public ArrayList<Resource> getResourcesList(){
+    public ArrayList<Resource> getResourcesList() {
         return resourcesList;
     }
 
-    public void displayDrawer(){
+    public void displayDrawer() {
         drawerLayout.openDrawer(drawerView);
     }
+
 
 }
