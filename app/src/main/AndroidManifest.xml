@@ -14,7 +14,7 @@
 
         <meta-data
             android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyA4dlZvjFmFs3ZLFC7t9V3LJCgzewGPCZo"/>
+            android:value="@string/maps_api_key"/>
 
         <!--Default outputType to start-->
         <meta-data android:name="outputType" android:value="maps" />
