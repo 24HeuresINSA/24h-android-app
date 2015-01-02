@@ -45,9 +45,7 @@ public class OutputListFragment extends OutputTypeFragment{
 
 
 
-
-
-    private ArrayList<Resource> resourcesList;
+//    public ArrayList<Resource> resourcesList;
 
 
 
@@ -64,7 +62,6 @@ public class OutputListFragment extends OutputTypeFragment{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-
     }
 
 
@@ -75,11 +72,6 @@ public class OutputListFragment extends OutputTypeFragment{
 
         view = inflater.inflate(R.layout.output_list_fragment, container, false);
         ButterKnife.inject(this, view);
-
-        //SANDBOX
-        //TODO je ne sais pas si s'il vaut mieux passer par getActivity que de passer par un bundle
-        //TODO il faut juste recuperer un pointeur ici ? on meme pas et tout passe par les events ?
-        resourcesList = ((MainActivity) getActivity()).getResourcesList();
 
         //create an ArrayAdaptar from the String Array
         resourceAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
@@ -141,7 +133,7 @@ public class OutputListFragment extends OutputTypeFragment{
 
     public void onEvent(ResourcesUpdatedEvent event) {
        // super.onEvent(event);
-        Log.d(TAG+"onEvent(ResourceEvent)", event.getResourceList().toString());
+        Log.d(TAG + "onEvent(ResourceEvent)", event.getResourceList().toString());
         resourcesList.clear();
         resourcesList.addAll(event.getResourceList());
         //TODO a enlever ca

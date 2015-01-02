@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.model.Category;
+import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
 
@@ -23,6 +24,8 @@ public class OutputTypeFragment extends Fragment{
 
     View view;
      ArrayList<Category> categoriesSelected;
+     ArrayList<Resource> resourcesList;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,12 +41,23 @@ public class OutputTypeFragment extends Fragment{
             }else {
                 categoriesSelected = new ArrayList<>();
             }
+            if(savedInstanceState.getParcelableArrayList("resourcesList") != null){
+                resourcesList = savedInstanceState.getParcelableArrayList("resourcesList");
+            }else {
+                resourcesList = new ArrayList<>();
+            }
         }else if(getArguments() != null){
             //get from arguments (when it's fragmentManager which create the fragment)
             if(getArguments().getParcelableArrayList("categoriesSelected") != null){
                 categoriesSelected = getArguments().getParcelableArrayList("categoriesSelected");
             }else {
                 categoriesSelected = new ArrayList<>();
+            }
+            //get from arguments (when it's fragmentManager which create the fragment)
+            if(getArguments().getParcelableArrayList("resourcesList") != null){
+                resourcesList = getArguments().getParcelableArrayList("resourcesList");
+            }else {
+                resourcesList = new ArrayList<>();
             }
 
         } else {

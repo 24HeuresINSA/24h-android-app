@@ -111,7 +111,6 @@ public class MainActivity extends ActionBarActivity {
         resourcesList = new ArrayList<>();
 //        resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
         resourceService.getResourcesAsyncMock();
-        //TODO faire fonctionne le mock, avec de l'async ?
 
 
         //TODO ne plus avoir besoin de ca
@@ -205,6 +204,7 @@ public class MainActivity extends ActionBarActivity {
     private void replaceContentFragment(Fragment fragment) {
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        bundleArgs.putParcelableArrayList("resourcesList", resourcesList);
         fragment.setArguments(bundleArgs);
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
     }

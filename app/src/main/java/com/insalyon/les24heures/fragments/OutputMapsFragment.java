@@ -37,7 +37,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     View view;
 
 
-    private ArrayList<Resource> resourcesList;
+//    private ArrayList<Resource> resourcesList;
     private ArrayList<Marker> markers;
 
     MapView mapView;
@@ -80,8 +80,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         //TODO faire ca proprement
         globalMap = map;
 
-        //TODO je ne sais pas si s'il vaut mieux passer par getActivity que de passer par un bundle
-        resourcesList = ((MainActivity) getActivity()).getResourcesList();
 
         //add markers to the map
         for (Resource resource : resourcesList) {
