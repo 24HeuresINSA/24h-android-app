@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
-import com.insalyon.les24heures.eventbus.CategoryEvent;
+import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
@@ -133,7 +133,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
         //include only selected categories
-        for (Resource resource : resourcesList) {
+        for (Resource resource : resourcesList) { //TODO democker ca
 //            if(categoriesSelected.indexOf(resource.getCategory()) == -1){
 //                resource.getMarker().setVisible(false);
 //            }else {
@@ -154,7 +154,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         return builder;
     }
 
-    public void onEvent(CategoryEvent event) {
+    public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
         Log.d(TAG+"onEvent(CategoryEvent)", event.getCategories().toString());
         moveCameraAndDisplayResourceAccordingToSelectedCategories();

@@ -81,6 +81,8 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
             holder = (ViewHolder) convertView.getTag();
         }
 
+        //TODO utiliser de nouveau resourceList (sinon les filter servent a rien)
+        //TODO gerer le cas liste vide ici ?
         Resource resource = originalList.get(position);
 //        Resource resource = resourceList.get(position);
         holder.title.setText(resource.getTitle());

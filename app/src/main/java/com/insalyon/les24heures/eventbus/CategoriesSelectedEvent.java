@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by remi on 26/12/14.
  */
-public class CategoryEvent {
+public class CategoriesSelectedEvent {
     List<Category> categories;
     FilterAction filterAction;
 
@@ -18,12 +18,12 @@ public class CategoryEvent {
         return categories.toString();
     }
 
-    public CategoryEvent(List<Category> categories) {
+    public CategoriesSelectedEvent(List<Category> categories) {
         this.categories = categories;
     }
 
 
-    public CategoryEvent(List<Category> categories, FilterAction filterAction) {
+    public CategoriesSelectedEvent(List<Category> categories, FilterAction filterAction) {
         this.categories = categories;
         this.filterAction = filterAction;
     }

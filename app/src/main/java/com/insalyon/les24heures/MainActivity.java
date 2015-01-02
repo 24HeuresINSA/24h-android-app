@@ -2,6 +2,7 @@ package com.insalyon.les24heures;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -19,31 +20,29 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.insalyon.les24heures.DTO.AssomakerDTO;
-import com.insalyon.les24heures.DTO.ResourceDTO;
-import com.insalyon.les24heures.eventbus.CategoryEvent;
-import com.insalyon.les24heures.eventbus.ResourceEvent;
+import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
+import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.fragments.OutputListFragment;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.service.CategoryService;
 import com.insalyon.les24heures.service.ResourceRetrofitService;
+import com.insalyon.les24heures.service.ResourceService;
+import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
-import retrofit.Callback;
 import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -75,6 +74,10 @@ public class MainActivity extends ActionBarActivity {
     private ArrayList<Category> categoriesSelected;
     private ArrayList<Resource> resourcesList;
 
+    //depency injection ?
+    private ResourceService resourceService;
+    private CategoryService categoryService;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,16 +85,15 @@ public class MainActivity extends ActionBarActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this, this);
         eventBus = EventBus.getDefault();
-
         restAdapter = new RestAdapter.Builder()
                 .setEndpoint("http://cetaitmieuxavant.24heures.org")
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-
         resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
-
-
         fragmentManager = getFragmentManager();
+        //dependency injection instead ?
+        resourceService = ResourceServiceImpl.getInstance();
+        categoryService = CategoryServiceImpl.getInstance();
 
         setSupportActionBar(toolbar);
 
@@ -101,49 +103,20 @@ public class MainActivity extends ActionBarActivity {
         for (String navigationDrawerCategory : navigationDrawerCategories) {
             categories.add(new Category(navigationDrawerCategory));
         }
+        eventBus.post(new CategoriesUpdatedEvent(categories));
 
-        //viendra du backend
+        //TODO comprendre pourquoi est ce que je dois faire ca, meme si au final la réponse ne servira pas pour ce cas precis
+        categoryService.setCategories(categories);
+
         resourcesList = new ArrayList<>();
-
-        //sandbox
-        resourceRetrofitService.getResources(new Callback<AssomakerDTO>() {
-            @Override
-            public void success(AssomakerDTO assomakerDTO, Response response) {
-
-                Log.d("getResources", "sucess");
-
-                ArrayList<ResourceDTO> resourceDTOs = new ArrayList<ResourceDTO>();
-
-                Map<Integer, ArrayList<ResourceDTO>> animations = assomakerDTO.getAnimations();
-                for (ArrayList<ResourceDTO> dtos : animations.values()) {
-                    resourceDTOs.addAll(dtos);
-                }
-                Log.d("getResources",resourceDTOs.toString());
-//                resourcesList.clear();
-//                resourcesList.addAll(ResourceServiceImpl.fromDTO(resourceDTOs));
-
-                ResourceEvent resourceEvent = new ResourceEvent(ResourceServiceImpl.fromDTO(resourceDTOs));
-                eventBus.post(resourceEvent);
+//        resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
+        resourceService.getResourcesAsyncMock();
+        //TODO faire fonctionne le mock, avec de l'async ?
 
 
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-
-                Log.d("getResources", "failure " + error);
-
-            }
-        });
-
+        //TODO ne plus avoir besoin de ca
         resourcesList.add(new Resource("Please Wait", "Data are loading", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
 
-
-//        resourcesList.add(new Resource("se divertir", "les plaisirs c'est bien pour les calins et les chateau coconuts", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
-//        resourcesList.add(new Resource("se cultiver", "la culture on s'en fout sauf Alexis et Jeaaane", null, new LatLng(45.783514302374, 4.8747852427139), categories.get(1)));
-//        resourcesList.add(new Resource("du sport", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", null, new LatLng(45.784196093864, 4.8747852427139), categories.get(2)));
-//        resourcesList.add(new Resource("mes favoris", "mes favoris pour bien montrer que j'ai des gouts de merde", null, new LatLng(45.783827609484, 4.8747852427139), categories.get(3)));
-//        resourcesList.add(new Resource("lieux utiles", "où qu'on boit où qu'on pisse, où qu'on mange", null, new LatLng(45.784196093888, 4.8747852427139), categories.get(4)));
 
         //viendra du cache
         categoriesSelected = new ArrayList<>();
@@ -207,6 +180,16 @@ public class MainActivity extends ActionBarActivity {
         outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
     }
 
+
+    public void onEvent(ResourcesUpdatedEvent event) {
+        // super.onEvent(event);
+        Log.d(TAG+"onEvent(ResourceEvent)", event.getResourceList().toString());
+        resourcesList.clear();
+        resourcesList.addAll(event.getResourceList());
+
+
+    }
+
     @OnClick(R.id.outputtype_maps)
     void selectMaps(View view) {
         if (outputTypeMaps.isSelected()) return;
@@ -251,18 +234,18 @@ public class MainActivity extends ActionBarActivity {
     private void selectCategory(int position) {
         categoriesSelected = getCategoriesSelectedFromView();
 
-        CategoryEvent categoryEvent = new CategoryEvent(categoriesSelected);
+        CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(categoriesSelected);
 
         // update selected item and title, then close the drawer
         if (categoriesList.isItemChecked(position)) {
             Log.i(TAG + "selectCategory", "categoy added :" + navigationDrawerCategories[position]);
-            categoryEvent.setFilterAction(FilterAction.ADDED);
-            eventBus.post(categoryEvent);
+            categoriesSelectedEvent.setFilterAction(FilterAction.ADDED);
+            eventBus.post(categoriesSelectedEvent);
 
         } else if (!categoriesList.isItemChecked(position)) {
             Log.i(TAG + "selectCategory", "categoy removed :" + navigationDrawerCategories[position]);
-            categoryEvent.setFilterAction(FilterAction.REMOVED);
-            eventBus.post(categoryEvent);
+            categoriesSelectedEvent.setFilterAction(FilterAction.REMOVED);
+            eventBus.post(categoriesSelectedEvent);
         }
 
         drawerLayout.closeDrawer(drawerView);
@@ -304,20 +287,12 @@ public class MainActivity extends ActionBarActivity {
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public ArrayList<Category> getCategoriesSelected() {
-        return categoriesSelected;
-    }
-
     @Override
     public String getPackageResourcePath() {
         return super.getPackageResourcePath();
     }
 
+    @Deprecated
     public ArrayList<Resource> getResourcesList() {
         return resourcesList;
     }

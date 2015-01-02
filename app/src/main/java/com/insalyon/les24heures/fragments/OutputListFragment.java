@@ -16,8 +16,8 @@ import android.widget.Toast;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ResourceAdapter;
-import com.insalyon.les24heures.eventbus.CategoryEvent;
-import com.insalyon.les24heures.eventbus.ResourceEvent;
+import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
@@ -78,6 +78,7 @@ public class OutputListFragment extends OutputTypeFragment{
 
         //SANDBOX
         //TODO je ne sais pas si s'il vaut mieux passer par getActivity que de passer par un bundle
+        //TODO il faut juste recuperer un pointeur ici ? on meme pas et tout passe par les events ?
         resourcesList = ((MainActivity) getActivity()).getResourcesList();
 
         //create an ArrayAdaptar from the String Array
@@ -129,7 +130,7 @@ public class OutputListFragment extends OutputTypeFragment{
         );
     }
 
-    public void onEvent(CategoryEvent event) {
+    public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
         Log.d(TAG+"onEvent(CategoryEvent)", event.getCategories().toString());
         resourceAdapter.getCategoryFilter().filter(
@@ -138,12 +139,18 @@ public class OutputListFragment extends OutputTypeFragment{
 
     }
 
-    public void onEvent(ResourceEvent event) {
+    public void onEvent(ResourcesUpdatedEvent event) {
        // super.onEvent(event);
         Log.d(TAG+"onEvent(ResourceEvent)", event.getResourceList().toString());
         resourcesList.clear();
         resourcesList.addAll(event.getResourceList());
-        resourceAdapter.notifyDataSetChanged();
+        //TODO a enlever ca
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                resourceAdapter.notifyDataSetChanged();
+            }
+        });
 
     }
 

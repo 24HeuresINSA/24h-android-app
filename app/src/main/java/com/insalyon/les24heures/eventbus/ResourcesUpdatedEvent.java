@@ -7,10 +7,10 @@ import java.util.List;
 /**
  * Created by remi on 27/12/14.
  */
-public class ResourceEvent {
+public class ResourcesUpdatedEvent {
     List<Resource> resourceList;
 
-    public ResourceEvent(List<Resource> resourceList) {
+    public ResourcesUpdatedEvent(List<Resource> resourceList) {
         this.resourceList = resourceList;
     }
 
