@@ -135,9 +135,6 @@ public class MainActivity extends ActionBarActivity {
             resourcesList = new ArrayList<>();
            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
 //            resourceService.getResourcesAsyncMock();
-
-            //TODO ne plus avoir besoin de ca
-//            resourcesList.add(new Resource("Please Wait", "Data are loading", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
         }
 
         if(categoriesSelected == null){
@@ -221,7 +218,7 @@ public class MainActivity extends ActionBarActivity {
 
     @OnClick(R.id.outputtype_maps)
     void selectMaps(View view) {
-//        if (outputTypeMaps.isSelected()) return;  //TODO for debug purpose only
+        if (outputTypeMaps.isSelected()) return;
 
         outputTypeMaps.setSelected(true);
         outputTypeList.setSelected(false);

@@ -175,7 +175,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         try {
             // Move camera
             globalMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilder().build(), 70));
-        } catch (IllegalStateException e) {//TODO c'est nul ca !
+        } catch (IllegalStateException e) {
             Log.d("OutputMapsFragment.moveCamera","unexpected");
             e.printStackTrace();
             //no resources were added to the builder
