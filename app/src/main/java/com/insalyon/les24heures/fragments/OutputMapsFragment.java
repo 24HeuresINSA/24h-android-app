@@ -25,6 +25,7 @@ import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 
@@ -37,6 +38,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
     View view;
 
+    Boolean spinner; //TODO mettre en place un vrai spinner
 
     //    private ArrayList<Resource> resourcesList;
     private ArrayList<Marker> markers;
@@ -81,11 +83,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         //TODO faire ca proprement
         globalMap = map;
 
-
-        //add markers to the map
-        for (Resource resource : resourcesList) {
-            addMarker(resource);
-        }
+        updateMapsView();
 
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
@@ -93,7 +91,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
                 //to prevent user to throw up, zoom on Lyon without animateCamera
                 globalMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
                 //then try to zoom on resources
-                moveCameraAndDisplayResourceAccordingToSelectedCategories();
+                if(updateMapsView())moveCamera();
                 // Remove listener to prevent position reset on camera move.
                 map.setOnCameraChangeListener(null);
             }
@@ -104,52 +102,94 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
-    private void addMarker(Resource resource) {
-        Marker marker = globalMap.addMarker(
-                new MarkerOptions()
-                        .title(resource.getTitle())
-                        .snippet(resource.getDescription())
-                        .position(resource.getLoc()));
-
-        resource.setMarker(marker);
+    private Boolean updateMapsView(){
+        if(resourcesList.isEmpty()){
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesFound, Toast.LENGTH_SHORT);
+            toast.show();
+            ((MainActivity) getActivity()).displayDrawer();
+            //TODO display a spinner
+            spinner = true;
+            return false;
+        }
+        addMarkers();
+        if(categoriesSelected.isEmpty()){
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noCategoriesSelected, Toast.LENGTH_SHORT);
+            toast.show();
+            ((MainActivity) getActivity()).displayDrawer();
+            return false;
+        }
+        if(!displayMarkersAccordingToSelectedCategories()){
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesMatchSelectedCategories, Toast.LENGTH_SHORT);
+            toast.show();
+            ((MainActivity) getActivity()).displayDrawer();
+            return false;
+        }
+        return true;
     }
 
-    private void moveCameraAndDisplayResourceAccordingToSelectedCategories() {
+    private void addMarkers() {
+        for (Resource resource : resourcesList) {
+            if(resource.getMarker() == null) {
+                Marker marker = globalMap.addMarker(
+                        new MarkerOptions()
+                                .title(resource.getTitle())
+                                .snippet(resource.getDescription())
+                                .position(resource.getLoc()));
+
+                resource.setMarker(marker);
+            }
+        }
+    }
+
+    private LatLngBounds.Builder getBuilder() {
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+        //include only selected categories
+        for (Resource resource : resourcesList) {
+            if (categoriesSelected.indexOf(resource.getCategory()) != -1) {
+                builder.include(resource.getMarker().getPosition());
+            }
+        }
+        return builder;
+    }
+
+
+
+    private Boolean displayMarkersAccordingToSelectedCategories() {
+        Boolean atLeastOneVisible = false;
+        //include only selected categories
+        for (Resource resource : resourcesList) {
+            if (categoriesSelected.indexOf(resource.getCategory()) == -1) {
+                resource.getMarker().setVisible(false);
+            } else {
+                resource.getMarker().setVisible(true);
+                atLeastOneVisible = true;
+            }
+        }
+        return atLeastOneVisible;
+    }
+
+
+
+
+    private void moveCamera() {
         try {
             // Move camera
-            globalMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilderAndDisplayResourceAcccordingToSelectedCategories().build(), 70));
+            globalMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilder().build(), 70));
         } catch (IllegalStateException e) {//TODO c'est nul ca !
+            Log.d("OutputMapsFragment.moveCamera","unexpected");
+            e.printStackTrace();
             //no resources were added to the builder
             //default if no builder - Lyon
             //lg 4.852847680449486
             //la 45.74968239082803
             globalMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noCategoriesSelectedText, Toast.LENGTH_SHORT);
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.unexpected_move_camera_error, Toast.LENGTH_SHORT);
             toast.show();
             ((MainActivity) getActivity()).displayDrawer();
         }
     }
 
-    //TODO si probleme de perf au changement de categories, il est possible de faire un getBuilderAndDisplayResourceAcccordingToSelectedCategories intelligent en utilisant plus precisement les events
-    private LatLngBounds.Builder getBuilderAndDisplayResourceAcccordingToSelectedCategories() {
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-        //include only selected categories
-        for (Resource resource : resourcesList) {
-            if (resource.getMarker() == null) {
-                addMarker(resource);
-            }
-            if (categoriesSelected.indexOf(resource.getCategory()) == -1) {
-                resource.getMarker().setVisible(false);
-            } else {
-                resource.getMarker().setVisible(true);
-                builder.include(resource.getMarker().getPosition());
-            }
-        }
-
-        return builder;
-
-    }
 
     private LatLngBounds.Builder getMapsBuilder() {
         final LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -162,15 +202,26 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
         Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
-        moveCameraAndDisplayResourceAccordingToSelectedCategories();
-
+        if(updateMapsView())moveCamera();
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
         Log.d(TAG + "onEvent(CategoryEvent)", event.getResourceList().toString());
-        moveCameraAndDisplayResourceAccordingToSelectedCategories();
+        //TODO pourquoic ce truc marche pas ? run on uiThread ?
 
+        if(spinner){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+            spinner = false;
+        }
+        if(updateMapsView())moveCamera();
     }
 
     @Override
@@ -182,7 +233,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-//        outState.putParcelableArrayList("resourcesList",resourcesList);
     }
 
 
@@ -212,6 +262,10 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
+        for (Resource resource : resourcesList) {
+            resource.setMarker(null);
+            //TODO en attendant de trouver mieux
+        }
     }
 
     @Override

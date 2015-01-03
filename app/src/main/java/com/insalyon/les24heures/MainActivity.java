@@ -134,7 +134,7 @@ public class MainActivity extends ActionBarActivity {
             resourceService.getResourcesAsyncMock();
 
             //TODO ne plus avoir besoin de ca
-            resourcesList.add(new Resource("Please Wait", "Data are loading", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
+//            resourcesList.add(new Resource("Please Wait", "Data are loading", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
         }
 
         if(categoriesSelected == null){
