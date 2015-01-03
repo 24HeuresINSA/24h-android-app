@@ -20,6 +20,8 @@ import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Resource;
 
+import java.util.ArrayList;
+
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -40,22 +42,18 @@ public class OutputListFragment extends OutputTypeFragment{
     TextView searchText;
     @InjectView(R.id.list_resource)
     ListView resourceListView;
+    @InjectView(R.id.empty_resource_list)
+    View emptyResourceList;
 
 
     Boolean spinner = false; //TODO mettre en place un vrai spinner
-
-//    public ArrayList<Resource> resourcesList;
-
-
-
-    //SANDBOX
+    //coup de bluff pour contrecarrer le setText effectué par Android au rotate
+    Boolean startingForText;
 
     ResourceAdapter resourceAdapter = null;
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        resourceAdapter.getFilter().filter(s.toString());
-    }
 
-    // /SANDBOX
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -74,7 +72,7 @@ public class OutputListFragment extends OutputTypeFragment{
 
         //create an ArrayAdaptar from the String Array
         resourceAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
-                R.layout.output_list_item, resourcesList);
+                R.layout.output_list_item, new ArrayList<>(resourcesList)); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
         // Assign adapter to ListView
         resourceListView.setAdapter(resourceAdapter);
 
@@ -94,15 +92,23 @@ public class OutputListFragment extends OutputTypeFragment{
 
 
         //filter by text
+        startingForText = true;
         searchText.addTextChangedListener(new TextWatcher() {
             public void afterTextChanged(Editable s) {
             }
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                resourceAdapter.getFilter().filter(s.toString());
+                if(startingForText){
+                    startingForText = false;
+                }else{
+                    resourceAdapter.getFilter().filter(s.toString());
+                }
             }
         });
+
+        resourceListView.setEmptyView(emptyResourceList);
+
 
         return view;
     }
@@ -112,6 +118,11 @@ public class OutputListFragment extends OutputTypeFragment{
         super.onActivityCreated(savedInstanceState);
         ((MainActivity)getActivity()).setTitle(R.string.drawer_outputtype_list);
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         updateListView();
     }
 
@@ -119,31 +130,18 @@ public class OutputListFragment extends OutputTypeFragment{
     private Boolean updateListView(){
 
         //TODO text search or categories filter priority stand here
-        resourceAdapter.getFilter().filter(null);
-//        resourceAdapter.getCategoryFilter().filter(null);
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startingForText = true;
+                searchText.setText("");
+            }
+        });
 
+        //category is prior, text search is ignored and erased
+        resourceAdapter.getCategoryFilter().filter(
+                (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null);
 
-        searchText.setText("");
-        searchText.clearFocus();
-
-//
-//
-//        if(resourcesList.isEmpty()){
-//            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesFound, Toast.LENGTH_SHORT);
-//            toast.show();
-//            ((MainActivity) getActivity()).displayDrawer();
-//            //TODO display a spinner
-//            spinner = true;
-//            return false;
-//        }
-//        resourceAdapter.notifyDataSetChanged();
-//        if(categoriesSelected.isEmpty()) {
-//            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noCategoriesSelected, Toast.LENGTH_SHORT);
-//            toast.show();
-//            ((MainActivity) getActivity()).displayDrawer();
-//            return false;
-//        }
-//        resourceAdapter.notifyDataSetChanged();
         return true;
     }
 

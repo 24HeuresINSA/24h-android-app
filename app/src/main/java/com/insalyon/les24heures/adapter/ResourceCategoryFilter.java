@@ -28,8 +28,7 @@ public class ResourceCategoryFilter extends ResourceListFilter {
                             ((String) constraint).substring(1, constraint.length() - 1).split(", "))
                     );
 
-            //TODO faire ca proprement (le get(0) != "")
-            if (selectedCategories.size() != 0 || selectedCategories.get(0) != "") {
+            if (selectedCategories.size() != 0) {
                 ArrayList<Resource> filteredItems = new ArrayList<Resource>();
 
                 for (int i = 0, l = originalList.size(); i < l; i++) {

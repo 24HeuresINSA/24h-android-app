@@ -132,7 +132,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             if(resource.getMarker() == null) {
                 Marker marker = globalMap.addMarker(
                         new MarkerOptions()
-                                .title(resource.getTitle())
+                                .title(resource.getTitle()+" "+resource.getCategory().getName())
                                 .snippet(resource.getDescription())
                                 .position(resource.getLoc()));
 

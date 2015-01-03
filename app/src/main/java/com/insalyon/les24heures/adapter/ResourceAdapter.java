@@ -89,7 +89,7 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
         Resource resource = resourceList.get(position);
         holder.title.setText(resource.getTitle());
         holder.distance.setText("TODO");
-        holder.schedule.setText("TODO");
+        holder.schedule.setText(resource.getCategory().getName());
 
         return convertView;
 
