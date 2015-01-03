@@ -2,8 +2,6 @@ package com.insalyon.les24heures;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.content.Context;
-import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -16,13 +14,10 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
-import android.view.WindowManager;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.google.android.gms.maps.model.LatLng;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
@@ -39,7 +34,6 @@ import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -185,27 +179,19 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
-
+    /**
+     * When using the ActionBarDrawerToggle, you must call it during
+     * onPostCreate() and onConfigurationChanged()...
+     */
     @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        //Output state
-        if (outputTypeMaps.isSelected()) {
-            outState.putString("outputType", OutputType.MAPS.toString());
-        } else {
-            outState.putString("outputType", OutputType.LIST.toString());
-        }
-
-        //categories
-        outState.putParcelableArrayList("categories", categories);
-        //categories state
-        ArrayList<Category> categoriesSelected = getCategoriesSelectedFromView();
-        outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
-        //resources
-        outState.putParcelableArrayList("resourcesList", resourcesList);
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        actionBarDrawerToggle.syncState();
     }
 
+
+    /**         Activity is alive       **/
 
     public void onEvent(ResourcesUpdatedEvent event) {
         // super.onEvent(event);
@@ -228,15 +214,6 @@ public class MainActivity extends ActionBarActivity {
         replaceContentFragment(mapsFragment);
     }
 
-    private void replaceContentFragment(Fragment fragment) {
-        Bundle bundleArgs = new Bundle();
-        bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
-        bundleArgs.putParcelableArrayList("resourcesList", resourcesList);
-        fragment.setArguments(bundleArgs);
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
-    }
-
-
     @OnClick(R.id.outputtype_list)
     void selectList(View view) {
         if (outputTypeList.isSelected()) return;
@@ -249,6 +226,50 @@ public class MainActivity extends ActionBarActivity {
         replaceContentFragment(listFragment);
     }
 
+    @Override
+    public void setTitle(CharSequence title) {
+        getSupportActionBar().setTitle(title);
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        // Pass any configuration change to the drawer toggls
+        actionBarDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+    /**         Activity is no more alive       **/
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //Output state
+        if (outputTypeMaps.isSelected()) {
+            outState.putString("outputType", OutputType.MAPS.toString());
+        } else {
+            outState.putString("outputType", OutputType.LIST.toString());
+        }
+
+        //categories
+        outState.putParcelableArrayList("categories", categories);
+        //categories state
+        ArrayList<Category> categoriesSelected = getCategoriesSelectedFromView();
+        outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        //resources
+        outState.putParcelableArrayList("resourcesList", resourcesList);
+    }
+
+
+    /**         Activity methods      **/
+
+    private void replaceContentFragment(Fragment fragment) {
+        Bundle bundleArgs = new Bundle();
+        bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        bundleArgs.putParcelableArrayList("resourcesList", resourcesList);
+        fragment.setArguments(bundleArgs);
+        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+    }
 
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -290,46 +311,8 @@ public class MainActivity extends ActionBarActivity {
         return categoriesSelected;
     }
 
-    @Override
-    public void setTitle(CharSequence title) {
-        getSupportActionBar().setTitle(title);
-    }
-
-    /**
-     * When using the ActionBarDrawerToggle, you must call it during
-     * onPostCreate() and onConfigurationChanged()...
-     */
-
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        actionBarDrawerToggle.syncState();
-    }
-
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        // Pass any configuration change to the drawer toggls
-        actionBarDrawerToggle.onConfigurationChanged(newConfig);
-    }
-
-    @Override
-    public String getPackageResourcePath() {
-        return super.getPackageResourcePath();
-    }
-
-    @Deprecated
-    public ArrayList<Resource> getResourcesList() {
-        return resourcesList;
-    }
-
     public void displayDrawer() {
-
         drawerLayout.openDrawer(drawerView);
-
-
     }
-
 
 }
