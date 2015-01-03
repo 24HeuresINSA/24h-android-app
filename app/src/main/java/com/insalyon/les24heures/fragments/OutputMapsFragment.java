@@ -1,5 +1,7 @@
 package com.insalyon.les24heures.fragments;
 
+import android.content.Context;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -8,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
+import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -40,12 +43,9 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
     Boolean spinner; //TODO mettre en place un vrai spinner
 
-    //    private ArrayList<Resource> resourcesList;
     private ArrayList<Marker> markers;
 
     MapView mapView;
-
-    //TODO faire proprement
     GoogleMap globalMap;
 
 
@@ -70,8 +70,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(null);
-//        mapView.setBuiltInZoomControls(true);
         mapView.getMapAsync(this);
+
+        globalMap = mapView.getMap();
+        globalMap.getUiSettings().setZoomControlsEnabled(true);
+       
 
         return view;
     }
@@ -79,9 +82,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     @Override
     public void onMapReady(final GoogleMap map) {
         map.setMyLocationEnabled(true);
-
-        //TODO faire ca proprement
-        globalMap = map;
 
         updateMapsView();
 
@@ -208,7 +208,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
         Log.d(TAG + "onEvent(CategoryEvent)", event.getResourceList().toString());
-        //TODO pourquoic ce truc marche pas ? run on uiThread ?
 
         if(spinner){
             getActivity().runOnUiThread(new Runnable() {
@@ -228,6 +227,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         ((MainActivity) getActivity()).setTitle(R.string.drawer_outputtype_maps);
+
     }
 
     @Override
@@ -239,6 +239,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     @Override
     public void onPause() {
         super.onPause();
+        globalMap.setMyLocationEnabled(false);
     }
 
     @Override
@@ -256,7 +257,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onResume() {
         mapView.onResume();
         super.onResume();
+        globalMap.setMyLocationEnabled(true);
+
     }
+
+
 
     @Override
     public void onDestroy() {
@@ -267,6 +272,8 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             //TODO en attendant de trouver mieux
         }
     }
+
+
 
     @Override
     public void onLowMemory() {
