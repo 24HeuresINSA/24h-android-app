@@ -10,16 +10,11 @@ import java.util.Arrays;
 /**
  * Created by remi on 27/12/14.
  */
-public class ResourceCategoryFilter extends Filter {
+public class ResourceCategoryFilter extends ResourceListFilter {
 
-    private ArrayList<Resource> originalList;
-    private ArrayList<Resource> resourceList;
-    ResourceAdapter resourceAdapter;
 
     public ResourceCategoryFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList, ResourceAdapter resourceAdapter) {
-        this.originalList = originalList;
-        this.resourceList = resourceList;
-        this.resourceAdapter = resourceAdapter;
+        super(originalList, resourceList, resourceAdapter);
     }
 
     @Override
@@ -54,7 +49,7 @@ public class ResourceCategoryFilter extends Filter {
             }
         } else {
             synchronized (this) {
-                result.values = originalList;
+                result.values =  new ArrayList<>(originalList);
                 result.count = originalList.size();
             }
         }
@@ -62,16 +57,4 @@ public class ResourceCategoryFilter extends Filter {
         return result;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void publishResults(CharSequence constraint,
-                                  FilterResults results) {
-        resourceList.clear();
-        resourceList.addAll((ArrayList<Resource>)results.values);
-        resourceAdapter.notifyDataSetChanged();
-        resourceAdapter.clear();
-        for (int i = 0, l = resourceList.size(); i < l; i++)
-            resourceAdapter.add(resourceList.get(i));
-        resourceAdapter.notifyDataSetInvalidated();
-    }
 }

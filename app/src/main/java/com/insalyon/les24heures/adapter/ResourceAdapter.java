@@ -10,15 +10,19 @@ import android.widget.Filter;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
+import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by remi on 27/12/14.
  */
 public class ResourceAdapter extends ArrayAdapter<Resource> {
 
+    private final EventBus eventBus;
     private ArrayList<Resource> originalList;
     private ArrayList<Resource> resourceList;
     private ResourceSearchFilter resourceSearchFilter;
@@ -30,17 +34,20 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
         super(context, textViewResourceId, resources);
         this.resourceList = new ArrayList<>();
         this.resourceList.addAll(resources);
-        this.originalList = resources;
-//        this.originalList = new ArrayList<>();
-//       this.originalList.addAll(resources);
-        this.vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        this.originalList = new ArrayList<>();
+        this.originalList.addAll(resources);
 
+        this.vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        //je voulais pas ca moi !
+        eventBus = EventBus.getDefault();
+        eventBus.register(this);
     }
 
     @Override
     public Filter getFilter() {
         if (resourceSearchFilter == null) {
-            resourceSearchFilter = new ResourceSearchFilter(originalList,resourceList,this);
+            resourceSearchFilter = new ResourceSearchFilter(originalList, resourceList, this);
         }
         return resourceSearchFilter;
     }
@@ -48,7 +55,7 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
 
     public Filter getCategoryFilter() {
         if (resourceCategoryFilter == null) {
-            resourceCategoryFilter = new ResourceCategoryFilter(originalList,resourceList,this);
+            resourceCategoryFilter = new ResourceCategoryFilter(originalList, resourceList, this);
         }
         return resourceCategoryFilter;
     }
@@ -56,7 +63,6 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
 
     private class ViewHolder {
         TextView title;
-//        TextView description;
         TextView distance;
         TextView schedule;
     }
@@ -66,9 +72,8 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
 
         ViewHolder holder = null;
         Log.v("ConvertView", String.valueOf(position));
+
         if (convertView == null) {
-
-
             convertView = vi.inflate(R.layout.output_list_item, null);
 
             holder = new ViewHolder();
@@ -77,21 +82,30 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
             holder.schedule = (TextView) convertView.findViewById(R.id.list_item_schedule_text);
 
             convertView.setTag(holder);
-
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        //TODO utiliser de nouveau resourceList (sinon les filter servent a rien)
-        //TODO gerer le cas liste vide ici ?
-        Resource resource = originalList.get(position);
-//        Resource resource = resourceList.get(position);
+        Resource resource = resourceList.get(position);
         holder.title.setText(resource.getTitle());
-//        holder.description.setText(resource.getDescription());
         holder.distance.setText("TODO");
         holder.schedule.setText("TODO");
 
         return convertView;
 
+    }
+
+
+    public void onEvent(ResourcesUpdatedEvent event) {
+        Log.d("onEvent(ResourcesUpdatedEvent)", event.getResourceList().toString());
+        originalList.clear();
+        originalList.addAll(event.getResourceList());
+    }
+
+    @Deprecated
+    //il ne faut pas l'utiliser comme avec un arrayAdapter habituel, les filter s'occupe de notify if needed
+    @Override
+    public void notifyDataSetChanged() {
+        super.notifyDataSetChanged();
     }
 }

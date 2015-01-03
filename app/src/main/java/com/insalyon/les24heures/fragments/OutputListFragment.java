@@ -20,8 +20,6 @@ import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Resource;
 
-import java.util.ArrayList;
-
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 
@@ -41,9 +39,10 @@ public class OutputListFragment extends OutputTypeFragment{
     @InjectView(R.id.list_search_text)
     TextView searchText;
     @InjectView(R.id.list_resource)
-    ListView resourceList;
+    ListView resourceListView;
 
 
+    Boolean spinner = false; //TODO mettre en place un vrai spinner
 
 //    public ArrayList<Resource> resourcesList;
 
@@ -77,36 +76,33 @@ public class OutputListFragment extends OutputTypeFragment{
         resourceAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
                 R.layout.output_list_item, resourcesList);
         // Assign adapter to ListView
-        resourceList.setAdapter(resourceAdapter);
+        resourceListView.setAdapter(resourceAdapter);
 
         //enables filtering for the contents of the given ListView
-        resourceList.setTextFilterEnabled(true);
+        resourceListView.setTextFilterEnabled(true);
 
-        resourceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        resourceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // When clicked, show a toast with the TextView text
                 Resource resource = (Resource) parent.getItemAtPosition(position);
+                //TODO details cf DSF
                 Toast.makeText(getActivity().getApplicationContext(),
                         resource.getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
 
 
-
+        //filter by text
         searchText.addTextChangedListener(new TextWatcher() {
-
             public void afterTextChanged(Editable s) {
             }
-
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
             }
-
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 resourceAdapter.getFilter().filter(s.toString());
             }
         });
-
 
         return view;
     }
@@ -116,12 +112,43 @@ public class OutputListFragment extends OutputTypeFragment{
         super.onActivityCreated(savedInstanceState);
         ((MainActivity)getActivity()).setTitle(R.string.drawer_outputtype_list);
 
-        //TODO should textSearch filter should be prior over categories filter ?
-        resourceAdapter.getCategoryFilter().filter(
-                (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null
-        );
+        updateListView();
     }
 
+    //default filter
+    private Boolean updateListView(){
+
+        //TODO text search or categories filter priority stand here
+        resourceAdapter.getFilter().filter(null);
+//        resourceAdapter.getCategoryFilter().filter(null);
+
+
+        searchText.setText("");
+        searchText.clearFocus();
+
+//
+//
+//        if(resourcesList.isEmpty()){
+//            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesFound, Toast.LENGTH_SHORT);
+//            toast.show();
+//            ((MainActivity) getActivity()).displayDrawer();
+//            //TODO display a spinner
+//            spinner = true;
+//            return false;
+//        }
+//        resourceAdapter.notifyDataSetChanged();
+//        if(categoriesSelected.isEmpty()) {
+//            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noCategoriesSelected, Toast.LENGTH_SHORT);
+//            toast.show();
+//            ((MainActivity) getActivity()).displayDrawer();
+//            return false;
+//        }
+//        resourceAdapter.notifyDataSetChanged();
+        return true;
+    }
+
+
+    //filter by categories
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
         Log.d(TAG+"onEvent(CategoryEvent)", event.getCategories().toString());
@@ -132,15 +159,19 @@ public class OutputListFragment extends OutputTypeFragment{
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
-       // super.onEvent(event);
-        Log.d(TAG + "onEvent(ResourceEvent)", event.getResourceList().toString());
-        resourcesList.clear();
-        resourcesList.addAll(event.getResourceList());
-        //TODO a enlever ca
+       super.onEvent(event);
+
+        updateListView();
+
+
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                resourceAdapter.notifyDataSetChanged();
+                if(spinner){
+                    spinner = false;
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
             }
         });
 
