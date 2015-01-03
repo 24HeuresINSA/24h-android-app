@@ -2,6 +2,7 @@ package com.insalyon.les24heures;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -15,6 +16,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -130,8 +133,8 @@ public class MainActivity extends ActionBarActivity {
 
         if (resourcesList == null) {
             resourcesList = new ArrayList<>();
-//           resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
-            resourceService.getResourcesAsyncMock();
+           resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
+//            resourceService.getResourcesAsyncMock();
 
             //TODO ne plus avoir besoin de ca
 //            resourcesList.add(new Resource("Please Wait", "Data are loading", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
@@ -153,6 +156,8 @@ public class MainActivity extends ActionBarActivity {
         categoriesList.setOnItemClickListener(new DrawerItemClickListener());
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        actionBarDrawerToggle = new ActionBarDrawerToogle24Heures(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+//        actionBarDrawerToggle.onDrawerOpened();
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
@@ -323,7 +328,10 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void displayDrawer() {
+
         drawerLayout.openDrawer(drawerView);
+
+
     }
 
 
