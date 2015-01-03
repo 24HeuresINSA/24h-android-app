@@ -53,15 +53,6 @@ public class OutputListFragment extends OutputTypeFragment{
     ResourceAdapter resourceAdapter = null;
 
 
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -128,6 +119,40 @@ public class OutputListFragment extends OutputTypeFragment{
         updateListView();
     }
 
+    /**     Fragment is alive       **/
+    //filter by categories
+    public void onEvent(CategoriesSelectedEvent event) {
+        super.onEvent(event);
+        Log.d(TAG+"onEvent(CategoryEvent)", event.getCategories().toString());
+        resourceAdapter.getCategoryFilter().filter(
+                (event.getCategories().size() != 0) ? event.getCategories().toString() : null
+        );
+
+    }
+
+    public void onEvent(ResourcesUpdatedEvent event) {
+        super.onEvent(event);
+
+        updateListView();
+
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(spinner){
+                    spinner = false;
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
+
+    }
+
+    /**     Fragment is no more alive       **/
+
+
+    /**     Fragment methods        **/
     //default filter
     private Boolean updateListView(){
 
@@ -148,51 +173,7 @@ public class OutputListFragment extends OutputTypeFragment{
     }
 
 
-    //filter by categories
-    public void onEvent(CategoriesSelectedEvent event) {
-        super.onEvent(event);
-        Log.d(TAG+"onEvent(CategoryEvent)", event.getCategories().toString());
-        resourceAdapter.getCategoryFilter().filter(
-                (event.getCategories().size() != 0) ? event.getCategories().toString() : null
-        );
 
-    }
-
-    public void onEvent(ResourcesUpdatedEvent event) {
-       super.onEvent(event);
-
-        updateListView();
-
-
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if(spinner){
-                    spinner = false;
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            }
-        });
-
-    }
-
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-    }
 
 
 

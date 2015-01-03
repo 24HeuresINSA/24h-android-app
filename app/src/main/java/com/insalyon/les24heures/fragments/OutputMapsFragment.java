@@ -24,9 +24,6 @@ import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Resource;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import butterknife.ButterKnife;
 
 /**
@@ -34,29 +31,12 @@ import butterknife.ButterKnife;
  */
 public class OutputMapsFragment extends OutputTypeFragment implements OnMapReadyCallback {
     private static final String TAG = OutputMapsFragment.class.getCanonicalName();
-
-
     View view;
 
     Boolean spinner; //TODO mettre en place un vrai spinner
 
-    //    private ArrayList<Resource> resourcesList;
-    private ArrayList<Marker> markers;
-
     MapView mapView;
-
-    //TODO faire proprement
-    GoogleMap globalMap;
-
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        markers = new ArrayList<>();
-
-    }
-
+    GoogleMap googleMap;
 
     @Nullable
     @Override
@@ -70,18 +50,33 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(null);
-//        mapView.setBuiltInZoomControls(true);
         mapView.getMapAsync(this);
+
+        googleMap = mapView.getMap();
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
 
         return view;
     }
 
     @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        ((MainActivity) getActivity()).setTitle(R.string.drawer_outputtype_maps);
+
+    }
+
+    @Override
+    public void onResume() {
+        mapView.onResume();
+        super.onResume();
+        googleMap.setMyLocationEnabled(true);
+
+    }
+
+    /**    Fragment is running **/
+    @Override
     public void onMapReady(final GoogleMap map) {
         map.setMyLocationEnabled(true);
-
-        //TODO faire ca proprement
-        globalMap = map;
 
         updateMapsView();
 
@@ -89,7 +84,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             @Override
             public void onCameraChange(CameraPosition arg0) {
                 //to prevent user to throw up, zoom on Lyon without animateCamera
-                globalMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
+                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
                 //then try to zoom on resources
                 if(updateMapsView())moveCamera();
                 // Remove listener to prevent position reset on camera move.
@@ -102,6 +97,56 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
+    @Override
+    public void onLowMemory() {
+        super.onLowMemory();
+        mapView.onLowMemory();
+    }
+
+    public void onEvent(CategoriesSelectedEvent event) {
+        super.onEvent(event);
+        Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
+        if(updateMapsView())moveCamera();
+    }
+
+    public void onEvent(ResourcesUpdatedEvent event) {
+        super.onEvent(event);
+        Log.d(TAG + "onEvent(CategoryEvent)", event.getResourceList().toString());
+
+        if(spinner){
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+            spinner = false;
+        }
+        if(updateMapsView())moveCamera();
+    }
+
+
+    /**    Fragment is no more running **/
+    @Override
+    public void onPause() {
+        super.onPause();
+        googleMap.setMyLocationEnabled(false);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mapView.onDestroy();
+        for (Resource resource : resourcesList) {
+            resource.setMarker(null);
+            //TODO en attendant de trouver mieux
+        }
+    }
+
+
+    /** Fragment methods **/
     private Boolean updateMapsView(){
         if(resourcesList.isEmpty()){
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesFound, Toast.LENGTH_SHORT);
@@ -130,7 +175,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     private void addMarkers() {
         for (Resource resource : resourcesList) {
             if(resource.getMarker() == null) {
-                Marker marker = globalMap.addMarker(
+                Marker marker = googleMap.addMarker(
                         new MarkerOptions()
                                 .title(resource.getTitle()+" "+resource.getCategory().getName())
                                 .snippet(resource.getDescription())
@@ -152,8 +197,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         return builder;
     }
 
-
-
     private Boolean displayMarkersAccordingToSelectedCategories() {
         Boolean atLeastOneVisible = false;
         //include only selected categories
@@ -168,13 +211,10 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         return atLeastOneVisible;
     }
 
-
-
-
     private void moveCamera() {
         try {
             // Move camera
-            globalMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilder().build(), 70));
+            googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilder().build(), 70));
         } catch (IllegalStateException e) {
             Log.d("OutputMapsFragment.moveCamera","unexpected");
             e.printStackTrace();
@@ -182,95 +222,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             //default if no builder - Lyon
             //lg 4.852847680449486
             //la 45.74968239082803
-            globalMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.unexpected_move_camera_error, Toast.LENGTH_SHORT);
             toast.show();
             ((MainActivity) getActivity()).displayDrawer();
         }
     }
 
-
-
-    private LatLngBounds.Builder getMapsBuilder() {
-        final LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (Marker marker : markers) {
-            builder.include(marker.getPosition());
-        }
-        return builder;
-    }
-
-    public void onEvent(CategoriesSelectedEvent event) {
-        super.onEvent(event);
-        Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
-        if(updateMapsView())moveCamera();
-    }
-
-    public void onEvent(ResourcesUpdatedEvent event) {
-        super.onEvent(event);
-        Log.d(TAG + "onEvent(CategoryEvent)", event.getResourceList().toString());
-        //TODO pourquoic ce truc marche pas ? run on uiThread ?
-
-        if(spinner){
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-
-            spinner = false;
-        }
-        if(updateMapsView())moveCamera();
-    }
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ((MainActivity) getActivity()).setTitle(R.string.drawer_outputtype_maps);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-
-    @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
-
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-
-    }
-
-    @Override
-    public void onResume() {
-        mapView.onResume();
-        super.onResume();
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        mapView.onDestroy();
-        for (Resource resource : resourcesList) {
-            resource.setMarker(null);
-            //TODO en attendant de trouver mieux
-        }
-    }
-
-    @Override
-    public void onLowMemory() {
-        super.onLowMemory();
-        mapView.onLowMemory();
-    }
 }
