@@ -21,6 +21,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     View view;
 
 
-//    private ArrayList<Resource> resourcesList;
+    //    private ArrayList<Resource> resourcesList;
     private ArrayList<Marker> markers;
 
     MapView mapView;
@@ -83,46 +84,49 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         //add markers to the map
         for (Resource resource : resourcesList) {
-            Marker marker = map.addMarker(
-                    new MarkerOptions()
-                            .title(resource.getTitle())
-                            .snippet(resource.getDescription())
-                            .position(resource.getLoc()));
-
-            resource.setMarker(marker);
+            addMarker(resource);
         }
 
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition arg0) {
-//            //to prevent user to throw up
-            globalMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803,4.852847680449486), 12));
+                //to prevent user to throw up, zoom on Lyon without animateCamera
+                globalMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
+                //then try to zoom on resources
                 moveCameraAndDisplayResourceAccordingToSelectedCategories();
                 // Remove listener to prevent position reset on camera move.
                 map.setOnCameraChangeListener(null);
             }
         });
 
-
-
         // Other supported types include: MAP_TYPE_NORMAL,
         // MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID and MAP_TYPE_NONE MAP_TYPE_SATELLITE
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
+    private void addMarker(Resource resource) {
+        Marker marker = globalMap.addMarker(
+                new MarkerOptions()
+                        .title(resource.getTitle())
+                        .snippet(resource.getDescription())
+                        .position(resource.getLoc()));
+
+        resource.setMarker(marker);
+    }
+
     private void moveCameraAndDisplayResourceAccordingToSelectedCategories() {
-        try{
+        try {
             // Move camera
             globalMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilderAndDisplayResourceAcccordingToSelectedCategories().build(), 70));
-        }catch (IllegalStateException e){
+        } catch (IllegalStateException e) {//TODO c'est nul ca !
             //no resources were added to the builder
             //default if no builder - Lyon
             //lg 4.852847680449486
             //la 45.74968239082803
-            globalMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803,4.852847680449486), 12));
+            globalMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noCategoriesSelectedText, Toast.LENGTH_SHORT);
             toast.show();
-            ((MainActivity)getActivity()).displayDrawer();
+            ((MainActivity) getActivity()).displayDrawer();
         }
     }
 
@@ -131,16 +135,19 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
         //include only selected categories
-        for (Resource resource : resourcesList) { //TODO democker ca
-//            if(categoriesSelected.indexOf(resource.getCategory()) == -1){
-//                resource.getMarker().setVisible(false);
-//            }else {
+        for (Resource resource : resourcesList) {
+            if (resource.getMarker() == null) {
+                addMarker(resource);
+            }
+            if (categoriesSelected.indexOf(resource.getCategory()) == -1) {
+                resource.getMarker().setVisible(false);
+            } else {
                 resource.getMarker().setVisible(true);
                 builder.include(resource.getMarker().getPosition());
-//            }
+            }
         }
 
-       return builder;
+        return builder;
 
     }
 
@@ -154,7 +161,14 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
-        Log.d(TAG+"onEvent(CategoryEvent)", event.getCategories().toString());
+        Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
+        moveCameraAndDisplayResourceAccordingToSelectedCategories();
+
+    }
+
+    public void onEvent(ResourcesUpdatedEvent event) {
+        super.onEvent(event);
+        Log.d(TAG + "onEvent(CategoryEvent)", event.getResourceList().toString());
         moveCameraAndDisplayResourceAccordingToSelectedCategories();
 
     }
@@ -193,11 +207,13 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         mapView.onResume();
         super.onResume();
     }
+
     @Override
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
     }
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();

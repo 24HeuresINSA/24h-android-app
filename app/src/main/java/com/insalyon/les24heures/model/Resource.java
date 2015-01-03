@@ -19,7 +19,8 @@ public class Resource implements Parcelable{
     String imageUrl;
     Category category;
 
-    //clairement pas cool ca
+    //TODO clairement pas cool ca
+    //en effet, si on detruit la map, les markers sont conservé ici (enfin non puisque je magouille avec le onDestroy)
     Marker marker;
 
 

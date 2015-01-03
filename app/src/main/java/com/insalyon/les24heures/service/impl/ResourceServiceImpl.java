@@ -106,7 +106,7 @@ public class ResourceServiceImpl implements ResourceService  {
             protected Object doInBackground(Object[] params) {
                 Log.d("mock","");
                 try {
-                    Thread.sleep(1000);
+                    Thread.sleep(5000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

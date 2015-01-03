@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
 
@@ -19,12 +20,12 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by remi on 26/12/14.
  */
-public class OutputTypeFragment extends Fragment{
+public class OutputTypeFragment extends Fragment {
     EventBus eventBus;
 
     View view;
-     ArrayList<Category> categoriesSelected;
-     ArrayList<Resource> resourcesList;
+    ArrayList<Category> categoriesSelected;
+    ArrayList<Resource> resourcesList;
 
 
     @Override
@@ -34,34 +35,26 @@ public class OutputTypeFragment extends Fragment{
 
         eventBus = EventBus.getDefault();
 
-        if(savedInstanceState != null){
+        if (savedInstanceState != null) {
             //get from restore state (when it's Android which create the fragment)
-            if(savedInstanceState.getParcelableArrayList("categoriesSelected") != null){
+            if (savedInstanceState.getParcelableArrayList("categoriesSelected") != null) {
                 categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
-            }else {
-                categoriesSelected = new ArrayList<>();
             }
-            if(savedInstanceState.getParcelableArrayList("resourcesList") != null){
+            if (savedInstanceState.getParcelableArrayList("resourcesList") != null) {
                 resourcesList = savedInstanceState.getParcelableArrayList("resourcesList");
-            }else {
-                resourcesList = new ArrayList<>();
             }
-        }else if(getArguments() != null){
+        } else if (getArguments() != null) {
             //get from arguments (when it's fragmentManager which create the fragment)
-            if(getArguments().getParcelableArrayList("categoriesSelected") != null){
+            if (getArguments().getParcelableArrayList("categoriesSelected") != null) {
                 categoriesSelected = getArguments().getParcelableArrayList("categoriesSelected");
-            }else {
-                categoriesSelected = new ArrayList<>();
             }
             //get from arguments (when it's fragmentManager which create the fragment)
-            if(getArguments().getParcelableArrayList("resourcesList") != null){
+            if (getArguments().getParcelableArrayList("resourcesList") != null) {
                 resourcesList = getArguments().getParcelableArrayList("resourcesList");
-            }else {
-                resourcesList = new ArrayList<>();
             }
-
-        } else {
-            categoriesSelected = new ArrayList<>();
+        }
+        if (resourcesList == null || categoriesSelected == null) {
+            Log.e("OutputTypeFragment", "resourcesList or categoriesSelected are null. Are you sur you create the fragment with these parameters ?");
         }
     }
 
@@ -70,7 +63,6 @@ public class OutputTypeFragment extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         view = super.onCreateView(inflater, container, savedInstanceState);
-
         return view;
     }
 
@@ -88,7 +80,14 @@ public class OutputTypeFragment extends Fragment{
     /*      Fragment is alive      */
     public void onEvent(CategoriesSelectedEvent event) {
         Log.d("onevent", event.getCategories().toString());
-        categoriesSelected = (ArrayList<Category>) event.getCategories();
+        categoriesSelected.clear();
+        categoriesSelected.addAll((ArrayList<Category>) event.getCategories());
+    }
+
+    public void onEvent(ResourcesUpdatedEvent event) {
+        Log.d("onEvent(ResourcesUpdatedEvent)", event.getResourceList().toString());
+        resourcesList.clear();
+        resourcesList.addAll(event.getResourceList());
     }
 
 
@@ -96,7 +95,10 @@ public class OutputTypeFragment extends Fragment{
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         //categories state
-        outState.putParcelableArrayList("categoriesSelected",categoriesSelected);
+        outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        //resources
+        outState.putParcelableArrayList("resourcesList", resourcesList);
+
     }
 
     @Override

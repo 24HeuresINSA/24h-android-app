@@ -28,10 +28,11 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
     public ResourceAdapter(Context context, int textViewResourceId,
                            ArrayList<Resource> resources) {
         super(context, textViewResourceId, resources);
-        this.resourceList = new ArrayList<Resource>();
+        this.resourceList = new ArrayList<>();
         this.resourceList.addAll(resources);
         this.originalList = resources;
-       // this.originalList.addAll(resources);
+//        this.originalList = new ArrayList<>();
+//       this.originalList.addAll(resources);
         this.vi = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
     }
