@@ -77,7 +77,7 @@ public class OutputTypeFragment extends Fragment {
         eventBus.register(this);
     }
 
-    /*      Fragment is alive      */
+    /**      Fragment is alive      **/
     public void onEvent(CategoriesSelectedEvent event) {
         Log.d("onevent", event.getCategories().toString());
         categoriesSelected.clear();
@@ -90,6 +90,7 @@ public class OutputTypeFragment extends Fragment {
         resourcesList.addAll(event.getResourceList());
     }
 
+    /**      Fragment is no more alive      **/
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
