@@ -2,6 +2,8 @@ package com.insalyon.les24heures;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -14,16 +16,25 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.insalyon.les24heures.eventbus.CategoryEvent;
+import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
+import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.fragments.OutputListFragment;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.service.CategoryService;
+import com.insalyon.les24heures.service.ResourceRetrofitService;
+import com.insalyon.les24heures.service.ResourceService;
+import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
+import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
 
@@ -34,6 +45,7 @@ import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
+import retrofit.RestAdapter;
 
 
 public class MainActivity extends ActionBarActivity {
@@ -41,6 +53,8 @@ public class MainActivity extends ActionBarActivity {
 
     FragmentManager fragmentManager;
     EventBus eventBus;
+    RestAdapter restAdapter;
+    ResourceRetrofitService resourceRetrofitService;
 
     private ActionBarDrawerToggle actionBarDrawerToggle;
 
@@ -58,43 +72,78 @@ public class MainActivity extends ActionBarActivity {
     View outputTypeList;
 
 
-    private String[] navigationDrawerCategories; //viendra du backend
-    private List<Category> categories;
+    private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
+    private ArrayList<Category> categories;
     private ArrayList<Category> categoriesSelected;
     private ArrayList<Resource> resourcesList;
 
-
+    //depency injection ?
+    private ResourceService resourceService;
+    private CategoryService categoryService;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        /*** init services ***/
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.inject(this, this);
         eventBus = EventBus.getDefault();
+        restAdapter = new RestAdapter.Builder()
+                .setEndpoint("http://cetaitmieuxavant.24heures.org")
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+        resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
+        fragmentManager = getFragmentManager();
+        //dependency injection instead ?
+        resourceService = ResourceServiceImpl.getInstance();
+        categoryService = CategoryServiceImpl.getInstance();
 
 
-        fragmentManager= getFragmentManager();
-
-        setSupportActionBar(toolbar);
-
-        //viendra du backend
-        categories = new ArrayList<>();
-        navigationDrawerCategories = getResources().getStringArray(R.array.navigation_drawer_categories);
-        for (String navigationDrawerCategory : navigationDrawerCategories) {
-            categories.add(new Category(navigationDrawerCategory));
+        /*** recover data either from (by priority)
+         *           savedInstanceState (rotate, restore from background)
+         *           getIntent (start from another activity, another apps) TODO
+         *           sharedPreferences (start,rotate, restore from bg) TODO
+         *           localStorage (start) TODO
+         *           backend (if needed TODO)
+         */
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getParcelableArrayList("categories") != null) {
+                categories = savedInstanceState.getParcelableArrayList("categories");
+            }
+            if (savedInstanceState.getParcelableArrayList("categoriesSelected") != null) {
+                categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
+            }
+            if (savedInstanceState.getParcelableArrayList("resourcesList") != null) {
+                resourcesList = savedInstanceState.getParcelableArrayList("resourcesList");
+            }
         }
 
-        //viendra du backend
-        resourcesList = new ArrayList<>();
-        resourcesList.add(new Resource("se divertir", "les plaisirs c'est bien pour les calins et les chateau coconuts", null, new LatLng(45.783088762965, 4.8747852427139), categories.get(0)));
-        resourcesList.add(new Resource("se cultiver", "la culture on s'en fout sauf Alexis et Jeaaane", null, new LatLng(45.783514302374, 4.8747852427139), categories.get(1)));
-        resourcesList.add(new Resource("du sport", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", null, new LatLng(45.784196093864, 4.8747852427139), categories.get(2)));
-        resourcesList.add(new Resource("mes favoris", "mes favoris pour bien montrer que j'ai des gouts de merde", null, new LatLng(45.783827609484, 4.8747852427139), categories.get(3)));
-        resourcesList.add(new Resource("lieux utiles", "où qu'on boit où qu'on pisse, où qu'on mange", null, new LatLng(45.784196093888, 4.8747852427139), categories.get(4)));
+        navigationDrawerCategories = getResources().getStringArray(R.array.navigation_drawer_categories); //TODO que veut en parametre ArrayAdapter ?
+        if (categories == null) {
+            //viendra du backend
+            categories = new ArrayList<>();
+            for (String navigationDrawerCategory : navigationDrawerCategories) {
+                categories.add(new Category(navigationDrawerCategory));
+            }
+            eventBus.post(new CategoriesUpdatedEvent(categories));
+            //TODO comprendre pourquoi est ce que je dois faire ca, meme si au final la réponse ne servira pas pour ce cas precis
+            categoryService.setCategories(categories);
+        }
 
-        //viendra du cache
-        categoriesSelected = new ArrayList<>();
+        if (resourcesList == null) {
+            resourcesList = new ArrayList<>();
+           resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
+//            resourceService.getResourcesAsyncMock();
+        }
+
+        if(categoriesSelected == null){
+            categoriesSelected = new ArrayList<>();
+        }
+
+
+        /*** setup the navigation drawer ***/
+        setSupportActionBar(toolbar);
 
         // set a custom shadow that overlays the main content when the drawer opens
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -104,6 +153,8 @@ public class MainActivity extends ActionBarActivity {
         categoriesList.setOnItemClickListener(new DrawerItemClickListener());
 
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+        actionBarDrawerToggle = new ActionBarDrawerToogle24Heures(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+//        actionBarDrawerToggle.onDrawerOpened();
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
@@ -111,20 +162,16 @@ public class MainActivity extends ActionBarActivity {
         getSupportActionBar().setHomeButtonEnabled(true);
 
 
-        if (savedInstanceState != null) {
-            if(savedInstanceState.getParcelableArrayList("categoriesSelected") != null){
-                categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
-                Log.i(TAG+" onCreate","categoriesSelected from savedInstanceState :"+categoriesSelected);
-            }
-        }else{
-            //default get from manifest
+        /*** start the right ouptut : Maps or List ***/
+        if (savedInstanceState == null) {
+            //default start : get from manifest
             try {
                 ApplicationInfo ai = getPackageManager().getApplicationInfo(this.getPackageName(), PackageManager.GET_META_DATA);
                 Bundle bundle = ai.metaData;
                 String defaultOutput = bundle.getString("outputType");
-                if(defaultOutput.toLowerCase().equals(OutputType.MAPS.toString().toLowerCase())){
+                if (defaultOutput.toLowerCase().equals(OutputType.MAPS.toString().toLowerCase())) {
                     selectMaps(outputTypeMaps);
-                } else  if(defaultOutput.toLowerCase().equals(OutputType.LIST.toString().toLowerCase())){
+                } else if (defaultOutput.toLowerCase().equals(OutputType.LIST.toString().toLowerCase())) {
                     selectList(outputTypeList);
                 }
             } catch (PackageManager.NameNotFoundException e) {
@@ -139,26 +186,39 @@ public class MainActivity extends ActionBarActivity {
     }
 
 
-
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
         //Output state
-        if(outputTypeMaps.isSelected()){
-            outState.putString("outputType", OutputType.MAPS.toString());  
-        }else {
-            outState.putString("outputType",OutputType.LIST.toString());  
+        if (outputTypeMaps.isSelected()) {
+            outState.putString("outputType", OutputType.MAPS.toString());
+        } else {
+            outState.putString("outputType", OutputType.LIST.toString());
         }
 
+        //categories
+        outState.putParcelableArrayList("categories", categories);
         //categories state
         ArrayList<Category> categoriesSelected = getCategoriesSelectedFromView();
-        outState.putParcelableArrayList("categoriesSelected",categoriesSelected);
+        outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        //resources
+        outState.putParcelableArrayList("resourcesList", resourcesList);
+    }
+
+
+    public void onEvent(ResourcesUpdatedEvent event) {
+        // super.onEvent(event);
+        Log.d(TAG + "onEvent(ResourcesUpdatedEvent)", event.getResourceList().toString());
+        resourcesList.clear();
+        resourcesList.addAll(event.getResourceList());
+
+
     }
 
     @OnClick(R.id.outputtype_maps)
     void selectMaps(View view) {
-        if(outputTypeMaps.isSelected()) return;
+        if (outputTypeMaps.isSelected()) return;
 
         outputTypeMaps.setSelected(true);
         outputTypeList.setSelected(false);
@@ -171,6 +231,7 @@ public class MainActivity extends ActionBarActivity {
     private void replaceContentFragment(Fragment fragment) {
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        bundleArgs.putParcelableArrayList("resourcesList", resourcesList);
         fragment.setArguments(bundleArgs);
         fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
@@ -178,7 +239,7 @@ public class MainActivity extends ActionBarActivity {
 
     @OnClick(R.id.outputtype_list)
     void selectList(View view) {
-        if(outputTypeList.isSelected()) return;
+        if (outputTypeList.isSelected()) return;
 
         outputTypeList.setSelected(true);
         outputTypeMaps.setSelected(false);
@@ -200,18 +261,18 @@ public class MainActivity extends ActionBarActivity {
     private void selectCategory(int position) {
         categoriesSelected = getCategoriesSelectedFromView();
 
-        CategoryEvent categoryEvent = new CategoryEvent(categoriesSelected);
+        CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(categoriesSelected);
 
         // update selected item and title, then close the drawer
-        if(categoriesList.isItemChecked(position)){
-            Log.i(TAG+"selectCategory","categoy added :"+navigationDrawerCategories[position]);
-            categoryEvent.setFilterAction(FilterAction.ADDED);
-            eventBus.post(categoryEvent);
+        if (categoriesList.isItemChecked(position)) {
+            Log.i(TAG + "selectCategory", "categoy added :" + navigationDrawerCategories[position]);
+            categoriesSelectedEvent.setFilterAction(FilterAction.ADDED);
+            eventBus.post(categoriesSelectedEvent);
 
-        } else if(!categoriesList.isItemChecked(position)){
-            Log.i(TAG+"selectCategory","categoy removed :"+navigationDrawerCategories[position]);
-            categoryEvent.setFilterAction(FilterAction.REMOVED);
-            eventBus.post(categoryEvent);
+        } else if (!categoriesList.isItemChecked(position)) {
+            Log.i(TAG + "selectCategory", "categoy removed :" + navigationDrawerCategories[position]);
+            categoriesSelectedEvent.setFilterAction(FilterAction.REMOVED);
+            eventBus.post(categoriesSelectedEvent);
         }
 
         drawerLayout.closeDrawer(drawerView);
@@ -253,26 +314,22 @@ public class MainActivity extends ActionBarActivity {
         actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
-
-    public List<Category> getCategories() {
-        return categories;
-    }
-
-    public ArrayList<Category> getCategoriesSelected() {
-        return categoriesSelected;
-    }
-
     @Override
     public String getPackageResourcePath() {
         return super.getPackageResourcePath();
     }
 
-    public ArrayList<Resource> getResourcesList(){
+    @Deprecated
+    public ArrayList<Resource> getResourcesList() {
         return resourcesList;
     }
 
-    public void displayDrawer(){
+    public void displayDrawer() {
+
         drawerLayout.openDrawer(drawerView);
+
+
     }
+
 
 }

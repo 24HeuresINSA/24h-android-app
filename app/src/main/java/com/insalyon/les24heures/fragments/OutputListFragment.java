@@ -16,7 +16,8 @@ import android.widget.Toast;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ResourceAdapter;
-import com.insalyon.les24heures.eventbus.CategoryEvent;
+import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
@@ -40,29 +41,23 @@ public class OutputListFragment extends OutputTypeFragment{
     @InjectView(R.id.list_search_text)
     TextView searchText;
     @InjectView(R.id.list_resource)
-    ListView resourceList;
+    ListView resourceListView;
+    @InjectView(R.id.empty_resource_list)
+    View emptyResourceList;
 
 
-
-
-
-    private ArrayList<Resource> resourcesList;
-
-
-
-    //SANDBOX
+    Boolean spinner = false; //TODO mettre en place un vrai spinner
+    //coup de bluff pour contrecarrer le setText effectué par Android au rotate
+    Boolean startingForText;
 
     ResourceAdapter resourceAdapter = null;
-    public void onTextChanged(CharSequence s, int start, int before, int count) {
-        resourceAdapter.getFilter().filter(s.toString());
-    }
 
-    // /SANDBOX
+
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
 
     }
 
@@ -75,43 +70,46 @@ public class OutputListFragment extends OutputTypeFragment{
         view = inflater.inflate(R.layout.output_list_fragment, container, false);
         ButterKnife.inject(this, view);
 
-        //SANDBOX
-        //TODO je ne sais pas si s'il vaut mieux passer par getActivity que de passer par un bundle
-        resourcesList = ((MainActivity) getActivity()).getResourcesList();
-
         //create an ArrayAdaptar from the String Array
         resourceAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
-                R.layout.output_list_item, resourcesList);
+                R.layout.output_list_item, new ArrayList<>(resourcesList)); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
         // Assign adapter to ListView
-        resourceList.setAdapter(resourceAdapter);
+        resourceListView.setAdapter(resourceAdapter);
 
         //enables filtering for the contents of the given ListView
-        resourceList.setTextFilterEnabled(true);
+        resourceListView.setTextFilterEnabled(true);
 
-        resourceList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        resourceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 // When clicked, show a toast with the TextView text
                 Resource resource = (Resource) parent.getItemAtPosition(position);
+                //TODO details cf DSF
                 Toast.makeText(getActivity().getApplicationContext(),
                         resource.getTitle(), Toast.LENGTH_SHORT).show();
             }
         });
 
 
-
+        //filter by text
+        startingForText = true;
         searchText.addTextChangedListener(new TextWatcher() {
-
             public void afterTextChanged(Editable s) {
-            }
 
+            }
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
 
+            }
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                resourceAdapter.getFilter().filter(s.toString());
+                if(startingForText){
+                    startingForText = false;
+                }else{
+                    resourceAdapter.getFilter().filter(s.toString());
+                }
             }
         });
+
+        resourceListView.setEmptyView(emptyResourceList);
 
 
         return view;
@@ -122,18 +120,60 @@ public class OutputListFragment extends OutputTypeFragment{
         super.onActivityCreated(savedInstanceState);
         ((MainActivity)getActivity()).setTitle(R.string.drawer_outputtype_list);
 
-        //TODO should textSearch filter should be prior over categories filter ?
-        resourceAdapter.getCategoryFilter().filter(
-                (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null
-        );
     }
 
-    public void onEvent(CategoryEvent event) {
+    @Override
+    public void onResume() {
+        super.onResume();
+        updateListView();
+    }
+
+    //default filter
+    private Boolean updateListView(){
+
+        //TODO text search or categories filter priority stand here
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                startingForText = true;
+                searchText.setText("");
+            }
+        });
+
+        //category is prior, text search is ignored and erased
+        resourceAdapter.getCategoryFilter().filter(
+                (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null);
+
+        return true;
+    }
+
+
+    //filter by categories
+    public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
         Log.d(TAG+"onEvent(CategoryEvent)", event.getCategories().toString());
         resourceAdapter.getCategoryFilter().filter(
                 (event.getCategories().size() != 0) ? event.getCategories().toString() : null
         );
+
+    }
+
+    public void onEvent(ResourcesUpdatedEvent event) {
+       super.onEvent(event);
+
+        updateListView();
+
+
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if(spinner){
+                    spinner = false;
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            }
+        });
 
     }
 

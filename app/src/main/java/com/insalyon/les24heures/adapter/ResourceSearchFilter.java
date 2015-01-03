@@ -9,25 +9,20 @@ import java.util.ArrayList;
 /**
  * Created by remi on 27/12/14.
  */
-public class ResourceSearchFilter extends Filter {
+public class ResourceSearchFilter extends ResourceListFilter {
 
-    private ArrayList<Resource> originalList;
-    private ArrayList<Resource> resourceList;
-    ResourceAdapter resourceAdapter;
 
     public ResourceSearchFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList, ResourceAdapter resourceAdapter) {
-        this.originalList = originalList;
-        this.resourceList = resourceList;
-        this.resourceAdapter = resourceAdapter;
+        super(originalList, resourceList, resourceAdapter);
     }
 
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
 
-        constraint = constraint.toString().toLowerCase();
         FilterResults result = new FilterResults();
         if(constraint != null && constraint.toString().length() > 0)
         {
+            constraint = constraint.toString().toLowerCase();
             ArrayList<Resource> filteredItems = new ArrayList<Resource>();
 
             for(int i = 0, l = originalList.size(); i < l; i++)
@@ -44,24 +39,12 @@ public class ResourceSearchFilter extends Filter {
         {
             synchronized(this)
             {
-                result.values = originalList;
+                result.values = new ArrayList<>(originalList);
                 result.count = originalList.size();
             }
         }
         return result;
     }
 
-    @SuppressWarnings("unchecked")
-    @Override
-    protected void publishResults(CharSequence constraint,
-                                  FilterResults results) {
 
-        resourceList.clear();
-        resourceList.addAll((ArrayList<Resource>)results.values);
-        resourceAdapter.notifyDataSetChanged();
-        resourceAdapter.clear();
-        for(int i = 0, l = resourceList.size(); i < l; i++)
-            resourceAdapter.add(resourceList.get(i));
-        resourceAdapter.notifyDataSetInvalidated();
-    }
 }
