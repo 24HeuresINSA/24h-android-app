@@ -17,7 +17,7 @@
             android:value="@string/maps_api_key"/>
 
         <!--Default outputType to start-->
-        <meta-data android:name="outputType" android:value="maps" />
+        <meta-data android:name="outputType" android:value="list" />
 
         <activity
             android:name="com.insalyon.les24heures.MainActivity"

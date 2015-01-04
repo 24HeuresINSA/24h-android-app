@@ -74,7 +74,7 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
         Log.v("ConvertView", String.valueOf(position));
 
         if (convertView == null) {
-            convertView = vi.inflate(R.layout.output_list_item, null);
+            convertView = vi.inflate(R.layout.output_list_item_2, null);
 
             holder = new ViewHolder();
             holder.title = (TextView) convertView.findViewById(R.id.list_item_title_text);
@@ -88,6 +88,7 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
 
         Resource resource = resourceList.get(position);
         holder.title.setText(resource.getTitle());
+        holder.title.setSelected(true);
         holder.distance.setText("TODO");
         holder.schedule.setText(resource.getCategory().getName());
 

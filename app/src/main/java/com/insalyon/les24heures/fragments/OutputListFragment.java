@@ -58,7 +58,7 @@ public class OutputListFragment extends OutputTypeFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        view = inflater.inflate(R.layout.output_list_fragment, container, false);
+        view = inflater.inflate(R.layout.output_list_fragment_2, container, false);
         ButterKnife.inject(this, view);
 
         //create an ArrayAdaptar from the String Array
