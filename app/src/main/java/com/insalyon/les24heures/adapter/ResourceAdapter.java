@@ -74,7 +74,7 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
         Log.v("ConvertView", String.valueOf(position));
 
         if (convertView == null) {
-            convertView = vi.inflate(R.layout.output_list_item_2, null);
+            convertView = vi.inflate(R.layout.output_list_item, null);
 
             holder = new ViewHolder();
             holder.title = (TextView) convertView.findViewById(R.id.list_item_title_text);

@@ -1,5 +1,7 @@
 package com.insalyon.les24heures.fragments;
 
+import android.annotation.SuppressLint;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.text.Editable;
@@ -8,8 +10,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.animation.TranslateAnimation;
+import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +23,7 @@ import com.insalyon.les24heures.adapter.ResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.utils.QuickReturnListView;
 
 import java.util.ArrayList;
 
@@ -41,7 +46,7 @@ public class OutputListFragment extends OutputTypeFragment{
     @InjectView(R.id.list_search_text)
     TextView searchText;
     @InjectView(R.id.list_resource)
-    ListView resourceListView;
+    QuickReturnListView resourceListView;
     @InjectView(R.id.empty_resource_list)
     View emptyResourceList;
 
@@ -52,14 +57,35 @@ public class OutputListFragment extends OutputTypeFragment{
 
     ResourceAdapter resourceAdapter = null;
 
+    //quickReturn
+    @InjectView(R.id.listView_header)
+    View mQuickReturnView;
+    private View mPlaceHolder;
+    private View headerResourceList;
+    private int mCachedVerticalScrollRange;
+    private int mQuickReturnHeight;
+    private static final int STATE_ONSCREEN = 0;
+    private static final int STATE_OFFSCREEN = 1;
+    private static final int STATE_RETURNING = 2;
+    private int mState = STATE_ONSCREEN;
+//    private int previousTranslationYList;
+//    private int deltatRawY;
+    private int mScrollY;
+    private int mMinRawY = 0;
+    private TranslateAnimation anim;
+
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        view = inflater.inflate(R.layout.output_list_fragment_2, container, false);
+        view = inflater.inflate(R.layout.output_list_fragment, container, false);
         ButterKnife.inject(this, view);
+
+        //quickReturn
+        headerResourceList = inflater.inflate(R.layout.output_list_header, null);
+        mPlaceHolder = headerResourceList.findViewById(R.id.placeholder);
 
         //create an ArrayAdaptar from the String Array
         resourceAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
@@ -81,30 +107,14 @@ public class OutputListFragment extends OutputTypeFragment{
             }
         });
 
-
-        //filter by text
-        startingForText = true;
-        searchText.addTextChangedListener(new TextWatcher() {
-            public void afterTextChanged(Editable s) {
-
-            }
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if(startingForText){
-                    startingForText = false;
-                }else{
-                    resourceAdapter.getFilter().filter(s.toString());
-                }
-            }
-        });
-
         resourceListView.setEmptyView(emptyResourceList);
+        resourceListView.addHeaderView(headerResourceList);
 
 
         return view;
     }
+
+
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
@@ -116,8 +126,27 @@ public class OutputListFragment extends OutputTypeFragment{
     @Override
     public void onResume() {
         super.onResume();
-        updateListView();
+        setQuickReturn();
+        if(!resourcesList.isEmpty())setTree();
+
+        if(!searchText.getText().toString().equals("")) resourceAdapter.getFilter().filter(searchText.getText().toString());
+
+
+        //filter by text
+        //have to here in order to prevent being fired by Android itself when it repopulate textView
+        searchText.addTextChangedListener(new TextWatcher() {
+            public void afterTextChanged(Editable s) {
+
+            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                resourceAdapter.getFilter().filter(s.toString());
+            }
+        });
     }
+
 
     /**     Fragment is alive       **/
     //filter by categories
@@ -132,10 +161,7 @@ public class OutputListFragment extends OutputTypeFragment{
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-
         updateListView();
-
-
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -147,9 +173,16 @@ public class OutputListFragment extends OutputTypeFragment{
             }
         });
 
+        setQuickReturn();
+        setTree();
     }
 
     /**     Fragment is no more alive       **/
+    @Override
+    public void onPause() {
+        super.onPause();
+        resourceListView.setOnScrollListener(null);
+    }
 
 
     /**     Fragment methods        **/
@@ -172,9 +205,111 @@ public class OutputListFragment extends OutputTypeFragment{
         return true;
     }
 
+    //quickreturn listview
+    private void setQuickReturn() {
+        resourceListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+            @SuppressLint("NewApi")
+            @Override
+            public void onScroll(AbsListView view, int firstVisibleItem,
+                                 int visibleItemCount, int totalItemCount) {
 
+                mScrollY = 0;
+                int translationY = 0;
+//                int translationYList = 0;
 
+                if (resourceListView.scrollYIsComputed()) {
+                    mScrollY = resourceListView.getComputedScrollY();
+                }
 
+                int rawY = mPlaceHolder.getTop()
+                        - Math.min(
+                        mCachedVerticalScrollRange
+                                - resourceListView.getHeight(), mScrollY);
 
+                switch (mState) {
+                    case STATE_OFFSCREEN:
+                        if (rawY <= mMinRawY) {
+                            mMinRawY = rawY;
+                        } else {
+                            mState = STATE_RETURNING;
+                        }
+                        translationY = rawY;
+
+//                        Log.d("STATE_OFFSCREEN", "" + translationY);
+//                        //liste en buté haute
+//                        translationYList = 0;
+                        break;
+
+                    case STATE_ONSCREEN:
+                        if (rawY < -mQuickReturnHeight) {
+                            mState = STATE_OFFSCREEN;
+                            mMinRawY = rawY;
+                        }
+                        translationY = rawY;
+
+//                        Log.d("STATE_ONSCREEN", "" + translationY);
+//                        //list en train de remonter pour pousser le output_list_header
+//                        translationYList = rawY + mQuickReturnHeight;
+                        break;
+
+                    case STATE_RETURNING:
+                        translationY = (rawY - mMinRawY) - mQuickReturnHeight;
+                        if (translationY > 0) {
+                            translationY = 0;
+                            mMinRawY = rawY - mQuickReturnHeight;
+                        }
+
+                        if (rawY > 0) {
+                            mState = STATE_ONSCREEN;
+                            translationY = rawY;
+                        }
+
+                        if (translationY < -mQuickReturnHeight) {
+                            mState = STATE_OFFSCREEN;
+                            mMinRawY = rawY;
+                        }
+
+//                        Log.d("STATE_RETURNING", "" + translationY);
+//                        if(translationY == 0){
+//                            //liste en butée basse
+//                            translationYList = mQuickReturnHeight;
+//                        }else{
+//                            //liste en train de descendre pour faire apparaitre les filtres
+//                            //translationYList = rawY ;//- mQuickReturnHeight;
+//                        }
+                        break;
+                }
+
+                /** this can be used if the build is below honeycomb **/
+                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB) {
+                    anim = new TranslateAnimation(0, 0, translationY,
+                            translationY);
+                    anim.setFillAfter(true);
+                    anim.setDuration(0);
+                    mQuickReturnView.startAnimation(anim);
+                } else {
+                    mQuickReturnView.setTranslationY(translationY);
+                }
+
+            }
+
+            @Override
+            public void onScrollStateChanged(AbsListView view, int scrollState) {
+            }
+        });
+    }
+
+    //quickreturn listview
+    private void setTree() {
+        resourceListView.getViewTreeObserver().addOnGlobalLayoutListener(
+                new ViewTreeObserver.OnGlobalLayoutListener() {
+                    @Override
+                    public void onGlobalLayout() {
+                        mQuickReturnHeight = mQuickReturnView.getHeight();
+                        resourceListView.computeScrollY();
+                        mCachedVerticalScrollRange = resourceListView.getListHeight();
+                    }
+                });
+    }
 
 }
