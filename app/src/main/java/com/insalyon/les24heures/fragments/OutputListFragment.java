@@ -1,6 +1,5 @@
 package com.insalyon.les24heures.fragments;
 
-import android.annotation.SuppressLint;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -12,18 +11,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.view.animation.TranslateAnimation;
-import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.felipecsl.quickreturn.library.QuickReturnAttacher;
+import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
+import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Resource;
-import com.insalyon.les24heures.utils.QuickReturnListView;
 
 import java.util.ArrayList;
 
@@ -45,8 +46,10 @@ public class OutputListFragment extends OutputTypeFragment{
     View timeLocSort;
     @InjectView(R.id.list_search_text)
     TextView searchText;
+    //quickreturnbetter
     @InjectView(R.id.list_resource)
-    QuickReturnListView resourceListView;
+    ListView resourceListView;
+//    QuickReturnListView resourceListView;
     @InjectView(R.id.empty_resource_list)
     View emptyResourceList;
 
@@ -58,6 +61,7 @@ public class OutputListFragment extends OutputTypeFragment{
     ResourceAdapter resourceAdapter = null;
 
     //quickReturn
+    //https://github.com/LarsWerkman/QuickReturnListView
     @InjectView(R.id.listView_header)
     View mQuickReturnView;
     private View mPlaceHolder;
@@ -74,6 +78,11 @@ public class OutputListFragment extends OutputTypeFragment{
     private int mMinRawY = 0;
     private TranslateAnimation anim;
 
+    //quickreturnBetter
+    //https://github.com/felipecsl/QuickReturn
+    private QuickReturnAttacher quickReturnAttacher;
+    private View quickReturnTarget;
+
 
     @Nullable
     @Override
@@ -84,14 +93,21 @@ public class OutputListFragment extends OutputTypeFragment{
         ButterKnife.inject(this, view);
 
         //quickReturn
-        headerResourceList = inflater.inflate(R.layout.output_list_header, null);
-        mPlaceHolder = headerResourceList.findViewById(R.id.placeholder);
+//        headerResourceList = inflater.inflate(R.layout.output_list_header, null);
+//        mPlaceHolder = headerResourceList.findViewById(R.id.placeholder);
+
+        //quickreturnBetter
+        // the quick return target view to be hidden/displayed
+        quickReturnTarget =  view.findViewById(R.id.listView_header);
 
         //create an ArrayAdaptar from the String Array
         resourceAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
                 R.layout.output_list_item, new ArrayList<>(resourcesList)); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
         // Assign adapter to ListView
-        resourceListView.setAdapter(resourceAdapter);
+//        resourceListView.setAdapter(resourceAdapter);
+        //quickreturnbetter
+        // Wrap your adapter with QuickReturnAdapter
+        resourceListView.setAdapter(new QuickReturnAdapter(resourceAdapter));
 
         //enables filtering for the contents of the given ListView
         resourceListView.setTextFilterEnabled(true);
@@ -107,12 +123,38 @@ public class OutputListFragment extends OutputTypeFragment{
             }
         });
 
+        //doesn't work anymore because of quicketurn listview
         resourceListView.setEmptyView(emptyResourceList);
-        resourceListView.addHeaderView(headerResourceList);
+
+        //quickreturn
+//        resourceListView.addHeaderView(headerResourceList);
+
+
+
+
+
+
 
 
         return view;
     }
+
+    private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        public void onGlobalLayout() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            } else {
+                view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            }
+
+            // Add a quick return targetView to the attacher.
+            // You can pass a position argument (POSITION_TOP or POSITION_BOTTOM).
+            // You can also optionally pass the size of the target view, which will be used to
+            // offset the list height, preventing it from hiding content behind the target view.
+            quickReturnAttacher.addTargetView(quickReturnTarget, QuickReturnTargetView.POSITION_TOP, quickReturnTarget.getHeight());
+        }
+    };
+
 
 
 
@@ -126,8 +168,15 @@ public class OutputListFragment extends OutputTypeFragment{
     @Override
     public void onResume() {
         super.onResume();
-        setQuickReturn();
-        if(!resourcesList.isEmpty())setTree();
+//        setQuickReturn();
+//        if(!resourcesList.isEmpty())setTree();
+
+        //quickreturnbetter
+        // Attach a QuickReturnAttacher, which takes care of all of the hide/show functionality.
+        quickReturnAttacher = QuickReturnAttacher.forView(resourceListView);
+
+        view.getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
+
 
         if(!searchText.getText().toString().equals("")) resourceAdapter.getFilter().filter(searchText.getText().toString());
 
@@ -173,8 +222,8 @@ public class OutputListFragment extends OutputTypeFragment{
             }
         });
 
-        setQuickReturn();
-        setTree();
+//        setQuickReturn();
+//        setTree();
     }
 
     /**     Fragment is no more alive       **/
@@ -205,111 +254,111 @@ public class OutputListFragment extends OutputTypeFragment{
         return true;
     }
 
-    //quickreturn listview
-    private void setQuickReturn() {
-        resourceListView.setOnScrollListener(new AbsListView.OnScrollListener() {
-            @SuppressLint("NewApi")
-            @Override
-            public void onScroll(AbsListView view, int firstVisibleItem,
-                                 int visibleItemCount, int totalItemCount) {
-
-                mScrollY = 0;
-                int translationY = 0;
-//                int translationYList = 0;
-
-                if (resourceListView.scrollYIsComputed()) {
-                    mScrollY = resourceListView.getComputedScrollY();
-                }
-
-                int rawY = mPlaceHolder.getTop()
-                        - Math.min(
-                        mCachedVerticalScrollRange
-                                - resourceListView.getHeight(), mScrollY);
-
-                switch (mState) {
-                    case STATE_OFFSCREEN:
-                        if (rawY <= mMinRawY) {
-                            mMinRawY = rawY;
-                        } else {
-                            mState = STATE_RETURNING;
-                        }
-                        translationY = rawY;
-
-//                        Log.d("STATE_OFFSCREEN", "" + translationY);
-//                        //liste en buté haute
-//                        translationYList = 0;
-                        break;
-
-                    case STATE_ONSCREEN:
-                        if (rawY < -mQuickReturnHeight) {
-                            mState = STATE_OFFSCREEN;
-                            mMinRawY = rawY;
-                        }
-                        translationY = rawY;
-
-//                        Log.d("STATE_ONSCREEN", "" + translationY);
-//                        //list en train de remonter pour pousser le output_list_header
-//                        translationYList = rawY + mQuickReturnHeight;
-                        break;
-
-                    case STATE_RETURNING:
-                        translationY = (rawY - mMinRawY) - mQuickReturnHeight;
-                        if (translationY > 0) {
-                            translationY = 0;
-                            mMinRawY = rawY - mQuickReturnHeight;
-                        }
-
-                        if (rawY > 0) {
-                            mState = STATE_ONSCREEN;
-                            translationY = rawY;
-                        }
-
-                        if (translationY < -mQuickReturnHeight) {
-                            mState = STATE_OFFSCREEN;
-                            mMinRawY = rawY;
-                        }
-
-//                        Log.d("STATE_RETURNING", "" + translationY);
-//                        if(translationY == 0){
-//                            //liste en butée basse
-//                            translationYList = mQuickReturnHeight;
-//                        }else{
-//                            //liste en train de descendre pour faire apparaitre les filtres
-//                            //translationYList = rawY ;//- mQuickReturnHeight;
+//    //quickreturn listview
+//    private void setQuickReturn() {
+//        resourceListView.setOnScrollListener(new AbsListView.OnScrollListener() {
+//            @SuppressLint("NewApi")
+//            @Override
+//            public void onScroll(AbsListView view, int firstVisibleItem,
+//                                 int visibleItemCount, int totalItemCount) {
+//
+//                mScrollY = 0;
+//                int translationY = 0;
+////                int translationYList = 0;
+//
+//                if (resourceListView.scrollYIsComputed()) {
+//                    mScrollY = resourceListView.getComputedScrollY();
+//                }
+//
+//                int rawY = mPlaceHolder.getTop()
+//                        - Math.min(
+//                        mCachedVerticalScrollRange
+//                                - resourceListView.getHeight(), mScrollY);
+//
+//                switch (mState) {
+//                    case STATE_OFFSCREEN:
+//                        if (rawY <= mMinRawY) {
+//                            mMinRawY = rawY;
+//                        } else {
+//                            mState = STATE_RETURNING;
 //                        }
-                        break;
-                }
-
-                /** this can be used if the build is below honeycomb **/
-                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB) {
-                    anim = new TranslateAnimation(0, 0, translationY,
-                            translationY);
-                    anim.setFillAfter(true);
-                    anim.setDuration(0);
-                    mQuickReturnView.startAnimation(anim);
-                } else {
-                    mQuickReturnView.setTranslationY(translationY);
-                }
-
-            }
-
-            @Override
-            public void onScrollStateChanged(AbsListView view, int scrollState) {
-            }
-        });
-    }
-
-    //quickreturn listview
-    private void setTree() {
-        resourceListView.getViewTreeObserver().addOnGlobalLayoutListener(
-                new ViewTreeObserver.OnGlobalLayoutListener() {
-                    @Override
-                    public void onGlobalLayout() {
-                        mQuickReturnHeight = mQuickReturnView.getHeight();
-                        resourceListView.computeScrollY();
-                        mCachedVerticalScrollRange = resourceListView.getListHeight();
-                    }
-                });
-    }
+//                        translationY = rawY;
+//
+////                        Log.d("STATE_OFFSCREEN", "" + translationY);
+////                        //liste en buté haute
+////                        translationYList = 0;
+//                        break;
+//
+//                    case STATE_ONSCREEN:
+//                        if (rawY < -mQuickReturnHeight) {
+//                            mState = STATE_OFFSCREEN;
+//                            mMinRawY = rawY;
+//                        }
+//                        translationY = rawY;
+//
+////                        Log.d("STATE_ONSCREEN", "" + translationY);
+////                        //list en train de remonter pour pousser le output_list_header
+////                        translationYList = rawY + mQuickReturnHeight;
+//                        break;
+//
+//                    case STATE_RETURNING:
+//                        translationY = (rawY - mMinRawY) - mQuickReturnHeight;
+//                        if (translationY > 0) {
+//                            translationY = 0;
+//                            mMinRawY = rawY - mQuickReturnHeight;
+//                        }
+//
+//                        if (rawY > 0) {
+//                            mState = STATE_ONSCREEN;
+//                            translationY = rawY;
+//                        }
+//
+//                        if (translationY < -mQuickReturnHeight) {
+//                            mState = STATE_OFFSCREEN;
+//                            mMinRawY = rawY;
+//                        }
+//
+////                        Log.d("STATE_RETURNING", "" + translationY);
+////                        if(translationY == 0){
+////                            //liste en butée basse
+////                            translationYList = mQuickReturnHeight;
+////                        }else{
+////                            //liste en train de descendre pour faire apparaitre les filtres
+////                            //translationYList = rawY ;//- mQuickReturnHeight;
+////                        }
+//                        break;
+//                }
+//
+//                /** this can be used if the build is below honeycomb **/
+//                if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.HONEYCOMB) {
+//                    anim = new TranslateAnimation(0, 0, translationY,
+//                            translationY);
+//                    anim.setFillAfter(true);
+//                    anim.setDuration(0);
+//                    mQuickReturnView.startAnimation(anim);
+//                } else {
+//                    mQuickReturnView.setTranslationY(translationY);
+//                }
+//
+//            }
+//
+//            @Override
+//            public void onScrollStateChanged(AbsListView view, int scrollState) {
+//            }
+//        });
+//    }
+//
+//    //quickreturn listview
+//    private void setTree() {
+//        resourceListView.getViewTreeObserver().addOnGlobalLayoutListener(
+//                new ViewTreeObserver.OnGlobalLayoutListener() {
+//                    @Override
+//                    public void onGlobalLayout() {
+//                        mQuickReturnHeight = mQuickReturnView.getHeight();
+//                        resourceListView.computeScrollY();
+//                        mCachedVerticalScrollRange = resourceListView.getListHeight();
+//                    }
+//                });
+//    }
 
 }
