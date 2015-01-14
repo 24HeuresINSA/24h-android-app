@@ -25,11 +25,13 @@ import com.insalyon.les24heures.adapter.ResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Resource;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by remi on 26/12/14.
@@ -52,6 +54,8 @@ public class OutputListFragment extends OutputTypeFragment{
 //    QuickReturnListView resourceListView;
     @InjectView(R.id.empty_resource_list)
     View emptyResourceList;
+    @InjectView(R.id.fab_goto_maps)
+    FloatingActionButton fabGotoMaps;
 
 
     Boolean spinner = false; //TODO mettre en place un vrai spinner
@@ -135,7 +139,6 @@ public class OutputListFragment extends OutputTypeFragment{
 
 
 
-
         return view;
     }
 
@@ -152,6 +155,15 @@ public class OutputListFragment extends OutputTypeFragment{
             // You can also optionally pass the size of the target view, which will be used to
             // offset the list height, preventing it from hiding content behind the target view.
             quickReturnAttacher.addTargetView(quickReturnTarget, QuickReturnTargetView.POSITION_TOP, quickReturnTarget.getHeight());
+
+            //c'est le quickreturn ou le fab qui se hide au scroll car les deux font un setOnScrollListener
+            //mais je dois fork les deux projets...
+            //http://stackoverflow.com/questions/25811458/how-to-bind-several-scroll-listener-on-a-listview
+            //fabGotoMaps.attachToListView(resourceListView);
+            //plus simple, ne fork que quickreturn ou utiliser celui de LarsWerkman et call fabGotoMaps.hide(); ou fabGotoMaps.show();
+
+
+
         }
     };
 
@@ -224,6 +236,11 @@ public class OutputListFragment extends OutputTypeFragment{
 
 //        setQuickReturn();
 //        setTree();
+    }
+
+    @OnClick(R.id.fab_goto_maps)
+    public void onClickFabGotoMaps(View v){
+        ((MainActivity)getActivity()).selectMaps();
     }
 
     /**     Fragment is no more alive       **/

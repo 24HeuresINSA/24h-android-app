@@ -37,7 +37,6 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import retrofit.RestAdapter;
 
@@ -60,10 +59,11 @@ public class MainActivity extends ActionBarActivity {
     View drawerView;
     @InjectView(R.id.left_drawer_categories_list)
     ListView categoriesList;
-    @InjectView(R.id.outputtype_maps)
-    View outputTypeMaps;
-    @InjectView(R.id.outputtype_list)
-    View outputTypeList;
+//    @InjectView(R.id.outputtype_maps)
+//    View outputTypeMaps;
+//    @InjectView(R.id.outputtype_list)
+//    View outputTypeList;
+
 
 
     private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
@@ -164,16 +164,16 @@ public class MainActivity extends ActionBarActivity {
                 Bundle bundle = ai.metaData;
                 String defaultOutput = bundle.getString("outputType");
                 if (defaultOutput.toLowerCase().equals(OutputType.MAPS.toString().toLowerCase())) {
-                    selectMaps(outputTypeMaps);
+                    selectMaps();
                 } else if (defaultOutput.toLowerCase().equals(OutputType.LIST.toString().toLowerCase())) {
-                    selectList(outputTypeList);
+                    selectList();
                 }
             } catch (PackageManager.NameNotFoundException e) {
                 Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
-                selectMaps(outputTypeMaps);
+                selectMaps();
             } catch (NullPointerException e) {
                 Log.e(TAG, "Failed to load meta-data, NullPointer: " + e.getMessage());
-                selectMaps(outputTypeMaps);
+                selectMaps();
             }
 
         }
@@ -198,29 +198,27 @@ public class MainActivity extends ActionBarActivity {
         Log.d(TAG + "onEvent(ResourcesUpdatedEvent)", event.getResourceList().toString());
         resourcesList.clear();
         resourcesList.addAll(event.getResourceList());
-
-
     }
 
-    @OnClick(R.id.outputtype_maps)
-    void selectMaps(View view) {
-        if (outputTypeMaps.isSelected()) return;
+//    @OnClick(R.id.outputtype_maps)
+    public void selectMaps() {
+//        if (outputTypeMaps.isSelected()) return;
 
-        outputTypeMaps.setSelected(true);
-        outputTypeList.setSelected(false);
-        drawerLayout.closeDrawer(drawerView);
+//        outputTypeMaps.setSelected(true);
+//        outputTypeList.setSelected(false);
+//        drawerLayout.closeDrawer(drawerView);
 
         Fragment mapsFragment = new OutputMapsFragment();
         replaceContentFragment(mapsFragment);
     }
 
-    @OnClick(R.id.outputtype_list)
-    void selectList(View view) {
-        if (outputTypeList.isSelected()) return;
+//    @OnClick(R.id.outputtype_list)
+    public void selectList() {
+//        if (outputTypeList.isSelected()) return;
 
-        outputTypeList.setSelected(true);
-        outputTypeMaps.setSelected(false);
-        drawerLayout.closeDrawer(drawerView);
+//        outputTypeList.setSelected(true);
+//        outputTypeMaps.setSelected(false);
+//        drawerLayout.closeDrawer(drawerView);
 
         Fragment listFragment = new OutputListFragment();
         replaceContentFragment(listFragment);
@@ -245,7 +243,8 @@ public class MainActivity extends ActionBarActivity {
         super.onSaveInstanceState(outState);
 
         //Output state
-        if (outputTypeMaps.isSelected()) {
+//        if (outputTypeMaps.isSelected()) {
+        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
             outState.putString("outputType", OutputType.MAPS.toString());
         } else {
             outState.putString("outputType", OutputType.LIST.toString());

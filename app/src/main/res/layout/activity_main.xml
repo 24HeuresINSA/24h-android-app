@@ -39,7 +39,7 @@
             android:layout_height="fill_parent"
             android:layout_gravity="start">
 
-            <include layout="@layout/drawer_day" />
+            <include layout="@layout/navigation_drawer" />
 
         </FrameLayout>
 

@@ -25,6 +25,7 @@ import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Resource;
 
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by remi on 26/12/14.
@@ -125,6 +126,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             spinner = false;
         }
         if(updateMapsView())moveCamera();
+    }
+
+    @OnClick(R.id.fab_goto_list)
+    public void onClickFabGotoList(View v){
+        ((MainActivity)getActivity()).selectList();
     }
 
 
