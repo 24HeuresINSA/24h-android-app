@@ -2,6 +2,7 @@ package com.insalyon.les24heures;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
@@ -267,7 +268,13 @@ public class MainActivity extends ActionBarActivity {
         bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
         bundleArgs.putParcelableArrayList("resourcesList", resourcesList);
         fragment.setArguments(bundleArgs);
-        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
+
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+
+        ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+
+        ft.replace(R.id.content_frame, fragment).commit();
+//        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 
     /* The click listner for ListView in the navigation drawer */

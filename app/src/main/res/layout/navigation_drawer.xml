@@ -6,57 +6,57 @@
     android:background="@color/navigation_drawer_background">
 
 
-    <LinearLayout
-        android:orientation="vertical"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/layout_outputtype">
+    <!--<LinearLayout-->
+        <!--android:orientation="vertical"-->
+        <!--android:layout_width="fill_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:id="@+id/layout_outputtype">-->
 
-        <!--<ListView-->
-            <!--android:id="@+id/left_drawer_outputtype_list"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="match_parent"-->
-            <!--android:background="#111"-->
-            <!--android:choiceMode="singleChoice"-->
-            <!--android:divider="@android:color/transparent"-->
-            <!--android:dividerHeight="0dp" />-->
+        <!--&lt;!&ndash;<ListView&ndash;&gt;-->
+            <!--&lt;!&ndash;android:id="@+id/left_drawer_outputtype_list"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:background="#111"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:choiceMode="singleChoice"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:divider="@android:color/transparent"&ndash;&gt;-->
+            <!--&lt;!&ndash;android:dividerHeight="0dp" />&ndash;&gt;-->
 
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/outputtype_maps">
-            <!--android:background="@color/drawer_bg_outputtype"-->
-            <!-->-->
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:id="@+id/outputtype_maps">-->
+            <!--&lt;!&ndash;android:background="@color/drawer_bg_outputtype"&ndash;&gt;-->
+            <!--&lt;!&ndash;>&ndash;&gt;-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/drawer_outputtype_maps"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="@dimen/drawer_outputtype_fontsize"
-                />
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:text="@string/drawer_outputtype_maps"-->
+                <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+                <!--android:textSize="@dimen/drawer_outputtype_fontsize"-->
+                <!--/>-->
+        <!--</LinearLayout>-->
 
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/outputtype_list">
-            <!--android:background="@color/drawer_bg_outputtype"-->
-            <!-->-->
+        <!--<LinearLayout-->
+            <!--android:orientation="horizontal"-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent"-->
+            <!--android:id="@+id/outputtype_list">-->
+            <!--&lt;!&ndash;android:background="@color/drawer_bg_outputtype"&ndash;&gt;-->
+            <!--&lt;!&ndash;>&ndash;&gt;-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="@string/drawer_outputtype_list"
-                android:textSize="@dimen/drawer_outputtype_fontsize"
-                />
-        </LinearLayout>
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+                <!--android:text="@string/drawer_outputtype_list"-->
+                <!--android:textSize="@dimen/drawer_outputtype_fontsize"-->
+                <!--/>-->
+        <!--</LinearLayout>-->
 
-    </LinearLayout>
+    <!--</LinearLayout>-->
 
     <LinearLayout
         android:orientation="vertical"
