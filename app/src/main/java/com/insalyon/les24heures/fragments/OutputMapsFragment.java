@@ -166,13 +166,13 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         if(categoriesSelected.isEmpty()){
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noCategoriesSelected, Toast.LENGTH_SHORT);
             toast.show();
-//            ((MainActivity) getActivity()).displayDrawer();
+            ((MainActivity) getActivity()).displayDrawer();
             return false;
         }
         if(!displayMarkersAccordingToSelectedCategories()){
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesMatchSelectedCategories, Toast.LENGTH_SHORT);
             toast.show();
-//            ((MainActivity) getActivity()).displayDrawer();
+            ((MainActivity) getActivity()).displayDrawer();
             return false;
         }
         return true;

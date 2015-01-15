@@ -271,10 +271,12 @@ public class MainActivity extends ActionBarActivity {
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
-        ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+        if(fragment.getClass() == OutputListFragment.class)
+            ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
+        else
+            ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
 
         ft.replace(R.id.content_frame, fragment).commit();
-//        fragmentManager.beginTransaction().replace(R.id.content_frame, fragment).commit();
     }
 
     /* The click listner for ListView in the navigation drawer */
