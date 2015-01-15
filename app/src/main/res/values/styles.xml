@@ -1,11 +1,11 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
+    <style name="AppTheme">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">#8bc34a</item>
-        <item name="colorPrimaryDark">#7CB342</item>
-        <item name="colorAccent">#cddc39</item>
+        <!--<item name="colorPrimary">#8bc34a</item>-->
+        <!--<item name="colorPrimaryDark">#7CB342</item>-->
+        <!--<item name="colorAccent">#cddc39</item>-->
     </style>
 
     <style name="ToolbarCustomIconColor" parent="AppTheme">

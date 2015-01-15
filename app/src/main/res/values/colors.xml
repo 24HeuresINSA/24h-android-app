@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="output_list_sort_background">@color/background_material_dark</color>
+    <!--<color name="output_list_sort_background">@color/background_material_dark</color>-->
+    <color name="output_list_sort_background">#FF000000</color>
     <color name="navigation_drawer_background">#FF000000</color>
 
     <!--FAB-->

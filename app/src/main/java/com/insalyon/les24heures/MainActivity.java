@@ -1,23 +1,27 @@
 package com.insalyon.les24heures;
 
+import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarActivity;
-import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseBooleanArray;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
@@ -42,7 +46,7 @@ import de.greenrobot.event.EventBus;
 import retrofit.RestAdapter;
 
 
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends Activity implements SearchView.OnQueryTextListener {
     private static final String TAG = MainActivity.class.getCanonicalName();
 
     FragmentManager fragmentManager;
@@ -54,8 +58,6 @@ public class MainActivity extends ActionBarActivity {
 
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
-    @InjectView(R.id.toolbar)
-    Toolbar toolbar;
     @InjectView(R.id.left_drawer)
     View drawerView;
     @InjectView(R.id.left_drawer_categories_list)
@@ -65,6 +67,31 @@ public class MainActivity extends ActionBarActivity {
 //    @InjectView(R.id.outputtype_list)
 //    View outputTypeList;
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_search_favorites, menu);
+
+        // Associate searchable configuration with the SearchView
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView =
+                (SearchView) menu.findItem(R.id.search).getActionView();
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+
+//
+//        MenuItem searchItem = menu.findItem(R.id.search);
+//        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+//        if (searchView != null) {
+//            searchView.setOnQueryTextListener(this);
+//        }
+
+
+        return true;
+    }
 
 
     private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
@@ -138,7 +165,7 @@ public class MainActivity extends ActionBarActivity {
 
 
         /*** setup the navigation drawer ***/
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
 
         // set a custom shadow that overlays the main content when the drawer opens
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
@@ -147,14 +174,13 @@ public class MainActivity extends ActionBarActivity {
         categoriesList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item_category, navigationDrawerCategories));
         categoriesList.setOnItemClickListener(new DrawerItemClickListener());
 
-        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
-        actionBarDrawerToggle = new ActionBarDrawerToogle24Heures(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
 //        actionBarDrawerToggle.onDrawerOpened();
         drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().
+                getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
 
 
         /*** start the right ouptut : Maps or List ***/
@@ -188,7 +214,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         // Sync the toggle state after onRestoreInstanceState has occurred.
-        actionBarDrawerToggle.syncState();
+//        actionBarDrawerToggle.syncState();
     }
 
 
@@ -227,7 +253,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public void setTitle(CharSequence title) {
-        getSupportActionBar().setTitle(title);
+        getActionBar().setTitle(title);
     }
 
     @Override
@@ -277,6 +303,18 @@ public class MainActivity extends ActionBarActivity {
             ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
 
         ft.replace(R.id.content_frame, fragment).commit();
+    }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        Log.d("caca",s);
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        Log.d("popo",s);
+        return false;
     }
 
     /* The click listner for ListView in the navigation drawer */
