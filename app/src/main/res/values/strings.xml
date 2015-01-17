@@ -47,4 +47,8 @@
     <!--TODO should be displayed by MainActivity ??-->
     <string name="noCategoriesSelected">Feel free to select at least one category</string>
 
+
+    <!--in ms-->
+    <integer name="arrow_sandwich_duration">500</integer>
+
 </resources>

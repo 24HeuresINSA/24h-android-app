@@ -1,5 +1,6 @@
 package com.insalyon.les24heures;
 
+import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -12,6 +13,7 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
@@ -37,6 +39,7 @@ import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
 import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
+import com.insalyon.les24heures.utils.CustomSearchView;
 import com.insalyon.les24heures.utils.DrawerArrowDrawable;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
@@ -49,7 +52,7 @@ import de.greenrobot.event.EventBus;
 import retrofit.RestAdapter;
 
 
-public class MainActivity extends Activity implements SearchView.OnQueryTextListener {
+public class MainActivity extends Activity  {
     private static final String TAG = MainActivity.class.getCanonicalName();
 
     FragmentManager fragmentManager;
@@ -69,32 +72,160 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 //    View outputTypeMaps;
 //    @InjectView(R.id.outputtype_list)
 //    View outputTypeList;
+//    @InjectView(R.id.search)
+//    SearchView search;
 
     private DrawerArrowDrawable drawerArrowDrawable;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private DrawerLayout.SimpleDrawerListener drawerListener;
 
+    //fichtre
+    //cest parce que le isDrawerOpen ne fonctionne pas bien lorsque le drawer est en mouvement
+    private Boolean isDrawerOpen = false;
 
+
+
+    Menu globalMenu;
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
+    public boolean onCreateOptionsMenu(final Menu menu) {
+        globalMenu = menu;
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search_favorites, menu);
 
         // Associate searchable configuration with the SearchView
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView =
-                (SearchView) menu.findItem(R.id.search).getActionView();
+        final CustomSearchView searchView =
+                (CustomSearchView) menu.findItem(R.id.search).getActionView();
+
+        ((SearchView) globalMenu.findItem(R.id.search).getActionView()).isIconified();
+
+        searchView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("pouet","open search view");
+            }
+        });
+
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 
+//        menu
+
+
+//        SearchView search = (SearchView) menu.find(R.id.search);
+        final MenuItem searchItem = menu.findItem(R.id.search);  //doesnt seems to work
+//        final SearchView search = (SearchView) searchItem.getActionView();
+
+//        searchView.seton
+
+
+        MenuItemCompat.setOnActionExpandListener(searchItem, new MenuItemCompat.OnActionExpandListener() {
+            @Override
+            public boolean onMenuItemActionCollapse(MenuItem item) {
+                // Do something when collapsed
+                Log.d("pouet","onMenuItemActionCollapse");
+
+                return true;  // Return true to collapse action view
+            }
+
+            @Override
+            public boolean onMenuItemActionExpand(MenuItem item) {
+                // Do something when expanded
+                Log.d("pouet","onMenuItemActionExpand");
+
+                return true;  // Return true to expand action view
+            }
+        });
+
+
+        searchView.setOnSearchClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("poisson", "onclicklistner"); //TODO changer le sandwich par une arrow
+                setArrow();
+                disabledDrawerSwipe();
+
+            }
+        });
+//
+//        searchView.onse
+
 
 //
-//        MenuItem searchItem = menu.findItem(R.id.search);
-//        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-//        if (searchView != null) {
-//            searchView.setOnQueryTextListener(this);
-//        }
+//       searchView.onActionViewExpanded();
+
+//        searchItem.setOnActionExpandListener(new MenuItem.OnActionExpandListener() {
+//            @Override
+//            public boolean onMenuItemActionExpand(MenuItem item) {
+//                Log.d("search","onMenuItemActionExpand");
+//
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onMenuItemActionCollapse(MenuItem item) {
+//                Log.d("search","onMenuItemActionCollapse");
+//
+//                return false;
+//            }
+//        });
+
+//        searchItem.on
+
+        searchView.setOnCloseListener(new SearchView.OnCloseListener() {
+            @Override
+            public boolean onClose() {
+                Log.d("search","close");
+                //TODO changer l'arrow par un sandwich
+                setSandwich();
+                enabledDrawerSwipe();
+
+
+                return false;
+            }
+        });
+
+//        searchView.setOnTouchListener(new View.OnTouchListener() {
+//            @Override
+//            public boolean onTouch(View v, MotionEvent event) {
+//                Log.d("search","ontouch");
+//                return false;
+//            }
+//        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Log.d("search","onQueryTextSubmit "+query);
+
+//                searchView.setIconified(true);
+//                searchView.clearFocus();
+//                searchItem.collapseActionView();
+//                menu.findItem(R.id.search).collapseActionView();
+//                searchView.setIconified(true);
+//                searchView.setVisibility(View.INVISIBLE);
+
+//                searchItem.
+
+//                searchView.onActionViewCollapsed();
+                //todo hide soft keyboard
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                Log.d("search","onQueryTextChange "+newText);
+
+                //tODO do filter
+                return false;
+            }
+        });
+
+
+
+
 
 
         return true;
@@ -130,6 +261,7 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
         //dependency injection instead ?
         resourceService = ResourceServiceImpl.getInstance();
         categoryService = CategoryServiceImpl.getInstance();
+
 
 
         /*** recover data either from (by priority)
@@ -216,10 +348,18 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
                 }
 
                 drawerArrowDrawable.setParameter(offset);
+
+                Log.d("onDrawerSlide",flipped+" "+offset);
             }
         };
 
         drawerLayout.setDrawerListener(drawerListener);
+
+
+
+
+
+//        search.seton
 
 
 
@@ -258,12 +398,35 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 //            //TODO this open the drawer
 //            return true;
 //        }
+
+        Log.d("activity onoption item selecged",item.getTitle().toString());
+
+        //TODO pas ouf ?
         if(item.getTitle().equals(getActionBar().getTitle())){
 //            drawerLayout.openDrawer(drawerView);
-           toggleDrawer();
+
+          //TODO
+            //IF recherche en cours
+            if(!((SearchView) globalMenu.findItem(R.id.search).getActionView()).isIconified()
+            ) {
+                //changer l'arrow par un sandwich
+                setSandwich();
+                enabledDrawerSwipe();
+                //fermer le searchWidget (cf code tout en bas)
+                final SearchView searchView =
+                        (SearchView) globalMenu.findItem(R.id.search).getActionView();
+                searchView.onActionViewCollapsed();
+                Log.d("onOptionsItemSelected","arrow to sandwich");
+            }else {
+                //SINON
+                toggleDrawer();
+            }
+            return true;
 
         }
-        return true;
+
+
+        return false;
 
     }
 
@@ -366,17 +529,17 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
         ft.replace(R.id.content_frame, fragment).commit();
     }
 
-    @Override
-    public boolean onQueryTextSubmit(String s) {
-        Log.d("caca",s);
-        return false;
-    }
-
-    @Override
-    public boolean onQueryTextChange(String s) {
-        Log.d("popo",s);
-        return false;
-    }
+//    @Override
+//    public boolean onQueryTextSubmit(String s) {
+//        Log.d("caca",s);
+//        return false;
+//    }
+//
+//    @Override
+//    public boolean onQueryTextChange(String s) {
+//        Log.d("popo",s);
+//        return false;
+//    }
 
     /* The click listner for ListView in the navigation drawer */
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -428,11 +591,90 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 
     }
     public void openDrawer() {
+
         drawerLayout.openDrawer(drawerView);
+        isDrawerOpen = true;
+        invalidateOptionsMenu();
+
     }
 
     public void closeDrawer() {
+
         drawerLayout.closeDrawer(drawerView);
+        isDrawerOpen = false;
+        invalidateOptionsMenu();
+
     }
 
+    public void setArrow(){
+        ValueAnimator animation = ValueAnimator.ofFloat(0f, 1f);
+        animation.setDuration(500);
+        animation.start();
+        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                Log.d("setArrow", animation.getAnimatedValue().toString());
+                drawerArrowDrawable.setParameter((Float) animation.getAnimatedValue());
+            }
+        });
+
+
+
+        drawerArrowDrawable.setFlip(true);
+
+
+
+
+    }
+
+
+    private void disabledDrawerSwipe(){
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    private void enabledDrawerSwipe(){
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+    public void setSandwich(){
+//          drawerArrowDrawable.setFlip(false);
+
+        ValueAnimator animation = ValueAnimator.ofFloat(1f, 0f);
+        animation.setDuration(500);
+        animation.start();
+        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                Log.d("setArrow",animation.getAnimatedValue().toString());
+                drawerArrowDrawable.setParameter((Float) animation.getAnimatedValue());
+
+            }
+        });
+
+
+        drawerArrowDrawable.setParameter(0);
+
+    }
+
+    /* Called whenever we call invalidateOptionsMenu() */
+    //TODO utiliser pour masquer les boutons lorsque le drawer apparait
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // If the nav drawer is open, hide action items related to the content view
+        boolean drawerOpen = drawerLayout.isDrawerVisible(drawerView);
+        menu.findItem(R.id.search).setVisible(!isDrawerOpen); //todo a decommenter
+        //TODO clear search filter or fermer correctement le widget
+        //TODO plus besoin de ca !
+//        final SearchView searchView =
+//                (SearchView) menu.findItem(R.id.search).getActionView();
+//        searchView.onActionViewCollapsed();
+//        searchView.close
+
+
+
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+
 }
+

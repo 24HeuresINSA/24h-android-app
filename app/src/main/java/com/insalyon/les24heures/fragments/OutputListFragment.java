@@ -7,6 +7,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -88,6 +89,14 @@ public class OutputListFragment extends OutputTypeFragment{
     private View quickReturnTarget;
 
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        Log.d("fragment list onOptionsItemSelected",item.getTitle().toString());
+
+        //mettre ca dans la mere, juste appeler des methodes presentes dans les filles pour afficher les fav et filrer par title
+        return super.onOptionsItemSelected(item);
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -95,6 +104,8 @@ public class OutputListFragment extends OutputTypeFragment{
 
         view = inflater.inflate(R.layout.output_list_fragment, container, false);
         ButterKnife.inject(this, view);
+
+        setHasOptionsMenu(true);
 
         //quickReturn
 //        headerResourceList = inflater.inflate(R.layout.output_list_header, null);
