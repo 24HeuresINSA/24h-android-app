@@ -10,4 +10,5 @@
     <color name="ripple">#ff80ab</color>
     <color name="accent">#ff4081</color>
     <color name="accent_pressed">#f50057</color>
+    <color name="light_gray">#c2c7cc</color>
 </resources>

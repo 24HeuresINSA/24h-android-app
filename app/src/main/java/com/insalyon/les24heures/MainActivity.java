@@ -9,14 +9,16 @@ import android.content.Context;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.content.res.Resources;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -35,6 +37,7 @@ import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
 import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
+import com.insalyon.les24heures.utils.DrawerArrowDrawable;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
 
@@ -54,7 +57,7 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
     RestAdapter restAdapter;
     ResourceRetrofitService resourceRetrofitService;
 
-    private ActionBarDrawerToggle actionBarDrawerToggle;
+//    private ActionBarDrawerToggle actionBarDrawerToggle;
 
     @InjectView(R.id.drawer_layout)
     DrawerLayout drawerLayout;
@@ -66,6 +69,10 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
 //    View outputTypeMaps;
 //    @InjectView(R.id.outputtype_list)
 //    View outputTypeList;
+
+    private DrawerArrowDrawable drawerArrowDrawable;
+    private ActionBarDrawerToggle actionBarDrawerToggle;
+    private DrawerLayout.SimpleDrawerListener drawerListener;
 
 
     @Override
@@ -102,6 +109,9 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
     //depency injection ?
     private ResourceService resourceService;
     private CategoryService categoryService;
+
+    private float offset;
+    private boolean flipped;
 
 
     @Override
@@ -175,12 +185,44 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
         categoriesList.setOnItemClickListener(new DrawerItemClickListener());
 
 //        actionBarDrawerToggle.onDrawerOpened();
-        drawerLayout.setDrawerListener(actionBarDrawerToggle);
+//        actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.app_name, R.string.app_name);
+
+//        drawerLayout.setDrawerListener(actionBarDrawerToggle);
 
         // enable ActionBar app icon to behave as action to toggle nav drawer
 //        getSupportActionBar().
-                getActionBar().setDisplayHomeAsUpEnabled(true);
+//        getActionBar().setDisplayHomeAsUpEnabled(true);
         getActionBar().setHomeButtonEnabled(true);
+
+
+        //arrow
+        final Resources resources = getResources();
+        drawerArrowDrawable = new DrawerArrowDrawable(resources);
+        drawerArrowDrawable.setStrokeColor(resources.getColor(R.color.light_gray));
+        getActionBar().
+                setIcon(drawerArrowDrawable);
+
+        drawerListener = new DrawerLayout.SimpleDrawerListener() {
+            @Override public void onDrawerSlide(View drawerView, float slideOffset) {
+                offset = slideOffset;
+
+                // Sometimes slideOffset ends up so close to but not quite 1 or 0.
+                if (slideOffset >= .995) {
+                    flipped = true;
+                    drawerArrowDrawable.setFlip(flipped);
+                } else if (slideOffset <= .005) {
+                    flipped = false;
+                    drawerArrowDrawable.setFlip(flipped);
+                }
+
+                drawerArrowDrawable.setParameter(offset);
+            }
+        };
+
+        drawerLayout.setDrawerListener(drawerListener);
+
+
+
 
 
         /*** start the right ouptut : Maps or List ***/
@@ -204,6 +246,25 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
             }
 
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // The action bar home/up action should open or close the drawer.
+        // ActionBarDrawerToggle will take care of this.
+//        if (drawerListener.
+//
+//                onOptionsItemSelected(item)) {
+//            //TODO this open the drawer
+//            return true;
+//        }
+        if(item.getTitle().equals(getActionBar().getTitle())){
+//            drawerLayout.openDrawer(drawerView);
+           toggleDrawer();
+
+        }
+        return true;
+
     }
 
     /**
@@ -260,7 +321,7 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
         // Pass any configuration change to the drawer toggls
-        actionBarDrawerToggle.onConfigurationChanged(newConfig);
+//        actionBarDrawerToggle.onConfigurationChanged(newConfig);
     }
 
     /**         Activity is no more alive       **/
@@ -357,8 +418,21 @@ public class MainActivity extends Activity implements SearchView.OnQueryTextList
         return categoriesSelected;
     }
 
-    public void displayDrawer() {
+
+    private void toggleDrawer(){
+        if(drawerLayout.isDrawerOpen(drawerView)){
+            closeDrawer();
+        }else{
+            openDrawer();
+        }
+
+    }
+    public void openDrawer() {
         drawerLayout.openDrawer(drawerView);
+    }
+
+    public void closeDrawer() {
+        drawerLayout.closeDrawer(drawerView);
     }
 
 }

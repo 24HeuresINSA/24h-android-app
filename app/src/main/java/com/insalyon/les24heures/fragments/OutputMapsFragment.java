@@ -157,7 +157,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         if(resourcesList.isEmpty()){
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesFound, Toast.LENGTH_SHORT);
             toast.show();
-            ((MainActivity) getActivity()).displayDrawer();
+            ((MainActivity) getActivity()).openDrawer();
             //TODO display a spinner
             spinner = true;
             return false;
@@ -166,13 +166,13 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         if(categoriesSelected.isEmpty()){
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noCategoriesSelected, Toast.LENGTH_SHORT);
             toast.show();
-            ((MainActivity) getActivity()).displayDrawer();
+            ((MainActivity) getActivity()).openDrawer();
             return false;
         }
         if(!displayMarkersAccordingToSelectedCategories()){
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesMatchSelectedCategories, Toast.LENGTH_SHORT);
             toast.show();
-            ((MainActivity) getActivity()).displayDrawer();
+            ((MainActivity) getActivity()).openDrawer();
             return false;
         }
         return true;
@@ -231,7 +231,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.unexpected_move_camera_error, Toast.LENGTH_SHORT);
             toast.show();
-            ((MainActivity) getActivity()).displayDrawer();
+            ((MainActivity) getActivity()).openDrawer();
         }
     }
 
