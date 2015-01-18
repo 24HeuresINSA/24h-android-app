@@ -43,8 +43,7 @@
             android:layout_weight="2"
             android:orientation="vertical"
             android:id="@+id/listView_header"
-            android:background="#ff83ff35">
-            <!--android:background="@color/output_list_sort_background">-->
+            android:background="@color/output_list_sort_background">
 
 
             <LinearLayout
