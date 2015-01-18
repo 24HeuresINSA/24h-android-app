@@ -4,7 +4,8 @@
     android:layout_height="match_parent"
     android:paddingTop="@dimen/ouput_list_item_padding"
     android:paddingBottom="@dimen/ouput_list_item_padding"
-    android:padding="@dimen/ouput_list_item_padding">
+    android:padding="@dimen/ouput_list_item_padding"
+    android:background="#ffff3a3a">
 
 
     <LinearLayout
