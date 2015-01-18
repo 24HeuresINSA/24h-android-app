@@ -9,14 +9,12 @@ import com.insalyon.les24heures.DTO.ResourceDTO;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
-import com.insalyon.les24heures.service.CategoryService;
 import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
 
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.Random;
-import java.util.Timer;
 
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
@@ -52,10 +50,11 @@ public class ResourceServiceImpl implements ResourceService  {
         //TODO doit venir du backend
         Random rand = new Random();
         Category category = categoryService.getCategories().get(rand.nextInt(categoryService.getCategories().size()));
+        Boolean isFavorites = (rand.nextInt(2) == 0 ? true : false);
 
 
         return new Resource(resourceDTO.getNom(),resourceDTO.getDescription(),null,
-                new LatLng(Double.valueOf(resourceDTO.getLocX()),Double.valueOf(resourceDTO.getLocY())), category);
+                new LatLng(Double.valueOf(resourceDTO.getLocX()),Double.valueOf(resourceDTO.getLocY())), category,isFavorites);
     }
 
     public ArrayList<Resource> fromDTO(ArrayList<ResourceDTO> resourceDTOs) {

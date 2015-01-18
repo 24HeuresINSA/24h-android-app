@@ -8,7 +8,7 @@ import android.os.Parcelable;
  */
 public class Category implements Parcelable {
     String name;
-    String iconeName;
+    String iconeName = "pouet";
 
     public Category(String name) {
         this.name = name;

@@ -146,7 +146,9 @@ public class MainActivity extends Activity  {
                 SearchEvent searchEvent = new SearchEvent(savedInstanceState.getString("searchQuery").toString());
                 eventBus.postSticky(searchEvent);
                 searchQuery = savedInstanceState.getString("searchQuery").toString();
-
+            }
+            if(savedInstanceState.getBoolean("isFavoritesChecked")){
+                //TODO globalMenu est null ici
             }
         }
 
@@ -266,9 +268,9 @@ public class MainActivity extends Activity  {
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final CustomSearchView searchView =
-                (CustomSearchView) menu.findItem(R.id.search).getActionView();
+                (CustomSearchView) menu.findItem(R.id.menu_search).getActionView();
 
-        ((SearchView) globalMenu.findItem(R.id.search).getActionView()).isIconified();
+        ((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified();
 
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -284,7 +286,7 @@ public class MainActivity extends Activity  {
 
 
 //        SearchView search = (SearchView) menu.find(R.id.search);
-        final MenuItem searchItem = menu.findItem(R.id.search);  //doesnt seems to work
+        final MenuItem searchItem = menu.findItem(R.id.menu_search);  //doesnt seems to work
 //        final SearchView search = (SearchView) searchItem.getActionView();
 
 //        searchView.seton
@@ -436,14 +438,14 @@ public class MainActivity extends Activity  {
 
           //TODO
             //IF recherche en cours
-            if(!((SearchView) globalMenu.findItem(R.id.search).getActionView()).isIconified()
+            if(!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()
             ) {
                 //changer l'arrow par un sandwich
                 setSandwich();
                 enabledDrawerSwipe();
                 //fermer le searchWidget (cf code tout en bas)
                 SearchView searchView =
-                        (SearchView) globalMenu.findItem(R.id.search).getActionView();
+                        (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
                 searchView.onActionViewCollapsed();
                 Log.d("onOptionsItemSelected","arrow to sandwich");
             }else {
@@ -452,6 +454,25 @@ public class MainActivity extends Activity  {
             }
             return true;
 
+        }
+
+        switch (item.getItemId()){
+            case R.id.menu_favorites:
+                ArrayList<Category> list = new ArrayList<>();
+                list.addAll(getCategoriesSelectedFromView());
+                if(item.isChecked()){
+                    item.setChecked(false);
+                    item.setIcon(R.drawable.ic_favorites_unchecked);
+                }else{
+                    list.add((new Category("favorites")));
+                    item.setChecked(true);
+                    item.setIcon(R.drawable.ic_favorites_checked);
+
+                }
+                CategoriesSelectedEvent event = new CategoriesSelectedEvent(list);
+                eventBus.post(event);
+
+                return true;
         }
 
 
@@ -465,7 +486,7 @@ public class MainActivity extends Activity  {
     public boolean onPrepareOptionsMenu(Menu menu) {
         // If the nav drawer is open, hide action items related to the content view
         boolean drawerOpen = drawerLayout.isDrawerVisible(drawerView);
-        menu.findItem(R.id.search).setVisible(!isDrawerOpen); //todo a decommenter
+        menu.findItem(R.id.menu_search).setVisible(!isDrawerOpen); //todo a decommenter
         //TODO clear search filter or fermer correctement le widget
         //TODO plus besoin de ca !
 //        final SearchView searchView =
@@ -557,12 +578,13 @@ public class MainActivity extends Activity  {
         //resources
         outState.putParcelableArrayList("resourcesList", resourcesList);
 
-        //search
+        //action bar menu
         SearchView searchView =
-                (SearchView) globalMenu.findItem(R.id.search).getActionView();
+                (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
         if(!searchView.getQuery().toString().equals("")){
             outState.putString("searchQuery",searchView.getQuery().toString());
         }
+        outState.putBoolean("isFavoritesChecked",globalMenu.findItem(R.id.menu_favorites).isChecked());
     }
 
 
@@ -606,6 +628,9 @@ public class MainActivity extends Activity  {
 
     private void selectCategory(int position) {
         categoriesSelected = getCategoriesSelectedFromView();
+        if(globalMenu.findItem(R.id.menu_favorites).isChecked()){
+            categoriesSelected.add(new Category("favorites"));
+        }
 
         CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(categoriesSelected);
 

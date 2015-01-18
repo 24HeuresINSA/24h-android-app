@@ -1,7 +1,5 @@
 package com.insalyon.les24heures.adapter;
 
-import android.widget.Filter;
-
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
@@ -12,6 +10,7 @@ import java.util.Arrays;
  */
 public class ResourceCategoryFilter extends ResourceListFilter {
 
+    ArrayList<String> selectedCategories;
 
     public ResourceCategoryFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList, ResourceAdapter resourceAdapter) {
         super(originalList, resourceList, resourceAdapter);
@@ -23,7 +22,7 @@ public class ResourceCategoryFilter extends ResourceListFilter {
 
 
         if (constraint != null) {
-            ArrayList<String> selectedCategories =
+            selectedCategories =
                     new ArrayList<>(Arrays.asList(
                             ((String) constraint).substring(1, constraint.length() - 1).split(", "))
                     );
@@ -34,7 +33,7 @@ public class ResourceCategoryFilter extends ResourceListFilter {
                 for (int i = 0, l = originalList.size(); i < l; i++) {
                     Resource resource = originalList.get(i);
                     //effective search pattern
-                    if (selectedCategories.contains(resource.getCategory().toString()))
+                    if (isDisplayable(resource))
                         filteredItems.add(resource);
                 }
                 result.count = filteredItems.size();
@@ -54,6 +53,17 @@ public class ResourceCategoryFilter extends ResourceListFilter {
         }
 
         return result;
+    }
+
+
+    private Boolean isDisplayable(Resource resource) {
+        if (selectedCategories.contains("favorites")) {
+            if(selectedCategories.size() == 1)
+                return resource.isFavorites();
+            return resource.isFavorites() &&
+                    (selectedCategories.contains(resource.getCategory().toString()));
+        }
+        return selectedCategories.contains(resource.getCategory().toString());
     }
 
 }

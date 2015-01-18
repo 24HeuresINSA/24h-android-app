@@ -18,6 +18,7 @@ public class Resource implements Parcelable{
     LatLng loc;
     String imageUrl;
     Category category;
+    Boolean isFavorites;
 
     //TODO clairement pas cool ca
     //en effet, si on detruit la map, les markers sont conservé ici (enfin non puisque je magouille avec le onDestroy)
@@ -31,6 +32,7 @@ public class Resource implements Parcelable{
         this.schedules = schedules;
         this.loc = loc;
         this.category = category;
+        this.isFavorites = false;
     }
 
     public Resource(String title, String description, List<Schedule> schedules, LatLng loc, String imageUrl, Category category) {
@@ -40,6 +42,16 @@ public class Resource implements Parcelable{
         this.loc = loc;
         this.imageUrl = imageUrl;
         this.category = category;
+        this.isFavorites = false;
+    }
+
+    public Resource(String title, String description, List<Schedule> schedules, LatLng loc, Category category, Boolean isFavorites) {
+        this.title = title;
+        this.description = description;
+        this.schedules = schedules;
+        this.loc = loc;
+        this.category = category;
+        this.isFavorites = isFavorites;
     }
 
     public Resource(Parcel in){
@@ -49,6 +61,8 @@ public class Resource implements Parcelable{
         this.loc = in.readParcelable(ClassLoader.getSystemClassLoader());
         this.imageUrl = in.readString();
         this.category = in.readParcelable(ClassLoader.getSystemClassLoader());
+        this.isFavorites = in.readByte() != 0;
+
     }
 
     @Override
@@ -64,6 +78,7 @@ public class Resource implements Parcelable{
         out.writeString(imageUrl);
         out.writeParcelable(loc,flags);
         out.writeParcelable(category,flags);
+        out.writeByte((byte) (isFavorites ? 1 : 0));
     }
 
     public static final Parcelable.Creator<Resource> CREATOR
@@ -133,5 +148,11 @@ public class Resource implements Parcelable{
         this.marker = marker;
     }
 
+    public Boolean isFavorites() {
+        return isFavorites;
+    }
 
+    public void setIsFavorites(Boolean isFavorites) {
+        this.isFavorites = isFavorites;
+    }
 }
