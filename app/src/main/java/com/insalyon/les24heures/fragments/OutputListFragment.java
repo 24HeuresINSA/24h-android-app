@@ -25,6 +25,7 @@ import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
+import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.Resource;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -248,6 +249,13 @@ public class OutputListFragment extends OutputTypeFragment{
 //        setQuickReturn();
 //        setTree();
     }
+
+
+    public void onEvent(SearchEvent event){
+        super.onEvent(event);
+        resourceAdapter.getFilter().filter(event.getQuery().toString());
+    }
+
 
     @OnClick(R.id.fab_goto_maps)
     public void onClickFabGotoMaps(View v){

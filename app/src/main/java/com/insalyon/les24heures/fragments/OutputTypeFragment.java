@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
+import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
 
@@ -74,7 +75,8 @@ public class OutputTypeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        eventBus.register(this);
+        eventBus.registerSticky(this);
+
     }
 
     /**      Fragment is alive      **/
@@ -88,6 +90,10 @@ public class OutputTypeFragment extends Fragment {
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getResourceList().toString());
         resourcesList.clear();
         resourcesList.addAll(event.getResourceList());
+    }
+
+    public void onEvent(SearchEvent event){
+        Log.d("onEvent(SearchEvent)", event.getQuery().toString());
     }
 
     /**      Fragment is no more alive      **/
