@@ -1,0 +1,61 @@
+
+//artists
+{
+  "_id" : "idMysql",
+  "name" : "name without special char as \n",
+  "description" : "plain text without HTML tags",
+  "main_picture_url" : "http://...",
+  "pictures": [
+    "http://...",
+    "http://...",
+    ....
+  ],
+  "schedule" : null || [{"jour":"Samedi","debut":"10h00","fin":"18h00"},{"jour":"Dimanche","debut":"10h00","fin":"18h00"}],
+  "stage" : "small" || "big"
+}
+
+
+//category
+{
+  "_id": "idMysql",
+  "name": "name without special char as \n",
+  "icone_name": "icone's name present onto the APK"
+}
+
+//resource
+{
+  "_id" : "idMysql",
+  "name" : "name without special char as \n",
+  "description" : "plain text without HTML tags",
+  "localisation" : [lat,long],
+  "main_picture_url" : "http://...",
+  "pictures": [
+    "http://...",
+    "http://..."
+  ]
+  "schedule" : null || [{"jour":"Samedi","debut":"10h00","fin":"18h00"},{"jour":"Dimanche","debut":"10h00","fin":"18h00"}]
+}
+
+
+//export => public URL
+{
+  "categories" : [
+      category,
+      category,
+      ...
+  ],
+  "resources" : [
+    resource,
+    resource,
+    ...
+  ],
+  "artists" : [
+    artist,
+    artist,
+    ...
+  ],
+  "version" : "X.x"
+}
+
+
+
