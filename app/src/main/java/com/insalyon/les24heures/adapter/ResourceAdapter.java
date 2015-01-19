@@ -71,7 +71,6 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder = null;
-        Log.v("ConvertView", String.valueOf(position));
 
         if (convertView == null) {
             convertView = vi.inflate(R.layout.output_list_item, null);

@@ -24,6 +24,7 @@ import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.Resource;
+import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -49,6 +50,8 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     ListView resourceListView;
     @InjectView(R.id.listView_header)
     View quickReturnListHeader;
+    @InjectView(R.id.fab_goto_maps)
+    FloatingActionButton fabGotoMaps;
 
 
     //see spinner adapter
@@ -82,19 +85,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         return view;
     }
 
-
-    @Override
-    public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
-        Resource resource = (Resource) parent.getItemAtPosition(position);
-                //TODO details : cf DSF
-                Toast.makeText(getActivity().getApplicationContext(),
-                        resource.getTitle(), Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        return true;
-    }
 
     private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
         public void onGlobalLayout() {
@@ -174,6 +164,70 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         ((MainActivity)getActivity()).selectMaps();
     }
 
+    @Override
+    public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
+        Resource resource = (Resource) parent.getItemAtPosition(position);
+        //TODO details : cf DSF
+        Toast.makeText(getActivity().getApplicationContext(),
+                resource.getTitle(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+        return true;
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+    }
+
+    private int lastVisibleItem = 0;
+    private int lastY = 0;
+    private Boolean isScrollingUp = false;
+    private Boolean isScrollingDown = false;
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        int top = 0;
+        if(view.getChildAt(0) != null){
+            top = view.getChildAt(0).getTop();
+        }
+
+        if(firstVisibleItem > lastVisibleItem){
+            //scroll down
+            if(!isScrollingDown){
+                fabGotoMaps.hide();
+            }
+            isScrollingDown = true;
+            isScrollingUp = false;
+        }else if(firstVisibleItem < lastVisibleItem){
+            //scroll up
+            if(!isScrollingUp){
+                fabGotoMaps.show();
+            }
+            isScrollingUp = true;
+            isScrollingDown = false;
+        }else{
+            if(top < lastY){
+                //scroll down
+                if(!isScrollingDown){
+                    fabGotoMaps.hide();
+                }
+                isScrollingDown = true;
+                isScrollingUp = false;
+            }else if(top > lastY){
+                //scroll up
+                if(!isScrollingUp){
+                    fabGotoMaps.show();
+                }
+                isScrollingUp = true;
+                isScrollingDown = false;
+            }
+        }
+
+        lastVisibleItem = firstVisibleItem;
+        lastY = top;
+
+    }
 
     /**     Fragment is no more alive       **/
     @Override
@@ -194,13 +248,5 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         return true;
     }
 
-    @Override
-    public void onScrollStateChanged(AbsListView view, int scrollState) {
 
-    }
-
-    @Override
-    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
-
-    }
 }
