@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.felipecsl.quickreturn.library.AbsListViewQuickReturnAttacher;
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
 import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
@@ -22,6 +23,7 @@ import com.insalyon.les24heures.adapter.ResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
+import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
 
@@ -49,6 +51,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     View quickReturnListHeader;
 
 
+    //see spinner adapter
     Boolean spinner = false; //TODO mettre en place un vrai spinner
 
     ResourceAdapter resourceAdapter = null;
@@ -71,28 +74,10 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
                 R.layout.output_list_item, new ArrayList<>(resourcesList)); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
 
         // Wrap your adapter with QuickReturnAdapter
-//        resourceListView.setAdapter(resourceAdapter);
         resourceListView.setAdapter(new QuickReturnAdapter(resourceAdapter));
 
         //enables filtering for the contents of the given ListView
 //        resourceListView.setTextFilterEnabled(true);
-
-
-//        final AbsListViewQuickReturnAttacher attacher = (AbsListViewQuickReturnAttacher) quickReturnAttacher;
-//        attacher.addOnScrollListener(this);
-//        attacher.setOnItemClickListener(this);
-//        attacher.setOnItemLongClickListener(this);
-
-//        resourceListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            public void onItemClick(AdapterView<?> parent, View view,
-//                                    int position, long id) {
-//                // When clicked, show a toast with the TextView text
-//                Resource resource = (Resource) parent.getItemAtPosition(position);
-//                //TODO details : cf DSF
-//                Toast.makeText(getActivity().getApplicationContext(),
-//                        resource.getTitle(), Toast.LENGTH_SHORT).show();
-//            }
-//        });
 
         return view;
     }
@@ -100,12 +85,14 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
     @Override
     public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this.getActivity(), "Item " + position + " clicked", Toast.LENGTH_SHORT).show();
+        Resource resource = (Resource) parent.getItemAtPosition(position);
+                //TODO details : cf DSF
+                Toast.makeText(getActivity().getApplicationContext(),
+                        resource.getTitle(), Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-        Toast.makeText(this.getActivity(), "Item " + position + " long clicked", Toast.LENGTH_SHORT).show();
         return true;
     }
 
@@ -141,8 +128,13 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     public void onResume() {
         super.onResume();
 
-        // Attach a QuickReturnAttacher, which takes care of all of the hide/show functionality.
+
         quickReturnAttacher = QuickReturnAttacher.forView(resourceListView);
+        final AbsListViewQuickReturnAttacher attacher = (AbsListViewQuickReturnAttacher) quickReturnAttacher;
+        attacher.addOnScrollListener(this);
+        attacher.setOnItemClickListener(this);
+        attacher.setOnItemLongClickListener(this);
+
         view.getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
     }
 
