@@ -251,7 +251,7 @@ public class MainActivity extends Activity  {
             public boolean onClose() {
                 setSandwich();
                 enabledDrawerSwipe();
-//                searchQuery = null;
+                searchQuery = null;
                 return false;
             }
         });
@@ -269,7 +269,7 @@ public class MainActivity extends Activity  {
             public boolean onQueryTextChange(String newText) {
                 SearchEvent searchEvent = new SearchEvent(newText);
                 eventBus.post(searchEvent);
-//                searchQuery = newText;
+                searchQuery = newText;
                 return false;
             }
         });
@@ -278,7 +278,9 @@ public class MainActivity extends Activity  {
         if(searchQuery != null){
             if(!searchView.getQuery().equals(searchQuery)) {
                 searchView.onActionViewExpanded();
+//                searchView.setIconified(false);
                 searchView.setQuery(searchQuery.toString(), true);
+                //TODO it doesn't work, the soft keyboard is displayed anyway...
                 InputMethodManager imm = (InputMethodManager)getSystemService(
                         Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
@@ -299,8 +301,8 @@ public class MainActivity extends Activity  {
                 SearchView searchView =
                         (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
                 searchView.onActionViewCollapsed();
-//                searchQuery = null;
-                Log.d("onOptionsItemSelected","arrow to sandwich");
+                searchQuery = null;
+//                Log.d("onOptionsItemSelected","arrow to sandwich");
             }else {
                 toggleDrawer();
             }
@@ -404,6 +406,8 @@ public class MainActivity extends Activity  {
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
         bundleArgs.putParcelableArrayList("resourcesList", resourcesList);
+        searchQuery = (searchQuery == null)? null: (searchQuery.equals(""))? null: searchQuery;
+        bundleArgs.putString("searchQuery", searchQuery );
         fragment.setArguments(bundleArgs);
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
@@ -513,7 +517,7 @@ public class MainActivity extends Activity  {
         animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                Log.d("setArrow",animation.getAnimatedValue().toString());
+//                Log.d("setArrow",animation.getAnimatedValue().toString());
                 drawerArrowDrawable.setParameter((Float) animation.getAnimatedValue());
             }
         });

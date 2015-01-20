@@ -117,6 +117,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
                // if(updateMapsView())moveCamera();
 //                addMarkers();
                 //TODO do the restore filter
+                restoreFilterState();
 
                 // Remove listener to prevent position reset on camera move.
                 map.setOnCameraChangeListener(null);
@@ -284,6 +285,24 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.unexpected_move_camera_error, Toast.LENGTH_SHORT);
             toast.show();
 //            ((MainActivity) getActivity()).openDrawer();
+        }
+    }
+
+
+    private void restoreFilterState(){
+        //we need to restore a filter by text
+        if(searchQuery != null){
+            resourceMapsSearchFilter.filter(searchQuery.toString());
+        }
+        //we need to restore a filter by categories
+        else if(!categoriesSelected.isEmpty()){
+            resourceMapsCategoryFilter.filter(
+                    (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null
+            );
+        }
+        //no filter needed
+        else{
+
         }
     }
 

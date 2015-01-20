@@ -26,6 +26,7 @@ public class OutputTypeFragment extends Fragment {
 
     View view;
     ArrayList<Category> categoriesSelected;
+    String searchQuery;
     ArrayList<Resource> resourcesList;
 
 
@@ -44,6 +45,9 @@ public class OutputTypeFragment extends Fragment {
             if (savedInstanceState.getParcelableArrayList("resourcesList") != null) {
                 resourcesList = savedInstanceState.getParcelableArrayList("resourcesList");
             }
+//            if (savedInstanceState.getString("searchQuery") != null) {
+                searchQuery = savedInstanceState.getString("searchQuery"); //we want null if there is no searchQuery
+//            }
         } else if (getArguments() != null) {
             //get from arguments (when it's fragmentManager which create the fragment)
             if (getArguments().getParcelableArrayList("categoriesSelected") != null) {
@@ -53,6 +57,9 @@ public class OutputTypeFragment extends Fragment {
             if (getArguments().getParcelableArrayList("resourcesList") != null) {
                 resourcesList = getArguments().getParcelableArrayList("resourcesList");
             }
+//            if (getArguments().getString("searchQuery") != null) {
+                searchQuery = getArguments().getString("searchQuery"); //we want null if there is no searchQuery
+//            }
         }
         if (resourcesList == null || categoriesSelected == null) {
             Log.e("OutputTypeFragment", "resourcesList or categoriesSelected are null. Are you sur you create the fragment with these parameters ?");
@@ -105,9 +112,10 @@ public class OutputTypeFragment extends Fragment {
         super.onSaveInstanceState(outState);
         //categories state
         outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        //search state
+        outState.putString("searchQuery",searchQuery);
         //resources
         outState.putParcelableArrayList("resourcesList", resourcesList);
-
     }
 
     @Override
