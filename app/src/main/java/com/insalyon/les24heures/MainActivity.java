@@ -174,21 +174,7 @@ public class MainActivity extends Activity {
         drawerArrowDrawable.setStrokeColor(resources.getColor(R.color.light_gray));
         getActionBar().setIcon(drawerArrowDrawable);
 
-        drawerListener = new DrawerLayout.SimpleDrawerListener() {
-            @Override
-            public void onDrawerSlide(View drawerView, float slideOffset) {
-                offset = slideOffset;
-                // Sometimes slideOffset ends up so close to but not quite 1 or 0.
-                if (slideOffset >= .995) {
-                    flipped = true;
-                    drawerArrowDrawable.setFlip(flipped);
-                } else if (slideOffset <= .005) {
-                    flipped = false;
-                    drawerArrowDrawable.setFlip(flipped);
-                }
-                drawerArrowDrawable.setParameter(offset);
-            }
-        };
+        drawerListener = new DrawerListener();
         drawerLayout.setDrawerListener(drawerListener);
 
 
@@ -438,6 +424,36 @@ public class MainActivity extends Activity {
         }
     }
 
+    private class DrawerListener extends DrawerLayout.SimpleDrawerListener {
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            super.onDrawerOpened(drawerView);
+            isDrawerOpen = true;
+            invalidateOptionsMenu();
+        }
+
+        @Override
+        public void onDrawerSlide(View drawerView, float slideOffset) {
+            offset = slideOffset;
+            // Sometimes slideOffset ends up so close to but not quite 1 or 0.
+            if (slideOffset >= .995) {
+                flipped = true;
+                drawerArrowDrawable.setFlip(flipped);
+            } else if (slideOffset <= .005) {
+                flipped = false;
+                drawerArrowDrawable.setFlip(flipped);
+            }
+            drawerArrowDrawable.setParameter(offset);
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+            super.onDrawerClosed(drawerView);
+            isDrawerOpen = false;
+            invalidateOptionsMenu();
+        }
+    }
+
     private void selectCategory(int position) {
         categoriesSelected = getCategoriesSelectedFromView();
         if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
@@ -484,15 +500,13 @@ public class MainActivity extends Activity {
 
     public void openDrawer() {
         drawerLayout.openDrawer(drawerView);
-        isDrawerOpen = true;
-        invalidateOptionsMenu();
+
 
     }
 
     public void closeDrawer() {
         drawerLayout.closeDrawer(drawerView);
-        isDrawerOpen = false;
-        invalidateOptionsMenu();
+
 
     }
 
