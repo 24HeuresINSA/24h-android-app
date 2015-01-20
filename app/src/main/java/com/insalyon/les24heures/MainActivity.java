@@ -411,6 +411,7 @@ public class MainActivity extends Activity  {
             ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
 
         ft.replace(R.id.content_frame, fragment).commit();
+        invalidateOptionsMenu();
     }
 
     /* The click listner for ListView in the navigation drawer */

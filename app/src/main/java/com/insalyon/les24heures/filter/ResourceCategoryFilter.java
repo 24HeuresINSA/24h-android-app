@@ -1,4 +1,4 @@
-package com.insalyon.les24heures.adapter;
+package com.insalyon.les24heures.filter;
 
 import com.insalyon.les24heures.model.Resource;
 
@@ -8,12 +8,12 @@ import java.util.Arrays;
 /**
  * Created by remi on 27/12/14.
  */
-public class ResourceCategoryFilter extends ResourceListFilter {
+public abstract class ResourceCategoryFilter extends ResourceFilter {
 
     ArrayList<String> selectedCategories;
 
-    public ResourceCategoryFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList, ResourceAdapter resourceAdapter) {
-        super(originalList, resourceList, resourceAdapter);
+    public ResourceCategoryFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList) {
+        super(originalList, resourceList);
     }
 
     @Override

@@ -39,6 +39,14 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     MapView mapView;
     GoogleMap googleMap;
 
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -163,12 +171,12 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             return false;
         }
         addMarkers();
-        if(categoriesSelected.isEmpty()){
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noCategoriesSelected, Toast.LENGTH_SHORT);
-            toast.show();
-            ((MainActivity) getActivity()).openDrawer();
-            return false;
-        }
+//        if(categoriesSelected.isEmpty()){
+//            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noCategoriesSelected, Toast.LENGTH_SHORT);
+//            toast.show();
+//            ((MainActivity) getActivity()).openDrawer();
+//            return false;
+//        }
         if(!displayMarkersAccordingToSelectedCategories()){
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesMatchSelectedCategories, Toast.LENGTH_SHORT);
             toast.show();

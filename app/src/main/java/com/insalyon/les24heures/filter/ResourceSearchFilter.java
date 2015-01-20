@@ -1,6 +1,4 @@
-package com.insalyon.les24heures.adapter;
-
-import android.widget.Filter;
+package com.insalyon.les24heures.filter;
 
 import com.insalyon.les24heures.model.Resource;
 
@@ -9,11 +7,10 @@ import java.util.ArrayList;
 /**
  * Created by remi on 27/12/14.
  */
-public class ResourceSearchFilter extends ResourceListFilter {
+public abstract class ResourceSearchFilter extends ResourceFilter {
 
-
-    public ResourceSearchFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList, ResourceAdapter resourceAdapter) {
-        super(originalList, resourceList, resourceAdapter);
+    public ResourceSearchFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList) {
+        super(originalList, resourceList);
     }
 
     @Override
