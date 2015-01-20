@@ -37,7 +37,7 @@
 
 
     <!--Maps Output-->
-    <string name="unexpected_move_camera_error">No resources are displayed, unexecptecdede. Please retry</string>
+    <string name="unexpected_move_camera_error">No resources are displayed, unexpected. Please retry</string>
 
 
     <!--List Output-->

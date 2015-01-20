@@ -22,7 +22,9 @@ import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
+import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.filter.ResourceMapsCategoryFilter;
+import com.insalyon.les24heures.filter.ResourceMapsSearchFilter;
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
@@ -43,6 +45,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     GoogleMap googleMap;
 
     ResourceMapsCategoryFilter resourceMapsCategoryFilter;
+    ResourceMapsSearchFilter resourceMapsSearchFilter;
 
     ArrayList<Resource> displayableResourcesLists;
 
@@ -54,6 +57,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         displayableResourcesLists = new ArrayList<>();
         displayableResourcesLists.addAll(resourcesList);
         resourceMapsCategoryFilter = new ResourceMapsCategoryFilter(resourcesList,displayableResourcesLists,this);
+        resourceMapsSearchFilter = new ResourceMapsSearchFilter(resourcesList,displayableResourcesLists,this);
 
     }
 
@@ -73,6 +77,8 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         googleMap = mapView.getMap();
         googleMap.getUiSettings().setZoomControlsEnabled(true);
+        addMarkers();
+
 
         return view;
     }
@@ -97,17 +103,21 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onMapReady(final GoogleMap map) {
         map.setMyLocationEnabled(true);
 
+
+        //to prevent user to throw up, zoom on Lyon without animateCamera
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
+
 //        updateMapsView();
 
+        //display data if already there when the fragment is created
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition arg0) {
-                //to prevent user to throw up, zoom on Lyon without animateCamera
-                googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
                 //then try to zoom on resources
                // if(updateMapsView())moveCamera();
-                addMarkers();
-                //TODO do a filter !
+//                addMarkers();
+                //TODO do the restore filter
+
                 // Remove listener to prevent position reset on camera move.
                 map.setOnCameraChangeListener(null);
             }
@@ -154,6 +164,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         resourceMapsCategoryFilter.filter(
                 (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null
         );
+    }
+
+    public void onEvent(SearchEvent event){
+        super.onEvent(event);
+        resourceMapsSearchFilter.filter(event.getQuery().toString());
     }
 
     @OnClick(R.id.fab_goto_list)
@@ -210,7 +225,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         if(resourcesList.isEmpty()){
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesFound, Toast.LENGTH_SHORT);
             toast.show();
-            ((MainActivity) getActivity()).openDrawer();
+//            ((MainActivity) getActivity()).openDrawer();
             //TODO display a spinner
             spinner = true;
             return;
@@ -230,11 +245,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
     private LatLngBounds.Builder getBuilder() {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        //include only selected categories
-        for (Resource resource : resourcesList) {
-            if (categoriesSelected.indexOf(resource.getCategory()) != -1) {
+        //include only resource selected by a one of the filter
+        for (Resource resource : displayableResourcesLists) {
+//            if (displayableResourcesLists.indexOf(resource.getCategory()) != -1) {
                 builder.include(resource.getMarker().getPosition());
-            }
+//            }
         }
         return builder;
     }
@@ -268,7 +283,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.unexpected_move_camera_error, Toast.LENGTH_SHORT);
             toast.show();
-            ((MainActivity) getActivity()).openDrawer();
+//            ((MainActivity) getActivity()).openDrawer();
         }
     }
 
