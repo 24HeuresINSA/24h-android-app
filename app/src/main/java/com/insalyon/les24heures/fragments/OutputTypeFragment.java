@@ -57,6 +57,8 @@ public class OutputTypeFragment extends Fragment {
         if (resourcesList == null || categoriesSelected == null) {
             Log.e("OutputTypeFragment", "resourcesList or categoriesSelected are null. Are you sur you create the fragment with these parameters ?");
         }
+
+
     }
 
 

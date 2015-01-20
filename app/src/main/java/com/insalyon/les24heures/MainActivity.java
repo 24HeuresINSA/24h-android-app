@@ -251,6 +251,7 @@ public class MainActivity extends Activity  {
             public boolean onClose() {
                 setSandwich();
                 enabledDrawerSwipe();
+//                searchQuery = null;
                 return false;
             }
         });
@@ -268,6 +269,7 @@ public class MainActivity extends Activity  {
             public boolean onQueryTextChange(String newText) {
                 SearchEvent searchEvent = new SearchEvent(newText);
                 eventBus.post(searchEvent);
+//                searchQuery = newText;
                 return false;
             }
         });
@@ -297,6 +299,7 @@ public class MainActivity extends Activity  {
                 SearchView searchView =
                         (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
                 searchView.onActionViewCollapsed();
+//                searchQuery = null;
                 Log.d("onOptionsItemSelected","arrow to sandwich");
             }else {
                 toggleDrawer();

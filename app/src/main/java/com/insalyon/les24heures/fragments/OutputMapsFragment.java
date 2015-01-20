@@ -22,7 +22,10 @@ import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
+import com.insalyon.les24heures.filter.ResourceMapsCategoryFilter;
 import com.insalyon.les24heures.model.Resource;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -34,16 +37,23 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     private static final String TAG = OutputMapsFragment.class.getCanonicalName();
     View view;
 
-    Boolean spinner; //TODO mettre en place un vrai spinner
+    Boolean spinner = false; //TODO mettre en place un vrai spinner
 
     MapView mapView;
     GoogleMap googleMap;
+
+    ResourceMapsCategoryFilter resourceMapsCategoryFilter;
+
+    ArrayList<Resource> displayableResourcesLists;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        displayableResourcesLists = new ArrayList<>();
+        displayableResourcesLists.addAll(resourcesList);
+        resourceMapsCategoryFilter = new ResourceMapsCategoryFilter(resourcesList,displayableResourcesLists,this);
 
     }
 
@@ -87,7 +97,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onMapReady(final GoogleMap map) {
         map.setMyLocationEnabled(true);
 
-        updateMapsView();
+//        updateMapsView();
 
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
@@ -95,7 +105,9 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
                 //to prevent user to throw up, zoom on Lyon without animateCamera
                 googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
                 //then try to zoom on resources
-                if(updateMapsView())moveCamera();
+               // if(updateMapsView())moveCamera();
+                addMarkers();
+                //TODO do a filter !
                 // Remove listener to prevent position reset on camera move.
                 map.setOnCameraChangeListener(null);
             }
@@ -115,7 +127,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
         Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
-        if(updateMapsView())moveCamera();
+//        if(updateMapsView())moveCamera();
+        resourceMapsCategoryFilter.filter(
+                (event.getCategories().size() != 0) ? event.getCategories().toString() : null
+        );
+
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
@@ -133,7 +149,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
             spinner = false;
         }
-        if(updateMapsView())moveCamera();
+        addMarkers();
+//        if(updateMapsView())moveCamera();
+        resourceMapsCategoryFilter.filter(
+                (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null
+        );
     }
 
     @OnClick(R.id.fab_goto_list)
@@ -187,6 +207,14 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     }
 
     private void addMarkers() {
+        if(resourcesList.isEmpty()){
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesFound, Toast.LENGTH_SHORT);
+            toast.show();
+            ((MainActivity) getActivity()).openDrawer();
+            //TODO display a spinner
+            spinner = true;
+            return;
+        }
         for (Resource resource : resourcesList) {
             if(resource.getMarker() == null) {
                 Marker marker = googleMap.addMarker(
@@ -211,6 +239,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         return builder;
     }
 
+    @Deprecated
     private Boolean displayMarkersAccordingToSelectedCategories() {
         Boolean atLeastOneVisible = false;
         //include only selected categories
@@ -225,7 +254,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         return atLeastOneVisible;
     }
 
-    private void moveCamera() {
+    public void moveCamera() {
         try {
             // Move camera
             googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilder().build(), 70));

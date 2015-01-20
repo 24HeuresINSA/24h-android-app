@@ -126,7 +126,12 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         attacher.setOnItemLongClickListener(this);
 
         view.getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
+
+        updateListView();
+
     }
+
+
 
 
     /**     Fragment is alive       **/
@@ -239,6 +244,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
     /**     Fragment methods        **/
     //default filter
+    //TODO regarder
     private Boolean updateListView(){
 
         //category is prior, text search is ignored
