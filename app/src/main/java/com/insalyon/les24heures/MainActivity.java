@@ -50,7 +50,7 @@ import de.greenrobot.event.EventBus;
 import retrofit.RestAdapter;
 
 
-public class MainActivity extends Activity  {
+public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getCanonicalName();
 
     FragmentManager fragmentManager;
@@ -86,7 +86,9 @@ public class MainActivity extends Activity  {
     private float offset;
     private boolean flipped;
 
-    /**         Activity is being created       **/
+    /**
+     * Activity is being created       *
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +109,6 @@ public class MainActivity extends Activity  {
         categoryService = CategoryServiceImpl.getInstance();
 
 
-
         /*** recover data either from (by priority)
          *           savedInstanceState (rotate, restore from background)
          *           getIntent (start from another activity, another apps) TODO
@@ -125,12 +126,12 @@ public class MainActivity extends Activity  {
             if (savedInstanceState.getParcelableArrayList("resourcesList") != null) {
                 resourcesList = savedInstanceState.getParcelableArrayList("resourcesList");
             }
-            if(savedInstanceState.getString("searchQuery") != null){
+            if (savedInstanceState.getString("searchQuery") != null) {
                 SearchEvent searchEvent = new SearchEvent(savedInstanceState.getString("searchQuery").toString());
                 eventBus.postSticky(searchEvent);
                 searchQuery = savedInstanceState.getString("searchQuery").toString();
             }
-            if(savedInstanceState.getBoolean("isFavoritesChecked")){
+            if (savedInstanceState.getBoolean("isFavoritesChecked")) {
                 //TODO globalMenu is null here
             }
         }
@@ -149,11 +150,11 @@ public class MainActivity extends Activity  {
 
         if (resourcesList == null) {
             resourcesList = new ArrayList<>();
-           resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
+            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
 //            resourceService.getResourcesAsyncMock();
         }
 
-        if(categoriesSelected == null){
+        if (categoriesSelected == null) {
             categoriesSelected = new ArrayList<>();
         }
 
@@ -174,7 +175,8 @@ public class MainActivity extends Activity  {
         getActionBar().setIcon(drawerArrowDrawable);
 
         drawerListener = new DrawerLayout.SimpleDrawerListener() {
-            @Override public void onDrawerSlide(View drawerView, float slideOffset) {
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
                 offset = slideOffset;
                 // Sometimes slideOffset ends up so close to but not quite 1 or 0.
                 if (slideOffset >= .995) {
@@ -230,7 +232,7 @@ public class MainActivity extends Activity  {
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("pouet","open search view");
+                Log.d("pouet", "open search view");
             }
         });
 
@@ -259,7 +261,7 @@ public class MainActivity extends Activity  {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                InputMethodManager imm = (InputMethodManager)getSystemService(
+                InputMethodManager imm = (InputMethodManager) getSystemService(
                         Context.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
                 return false;
@@ -275,16 +277,17 @@ public class MainActivity extends Activity  {
         });
 
         //init searchView widget depending on bundleSaveInstanceState
-        if(searchQuery != null){
-            if(!searchView.getQuery().equals(searchQuery)) {
-                searchView.onActionViewExpanded();
+        if (searchQuery != null) {
+            if (!searchQuery.equals("")) //je craque, tant pis pour la rotation...
+                if (!searchView.getQuery().equals(searchQuery)) {
+                    searchView.onActionViewExpanded();
 //                searchView.setIconified(false);
-                searchView.setQuery(searchQuery.toString(), true);
-                //TODO it doesn't work, the soft keyboard is displayed anyway...
-                InputMethodManager imm = (InputMethodManager)getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
-            }
+                    searchView.setQuery(searchQuery.toString(), true);
+                    //TODO it doesn't work, the soft keyboard is displayed anyway...
+                    InputMethodManager imm = (InputMethodManager) getSystemService(
+                            Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                }
         }
 
         return true;
@@ -294,8 +297,8 @@ public class MainActivity extends Activity  {
     public boolean onOptionsItemSelected(MenuItem item) {
 
         //click on the appName or the appIcone
-        if(item.getTitle().equals(getActionBar().getTitle())){
-            if(!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()) {
+        if (item.getTitle().equals(getActionBar().getTitle())) {
+            if (!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()) {
                 setSandwich();
                 enabledDrawerSwipe();
                 SearchView searchView =
@@ -303,20 +306,20 @@ public class MainActivity extends Activity  {
                 searchView.onActionViewCollapsed();
                 searchQuery = null;
 //                Log.d("onOptionsItemSelected","arrow to sandwich");
-            }else {
+            } else {
                 toggleDrawer();
             }
             return true;
         }
 
-        switch (item.getItemId()){
+        switch (item.getItemId()) {
             case R.id.menu_favorites:
                 ArrayList<Category> list = new ArrayList<>();
                 list.addAll(getCategoriesSelectedFromView());
-                if(item.isChecked()){
+                if (item.isChecked()) {
                     item.setChecked(false);
                     item.setIcon(R.drawable.ic_favorites_unchecked);
-                }else{
+                } else {
                     list.add((new Category("favorites")));
                     item.setChecked(true);
                     item.setIcon(R.drawable.ic_favorites_checked);
@@ -344,7 +347,9 @@ public class MainActivity extends Activity  {
         return super.onPrepareOptionsMenu(menu);
     }
 
-    /**         Activity is alive       **/
+    /**
+     * Activity is alive       *
+     */
 
     public void onEvent(ResourcesUpdatedEvent event) {
         // super.onEvent(event);
@@ -369,7 +374,9 @@ public class MainActivity extends Activity  {
     }
 
 
-    /**         Activity is no more alive       **/
+    /**
+     * Activity is no more alive       *
+     */
 
     @Override
     protected void onSaveInstanceState(Bundle outState) {
@@ -393,26 +400,28 @@ public class MainActivity extends Activity  {
         //action bar menu
         SearchView searchView =
                 (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
-        if(!searchView.getQuery().toString().equals("")){
-            outState.putString("searchQuery",searchView.getQuery().toString());
+        if (!searchView.getQuery().toString().equals("")) {
+            outState.putString("searchQuery", searchView.getQuery().toString());
         }
-        outState.putBoolean("isFavoritesChecked",globalMenu.findItem(R.id.menu_favorites).isChecked());
+        outState.putBoolean("isFavoritesChecked", globalMenu.findItem(R.id.menu_favorites).isChecked());
     }
 
 
-    /**         Activity methods      **/
+    /**
+     * Activity methods      *
+     */
 
     private void replaceContentFragment(Fragment fragment) {
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
         bundleArgs.putParcelableArrayList("resourcesList", resourcesList);
-        searchQuery = (searchQuery == null)? null: (searchQuery.equals(""))? null: searchQuery;
-        bundleArgs.putString("searchQuery", searchQuery );
+        searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
+        bundleArgs.putString("searchQuery", searchQuery);
         fragment.setArguments(bundleArgs);
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
-        if(fragment.getClass() == OutputListFragment.class)
+        if (fragment.getClass() == OutputListFragment.class)
             ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
         else
             ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
@@ -431,7 +440,7 @@ public class MainActivity extends Activity  {
 
     private void selectCategory(int position) {
         categoriesSelected = getCategoriesSelectedFromView();
-        if(globalMenu.findItem(R.id.menu_favorites).isChecked()){
+        if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
             categoriesSelected.add(new Category("favorites"));
         }
 
@@ -464,10 +473,10 @@ public class MainActivity extends Activity  {
         return categoriesSelected;
     }
 
-    private void toggleDrawer(){
-        if(drawerLayout.isDrawerOpen(drawerView)){
+    private void toggleDrawer() {
+        if (drawerLayout.isDrawerOpen(drawerView)) {
             closeDrawer();
-        }else{
+        } else {
             openDrawer();
         }
 
@@ -487,7 +496,7 @@ public class MainActivity extends Activity  {
 
     }
 
-    public void setArrow(){
+    public void setArrow() {
         ValueAnimator animation = ValueAnimator.ofFloat(0f, 1f);
         animation.setDuration(500);
         animation.start();
@@ -502,15 +511,15 @@ public class MainActivity extends Activity  {
     }
 
 
-    private void disabledDrawerSwipe(){
+    private void disabledDrawerSwipe() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
 
-    private void enabledDrawerSwipe(){
+    private void enabledDrawerSwipe() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
     }
 
-    public void setSandwich(){
+    public void setSandwich() {
         ValueAnimator animation = ValueAnimator.ofFloat(1f, 0f);
         animation.setDuration(500);
         animation.start();
