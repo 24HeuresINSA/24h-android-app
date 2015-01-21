@@ -201,6 +201,8 @@ public class MainActivity extends Activity {
     }
 
 
+
+
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         globalMenu = menu;
@@ -325,12 +327,17 @@ public class MainActivity extends Activity {
     /* Called whenever we call invalidateOptionsMenu() */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-//        boolean drawerOpen = drawerLayout.isDrawerVisible(drawerView);
+        boolean drawerOpen = drawerLayout.isDrawerVisible(drawerView);
 
-        menu.findItem(R.id.menu_search).setVisible(!isDrawerOpen);
-        menu.findItem(R.id.menu_favorites).setVisible(!isDrawerOpen);
+
+        hideOptionsMenu(menu, drawerOpen);
 
         return super.onPrepareOptionsMenu(menu);
+    }
+
+    private void hideOptionsMenu(Menu menu, boolean drawerOpen) {
+        menu.findItem(R.id.menu_search).setVisible(!drawerOpen);
+        menu.findItem(R.id.menu_favorites).setVisible(!drawerOpen);
     }
 
     /**
@@ -413,7 +420,7 @@ public class MainActivity extends Activity {
             ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
 
         ft.replace(R.id.content_frame, fragment).commit();
-        invalidateOptionsMenu();
+//        invalidateOptionsMenu();
     }
 
     /* The click listner for ListView in the navigation drawer */
@@ -429,7 +436,8 @@ public class MainActivity extends Activity {
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
             isDrawerOpen = true;
-            invalidateOptionsMenu();
+//            invalidateOptionsMenu();
+            hideOptionsMenu(globalMenu, true);
         }
 
         @Override
@@ -450,7 +458,9 @@ public class MainActivity extends Activity {
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
             isDrawerOpen = false;
-            invalidateOptionsMenu();
+//            invalidateOptionsMenu();
+            hideOptionsMenu(globalMenu, false);
+
         }
     }
 
