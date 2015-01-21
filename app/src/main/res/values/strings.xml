@@ -4,7 +4,7 @@
     <string name="maps_api_key">AIzaSyA4dlZvjFmFs3ZLFC7t9V3LJCgzewGPCZo</string>
 
     <!--General-->
-    <string name="app_name">les24heures</string>
+    <string name="app_name">Les 24heures</string>
     <string name="action_settings">Settings</string>
 
     <!--Navigation Drawer-->

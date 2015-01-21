@@ -60,6 +60,11 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     ResourceAdapter resourceAdapter = null;
     private QuickReturnAttacher quickReturnAttacher;
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        displayName = getActivity().getResources().getString(R.string.drawer_outputtype_list);
+    }
 
     @Nullable
     @Override
@@ -107,12 +112,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     };
 
 
-
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ((MainActivity)getActivity()).setTitle(R.string.drawer_outputtype_list);
-    }
 
     @Override
     public void onResume() {

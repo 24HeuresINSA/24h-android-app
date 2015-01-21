@@ -31,6 +31,7 @@ import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.fragments.OutputListFragment;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
+import com.insalyon.les24heures.fragments.OutputTypeFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.service.CategoryService;
@@ -216,7 +217,7 @@ public class MainActivity extends Activity {
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final SearchView searchView =
                 (SearchView) menu.findItem(R.id.menu_search).getActionView();
-        MenuItem favoritesItem = menu.findItem(R.id.menu_favorites);
+        final MenuItem favoritesItem = menu.findItem(R.id.menu_favorites);
 
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -234,6 +235,7 @@ public class MainActivity extends Activity {
             public void onClick(View v) {
                 setArrow();
                 disabledDrawerSwipe();
+                disableFavoritesFilter(favoritesItem);
             }
         });
 
@@ -280,10 +282,16 @@ public class MainActivity extends Activity {
         }
 
         //init favorites button depending on bundleSaveInstanceState
-        favoritesItem.setChecked(!isFavoritesChecked); //oops, magouille
-        toggleFavorites(favoritesItem);
+        disableFavoritesFilter(favoritesItem);
 
         return true;
+    }
+
+    private void disableFavoritesFilter(MenuItem favoritesItem) {
+        if(isFavoritesChecked){
+//            favoritesItem.setChecked(false);
+            toggleFavorites(favoritesItem);
+        }
     }
 
     @Override
@@ -449,6 +457,7 @@ public class MainActivity extends Activity {
             isDrawerOpen = true;
 //            invalidateOptionsMenu();
             hideOptionsMenu(globalMenu, true);
+            getActionBar().setTitle(R.string.app_name);
         }
 
         @Override
@@ -471,6 +480,10 @@ public class MainActivity extends Activity {
             isDrawerOpen = false;
 //            invalidateOptionsMenu();
             hideOptionsMenu(globalMenu, false);
+//            findViewById(R.id.content_frame).
+            getActionBar().setTitle(
+                    ((OutputTypeFragment)getFragmentManager().findFragmentById(R.id.content_frame))
+                            .getDisplayName());
 
         }
     }

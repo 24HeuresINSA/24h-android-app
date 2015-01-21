@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
@@ -28,6 +29,8 @@ public class OutputTypeFragment extends Fragment {
     ArrayList<Category> categoriesSelected;
     String searchQuery;
     ArrayList<Resource> resourcesList;
+
+    public String displayName;
 
 
     @Override
@@ -79,6 +82,7 @@ public class OutputTypeFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        ((MainActivity) getActivity()).setTitle(displayName);
     }
 
     @Override
@@ -127,5 +131,10 @@ public class OutputTypeFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
+    }
+
+
+    public String getDisplayName() {
+        return displayName;
     }
 }

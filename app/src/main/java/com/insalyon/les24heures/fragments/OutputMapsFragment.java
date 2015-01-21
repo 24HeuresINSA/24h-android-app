@@ -53,6 +53,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        displayName = getActivity().getResources().getString(R.string.drawer_outputtype_maps);
 
         displayableResourcesLists = new ArrayList<>();
         displayableResourcesLists.addAll(resourcesList);
@@ -83,12 +84,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         return view;
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ((MainActivity) getActivity()).setTitle(R.string.drawer_outputtype_maps);
 
-    }
 
     @Override
     public void onResume() {
