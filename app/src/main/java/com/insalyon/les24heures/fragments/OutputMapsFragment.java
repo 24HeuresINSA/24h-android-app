@@ -57,8 +57,8 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         displayableResourcesLists = new ArrayList<>();
         displayableResourcesLists.addAll(resourcesList);
-        resourceMapsCategoryFilter = new ResourceMapsCategoryFilter(resourcesList,displayableResourcesLists,this);
-        resourceMapsSearchFilter = new ResourceMapsSearchFilter(resourcesList,displayableResourcesLists,this);
+        resourceMapsCategoryFilter = new ResourceMapsCategoryFilter(resourcesList, displayableResourcesLists, this);
+        resourceMapsSearchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this);
 
     }
 
@@ -85,7 +85,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     }
 
 
-
     @Override
     public void onResume() {
         mapView.onResume();
@@ -94,25 +93,20 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
     }
 
-    /**    Fragment is running **/
+    /**
+     * Fragment is running *
+     */
     @Override
     public void onMapReady(final GoogleMap map) {
         map.setMyLocationEnabled(true);
 
-
         //to prevent user to throw up, zoom on Lyon without animateCamera
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
-
-//        updateMapsView();
 
         //display data if already there when the fragment is created
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition arg0) {
-                //then try to zoom on resources
-               // if(updateMapsView())moveCamera();
-//                addMarkers();
-                //TODO do the restore filter
                 restoreFilterState();
 
                 // Remove listener to prevent position reset on camera move.
@@ -134,7 +128,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
         Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
-//        if(updateMapsView())moveCamera();
         resourceMapsCategoryFilter.filter(
                 (event.getCategories().size() != 0) ? event.getCategories().toString() : null
         );
@@ -145,7 +138,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         super.onEvent(event);
         Log.d(TAG + "onEvent(CategoryEvent)", event.getResourceList().toString());
 
-        if(spinner){
+        if (spinner) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -157,24 +150,25 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             spinner = false;
         }
         addMarkers();
-//        if(updateMapsView())moveCamera();
         resourceMapsCategoryFilter.filter(
                 (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null
         );
     }
 
-    public void onEvent(SearchEvent event){
+    public void onEvent(SearchEvent event) {
         super.onEvent(event);
         resourceMapsSearchFilter.filter(event.getQuery().toString());
     }
 
     @OnClick(R.id.fab_goto_list)
-    public void onClickFabGotoList(View v){
-        ((MainActivity)getActivity()).selectList();
+    public void onClickFabGotoList(View v) {
+        ((MainActivity) getActivity()).selectList();
     }
 
 
-    /**    Fragment is no more running **/
+    /**
+     * Fragment is no more running *
+     */
     @Override
     public void onPause() {
         super.onPause();
@@ -192,46 +186,22 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     }
 
 
-    /** Fragment methods **/
-    private Boolean updateMapsView(){
-        if(resourcesList.isEmpty()){
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesFound, Toast.LENGTH_SHORT);
-            toast.show();
-            ((MainActivity) getActivity()).openDrawer();
-            //TODO display a spinner
-            spinner = true;
-            return false;
-        }
-        addMarkers();
-//        if(categoriesSelected.isEmpty()){
-//            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noCategoriesSelected, Toast.LENGTH_SHORT);
-//            toast.show();
-//            ((MainActivity) getActivity()).openDrawer();
-//            return false;
-//        }
-        if(!displayMarkersAccordingToSelectedCategories()){
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesMatchSelectedCategories, Toast.LENGTH_SHORT);
-            toast.show();
-            ((MainActivity) getActivity()).openDrawer();
-            return false;
-        }
-        return true;
-    }
-
+    /**
+     * Fragment methods *
+     */
     private void addMarkers() {
-        if(resourcesList.isEmpty()){
+        if (resourcesList.isEmpty()) {
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesFound, Toast.LENGTH_SHORT);
             toast.show();
-//            ((MainActivity) getActivity()).openDrawer();
             //TODO display a spinner
             spinner = true;
             return;
         }
         for (Resource resource : resourcesList) {
-            if(resource.getMarker() == null) {
+            if (resource.getMarker() == null) {
                 Marker marker = googleMap.addMarker(
                         new MarkerOptions()
-                                .title(resource.getTitle()+" "+resource.getCategory().getName())
+                                .title(resource.getTitle() + " " + resource.getCategory().getName())
                                 .snippet(resource.getDescription())
                                 .position(resource.getLoc()));
 
@@ -244,26 +214,9 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         //include only resource selected by a one of the filter
         for (Resource resource : displayableResourcesLists) {
-//            if (displayableResourcesLists.indexOf(resource.getCategory()) != -1) {
-                builder.include(resource.getMarker().getPosition());
-//            }
+            builder.include(resource.getMarker().getPosition());
         }
         return builder;
-    }
-
-    @Deprecated
-    private Boolean displayMarkersAccordingToSelectedCategories() {
-        Boolean atLeastOneVisible = false;
-        //include only selected categories
-        for (Resource resource : resourcesList) {
-            if (categoriesSelected.indexOf(resource.getCategory()) == -1) {
-                resource.getMarker().setVisible(false);
-            } else {
-                resource.getMarker().setVisible(true);
-                atLeastOneVisible = true;
-            }
-        }
-        return atLeastOneVisible;
     }
 
     public void moveCamera() {
@@ -271,7 +224,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             // Move camera
             googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilder().build(), 70));
         } catch (IllegalStateException e) {
-            Log.d("OutputMapsFragment.moveCamera","unexpected");
+            Log.d("OutputMapsFragment.moveCamera", "unexpected");
             e.printStackTrace();
             //no resources were added to the builder
             //default if no builder - Lyon
@@ -280,26 +233,21 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
             Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.unexpected_move_camera_error, Toast.LENGTH_SHORT);
             toast.show();
-//            ((MainActivity) getActivity()).openDrawer();
         }
     }
 
-
-    private void restoreFilterState(){
+    private void restoreFilterState() {
         //we need to restore a filter by text
-        if(searchQuery != null){
+        if (searchQuery != null) {
             resourceMapsSearchFilter.filter(searchQuery.toString());
         }
         //we need to restore a filter by categories
-        else if(!categoriesSelected.isEmpty()){
+        else if (!categoriesSelected.isEmpty()) {
             resourceMapsCategoryFilter.filter(
                     (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null
             );
         }
-        //no filter needed
-        else{
-
-        }
+        //else no filter needed
     }
 
 }

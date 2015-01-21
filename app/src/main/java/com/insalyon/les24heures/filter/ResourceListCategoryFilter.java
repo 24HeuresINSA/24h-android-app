@@ -23,10 +23,10 @@ public class ResourceListCategoryFilter extends ResourceCategoryFilter {
                                   FilterResults results) {
 
         resourceList.clear();
-        resourceList.addAll((ArrayList<Resource>)results.values);
+        resourceList.addAll((ArrayList<Resource>) results.values);
         resourceAdapter.notifyDataSetChanged();
         resourceAdapter.clear(); //will clear resourceAdapter.resourceList
-        for(int i = 0, l = resourceList.size(); i < l; i++) {
+        for (int i = 0, l = resourceList.size(); i < l; i++) {
             resourceAdapter.add(resourceList.get(i)); //will populate resourceAdapter.resourceList
         }
         resourceAdapter.notifyDataSetInvalidated();

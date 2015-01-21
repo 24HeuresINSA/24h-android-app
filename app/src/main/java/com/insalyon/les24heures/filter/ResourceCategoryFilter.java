@@ -10,11 +10,10 @@ import java.util.Arrays;
 /**
  * Created by remi on 27/12/14.
  */
-public abstract class ResourceCategoryFilter extends Filter{
+public abstract class ResourceCategoryFilter extends Filter {
 
     ArrayList<Resource> originalList;
     ArrayList<Resource> resourceList;
-
 
     ArrayList<String> selectedCategories;
 
@@ -27,7 +26,6 @@ public abstract class ResourceCategoryFilter extends Filter{
     @Override
     protected FilterResults performFiltering(CharSequence constraint) {
         FilterResults result = new FilterResults();
-
 
         if (constraint != null) {
             selectedCategories =
@@ -55,18 +53,17 @@ public abstract class ResourceCategoryFilter extends Filter{
             }
         } else {
             synchronized (this) {
-                result.values =  new ArrayList<>(originalList);
+                result.values = new ArrayList<>(originalList);
                 result.count = originalList.size();
             }
         }
-
         return result;
     }
 
 
     private Boolean isDisplayable(Resource resource) {
         if (selectedCategories.contains("favorites")) {
-            if(selectedCategories.size() == 1)
+            if (selectedCategories.size() == 1)
                 return resource.isFavorites();
             return resource.isFavorites() &&
                     (selectedCategories.contains(resource.getCategory().toString()));

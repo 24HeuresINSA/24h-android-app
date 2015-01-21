@@ -25,25 +25,20 @@ public abstract class ResourceSearchFilter extends Filter {
     protected FilterResults performFiltering(CharSequence constraint) {
 
         FilterResults result = new FilterResults();
-        if(constraint != null && constraint.toString().length() > 0)
-        {
+        if (constraint != null && constraint.toString().length() > 0) {
             constraint = constraint.toString().toLowerCase();
             ArrayList<Resource> filteredItems = new ArrayList<Resource>();
 
-            for(int i = 0, l = originalList.size(); i < l; i++)
-            {
+            for (int i = 0, l = originalList.size(); i < l; i++) {
                 Resource resource = originalList.get(i);
                 //effective search pattern
-                if(resource.getTitle().toString().toLowerCase().contains(constraint))
+                if (resource.getTitle().toString().toLowerCase().contains(constraint))
                     filteredItems.add(resource);
             }
             result.count = filteredItems.size();
             result.values = filteredItems;
-        }
-        else
-        {
-            synchronized(this)
-            {
+        } else {
+            synchronized (this) {
                 result.values = new ArrayList<>(originalList);
                 result.count = originalList.size();
             }

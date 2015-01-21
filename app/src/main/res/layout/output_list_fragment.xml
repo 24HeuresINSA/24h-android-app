@@ -12,11 +12,6 @@
         android:layout_height="fill_parent"
         android:weightSum="10">
 
-        <!--<com.insalyon.les24heures.utils.QuickReturnListView-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:id="@+id/list_resource" />-->
-
         <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -89,8 +84,6 @@
                 </LinearLayout>
 
             </LinearLayout>
-
-
 
         </LinearLayout>
 

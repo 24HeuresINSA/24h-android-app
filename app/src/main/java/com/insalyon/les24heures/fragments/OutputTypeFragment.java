@@ -48,9 +48,7 @@ public class OutputTypeFragment extends Fragment {
             if (savedInstanceState.getParcelableArrayList("resourcesList") != null) {
                 resourcesList = savedInstanceState.getParcelableArrayList("resourcesList");
             }
-//            if (savedInstanceState.getString("searchQuery") != null) {
-                searchQuery = savedInstanceState.getString("searchQuery"); //we want null if there is no searchQuery
-//            }
+            searchQuery = savedInstanceState.getString("searchQuery"); //we want null if there is no searchQuery
         } else if (getArguments() != null) {
             //get from arguments (when it's fragmentManager which create the fragment)
             if (getArguments().getParcelableArrayList("categoriesSelected") != null) {
@@ -60,9 +58,7 @@ public class OutputTypeFragment extends Fragment {
             if (getArguments().getParcelableArrayList("resourcesList") != null) {
                 resourcesList = getArguments().getParcelableArrayList("resourcesList");
             }
-//            if (getArguments().getString("searchQuery") != null) {
-                searchQuery = getArguments().getString("searchQuery"); //we want null if there is no searchQuery
-//            }
+            searchQuery = getArguments().getString("searchQuery"); //we want null if there is no searchQuery
         }
         if (resourcesList == null || categoriesSelected == null) {
             Log.e("OutputTypeFragment", "resourcesList or categoriesSelected are null. Are you sur you create the fragment with these parameters ?");
@@ -92,7 +88,9 @@ public class OutputTypeFragment extends Fragment {
 
     }
 
-    /**      Fragment is alive      **/
+    /**
+     * Fragment is alive      *
+     */
     public void onEvent(CategoriesSelectedEvent event) {
         Log.d("onevent", event.getCategories().toString());
         categoriesSelected.clear();
@@ -105,11 +103,13 @@ public class OutputTypeFragment extends Fragment {
         resourcesList.addAll(event.getResourceList());
     }
 
-    public void onEvent(SearchEvent event){
+    public void onEvent(SearchEvent event) {
         Log.d("onEvent(SearchEvent)", event.getQuery().toString());
     }
 
-    /**      Fragment is no more alive      **/
+    /**
+     * Fragment is no more alive      *
+     */
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
@@ -117,7 +117,7 @@ public class OutputTypeFragment extends Fragment {
         //categories state
         outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
         //search state
-        outState.putString("searchQuery",searchQuery);
+        outState.putString("searchQuery", searchQuery);
         //resources
         outState.putParcelableArrayList("resourcesList", resourcesList);
     }

@@ -22,7 +22,7 @@ public class ResourceMapsSearchFilter extends ResourceSearchFilter {
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
         resourceList.clear();
-        resourceList.addAll((ArrayList<Resource>)results.values);
+        resourceList.addAll((ArrayList<Resource>) results.values);
 
         for (Resource resource : originalList) {
             resource.getMarker().setVisible(false);

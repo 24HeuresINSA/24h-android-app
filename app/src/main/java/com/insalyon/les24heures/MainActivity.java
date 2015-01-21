@@ -203,9 +203,6 @@ public class MainActivity extends Activity {
         }
     }
 
-
-
-
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         globalMenu = menu;
@@ -271,8 +268,7 @@ public class MainActivity extends Activity {
         if (searchQuery != null) {
             if (!searchQuery.equals("")) //je craque, tant pis pour la rotation...
                 if (!searchView.getQuery().equals(searchQuery)) {
-//                    searchView.onActionViewExpanded();
-                searchView.setIconified(false);
+                    searchView.setIconified(false);
                     searchView.setQuery(searchQuery.toString(), true);
                     //TODO it doesn't work, the soft keyboard is displayed anyway...
                     InputMethodManager imm = (InputMethodManager) getSystemService(
@@ -288,8 +284,7 @@ public class MainActivity extends Activity {
     }
 
     private void disableFavoritesFilter(MenuItem favoritesItem) {
-        if(isFavoritesChecked){
-//            favoritesItem.setChecked(false);
+        if (isFavoritesChecked) {
             toggleFavorites(favoritesItem);
         }
     }
@@ -306,7 +301,6 @@ public class MainActivity extends Activity {
                         (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
                 searchView.onActionViewCollapsed();
                 searchQuery = null;
-//                Log.d("onOptionsItemSelected","arrow to sandwich");
             } else {
                 toggleDrawer();
             }
@@ -328,7 +322,7 @@ public class MainActivity extends Activity {
 
     private void toggleFavorites(MenuItem item) {
         ArrayList<Category> list = new ArrayList<>();
-        list.addAll(getCategoriesSelectedFromView());
+        list.addAll(getCategoriesSelectedFromDrawer());
         if (item.isChecked()) {
             item.setChecked(false);
             item.setIcon(R.drawable.ic_favorites_unchecked);
@@ -404,7 +398,7 @@ public class MainActivity extends Activity {
         //categories
         outState.putParcelableArrayList("categories", categories);
         //categories state
-        ArrayList<Category> categoriesSelected = getCategoriesSelectedFromView();
+        ArrayList<Category> categoriesSelected = getCategoriesSelectedFromDrawer();
         outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
         //resources
         outState.putParcelableArrayList("resourcesList", resourcesList);
@@ -439,10 +433,12 @@ public class MainActivity extends Activity {
             ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
 
         ft.replace(R.id.content_frame, fragment).commit();
-//        invalidateOptionsMenu();
     }
 
-    /* The click listner for ListView in the navigation drawer */
+    /**
+     * Drawer methods and inner classes
+     */
+
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -458,8 +454,6 @@ public class MainActivity extends Activity {
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
             isDrawerOpen = true;
-//            invalidateOptionsMenu();
-//            hideOptionsMenu(globalMenu, true);
             getActionBar().setTitle(R.string.app_name);
         }
 
@@ -476,24 +470,21 @@ public class MainActivity extends Activity {
             }
             drawerArrowDrawable.setParameter(offset);
 
-            if(itemFav == null) {
+            if (itemFav == null) {
                 itemFav = globalMenu.findItem(R.id.menu_favorites);
                 itemSearch = globalMenu.findItem(R.id.menu_search);
             }
-            
-            if(offset > 0.95)
+
+            if (offset > 0.95)
                 return;
-            itemFav.getIcon().setAlpha((int)(255-slideOffset*255));
-            itemSearch.getActionView().setAlpha(1-slideOffset);
+            itemFav.getIcon().setAlpha((int) (255 - slideOffset * 255));
+            itemSearch.getActionView().setAlpha(1 - slideOffset);
         }
 
         @Override
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
             isDrawerOpen = false;
-//            invalidateOptionsMenu();
-//            hideOptionsMenu(globalMenu, false);
-//            findViewById(R.id.content_frame).
             getActionBar().setTitle(
                     ((OutputTypeFragment) getFragmentManager().findFragmentById(R.id.content_frame))
                             .getDisplayName());
@@ -502,7 +493,7 @@ public class MainActivity extends Activity {
     }
 
     private void selectCategory(int position) {
-        categoriesSelected = getCategoriesSelectedFromView();
+        categoriesSelected = getCategoriesSelectedFromDrawer();
         if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
             categoriesSelected.add(new Category("favorites"));
         }
@@ -524,7 +515,7 @@ public class MainActivity extends Activity {
         drawerLayout.closeDrawer(drawerView);
     }
 
-    private ArrayList<Category> getCategoriesSelectedFromView() {
+    private ArrayList<Category> getCategoriesSelectedFromDrawer() {
         ArrayList<Category> categoriesSelected = new ArrayList<>();
 
         int len = categoriesList.getCount();
@@ -571,7 +562,6 @@ public class MainActivity extends Activity {
         drawerArrowDrawable.setFlip(true);
     }
 
-
     private void disabledDrawerSwipe() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
@@ -587,7 +577,6 @@ public class MainActivity extends Activity {
         animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-//                Log.d("setArrow",animation.getAnimatedValue().toString());
                 drawerArrowDrawable.setParameter((Float) animation.getAnimatedValue());
             }
         });

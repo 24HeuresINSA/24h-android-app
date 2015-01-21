@@ -36,7 +36,7 @@ import butterknife.OnClick;
  * Created by remi on 26/12/14.
  */
 public class OutputListFragment extends OutputTypeFragment implements AbsListView.OnScrollListener,
-        AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener{
+        AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
     private static final String TAG = OutputListFragment.class.getCanonicalName();
 
     View view;
@@ -76,16 +76,12 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
         setHasOptionsMenu(true);
 
-
         //create an ArrayAdaptar from the String Array
         resourceAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
                 R.layout.output_list_item, new ArrayList<>(resourcesList)); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
 
         // Wrap your adapter with QuickReturnAdapter
         resourceListView.setAdapter(new QuickReturnAdapter(resourceAdapter));
-
-        //enables filtering for the contents of the given ListView
-//        resourceListView.setTextFilterEnabled(true);
 
         return view;
     }
@@ -98,25 +94,15 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
             } else {
                 view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
             }
-
             // Add a quick return targetView to the attacher
             quickReturnAttacher.addTargetView(quickReturnListHeader, QuickReturnTargetView.POSITION_TOP, quickReturnListHeader.getHeight());
-
-            //TODO quickReturn and FAB use a setOnScrollListener (hide header or hide FAB on scroll down)
-            //c'est le quickreturn ou le fab qui se hide au scroll car les deux font un setOnScrollListener
-            //mais je dois fork les deux projets...
-            //http://stackoverflow.com/questions/25811458/how-to-bind-several-scroll-listener-on-a-listview
-            //fabGotoMaps.attachToListView(resourceListView);
-            //plus simple, ne fork que quickreturn ou utiliser celui de LarsWerkman et call fabGotoMaps.hide(); ou fabGotoMaps.show();
         }
     };
-
 
 
     @Override
     public void onResume() {
         super.onResume();
-
 
         quickReturnAttacher = QuickReturnAttacher.forView(resourceListView);
         final AbsListViewQuickReturnAttacher attacher = (AbsListViewQuickReturnAttacher) quickReturnAttacher;
@@ -126,17 +112,17 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
         view.getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
 
-        updateListView();
+        setCategoryFilter();
 
     }
 
 
-
-
-    /**     Fragment is alive       **/
+    /**
+     * Fragment is alive       *
+     */
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
-        Log.d(TAG+"onEvent(CategoryEvent)", event.getCategories().toString());
+        Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
         resourceAdapter.getCategoryFilter().filter(
                 (event.getCategories().size() != 0) ? event.getCategories().toString() : null
         );
@@ -145,11 +131,11 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-        updateListView();
+        setCategoryFilter();
         getActivity().runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if(spinner){
+                if (spinner) {
                     spinner = false;
                     Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
                     toast.show();
@@ -158,14 +144,14 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         });
     }
 
-    public void onEvent(SearchEvent event){
+    public void onEvent(SearchEvent event) {
         super.onEvent(event);
         resourceAdapter.getFilter().filter(event.getQuery().toString());
     }
 
     @OnClick(R.id.fab_goto_maps)
-    public void onClickFabGotoMaps(View v){
-        ((MainActivity)getActivity()).selectMaps();
+    public void onClickFabGotoMaps(View v) {
+        ((MainActivity) getActivity()).selectMaps();
     }
 
     @Override
@@ -189,38 +175,39 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     private int lastY = 0;
     private Boolean isScrollingUp = false;
     private Boolean isScrollingDown = false;
+
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         int top = 0;
-        if(view.getChildAt(0) != null){
+        if (view.getChildAt(0) != null) {
             top = view.getChildAt(0).getTop();
         }
 
-        if(firstVisibleItem > lastVisibleItem){
+        if (firstVisibleItem > lastVisibleItem) {
             //scroll down
-            if(!isScrollingDown){
+            if (!isScrollingDown) {
                 fabGotoMaps.hide();
             }
             isScrollingDown = true;
             isScrollingUp = false;
-        }else if(firstVisibleItem < lastVisibleItem){
+        } else if (firstVisibleItem < lastVisibleItem) {
             //scroll up
-            if(!isScrollingUp){
+            if (!isScrollingUp) {
                 fabGotoMaps.show();
             }
             isScrollingUp = true;
             isScrollingDown = false;
-        }else{
-            if(top < lastY){
+        } else {
+            if (top < lastY) {
                 //scroll down
-                if(!isScrollingDown){
+                if (!isScrollingDown) {
                     fabGotoMaps.hide();
                 }
                 isScrollingDown = true;
                 isScrollingUp = false;
-            }else if(top > lastY){
+            } else if (top > lastY) {
                 //scroll up
-                if(!isScrollingUp){
+                if (!isScrollingUp) {
                     fabGotoMaps.show();
                 }
                 isScrollingUp = true;
@@ -233,7 +220,9 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
     }
 
-    /**     Fragment is no more alive       **/
+    /**
+     * Fragment is no more alive       *
+     */
     @Override
     public void onPause() {
         super.onPause();
@@ -241,12 +230,10 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     }
 
 
-    /**     Fragment methods        **/
-    //default filter
-    //TODO regarder
-    private Boolean updateListView(){
-
-        //category is prior, text search is ignored
+    /**
+     * Fragment methods        *
+     */
+    private Boolean setCategoryFilter() {
         resourceAdapter.getCategoryFilter().filter(
                 (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null);
 

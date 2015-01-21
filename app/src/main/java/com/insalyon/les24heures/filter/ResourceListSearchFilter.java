@@ -15,7 +15,6 @@ public class ResourceListSearchFilter extends ResourceSearchFilter {
     public ResourceListSearchFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList, ResourceAdapter resourceAdapter) {
         super(originalList, resourceList);
         this.resourceAdapter = resourceAdapter;
-
     }
 
     @SuppressWarnings("unchecked")
