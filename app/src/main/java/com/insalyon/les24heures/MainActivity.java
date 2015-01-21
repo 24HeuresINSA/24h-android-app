@@ -82,6 +82,7 @@ public class MainActivity extends Activity {
 
     //isDrawerOpen only switches when the drawer is fully opened
     private Boolean isDrawerOpen = false;
+    private Boolean isFavoritesChecked = false;
     private String searchQuery;
     private float offset;
     private boolean flipped;
@@ -133,6 +134,7 @@ public class MainActivity extends Activity {
             }
             if (savedInstanceState.getBoolean("isFavoritesChecked")) {
                 //TODO globalMenu is null here
+                isFavoritesChecked = savedInstanceState.getBoolean("isFavoritesChecked");
             }
         }
 
@@ -214,8 +216,7 @@ public class MainActivity extends Activity {
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
         final SearchView searchView =
                 (SearchView) menu.findItem(R.id.menu_search).getActionView();
-
-        ((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified();
+        MenuItem favoritesItem = menu.findItem(R.id.menu_favorites);
 
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,6 +279,10 @@ public class MainActivity extends Activity {
                 }
         }
 
+        //init favorites button depending on bundleSaveInstanceState
+        favoritesItem.setChecked(!isFavoritesChecked); //oops, magouille
+        toggleFavorites(favoritesItem);
+
         return true;
     }
 
@@ -302,19 +307,8 @@ public class MainActivity extends Activity {
 
         switch (item.getItemId()) {
             case R.id.menu_favorites:
-                ArrayList<Category> list = new ArrayList<>();
-                list.addAll(getCategoriesSelectedFromView());
-                if (item.isChecked()) {
-                    item.setChecked(false);
-                    item.setIcon(R.drawable.ic_favorites_unchecked);
-                } else {
-                    list.add((new Category("favorites")));
-                    item.setChecked(true);
-                    item.setIcon(R.drawable.ic_favorites_checked);
 
-                }
-                CategoriesSelectedEvent event = new CategoriesSelectedEvent(list);
-                eventBus.post(event);
+                toggleFavorites(item);
 
                 return true;
         }
@@ -322,6 +316,23 @@ public class MainActivity extends Activity {
 
         return false;
 
+    }
+
+    private void toggleFavorites(MenuItem item) {
+        ArrayList<Category> list = new ArrayList<>();
+        list.addAll(getCategoriesSelectedFromView());
+        if (item.isChecked()) {
+            item.setChecked(false);
+            item.setIcon(R.drawable.ic_favorites_unchecked);
+            isFavoritesChecked = false;
+        } else {
+            list.add((new Category("favorites")));
+            item.setChecked(true);
+            item.setIcon(R.drawable.ic_favorites_checked);
+            isFavoritesChecked = true;
+        }
+        CategoriesSelectedEvent event = new CategoriesSelectedEvent(list);
+        eventBus.post(event);
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
