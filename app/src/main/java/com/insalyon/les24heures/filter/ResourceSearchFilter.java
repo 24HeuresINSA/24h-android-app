@@ -1,5 +1,7 @@
 package com.insalyon.les24heures.filter;
 
+import android.widget.Filter;
+
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
@@ -7,10 +9,16 @@ import java.util.ArrayList;
 /**
  * Created by remi on 27/12/14.
  */
-public abstract class ResourceSearchFilter extends ResourceFilter {
+public abstract class ResourceSearchFilter extends Filter {
+
+    ArrayList<Resource> originalList;
+    ArrayList<Resource> resourceList;
+
 
     public ResourceSearchFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList) {
-        super(originalList, resourceList);
+        //we need pointer to inform the array adapter of what we are doing
+        this.originalList = originalList;
+        this.resourceList = resourceList;
     }
 
     @Override
