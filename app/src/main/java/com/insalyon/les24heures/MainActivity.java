@@ -271,8 +271,8 @@ public class MainActivity extends Activity {
         if (searchQuery != null) {
             if (!searchQuery.equals("")) //je craque, tant pis pour la rotation...
                 if (!searchView.getQuery().equals(searchQuery)) {
-                    searchView.onActionViewExpanded();
-//                searchView.setIconified(false);
+//                    searchView.onActionViewExpanded();
+                searchView.setIconified(false);
                     searchView.setQuery(searchQuery.toString(), true);
                     //TODO it doesn't work, the soft keyboard is displayed anyway...
                     InputMethodManager imm = (InputMethodManager) getSystemService(
@@ -451,12 +451,15 @@ public class MainActivity extends Activity {
     }
 
     private class DrawerListener extends DrawerLayout.SimpleDrawerListener {
+        private MenuItem itemFav;
+        private MenuItem itemSearch;
+
         @Override
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
             isDrawerOpen = true;
 //            invalidateOptionsMenu();
-            hideOptionsMenu(globalMenu, true);
+//            hideOptionsMenu(globalMenu, true);
             getActionBar().setTitle(R.string.app_name);
         }
 
@@ -472,6 +475,16 @@ public class MainActivity extends Activity {
                 drawerArrowDrawable.setFlip(flipped);
             }
             drawerArrowDrawable.setParameter(offset);
+
+            if(itemFav == null) {
+                itemFav = globalMenu.findItem(R.id.menu_favorites);
+                itemSearch = globalMenu.findItem(R.id.menu_search);
+            }
+            
+            if(offset > 0.95)
+                return;
+            itemFav.getIcon().setAlpha((int)(255-slideOffset*255));
+            itemSearch.getActionView().setAlpha(1-slideOffset);
         }
 
         @Override
@@ -479,10 +492,10 @@ public class MainActivity extends Activity {
             super.onDrawerClosed(drawerView);
             isDrawerOpen = false;
 //            invalidateOptionsMenu();
-            hideOptionsMenu(globalMenu, false);
+//            hideOptionsMenu(globalMenu, false);
 //            findViewById(R.id.content_frame).
             getActionBar().setTitle(
-                    ((OutputTypeFragment)getFragmentManager().findFragmentById(R.id.content_frame))
+                    ((OutputTypeFragment) getFragmentManager().findFragmentById(R.id.content_frame))
                             .getDisplayName());
 
         }
