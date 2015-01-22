@@ -101,7 +101,7 @@ public class MainActivity extends Activity {
         eventBus = EventBus.getDefault();
         eventBus.register(this);
         restAdapter = new RestAdapter.Builder()
-                .setEndpoint("http://cetaitmieuxavant.24heures.org")
+                .setEndpoint(getResources().getString(R.string.backend_url))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
