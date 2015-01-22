@@ -1,16 +1,12 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
-        <!-- Customize your theme here. -->
-        <item name="colorPrimary">#8bc34a</item>
-        <item name="colorPrimaryDark">#7CB342</item>
-        <item name="colorAccent">#cddc39</item>
+    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+        <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
     </style>
 
-    <style name="ToolbarCustomIconColor" parent="AppTheme">
-        <!-- android:textColorSecondary is used for coloring the navigation drawer icon and up arrow. -->
-        <item name="android:textColorSecondary">#FF0000</item>
+    <style name="DrawerArrowStyle" parent="Widget.AppCompat.DrawerArrowToggle">
+        <item name="spinBars">true</item>
+        <item name="color">@android:color/white</item>
     </style>
 
 

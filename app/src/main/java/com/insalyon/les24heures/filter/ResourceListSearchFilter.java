@@ -1,29 +1,21 @@
-package com.insalyon.les24heures.adapter;
+package com.insalyon.les24heures.filter;
 
-import android.widget.Filter;
-
+import com.insalyon.les24heures.adapter.ResourceAdapter;
 import com.insalyon.les24heures.model.Resource;
-import com.insalyon.les24heures.utils.FilterAction;
 
 import java.util.ArrayList;
 
 /**
- * Created by remi on 03/01/15.
+ * Created by remi on 20/01/15.
  */
-public abstract class ResourceListFilter extends Filter{
-
-    ArrayList<Resource> originalList;
-    ArrayList<Resource> resourceList;
+public class ResourceListSearchFilter extends ResourceSearchFilter {
     ResourceAdapter resourceAdapter;
 
-    public ResourceListFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList, ResourceAdapter resourceAdapter) {
-        //we need pointer to inform the array adapter of what we are doing
-        this.originalList = originalList;
-        this.resourceList = resourceList;
+
+    public ResourceListSearchFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList, ResourceAdapter resourceAdapter) {
+        super(originalList, resourceList);
         this.resourceAdapter = resourceAdapter;
     }
-
-
 
     @SuppressWarnings("unchecked")
     @Override

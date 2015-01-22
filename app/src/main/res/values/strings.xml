@@ -4,7 +4,7 @@
     <string name="maps_api_key">AIzaSyA4dlZvjFmFs3ZLFC7t9V3LJCgzewGPCZo</string>
 
     <!--General-->
-    <string name="app_name">les24heures</string>
+    <string name="app_name">Les 24heures</string>
     <string name="action_settings">Settings</string>
 
     <!--Navigation Drawer-->
@@ -14,8 +14,6 @@
         <item>se divertir</item>
         <item>se cultiver</item>
         <item>du sport</item>
-        <item>mes favoris</item>
-        <item>lieux utiles</item>
     </string-array>
     <string-array name="navigation_drawer_ouputtypes">
         <item>Maps</item>
@@ -37,7 +35,7 @@
 
 
     <!--Maps Output-->
-    <string name="unexpected_move_camera_error">No resources are displayed, unexecptecdede. Please retry</string>
+    <string name="unexpected_move_camera_error">No resources are displayed, unexpected. Please retry</string>
 
 
     <!--List Output-->
@@ -46,5 +44,10 @@
 
     <!--TODO should be displayed by MainActivity ??-->
     <string name="noCategoriesSelected">Feel free to select at least one category</string>
+    <string name="backend_url">http://cetaitmieuxavant.24heures.org</string>
+
+
+    <!--in ms-->
+    <integer name="arrow_sandwich_duration">500</integer>
 
 </resources>

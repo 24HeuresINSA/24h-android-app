@@ -11,6 +11,10 @@ import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
+import com.insalyon.les24heures.filter.ResourceCategoryFilter;
+import com.insalyon.les24heures.filter.ResourceListCategoryFilter;
+import com.insalyon.les24heures.filter.ResourceListSearchFilter;
+import com.insalyon.les24heures.filter.ResourceSearchFilter;
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
@@ -47,7 +51,7 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
     @Override
     public Filter getFilter() {
         if (resourceSearchFilter == null) {
-            resourceSearchFilter = new ResourceSearchFilter(originalList, resourceList, this);
+            resourceSearchFilter = new ResourceListSearchFilter(originalList, resourceList, this);
         }
         return resourceSearchFilter;
     }
@@ -55,7 +59,7 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
 
     public Filter getCategoryFilter() {
         if (resourceCategoryFilter == null) {
-            resourceCategoryFilter = new ResourceCategoryFilter(originalList, resourceList, this);
+            resourceCategoryFilter = new ResourceListCategoryFilter(originalList, resourceList, this);
         }
         return resourceCategoryFilter;
     }
@@ -71,7 +75,6 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
     public View getView(int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder = null;
-        Log.v("ConvertView", String.valueOf(position));
 
         if (convertView == null) {
             convertView = vi.inflate(R.layout.output_list_item, null);
@@ -88,7 +91,8 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
 
         Resource resource = resourceList.get(position);
         holder.title.setText(resource.getTitle());
-        holder.distance.setText("TODO");
+        holder.title.setSelected(true);
+        holder.distance.setText(resource.isFavorites()? "fav":"..");
         holder.schedule.setText(resource.getCategory().getName());
 
         return convertView;

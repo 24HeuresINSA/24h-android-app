@@ -4,13 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <include
-        layout="@layout/toolbar"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="0dp"
-        android:layout_marginTop="0dp" />
-
     <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -18,7 +11,6 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="0dp">
-        <!--android:layout_marginTop="112dp">-->
 
         <!-- As the main content view, the view below consumes the entire
      space available using match_parent in both dimensions. -->
@@ -39,7 +31,7 @@
             android:layout_height="fill_parent"
             android:layout_gravity="start">
 
-            <include layout="@layout/drawer_day" />
+            <include layout="@layout/navigation_drawer" />
 
         </FrameLayout>
 

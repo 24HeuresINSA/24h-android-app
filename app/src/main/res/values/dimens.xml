@@ -5,4 +5,9 @@
 
     <dimen name="drawer_outputtype_fontsize">30dp</dimen>
     <dimen name="drawer_category_fontsize">20dp</dimen>
+    <dimen name="ouput_list_item_padding">10dp</dimen>
+    <dimen name="output_list_sticky_item_height">50dp</dimen>
+    <dimen name="output_list_header_height">0dp</dimen>
+
+
 </resources>
