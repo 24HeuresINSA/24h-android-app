@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
@@ -24,7 +25,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by remi on 27/12/14.
  */
-public class ResourceAdapter extends ArrayAdapter<Resource> {
+public class ResourceAdapter extends ArrayAdapter<Resource>  {
 
     private final EventBus eventBus;
     private ArrayList<Resource> originalList;
@@ -69,10 +70,11 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
         TextView title;
         TextView distance;
         TextView schedule;
+        ImageButton favorites;
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
 
         ViewHolder holder = null;
 
@@ -83,21 +85,38 @@ public class ResourceAdapter extends ArrayAdapter<Resource> {
             holder.title = (TextView) convertView.findViewById(R.id.list_item_title_text);
             holder.distance = (TextView) convertView.findViewById(R.id.list_item_distance_text);
             holder.schedule = (TextView) convertView.findViewById(R.id.list_item_schedule_text);
-
+            holder.favorites = (ImageButton) convertView.findViewById(R.id.list_item_favorite);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        Resource resource = resourceList.get(position);
+        final Resource resource = resourceList.get(position);
+
+        holder.favorites.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resource.setIsFavorites(!resource.isFavorites());
+                if(resource.isFavorites())
+                    ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
+                else
+                    ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
+            }
+        });
+
         holder.title.setText(resource.getTitle());
         holder.title.setSelected(true);
-        holder.distance.setText(resource.isFavorites()? "fav":"..");
-        holder.schedule.setText(resource.getCategory().getName());
+        if(resource.isFavorites())
+            holder.favorites.setImageResource(R.drawable.ic_favorites_checked);
+        else
+            holder.favorites.setImageResource(R.drawable.ic_favorites_unchecked);
+
 
         return convertView;
 
     }
+
+
 
 
     public void onEvent(ResourcesUpdatedEvent event) {
