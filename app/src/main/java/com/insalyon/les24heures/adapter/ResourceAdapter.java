@@ -110,6 +110,7 @@ public class ResourceAdapter extends ArrayAdapter<Resource>  {
             holder.favorites.setImageResource(R.drawable.ic_favorites_checked);
         else
             holder.favorites.setImageResource(R.drawable.ic_favorites_unchecked);
+        holder.schedule.setText(resource.printSchedules());
 
 
         return convertView;

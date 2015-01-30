@@ -28,6 +28,8 @@ public class ResourceServiceImpl implements ResourceService  {
 
     private static ResourceServiceImpl resourceService;
     private static CategoryServiceImpl categoryService;
+    private static ScheduleServiceImpl scheduleService;
+
 
     private EventBus eventBus;
 
@@ -41,6 +43,7 @@ public class ResourceServiceImpl implements ResourceService  {
             //synchronized (resourceService) {
                 resourceService = new ResourceServiceImpl();
                 categoryService = CategoryServiceImpl.getInstance();
+                scheduleService = ScheduleServiceImpl.getInstance();
             //}
         }
         return resourceService;
@@ -53,7 +56,8 @@ public class ResourceServiceImpl implements ResourceService  {
         Boolean isFavorites = (rand.nextInt(2) == 0 ? true : false);
 
 
-        return new Resource(resourceDTO.getNom(),resourceDTO.getDescription(),null,
+        return new Resource(resourceDTO.getNom(),resourceDTO.getDescription(),
+                scheduleService.fromDTO(resourceDTO.getHoraires()),
                 new LatLng(Double.valueOf(resourceDTO.getLocX()),Double.valueOf(resourceDTO.getLocY())), category,isFavorites);
     }
 
