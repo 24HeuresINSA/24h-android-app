@@ -1,6 +1,7 @@
 package com.insalyon.les24heures.adapter;
 
 import android.content.Context;
+import android.location.Location;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,14 +34,16 @@ public class ResourceAdapter extends ArrayAdapter<Resource>  {
     private ResourceSearchFilter resourceSearchFilter;
     private ResourceCategoryFilter resourceCategoryFilter;
     LayoutInflater vi;
+    Location lastKnownPosition;
 
     public ResourceAdapter(Context context, int textViewResourceId,
-                           ArrayList<Resource> resources) {
+                           ArrayList<Resource> resources, Location lastKnownPosition) {
         super(context, textViewResourceId, resources);
         this.resourceList = new ArrayList<>();
         this.resourceList.addAll(resources);
         this.originalList = new ArrayList<>();
         this.originalList.addAll(resources);
+        this.lastKnownPosition = lastKnownPosition;
 
         this.vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -111,6 +114,16 @@ public class ResourceAdapter extends ArrayAdapter<Resource>  {
         else
             holder.favorites.setImageResource(R.drawable.ic_favorites_unchecked);
         holder.schedule.setText(resource.printSchedules());
+        Location loc = new Location("loc");
+        loc.setLongitude(resource.getLoc().longitude);
+        loc.setLatitude(resource.getLoc().latitude);
+        if(lastKnownPosition != null){
+            Integer distance = Math.round(lastKnownPosition.distanceTo(loc));
+            holder.distance.setText((distance < 1000) ? distance+"m":distance/1000+"km");
+        } else {
+            holder.distance.setText(R.string.list_no_last_known_location);
+        }
+
 
 
         return convertView;

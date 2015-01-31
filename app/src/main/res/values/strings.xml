@@ -45,6 +45,7 @@
     <!--TODO should be displayed by MainActivity ??-->
     <string name="noCategoriesSelected">Feel free to select at least one category</string>
     <string name="backend_url">http://cetaitmieuxavant.24heures.org</string>
+    <string name="list_no_last_known_location" />
 
 
     <!--in ms-->
