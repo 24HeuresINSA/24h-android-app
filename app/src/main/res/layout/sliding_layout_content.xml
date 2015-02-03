@@ -22,7 +22,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Title...."
-                android:id="@+id/textView" />
+                android:id="@+id/detail_sliding_title" />
         </LinearLayout>
 
         <LinearLayout

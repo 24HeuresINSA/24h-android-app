@@ -28,6 +28,7 @@ import com.insalyon.les24heures.filter.ResourceMapsSearchFilter;
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -35,7 +36,7 @@ import butterknife.OnClick;
 /**
  * Created by remi on 26/12/14.
  */
-public class OutputMapsFragment extends OutputTypeFragment implements OnMapReadyCallback {
+public class OutputMapsFragment extends OutputTypeFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private static final String TAG = OutputMapsFragment.class.getCanonicalName();
     View view;
 
@@ -48,6 +49,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     ResourceMapsSearchFilter resourceMapsSearchFilter;
 
     ArrayList<Resource> displayableResourcesLists;
+    HashMap<Marker,Resource>  markerResourceMap;
 
 
     @Override
@@ -59,6 +61,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         displayableResourcesLists.addAll(resourcesList);
         resourceMapsCategoryFilter = new ResourceMapsCategoryFilter(resourcesList, displayableResourcesLists, this);
         resourceMapsSearchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this);
+        markerResourceMap = new HashMap<>();
 
     }
 
@@ -102,6 +105,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         //to prevent user to throw up, zoom on Lyon without animateCamera
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
+        googleMap.setOnMarkerClickListener(this);
 
         //display data if already there when the fragment is created
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
@@ -166,6 +170,17 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     }
 
 
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+        //get marker from maps
+
+        ((MainActivity)getActivity()).showDetailPannel(markerResourceMap.get(marker));
+
+        return false;
+    }
+
+
     /**
      * Fragment is no more running *
      */
@@ -201,11 +216,12 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             if (resource.getMarker() == null) {
                 Marker marker = googleMap.addMarker(
                         new MarkerOptions()
-                                .title(resource.getTitle() + " " + resource.getCategory().getName())
-                                .snippet(resource.getDescription())
+//                                .title(resource.getTitle() + " " + resource.getCategory().getName())
+//                                .snippet(resource.getDescription())
                                 .position(resource.getLoc()));
 
-                resource.setMarker(marker);
+                markerResourceMap.put(marker,resource);
+                resource.setMarker(marker); //TODO a supprimer
             }
         }
     }

@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
@@ -80,6 +81,8 @@ public class MainActivity extends Activity {
     View nextScheduleView;
     @InjectView(R.id.detail_favorites)
     View favoriteView;
+    @InjectView(R.id.detail_sliding_title)
+    TextView detailSlidingTitle;
 
 
     private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
@@ -395,6 +398,18 @@ public class MainActivity extends Activity {
     }
 
 
+    @Override
+    public void onBackPressed() {
+        if (isDetailPanelExpanded() || isDetailPanelAnchored()){
+            mLayout.collapsePanel();
+        } else if(!isDetailPanelHidden()) {
+            hideDetailPannel();
+        }else{
+           super.onBackPressed();
+            }
+
+    }
+
     /**
      * Activity is no more alive       *
      */
@@ -603,9 +618,41 @@ public class MainActivity extends Activity {
      * Detail Sliding up fragment pannel
      */
 
+    public void showDetailPannel(Resource resource){
+        //TODO mettre à jour le pannel
+        detailSlidingTitle.setText(resource.getTitle());
+        mLayout.showPanel();
+
+    }
+
+    public Boolean hideDetailPannel(){
+        if(!isDetailPanelHidden()) {
+            mLayout.hidePanel();
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+
+    public Boolean isDetailPanelHidden(){
+        return mLayout.isPanelHidden();
+    }
+
+    public Boolean isDetailPanelAnchored(){
+        return mLayout.isPanelAnchored();
+    }
+
+    public Boolean isDetailPanelExpanded(){
+        return mLayout.isPanelExpanded();
+    }
+
+
 
     private void setUpSlidingDetail() {
         mLayout.setAnchorPoint(0.7f);
+        mLayout.hidePanel();  //2.0.4 sera remplacé par mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN); à la prochaine release
+
 
 //        mLayout.setDragView(wholeSlidingLayout); //default but to be clear
         detailScrollView.setIsScrollEnable(false);
