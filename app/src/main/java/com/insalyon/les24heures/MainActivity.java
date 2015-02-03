@@ -23,6 +23,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.SearchView;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
@@ -39,9 +40,11 @@ import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
 import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
+import com.insalyon.les24heures.utils.DetailScrollView;
 import com.insalyon.les24heures.utils.DrawerArrowDrawable;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 import java.util.ArrayList;
 
@@ -69,6 +72,14 @@ public class MainActivity extends Activity {
     View drawerView;
     @InjectView(R.id.left_drawer_categories_list)
     ListView categoriesList;
+    @InjectView(R.id.sliding_layout)
+    SlidingUpPanelLayout mLayout;
+    @InjectView(R.id.detail_scrollView)
+    DetailScrollView detailScrollView;
+    @InjectView(R.id.detail_next_schedule)
+    View nextScheduleView;
+    @InjectView(R.id.detail_favorites)
+    View favoriteView;
 
 
     private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
@@ -87,6 +98,8 @@ public class MainActivity extends Activity {
     private String searchQuery;
     private float offset;
     private boolean flipped;
+
+
 
     /**
      * Activity is being created       *
@@ -110,6 +123,8 @@ public class MainActivity extends Activity {
         resourceService = ResourceServiceImpl.getInstance();
         categoryService = CategoryServiceImpl.getInstance();
 
+
+        setUpSlidingDetail();
 
         /*** recover data either from (by priority)
          *           savedInstanceState (rotate, restore from background)
@@ -581,6 +596,69 @@ public class MainActivity extends Activity {
             }
         });
         drawerArrowDrawable.setParameter(0);
+    }
+
+
+    /**
+     * Detail Sliding up fragment pannel
+     */
+
+
+    private void setUpSlidingDetail() {
+        mLayout.setAnchorPoint(0.7f);
+
+//        mLayout.setDragView(wholeSlidingLayout); //default but to be clear
+        detailScrollView.setIsScrollEnable(false);
+        mLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
+            @Override
+            public void onPanelSlide(View panel, float slideOffset) {
+                Log.i(TAG, "onPanelSlide, offset " + slideOffset);
+
+                if(slideOffset == 0){
+                    detailScrollView.setIsScrollEnable(true);
+                }
+
+            }
+
+            @Override
+            public void onPanelExpanded(View panel) {
+                Log.i(TAG, "onPanelExpanded");
+                detailScrollView.setIsScrollEnable(true);
+                nextScheduleView.setVisibility(View.GONE);
+                favoriteView.setVisibility(View.VISIBLE);
+//                mLayout.setDragView(slidingDetailHeader);
+                //TODO set AppName = title
+                //TODO delete titleLayout
+
+            }
+
+            @Override
+            public void onPanelCollapsed(View panel) {
+                Log.i(TAG, "onPanelCollapsed");
+                nextScheduleView.setVisibility(View.VISIBLE);
+                favoriteView.setVisibility(View.GONE);
+//                mLayout.setDragView(wholeSlidingLayout);
+                detailScrollView.setIsScrollEnable(false);
+                detailScrollView.fullScroll(ScrollView.FOCUS_UP);
+
+
+            }
+
+            @Override
+            public void onPanelAnchored(View panel) {
+                Log.i(TAG, "onPanelAnchored");
+                nextScheduleView.setVisibility(View.GONE);
+                favoriteView.setVisibility(View.VISIBLE);
+                detailScrollView.setIsScrollEnable(false);
+
+            }
+
+            @Override
+            public void onPanelHidden(View panel) {
+                Log.i(TAG, "onPanelHidden");
+            }
+        });
+
     }
 
 
