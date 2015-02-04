@@ -24,10 +24,10 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.TextView;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
+import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.fragments.OutputListFragment;
@@ -42,7 +42,6 @@ import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
-import com.insalyon.les24heures.view.DetailScrollView;
 import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
 import com.insalyon.les24heures.view.DrawerArrowDrawable;
 
@@ -373,6 +372,28 @@ public class MainActivity extends Activity {
         resourcesList.addAll(event.getResourceList());
     }
 
+    public void onEvent(ManageDetailSlidingUpDrawer m){
+        switch (m.getState()){
+            case COLLAPSE:
+                detailSlidingUpPanelLayoutLayout.collapsePanel();
+                break;
+            case EXPAND:
+                detailSlidingUpPanelLayoutLayout.expandPanel();
+                break;
+            case HIDE:
+                detailSlidingUpPanelLayoutLayout.hidePanel();
+                break;
+            case SHOW:
+                if(m.getResource() == null){
+                    detailSlidingUpPanelLayoutLayout.showPanel();
+                }else{
+                    detailSlidingUpPanelLayoutLayout.showDetailPannel(m.getResource());
+                }
+                break;
+        }
+
+    }
+
     public void selectMaps() {
         Fragment mapsFragment = new OutputMapsFragment();
         replaceContentFragment(mapsFragment);
@@ -604,20 +625,6 @@ public class MainActivity extends Activity {
         });
         drawerArrowDrawable.setParameter(0);
     }
-
-
-    /**
-     * Detail Sliding up fragment pannel
-     */
-
-    public void showDetailPannel(Resource resource) {
-        detailSlidingUpPanelLayoutLayout.showDetailPannel(resource);
-    }
-
-
-
-
-
 
 
 }

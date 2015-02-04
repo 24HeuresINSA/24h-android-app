@@ -157,10 +157,12 @@ public class Resource implements Parcelable{
         this.category = category;
     }
 
+    @Deprecated
     public Marker getMarker() {
         return marker;
     }
 
+    @Deprecated
     public void setMarker(Marker marker) {
         this.marker = marker;
     }

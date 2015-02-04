@@ -21,11 +21,13 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.filter.ResourceMapsCategoryFilter;
 import com.insalyon.les24heures.filter.ResourceMapsSearchFilter;
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.utils.SlidingUpPannelState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -173,9 +175,8 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-        //get marker from maps
-
-        ((MainActivity)getActivity()).showDetailPannel(markerResourceMap.get(marker));
+        ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.SHOW,markerResourceMap.get(marker));
+        eventBus.post(manageDetailSlidingUpDrawer);
 
         return false;
     }

@@ -24,6 +24,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     View nextScheduleView;
     View favoriteView;
     TextView detailSlidingTitle;
+    TextView detailSlidingDescription;
 
     public DetailSlidingUpPanelLayout(Context context) {
         super(context);
@@ -39,10 +40,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
 
     public void setUpSlidingDetail(Activity activity) {
-        detailScrollView = (DetailScrollView) activity.findViewById(R.id.detail_scrollView);
-        nextScheduleView =  activity.findViewById(R.id.detail_next_schedule);
-        favoriteView = activity.findViewById(R.id.detail_favorites);
-        detailSlidingTitle = (TextView) activity.findViewById(R.id.detail_sliding_title);
+        findDetailView(activity);
 
         this.setAnchorPoint(0.7f);
         this.hidePanel();  //2.0.4 sera remplacé par mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN); à la prochaine release
@@ -102,9 +100,18 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
     }
 
+    private void findDetailView(Activity activity) {
+        detailScrollView = (DetailScrollView) activity.findViewById(R.id.detail_scrollView);
+        nextScheduleView =  activity.findViewById(R.id.detail_next_schedule);
+        favoriteView = activity.findViewById(R.id.detail_favorites);
+        detailSlidingTitle = (TextView) activity.findViewById(R.id.detail_sliding_title);
+        detailSlidingDescription = (TextView) activity.findViewById(R.id.detail_desciption_text);
+    }
+
     public void showDetailPannel(Resource resource){
         //TODO mettre à jour le pannel
         detailSlidingTitle.setText(resource.getTitle());
+        detailSlidingDescription.setText(resource.getDescription());
         this.showPanel();
 
     }
