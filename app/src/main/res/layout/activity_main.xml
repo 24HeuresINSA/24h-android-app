@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="0dp">
 
-        <com.sothree.slidinguppanel.SlidingUpPanelLayout
+        <com.insalyon.les24heures.view.DetailSlidingUpPanelLayout
             xmlns:sothree="http://schemas.android.com/apk/res-auto"
             android:id="@+id/sliding_layout"
             android:layout_width="match_parent"
@@ -38,7 +38,7 @@
                 android:layout_height="fill_parent"
                 layout="@layout/sliding_layout_content" />
 
-        </com.sothree.slidinguppanel.SlidingUpPanelLayout>
+        </com.insalyon.les24heures.view.DetailSlidingUpPanelLayout>
 
         <!-- android:layout_gravity="start" tells DrawerLayout to treat
                this as a sliding drawer on the left side for left-to-right

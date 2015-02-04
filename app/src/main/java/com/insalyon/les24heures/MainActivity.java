@@ -23,7 +23,6 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ScrollView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -41,11 +40,11 @@ import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
 import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
-import com.insalyon.les24heures.utils.DetailScrollView;
-import com.insalyon.les24heures.utils.DrawerArrowDrawable;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.insalyon.les24heures.view.DetailScrollView;
+import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
+import com.insalyon.les24heures.view.DrawerArrowDrawable;
 
 import java.util.ArrayList;
 
@@ -73,17 +72,9 @@ public class MainActivity extends Activity {
     View drawerView;
     @InjectView(R.id.left_drawer_categories_list)
     ListView categoriesList;
-    @InjectView(R.id.sliding_layout)
-    SlidingUpPanelLayout mLayout;
-    @InjectView(R.id.detail_scrollView)
-    DetailScrollView detailScrollView;
-    @InjectView(R.id.detail_next_schedule)
-    View nextScheduleView;
-    @InjectView(R.id.detail_favorites)
-    View favoriteView;
-    @InjectView(R.id.detail_sliding_title)
-    TextView detailSlidingTitle;
 
+    @InjectView(R.id.sliding_layout)
+    DetailSlidingUpPanelLayout detailSlidingUpPanelLayoutLayout;
 
     private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
     private ArrayList<Category> categories;
@@ -127,7 +118,7 @@ public class MainActivity extends Activity {
         categoryService = CategoryServiceImpl.getInstance();
 
 
-        setUpSlidingDetail();
+        detailSlidingUpPanelLayoutLayout.setUpSlidingDetail(this);
 
         /*** recover data either from (by priority)
          *           savedInstanceState (rotate, restore from background)
@@ -400,13 +391,13 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (isDetailPanelExpanded() || isDetailPanelAnchored()){
-            mLayout.collapsePanel();
-        } else if(!isDetailPanelHidden()) {
-            hideDetailPannel();
+        if (detailSlidingUpPanelLayoutLayout.isPanelExpanded() || detailSlidingUpPanelLayoutLayout.isPanelAnchored()){
+            detailSlidingUpPanelLayoutLayout.collapsePanel();
+        } else if(!detailSlidingUpPanelLayoutLayout.isPanelHidden()) {
+            detailSlidingUpPanelLayoutLayout.hideDetailPannel();
         }else{
            super.onBackPressed();
-            }
+        }
 
     }
 
@@ -464,6 +455,7 @@ public class MainActivity extends Activity {
 
         ft.replace(R.id.content_frame, fragment).commit();
     }
+
 
     /**
      * Drawer methods and inner classes
@@ -618,95 +610,14 @@ public class MainActivity extends Activity {
      * Detail Sliding up fragment pannel
      */
 
-    public void showDetailPannel(Resource resource){
-        //TODO mettre à jour le pannel
-        detailSlidingTitle.setText(resource.getTitle());
-        mLayout.showPanel();
-
-    }
-
-    public Boolean hideDetailPannel(){
-        if(!isDetailPanelHidden()) {
-            mLayout.hidePanel();
-            return true;
-        }else{
-            return false;
-        }
-
-    }
-
-    public Boolean isDetailPanelHidden(){
-        return mLayout.isPanelHidden();
-    }
-
-    public Boolean isDetailPanelAnchored(){
-        return mLayout.isPanelAnchored();
-    }
-
-    public Boolean isDetailPanelExpanded(){
-        return mLayout.isPanelExpanded();
+    public void showDetailPannel(Resource resource) {
+        detailSlidingUpPanelLayoutLayout.showDetailPannel(resource);
     }
 
 
 
-    private void setUpSlidingDetail() {
-        mLayout.setAnchorPoint(0.7f);
-        mLayout.hidePanel();  //2.0.4 sera remplacé par mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN); à la prochaine release
 
 
-//        mLayout.setDragView(wholeSlidingLayout); //default but to be clear
-        detailScrollView.setIsScrollEnable(false);
-        mLayout.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-            @Override
-            public void onPanelSlide(View panel, float slideOffset) {
-                Log.i(TAG, "onPanelSlide, offset " + slideOffset);
-
-                if(slideOffset == 0){
-                    detailScrollView.setIsScrollEnable(true);
-                }
-
-            }
-
-            @Override
-            public void onPanelExpanded(View panel) {
-                Log.i(TAG, "onPanelExpanded");
-                detailScrollView.setIsScrollEnable(true);
-                nextScheduleView.setVisibility(View.GONE);
-                favoriteView.setVisibility(View.VISIBLE);
-//                mLayout.setDragView(slidingDetailHeader);
-                //TODO set AppName = title
-                //TODO delete titleLayout
-
-            }
-
-            @Override
-            public void onPanelCollapsed(View panel) {
-                Log.i(TAG, "onPanelCollapsed");
-                nextScheduleView.setVisibility(View.VISIBLE);
-                favoriteView.setVisibility(View.GONE);
-//                mLayout.setDragView(wholeSlidingLayout);
-                detailScrollView.setIsScrollEnable(false);
-                detailScrollView.fullScroll(ScrollView.FOCUS_UP);
-
-
-            }
-
-            @Override
-            public void onPanelAnchored(View panel) {
-                Log.i(TAG, "onPanelAnchored");
-                nextScheduleView.setVisibility(View.GONE);
-                favoriteView.setVisibility(View.VISIBLE);
-                detailScrollView.setIsScrollEnable(false);
-
-            }
-
-            @Override
-            public void onPanelHidden(View panel) {
-                Log.i(TAG, "onPanelHidden");
-            }
-        });
-
-    }
 
 
 }
