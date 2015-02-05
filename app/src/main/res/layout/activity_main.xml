@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/main_parent_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,8 +12,8 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="0dp">
 
-        <com.insalyon.les24heures.view.DetailSlidingUpPanelLayout
-            xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        <!--CONTENT-->
+        <com.insalyon.les24heures.view.DetailSlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
             android:id="@+id/sliding_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -25,27 +25,58 @@
             <!-->-->
 
             <!-- MAIN CONTENT -->
-            <FrameLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical"
-                android:id="@+id/content_frame">
-            </FrameLayout>
+                android:id="@+id/main_content">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    android:id="@+id/content_frame"></FrameLayout>
+
+                <RelativeLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:visibility="invisible"
+                    android:id="@+id/main_content_fake"></RelativeLayout>
+
+                <!--DETAIL SLIDING UP PARALLAX VIEW-->
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="100dp"
+                    android:background="#ffffbc53"
+                    android:id="@+id/detail_paralax_header"
+                    android:padding="50px">
+
+                    <LinearLayout
+                        android:orientation="horizontal"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="#ffa6ff30"
+                        android:padding="50px"></LinearLayout>
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
 
             <!--SLIDING LAYOUT-->
-            <include
+            <RelativeLayout
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                layout="@layout/sliding_layout_content" />
+                android:layout_height="fill_parent">
+
+                <include
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    layout="@layout/sliding_layout_content" />
+            </RelativeLayout>
 
         </com.insalyon.les24heures.view.DetailSlidingUpPanelLayout>
 
-        <!-- android:layout_gravity="start" tells DrawerLayout to treat
-               this as a sliding drawer on the left side for left-to-right
-               languages and on the right side for right-to-left languages.
-               The drawer is given a fixed width in dp and extends the full height of
-               the container. A solid background is used for contrast
-               with the content view. -->
+        <!--NAVIGATION DRAWER-->
         <FrameLayout
             android:id="@+id/left_drawer"
             android:layout_width="fill_parent"
@@ -58,5 +89,6 @@
 
     </android.support.v4.widget.DrawerLayout>
 
-</LinearLayout>
+
+</FrameLayout>
 

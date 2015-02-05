@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -15,7 +16,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 /**
  * Created by remi on 04/02/15.
  */
-public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
+public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     private static final String TAG = DetailSlidingUpPanelLayout.class.getCanonicalName();
 
 
@@ -25,6 +26,10 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     View favoriteView;
     TextView detailSlidingTitle;
     TextView detailSlidingDescription;
+
+    View paralaxHeader;
+    private View mainContent;
+    private View mainContentFake;
 
     public DetailSlidingUpPanelLayout(Context context) {
         super(context);
@@ -39,11 +44,28 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     }
 
 
-    public void setUpSlidingDetail(Activity activity) {
+    View contentFrame;
+
+    public void setUpSlidingDetail(final Activity activity) {
         findDetailView(activity);
 
-        this.setAnchorPoint(0.7f);
+        //TODO recuperer valeur depuis les dims
+        final float anchored = 0.7f;
+        final int scrollingHeaderHeight = 200; //header scrolling
+
+        //TODO get from real
+        final int wideHeight =  1557;
+        
+        final int parallaxHeight = (int) ((wideHeight - scrollingHeaderHeight) * (1-anchored));//407; //paralax height
+
+        this.setAnchorPoint(anchored);
         this.hidePanel();  //2.0.4 sera remplacé par mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN); à la prochaine release
+
+
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) paralaxHeader.getLayoutParams();
+        params.height = parallaxHeight;
+        paralaxHeader.setLayoutParams(params);
+        paralaxHeader.setTranslationY(wideHeight-parallaxHeight);
 
 
 //        this.setDragView(wholeSlidingLayout); //default but to be clear
@@ -52,6 +74,21 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
             @Override
             public void onPanelSlide(View panel, float slideOffset) {
                 Log.i(TAG, "onPanelSlide, offset " + slideOffset);
+
+                float newParallaxHeaderPos;
+
+                float parallaxContentFrame =   (wideHeight-scrollingHeaderHeight)*slideOffset/2.25f;
+
+                if(slideOffset < anchored) { //parallax
+                    newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
+                    newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
+                    paralaxHeader.setTranslationY(newParallaxHeaderPos);
+                }
+//                else{ //normal TODO
+//                    newParallaxHeaderPos = parallaxHeight*slideOffset/(1-anchored);
+////                  newParallaxHeaderPos = (height * (1 - slideOffset));
+//                    newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
+//                }
 
                 if (slideOffset == 0) {
                     detailScrollView.setIsScrollEnable(true);
@@ -106,6 +143,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         favoriteView = activity.findViewById(R.id.detail_favorites);
         detailSlidingTitle = (TextView) activity.findViewById(R.id.detail_sliding_title);
         detailSlidingDescription = (TextView) activity.findViewById(R.id.detail_desciption_text);
+        paralaxHeader = activity.findViewById(R.id.detail_paralax_header);
     }
 
     public void showDetailPannel(Resource resource){
@@ -123,6 +161,19 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         }else{
             return false;
         }
+
+    }
+
+    @Override
+    protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec)
+    {
+        //ce sont les dimensions en pixels sans la action bar
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        int width = MeasureSpec.getSize(widthMeasureSpec);
+        int height = MeasureSpec.getSize(heightMeasureSpec);
+
+        Log.d("onMeasure",width+" "+height);
+
 
     }
 
