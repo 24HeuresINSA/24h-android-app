@@ -24,6 +24,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
@@ -332,6 +333,14 @@ public class MainActivity extends Activity {
                 toggleFavorites(item);
 
                 return true;
+            case R.id.menu_twitter:
+                Toast toast = Toast.makeText(getApplicationContext(), "twitter clicked", Toast.LENGTH_SHORT);
+                toast.show();
+                return true;
+            case R.id.menu_facebook:
+                Toast toast2 = Toast.makeText(getApplicationContext(), "facebook clicked", Toast.LENGTH_SHORT);
+                toast2.show();
+                return true;
         }
 
 
@@ -368,8 +377,11 @@ public class MainActivity extends Activity {
     }
 
     private void hideOptionsMenu(Menu menu, boolean drawerOpen) {
-        menu.findItem(R.id.menu_search).setVisible(!drawerOpen);
-        menu.findItem(R.id.menu_favorites).setVisible(!drawerOpen);
+        Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
+        menu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
+        menu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
+        menu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+        menu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
     }
 
     /**
@@ -420,12 +432,11 @@ public class MainActivity extends Activity {
         getActionBar().setTitle(title);
     }
 
-
     @Override
     public void onBackPressed() {
         if(isDrawerOpen){
             closeDrawer();
-        }else if (detailSlidingUpPanelLayoutLayout.isPanelExpanded() || detailSlidingUpPanelLayoutLayout.isPanelAnchored()) {
+        }else if (detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded()) {
             detailSlidingUpPanelLayoutLayout.collapsePanel();
         } else if (!detailSlidingUpPanelLayoutLayout.isPanelHidden()) {
             detailSlidingUpPanelLayoutLayout.hideDetailPanel();
@@ -492,7 +503,7 @@ public class MainActivity extends Activity {
 
 
     /**
-     * Drawer methods and inner classes
+     * Drawer methods and inner classes //TODO faire une subclasse de DrawerLayout
      */
 
     private class DrawerItemClickListener implements ListView.OnItemClickListener {
@@ -596,7 +607,6 @@ public class MainActivity extends Activity {
         return drawerLayout.isDrawerOpen(drawerView);
     }
 
-
     public void openDrawer() {
         drawerLayout.openDrawer(drawerView);
 
@@ -607,6 +617,34 @@ public class MainActivity extends Activity {
         drawerLayout.closeDrawer(drawerView);
 
 
+    }
+
+    private void disabledDrawerSwipe() {
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
+    }
+
+    private void enabledDrawerSwipe() {
+        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
+    }
+
+
+
+    /**
+     * Action bar methods
+     */
+
+    public void setSandwich() {
+        //tODO verifier l'etat du drawable
+        ValueAnimator animation = ValueAnimator.ofFloat(1f, 0f);
+        animation.setDuration(500);
+        animation.start();
+        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                drawerArrowDrawable.setParameter((Float) animation.getAnimatedValue());
+            }
+        });
+        drawerArrowDrawable.setParameter(0);
     }
 
     public void setArrow() {
@@ -622,29 +660,6 @@ public class MainActivity extends Activity {
         });
 
         drawerArrowDrawable.setFlip(true);
-    }
-
-
-    private void disabledDrawerSwipe() {
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    }
-
-    private void enabledDrawerSwipe() {
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }
-
-    public void setSandwich() {
-        //tODO verifier l'etat du drawable
-        ValueAnimator animation = ValueAnimator.ofFloat(1f, 0f);
-        animation.setDuration(500);
-        animation.start();
-        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                drawerArrowDrawable.setParameter((Float) animation.getAnimatedValue());
-            }
-        });
-        drawerArrowDrawable.setParameter(0);
     }
 
 

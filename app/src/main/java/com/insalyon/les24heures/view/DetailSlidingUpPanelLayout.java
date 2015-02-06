@@ -48,14 +48,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     }
 
 
-
-    private int getRelativeTop(View myView) {
-        if (myView.getParent() == myView.getRootView())
-            return myView.getTop();
-        else
-            return myView.getTop() + getRelativeTop((View) myView.getParent());
-    }
-
     /**
      * if return false it's because the height of the view isn't yet ready, the setup will be done once the view is rendered and
      * the view height is processed
@@ -135,6 +127,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 //                this.setDragView(slidingDetailHeader);
                 //TODO set AppName = title
                 //TODO delete titleLayout
+                activity.invalidateOptionsMenu();
 
 
             }
@@ -148,6 +141,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                 detailScrollView.setIsScrollEnable(false);
                 detailScrollView.fullScroll(ScrollView.FOCUS_UP);
 
+                activity.invalidateOptionsMenu();
 
             }
 
@@ -158,11 +152,17 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                 favoriteView.setVisibility(View.VISIBLE);
                 detailScrollView.setIsScrollEnable(false);
 
+                activity.invalidateOptionsMenu();
+
             }
 
             @Override
             public void onPanelHidden(View panel) {
                 Log.i(TAG, "onPanelHidden");
+
+                activity.invalidateOptionsMenu(); //just in case
+
+
             }
         });
 
@@ -214,6 +214,11 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
     public void setActivity(MainActivity activity) {
         this.activity = activity;
+    }
+
+
+    public Boolean isAnchoredOrExpanded(){
+        return this.isPanelExpanded() || this.isPanelAnchored();
     }
 
 
