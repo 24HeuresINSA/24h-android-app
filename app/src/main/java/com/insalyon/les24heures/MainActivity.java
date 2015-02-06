@@ -116,8 +116,7 @@ public class MainActivity extends Activity {
         resourceService = ResourceServiceImpl.getInstance();
         categoryService = CategoryServiceImpl.getInstance();
 
-
-        detailSlidingUpPanelLayoutLayout.setUpSlidingDetail(this);
+        detailSlidingUpPanelLayoutLayout.setActivity(this);
 
         /*** recover data either from (by priority)
          *           savedInstanceState (rotate, restore from background)
@@ -415,7 +414,7 @@ public class MainActivity extends Activity {
         if (detailSlidingUpPanelLayoutLayout.isPanelExpanded() || detailSlidingUpPanelLayoutLayout.isPanelAnchored()){
             detailSlidingUpPanelLayoutLayout.collapsePanel();
         } else if(!detailSlidingUpPanelLayoutLayout.isPanelHidden()) {
-            detailSlidingUpPanelLayoutLayout.hideDetailPannel();
+            detailSlidingUpPanelLayoutLayout.hideDetailPanel();
         }else{
            super.onBackPressed();
         }

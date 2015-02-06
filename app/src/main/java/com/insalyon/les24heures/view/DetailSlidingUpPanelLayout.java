@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.utils.DetailSlidingUpPanelLayoutNullActivity;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 /**
@@ -19,17 +20,17 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     private static final String TAG = DetailSlidingUpPanelLayout.class.getCanonicalName();
 
+    private DetailScrollView detailScrollView;
+    private View nextScheduleView;
+    private View favoriteView;
+    private TextView detailSlidingTitle;
+    private TextView detailSlidingDescription;
+    private View paralaxHeader;
 
+    private Integer wideHeight;
+    private Activity activity;
+    private boolean isSetup = false;
 
-    DetailScrollView detailScrollView;
-    View nextScheduleView;
-    View favoriteView;
-    TextView detailSlidingTitle;
-    TextView detailSlidingDescription;
-
-    View paralaxHeader;
-    private View mainContent;
-    private View mainContentFake;
 
     public DetailSlidingUpPanelLayout(Context context) {
         super(context);
@@ -44,30 +45,35 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     }
 
 
-    View contentFrame;
+    /**
+     * if return false it's because the height of the view isn't yet ready, the setup will be done once the view is rendered and
+     * the view height is processed
+     * @return
+     */
+    public Boolean setUp() throws DetailSlidingUpPanelLayoutNullActivity {
+        if(wideHeight == null)
+            return false;
+        if(activity == null){
+            throw new DetailSlidingUpPanelLayoutNullActivity();
+        }
 
-    public void setUpSlidingDetail(final Activity activity) {
         findDetailView(activity);
 
-        //TODO recuperer valeur depuis les dims
-        final float anchored = 0.7f;
-        final int scrollingHeaderHeight = 200; //header scrolling
 
-        //TODO get from real
-        final int wideHeight =  1557;
-        
+        //get params
+        final float anchored = Float.parseFloat(getResources().getString(R.string.detail_anchored));
+        final int scrollingHeaderHeight = (int) getResources().getDimension(R.dimen.detail_header_height);
         final int parallaxHeight = (int) ((wideHeight - scrollingHeaderHeight) * (1-anchored));//407; //paralax height
 
-        this.setAnchorPoint(anchored);
-        this.hidePanel();  //2.0.4 sera remplacé par mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN); à la prochaine release
-
-
+        //set parallaxHeader
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) paralaxHeader.getLayoutParams();
         params.height = parallaxHeight;
         paralaxHeader.setLayoutParams(params);
         paralaxHeader.setTranslationY(wideHeight-parallaxHeight);
 
-
+        //setup
+        this.setAnchorPoint(anchored);
+        this.hidePanel();  //2.0.4 sera remplacé par mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN); à la prochaine release
 //        this.setDragView(wholeSlidingLayout); //default but to be clear
         detailScrollView.setIsScrollEnable(false);
         this.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
@@ -77,6 +83,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
                 float newParallaxHeaderPos;
 
+                //TODO virer ce 2.25f, il faut recuperer la veritable position et pas faire un calcul
                 float parallaxContentFrame =   (wideHeight-scrollingHeaderHeight)*slideOffset/2.25f;
 
                 if(slideOffset < anchored) { //parallax
@@ -135,6 +142,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
             }
         });
 
+        isSetup = true;
+        return true;
     }
 
     private void findDetailView(Activity activity) {
@@ -154,7 +163,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
     }
 
-    public Boolean hideDetailPannel(){
+    public Boolean hideDetailPanel(){
         if(!this.isPanelHidden()) {
             this.hidePanel();
             return true;
@@ -165,18 +174,23 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     }
 
     @Override
-    protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec)
-    {
+    protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec){
         //ce sont les dimensions en pixels sans la action bar
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        int width = MeasureSpec.getSize(widthMeasureSpec);
-        int height = MeasureSpec.getSize(heightMeasureSpec);
+        wideHeight = MeasureSpec.getSize(heightMeasureSpec);
 
-        Log.d("onMeasure",width+" "+height);
-
-
+        if(!isSetup)
+            try {
+                setUp();
+            } catch (DetailSlidingUpPanelLayoutNullActivity detailSlidingUpPanelLayoutNullActivity) {
+                detailSlidingUpPanelLayoutNullActivity.printStackTrace();
+            }
     }
 
+
+    public void setActivity(Activity activity) {
+        this.activity = activity;
+    }
 
 
 }
