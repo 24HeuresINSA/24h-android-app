@@ -45,6 +45,14 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     }
 
 
+
+    private int getRelativeTop(View myView) {
+        if (myView.getParent() == myView.getRootView())
+            return myView.getTop();
+        else
+            return myView.getTop() + getRelativeTop((View) myView.getParent());
+    }
+
     /**
      * if return false it's because the height of the view isn't yet ready, the setup will be done once the view is rendered and
      * the view height is processed
@@ -60,6 +68,9 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
         findDetailView(activity);
 
 
+
+
+
         //get params
         final float anchored = Float.parseFloat(getResources().getString(R.string.detail_anchored));
         final int scrollingHeaderHeight = (int) getResources().getDimension(R.dimen.detail_header_height);
@@ -70,6 +81,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
         params.height = parallaxHeight;
         paralaxHeader.setLayoutParams(params);
         paralaxHeader.setTranslationY(wideHeight-parallaxHeight);
+
+        final DetailSlidingUpPanelLayout self = this;
 
         //setup
         this.setAnchorPoint(anchored);
@@ -82,9 +95,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                 Log.i(TAG, "onPanelSlide, offset " + slideOffset);
 
                 float newParallaxHeaderPos;
-
-                //TODO virer ce 2.25f, il faut recuperer la veritable position et pas faire un calcul
-                float parallaxContentFrame =   (wideHeight-scrollingHeaderHeight)*slideOffset/2.25f;
+                float parallaxContentFrame = - self.getCurrentParalaxOffset();
 
                 if(slideOffset < anchored) { //parallax
                     newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
@@ -93,8 +104,9 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                 }
 //                else{ //normal TODO
 //                    newParallaxHeaderPos = parallaxHeight*slideOffset/(1-anchored);
-////                  newParallaxHeaderPos = (height * (1 - slideOffset));
+//                  newParallaxHeaderPos = (height * (1 - slideOffset));
 //                    newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
+//                    paralaxHeader.setTranslationY(newParallaxHeaderPos);
 //                }
 
                 if (slideOffset == 0) {
