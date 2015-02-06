@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.utils.DetailSlidingUpPanelLayoutNullActivity;
@@ -26,9 +27,11 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     private TextView detailSlidingTitle;
     private TextView detailSlidingDescription;
     private View paralaxHeader;
+    private DrawerArrowDrawable drawerArrowDrawable;
+
 
     private Integer wideHeight;
-    private Activity activity;
+    private MainActivity activity;
     private boolean isSetup = false;
 
 
@@ -67,9 +70,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
         findDetailView(activity);
 
-
-
-
+        drawerArrowDrawable = activity.getDrawerArrowDrawable();
 
         //get params
         final float anchored = Float.parseFloat(getResources().getString(R.string.detail_anchored));
@@ -80,7 +81,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) paralaxHeader.getLayoutParams();
         params.height = parallaxHeight;
         paralaxHeader.setLayoutParams(params);
-        paralaxHeader.setTranslationY(wideHeight-parallaxHeight);
+        paralaxHeader.setTranslationY(wideHeight);
 
         final DetailSlidingUpPanelLayout self = this;
 
@@ -97,12 +98,22 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                 float newParallaxHeaderPos;
                 float parallaxContentFrame = - self.getCurrentParalaxOffset();
 
-                if(slideOffset < anchored) { //parallax
+                if(slideOffset < anchored) {
+                    //parallax
                     newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
                     newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
                     paralaxHeader.setTranslationY(newParallaxHeaderPos);
+
+                    //arrowDrawable
+                    float param = 1/anchored * slideOffset;
+                    if(param < 0) param = 0;
+                    else if(param > 1) param = 1;
+
+                    drawerArrowDrawable.setParameter(param);
+                }else{
+                    drawerArrowDrawable.setParameter(1);
                 }
-//                else{ //normal TODO
+//                //normal TODO
 //                    newParallaxHeaderPos = parallaxHeight*slideOffset/(1-anchored);
 //                  newParallaxHeaderPos = (height * (1 - slideOffset));
 //                    newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
@@ -124,6 +135,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 //                this.setDragView(slidingDetailHeader);
                 //TODO set AppName = title
                 //TODO delete titleLayout
+
 
             }
 
@@ -200,7 +212,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     }
 
 
-    public void setActivity(Activity activity) {
+    public void setActivity(MainActivity activity) {
         this.activity = activity;
     }
 

@@ -90,6 +90,11 @@ public class MainActivity extends Activity {
     private Boolean isFavoritesChecked = false;
     private String searchQuery;
     private float offset;
+
+    public DrawerArrowDrawable getDrawerArrowDrawable() {
+        return drawerArrowDrawable;
+    }
+
     private boolean flipped;
 
 
@@ -301,6 +306,7 @@ public class MainActivity extends Activity {
 
         //click on the appName or the appIcone
         if (item.getTitle().equals(getActionBar().getTitle())) {
+            //search widget is active
             if (!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()) {
                 setSandwich();
                 enabledDrawerSwipe();
@@ -308,7 +314,13 @@ public class MainActivity extends Activity {
                         (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
                 searchView.onActionViewCollapsed();
                 searchQuery = null;
-            } else {
+            }
+            //detail is visible
+            else if(detailSlidingUpPanelLayoutLayout.isPanelAnchored() || detailSlidingUpPanelLayoutLayout.isPanelExpanded()){
+                detailSlidingUpPanelLayoutLayout.collapsePanel();
+            }
+            //default
+            else{
                 toggleDrawer();
             }
             return true;
@@ -411,11 +423,13 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if (detailSlidingUpPanelLayoutLayout.isPanelExpanded() || detailSlidingUpPanelLayoutLayout.isPanelAnchored()){
+        if(isDrawerOpen){
+            closeDrawer();
+        }else if (detailSlidingUpPanelLayoutLayout.isPanelExpanded() || detailSlidingUpPanelLayoutLayout.isPanelAnchored()) {
             detailSlidingUpPanelLayoutLayout.collapsePanel();
-        } else if(!detailSlidingUpPanelLayoutLayout.isPanelHidden()) {
+        } else if (!detailSlidingUpPanelLayoutLayout.isPanelHidden()) {
             detailSlidingUpPanelLayoutLayout.hideDetailPanel();
-        }else{
+        }else {
            super.onBackPressed();
         }
 
@@ -570,13 +584,18 @@ public class MainActivity extends Activity {
     }
 
     private void toggleDrawer() {
-        if (drawerLayout.isDrawerOpen(drawerView)) {
+        if (isDrawerOpen()) {
             closeDrawer();
         } else {
             openDrawer();
         }
 
     }
+
+    private boolean isDrawerOpen() {
+        return drawerLayout.isDrawerOpen(drawerView);
+    }
+
 
     public void openDrawer() {
         drawerLayout.openDrawer(drawerView);
@@ -591,6 +610,7 @@ public class MainActivity extends Activity {
     }
 
     public void setArrow() {
+        //tODO verifier l'etat du drawable
         ValueAnimator animation = ValueAnimator.ofFloat(0f, 1f);
         animation.setDuration(500);
         animation.start();
@@ -604,6 +624,7 @@ public class MainActivity extends Activity {
         drawerArrowDrawable.setFlip(true);
     }
 
+
     private void disabledDrawerSwipe() {
         drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
@@ -613,6 +634,7 @@ public class MainActivity extends Activity {
     }
 
     public void setSandwich() {
+        //tODO verifier l'etat du drawable
         ValueAnimator animation = ValueAnimator.ofFloat(1f, 0f);
         animation.setDuration(500);
         animation.start();
