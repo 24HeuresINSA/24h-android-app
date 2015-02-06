@@ -5,6 +5,7 @@ import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -12,6 +13,8 @@ import android.widget.TextView;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.Schedule;
+import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.DetailSlidingUpPanelLayoutNullActivity;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
@@ -21,9 +24,11 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     private static final String TAG = DetailSlidingUpPanelLayout.class.getCanonicalName();
 
+    private static ResourceServiceImpl resourceService = ResourceServiceImpl.getInstance();
+
     private DetailScrollView detailScrollView;
-    private View nextScheduleView;
-    private View favoriteView;
+    private TextView nextSchedule;
+    private ImageButton favoriteImageButton;
     private TextView detailSlidingTitle;
     private TextView detailSlidingDescription;
     private View paralaxHeader;
@@ -122,8 +127,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
             public void onPanelExpanded(View panel) {
                 Log.i(TAG, "onPanelExpanded");
                 detailScrollView.setIsScrollEnable(true);
-                nextScheduleView.setVisibility(View.GONE);
-                favoriteView.setVisibility(View.VISIBLE);
+                nextSchedule.setVisibility(View.GONE);
+                favoriteImageButton.setVisibility(View.VISIBLE);
 //                this.setDragView(slidingDetailHeader);
                 //TODO set AppName = title
                 //TODO delete titleLayout
@@ -135,8 +140,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
             @Override
             public void onPanelCollapsed(View panel) {
                 Log.i(TAG, "onPanelCollapsed");
-                nextScheduleView.setVisibility(View.VISIBLE);
-                favoriteView.setVisibility(View.GONE);
+                nextSchedule.setVisibility(View.VISIBLE);
+                favoriteImageButton.setVisibility(View.GONE);
 //                this.setDragView(wholeSlidingLayout);
                 detailScrollView.setIsScrollEnable(false);
                 detailScrollView.fullScroll(ScrollView.FOCUS_UP);
@@ -148,8 +153,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
             @Override
             public void onPanelAnchored(View panel) {
                 Log.i(TAG, "onPanelAnchored");
-                nextScheduleView.setVisibility(View.GONE);
-                favoriteView.setVisibility(View.VISIBLE);
+                nextSchedule.setVisibility(View.GONE);
+                favoriteImageButton.setVisibility(View.VISIBLE);
                 detailScrollView.setIsScrollEnable(false);
 
                 activity.invalidateOptionsMenu();
@@ -172,17 +177,47 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
     private void findDetailView(Activity activity) {
         detailScrollView = (DetailScrollView) activity.findViewById(R.id.detail_scrollView);
-        nextScheduleView =  activity.findViewById(R.id.detail_next_schedule);
-        favoriteView = activity.findViewById(R.id.detail_favorites);
+        nextSchedule = (TextView) activity.findViewById(R.id.detail_next_schedule);
+        favoriteImageButton = (ImageButton) activity.findViewById(R.id.detail_favorites);
         detailSlidingTitle = (TextView) activity.findViewById(R.id.detail_sliding_title);
         detailSlidingDescription = (TextView) activity.findViewById(R.id.detail_desciption_text);
         paralaxHeader = activity.findViewById(R.id.detail_paralax_header);
+
+        favoriteImageButton.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                resource.setIsFavorites(!resource.isFavorites());
+                if(resource.isFavorites())
+                    ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
+                else
+                    ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
+
+                //TODO notify dataset changed
+            }
+        });
     }
 
-    public void showDetailPannel(Resource resource){
+
+    Resource resource;
+
+    public void showDetailPannel(Resource res){
+        resource = res;
+
         //TODO mettre à jour le pannel
         detailSlidingTitle.setText(resource.getTitle());
         detailSlidingDescription.setText(resource.getDescription());
+
+        Schedule schedule = resourceService.getNextSchedule(resource);
+        nextSchedule.setText(schedule.getPrintableDay()+"\n"+
+                schedule.getStart().getHours()+"h-"+schedule.getEnd().getHours()+"h");
+
+        if(resource.isFavorites())
+            favoriteImageButton.setImageResource(R.drawable.ic_favorites_checked);
+        else
+            favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
+
+
+
         this.showPanel();
 
     }

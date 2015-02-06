@@ -2,25 +2,33 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/detail_sliding_layout">
+    android:id="@+id/detail_sliding_layout"
+    android:paddingRight="@dimen/whole_detail_padding"
+    android:paddingLeft="@dimen/whole_detail_padding">
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/detail_header_height"
         android:weightSum="5"
-        android:id="@+id/detail_sliding_layout_header">
+        android:id="@+id/detail_sliding_layout_header"
+        android:background="#d10e2037">
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="4">
+            android:layout_weight="4"
+            android:gravity="center_vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
                 android:text="Title...."
                 android:id="@+id/detail_sliding_title" />
         </LinearLayout>
@@ -31,20 +39,43 @@
             android:layout_height="fill_parent"
             android:layout_weight="1">
 
-            <TextView
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+                <!--android:text="fav"-->
+                <!--android:id="@+id/detail_favorites"-->
+                <!--android:visibility="gone" />-->
+
+         <!---->
+            <!--blocksDescendants to prevent ImageButton to keep click event -->
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="fav"
-                android:id="@+id/detail_favorites"
-                android:visibility="gone" />
+                android:descendantFocusability="blocksDescendants"
+                android:padding="10dp">
+
+                <ImageButton
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/detail_favorites"
+                    android:src="@drawable/ic_favorites_unchecked"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
 
             <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="next schedule"
-                android:id="@+id/detail_next_schedule" />
+                android:text="sam\n10h-18h"
+                android:textSize="15dp"
+                android:id="@+id/detail_next_schedule"
+                android:layout_gravity="center"
+                android:gravity="center_vertical|right" />
         </LinearLayout>
 
     </LinearLayout>

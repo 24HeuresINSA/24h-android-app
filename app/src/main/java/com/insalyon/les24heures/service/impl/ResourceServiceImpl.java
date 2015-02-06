@@ -9,6 +9,7 @@ import com.insalyon.les24heures.DTO.ResourceDTO;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
 
@@ -126,6 +127,12 @@ public class ResourceServiceImpl implements ResourceService  {
             }
         }.execute();
 
+    }
+
+    @Override
+    public Schedule getNextSchedule(Resource resource) {
+        //TODO according to current time
+        return resource.getSchedules().get(0);
     }
 
 }

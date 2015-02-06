@@ -46,26 +46,22 @@ public class Schedule implements Parcelable {
 
     @Override
     public String toString() {
-        String str;
+        return getPrintableDay()+ " " + start.getHours()+"h-"+end.getHours()+"h";
+    }
 
+    public String getPrintableDay(){
         //TODO avoir ca dans un fichier de conf
+
         switch (day){
             case FRIDAY:
-                str = "Vend";
-                 break;
+                return "Vend";
             case SATURDAY:
-                str = "Sam";
-                break;
+                return "Sam";
             case SUNDAY:
-                str = "Dim";
-                break;
+                return "Dim";
             default:
-                str = "";
-                break;
+                return "";
         }
-
-        str += " " + start.getHours()+"h-"+end.getHours()+"h";
-        return str;
     }
 
     public Day getDay() {
