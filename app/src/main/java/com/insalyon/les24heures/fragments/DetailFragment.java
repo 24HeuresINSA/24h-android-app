@@ -10,16 +10,20 @@ import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ScheduleAdapter;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
-import com.insalyon.les24heures.utils.Day;
 import com.insalyon.les24heures.view.DetailScrollView;
 
 import java.util.ArrayList;
-import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -28,7 +32,7 @@ import butterknife.OnClick;
 /**
  * Created by remi on 09/02/15.
  */
-public class DetailFragment extends Fragment {
+public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = OutputMapsFragment.class.getCanonicalName();
     View view;
 
@@ -50,6 +54,7 @@ public class DetailFragment extends Fragment {
     Resource resource;
     private ScheduleAdapter scheduleAdapter;
     private ArrayList<Schedule> schedules;
+    private GoogleMap googleMap;
 
 
     @Override
@@ -73,6 +78,13 @@ public class DetailFragment extends Fragment {
                 R.layout.schedule_grid_item,schedules);
         schedulesGrid.setAdapter(scheduleAdapter);
 
+        MapFragment mapFragment = (MapFragment) getFragmentManager()
+                .findFragmentById(R.id.detail_mini_maps);
+        mapFragment.getMapAsync(this);
+        googleMap = mapFragment.getMap();
+        googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.getUiSettings().setAllGesturesEnabled(false);
+
         return view;
     }
 
@@ -83,6 +95,27 @@ public class DetailFragment extends Fragment {
     /**
      * Fragment is alive
      */
+    @Override
+    public void onMapReady(final GoogleMap map) {
+        if(resource != null) {
+            addMarkerAndMoveCam();
+        }else{
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
+        }
+
+        // Other supported types include: MAP_TYPE_NORMAL,
+        // MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID and MAP_TYPE_NONE MAP_TYPE_SATELLITE
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+    }
+
+    private void addMarkerAndMoveCam() {
+        googleMap.addMarker(new MarkerOptions()
+//                                .title(resource.getTitle() + " " + resource.getCategory().getName())
+//                                .snippet(resource.getDescription())
+                .position(resource.getLoc()));
+
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(resource.getLoc(), 15));
+    }
 
     @OnClick(R.id.detail_favorites)
     public void onClickFav(View v){
@@ -111,9 +144,11 @@ public class DetailFragment extends Fragment {
         else
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
 
-        //TODO mettre à jour le pannel
+        //TODO mettre à jour le panel
 
         //mini maps
+        addMarkerAndMoveCam();
+
 
         //schedules
         schedules.clear();

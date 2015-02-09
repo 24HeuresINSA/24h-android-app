@@ -92,7 +92,7 @@ public class ResourceServiceImpl implements ResourceService  {
                 ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(resourceDTOs));
                 eventBus.post(resourcesUpdatedEvent);
             }
- 
+
 
             @Override
             public void failure(RetrofitError error) {

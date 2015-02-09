@@ -1,7 +1,6 @@
 package com.insalyon.les24heures.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,12 +57,6 @@ public class ScheduleAdapter extends ArrayAdapter<Schedule> {
         Schedule schedule = schedules.get(position);
 
         holder.day.setText(schedule.toString());
-
-        Log.d("GRIDVIEW","position "+position+"  "+schedule.toString()+"  "+schedules.size());
-
-
-
-
 
         return convertView;
     }
