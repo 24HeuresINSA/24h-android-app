@@ -4,6 +4,7 @@ import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
@@ -50,12 +51,15 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
      TextView detailSlidingDescription;
     @InjectView(R.id.detail_schedule_grid_layout)
     GridView schedulesGrid;
+    @InjectView(R.id.detail_sliding_layout_header)
+    View slidingHeader;
 
     Resource resource;
     private ScheduleAdapter scheduleAdapter;
     private ArrayList<Schedule> schedules;
     private GoogleMap googleMap;
 
+    private Boolean heavyDataUpdated = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,6 +88,14 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         googleMap = mapFragment.getMap();
         googleMap.getUiSettings().setZoomControlsEnabled(true);
         googleMap.getUiSettings().setAllGesturesEnabled(false);
+
+        slidingHeader.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                updateHeavyData();
+                return false;
+            }
+        });
 
         return view;
     }
@@ -129,8 +141,32 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void notifyDataChanged(Resource res){
+    private void updateHeavyData(){
+        if(!heavyDataUpdated) {
+
+            //TODO mettre à jour le panel
+
+            //mini maps
+            //the map update
+            addMarkerAndMoveCam();
+
+
+            //schedules
+            schedules.clear();
+            schedules.addAll(resource.getSchedules());
+            scheduleAdapter.notifyDataSetChanged();
+
+
+            //optionals  pictures
+
+            heavyDataUpdated = true;
+
+        }
+    }
+
+    public void notifyDataChanged(Resource res) {
         resource = res;
+        heavyDataUpdated = false;
 
         detailSlidingTitle.setText(resource.getTitle());
         detailSlidingDescription.setText(resource.getDescription());
@@ -144,18 +180,5 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         else
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
 
-        //TODO mettre à jour le panel
-
-        //mini maps
-        addMarkerAndMoveCam();
-
-
-        //schedules
-        schedules.clear();
-        schedules.addAll(resource.getSchedules());
-        scheduleAdapter.notifyDataSetChanged();
-
-
-        //optionals  pictures
     }
 }
