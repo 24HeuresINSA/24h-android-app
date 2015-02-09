@@ -662,6 +662,20 @@ public class MainActivity extends Activity {
         drawerArrowDrawable.setFlip(true);
     }
 
+    public void restoreTitle(){
+        //TODO faire comme pour les menu item
+        String str;
+        if(fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class){
+            str = (getResources().getString(R.string.drawer_outputtype_maps));
+        }else{
+            str = (getResources().getString(R.string.drawer_outputtype_list));
+        }
+
+        if(str != getActionBar().getTitle()){
+            setTitle(str);
+        }
+    }
+
 
 }
 

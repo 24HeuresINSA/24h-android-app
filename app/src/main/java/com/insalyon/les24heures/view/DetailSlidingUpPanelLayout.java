@@ -26,6 +26,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
     private static ResourceServiceImpl resourceService = ResourceServiceImpl.getInstance();
 
+    Resource resource;
+
     private DetailScrollView detailScrollView;
     private TextView nextSchedule;
     private ImageButton favoriteImageButton;
@@ -95,7 +97,13 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                 float newParallaxHeaderPos;
                 float parallaxContentFrame = - self.getCurrentParalaxOffset();
 
-                if(slideOffset < anchored) {
+                if(slideOffset <= 0){//from visible to hidden and vice versa
+                    //parallax
+                    newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
+                    newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
+                    paralaxHeader.setTranslationY(newParallaxHeaderPos);
+
+                } else if(slideOffset < anchored) { //from visible to anchored and vice versa
                     //parallax
                     newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
                     newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
@@ -107,7 +115,9 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                     else if(param > 1) param = 1;
 
                     drawerArrowDrawable.setParameter(param);
-                }else{
+
+                    activity.getActionBar().setTitle("");
+                }else{      //from anchored to expand and vice versa
                     drawerArrowDrawable.setParameter(1);
                 }
 //                //normal TODO
@@ -130,10 +140,9 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                 nextSchedule.setVisibility(View.GONE);
                 favoriteImageButton.setVisibility(View.VISIBLE);
 //                this.setDragView(slidingDetailHeader);
-                //TODO set AppName = title
                 //TODO delete titleLayout
                 activity.invalidateOptionsMenu();
-
+                activity.getActionBar().setTitle(resource.getTitle());
 
             }
 
@@ -147,6 +156,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                 detailScrollView.fullScroll(ScrollView.FOCUS_UP);
 
                 activity.invalidateOptionsMenu();
+
+                activity.restoreTitle();
 
             }
 
@@ -165,7 +176,9 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
             public void onPanelHidden(View panel) {
                 Log.i(TAG, "onPanelHidden");
 
-                activity.invalidateOptionsMenu(); //just in case
+//                activity.invalidateOptionsMenu(); //just in case onPanelCollapsed is not called
+//                activity.restoreTitle();  //just in case onPanelCollapsed is not called
+
 
 
             }
@@ -198,12 +211,10 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     }
 
 
-    Resource resource;
 
     public void showDetailPannel(Resource res){
         resource = res;
 
-        //TODO mettre à jour le pannel
         detailSlidingTitle.setText(resource.getTitle());
         detailSlidingDescription.setText(resource.getDescription());
 
@@ -216,6 +227,14 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
         else
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
 
+
+        //TODO mettre à jour le pannel
+
+        //mini maps
+
+        //schedules
+
+        //optionals  pictures
 
 
         this.showPanel();
