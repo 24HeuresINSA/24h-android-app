@@ -97,6 +97,7 @@ public class MainActivity extends Activity {
     private Boolean isFavoritesChecked = false;
     private String searchQuery;
     private float offset;
+    private Menu mMenu;
 
     public DrawerArrowDrawable getDrawerArrowDrawable() {
         return drawerArrowDrawable;
@@ -378,20 +379,21 @@ public class MainActivity extends Activity {
     /* Called whenever we call invalidateOptionsMenu() */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean drawerOpen = drawerLayout.isDrawerVisible(drawerView);
-
-
-        hideOptionsMenu(menu, drawerOpen);
-
+        mMenu = menu;
+        customOnOptionsMenu();
         return super.onPrepareOptionsMenu(menu);
     }
 
-    private void hideOptionsMenu(Menu menu, boolean drawerOpen) {
+    /**
+     * invalidateOptionsMenu refire search from searchWidget, painful !
+     */
+    public void customOnOptionsMenu() {
+        boolean drawerOpen = drawerLayout.isDrawerVisible(drawerView);
         Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
-        menu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
-        menu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
-        menu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
-        menu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+        mMenu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
+        mMenu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
+        mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+        mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
     }
 
     /**
