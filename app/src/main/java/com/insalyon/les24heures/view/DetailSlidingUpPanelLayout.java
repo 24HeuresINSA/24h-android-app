@@ -42,6 +42,97 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     private boolean isSetup = false;
 
 
+    private float anchored;
+    private int scrollingHeaderHeight;
+    private DetailSlidingUpPanelLayout self;
+
+    private PanelSlideListener panelSlideListener = new PanelSlideListener() {
+        @Override
+        public void onPanelSlide(View panel, float slideOffset) {
+            Log.i(TAG, "onPanelSlide, offset " + slideOffset);
+
+            float newParallaxHeaderPos;
+            float parallaxContentFrame = -self.getCurrentParalaxOffset();
+
+            if (slideOffset <= 0) {//from visible to hidden and vice versa
+                //parallax
+                newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
+                newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
+                paralaxHeader.setTranslationY(newParallaxHeaderPos);
+                //TODO on peut juste se contenter de cacher la main pic a cette etape au lieu de la bouger
+
+            } else if (slideOffset < anchored) { //from visible to anchored and vice versa
+                //parallax
+                newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
+                newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
+                paralaxHeader.setTranslationY(newParallaxHeaderPos);
+
+                //arrowDrawable
+                float param = 1 / anchored * slideOffset;
+                if (param < 0) param = 0;
+                else if (param > 1) param = 1;
+
+                drawerArrowDrawable.setParameter(param);
+
+//                    activity.getActionBar().setTitle("");
+            } else {      //from anchored to expand and vice versa
+                drawerArrowDrawable.setParameter(1);
+//                // TODO ou pas ?
+//                    newParallaxHeaderPos = parallaxHeight*slideOffset/(1-anchored);
+//                  newParallaxHeaderPos = (height * (1 - slideOffset));
+//                    newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
+//                    paralaxHeader.setTranslationY(newParallaxHeaderPos);
+            }
+
+            if (slideOffset == 0) {
+                detailScrollView.setIsScrollEnable(true);
+            }
+
+        }
+
+        @Override
+        public void onPanelExpanded(View panel) {
+            Log.i(TAG, "onPanelExpanded");
+            detailScrollView.setIsScrollEnable(true);
+            nextSchedule.setVisibility(View.GONE);
+            favoriteImageButton.setVisibility(View.VISIBLE);
+//                this.setDragView(slidingDetailHeader);
+
+            activity.invalidateOptionsMenu();
+//                activity.getActionBar().setTitle(resource.getTitle());   => hide title in detail
+
+        }
+
+        @Override
+        public void onPanelCollapsed(View panel) {
+            Log.i(TAG, "onPanelCollapsed");
+            nextSchedule.setVisibility(View.VISIBLE);
+            favoriteImageButton.setVisibility(View.GONE);
+//                this.setDragView(wholeSlidingLayout);
+            detailScrollView.setIsScrollEnable(false);
+            detailScrollView.fullScroll(ScrollView.FOCUS_UP);
+
+            activity.invalidateOptionsMenu();
+            activity.restoreTitle();
+        }
+
+        @Override
+        public void onPanelAnchored(View panel) {
+            Log.i(TAG, "onPanelAnchored");
+            nextSchedule.setVisibility(View.GONE);
+            favoriteImageButton.setVisibility(View.VISIBLE);
+            detailScrollView.setIsScrollEnable(false);
+
+            activity.invalidateOptionsMenu();
+        }
+
+        @Override
+        public void onPanelHidden(View panel) {
+            Log.i(TAG, "onPanelHidden");
+        }
+    };
+
+
     public DetailSlidingUpPanelLayout(Context context) {
         super(context);
     }
@@ -60,7 +151,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
      * the view height is processed
      * @return
      */
-    public Boolean setUp() throws DetailSlidingUpPanelLayoutNullActivity {
+    public Boolean setup() throws DetailSlidingUpPanelLayoutNullActivity {
         if(wideHeight == null)
             return false;
         if(activity == null){
@@ -72,8 +163,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
         drawerArrowDrawable = activity.getDrawerArrowDrawable();
 
         //get params
-        final float anchored = Float.parseFloat(getResources().getString(R.string.detail_anchored));
-        final int scrollingHeaderHeight = (int) getResources().getDimension(R.dimen.detail_header_height);
+        anchored = Float.parseFloat(getResources().getString(R.string.detail_anchored));
+        scrollingHeaderHeight = (int) getResources().getDimension(R.dimen.detail_header_height);
         final int parallaxHeight = (int) ((wideHeight - scrollingHeaderHeight) * (1-anchored));//407; //paralax height
 
         //set parallaxHeader
@@ -82,111 +173,22 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
         paralaxHeader.setLayoutParams(params);
         paralaxHeader.setTranslationY(wideHeight);
 
-        final DetailSlidingUpPanelLayout self = this;
+        self = this;
 
         //setup
         this.setAnchorPoint(anchored);
         this.hidePanel();  //2.0.4 sera remplacé par mLayout.setPanelState(SlidingUpPanelLayout.PanelState.HIDDEN); à la prochaine release
 //        this.setDragView(wholeSlidingLayout); //default but to be clear
         detailScrollView.setIsScrollEnable(false);
-        this.setPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener() {
-            @Override
-            public void onPanelSlide(View panel, float slideOffset) {
-                Log.i(TAG, "onPanelSlide, offset " + slideOffset);
 
-                float newParallaxHeaderPos;
-                float parallaxContentFrame = - self.getCurrentParalaxOffset();
-
-                if(slideOffset <= 0){//from visible to hidden and vice versa
-                    //parallax
-                    newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
-                    newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
-                    paralaxHeader.setTranslationY(newParallaxHeaderPos);
-
-                } else if(slideOffset < anchored) { //from visible to anchored and vice versa
-                    //parallax
-                    newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
-                    newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
-                    paralaxHeader.setTranslationY(newParallaxHeaderPos);
-
-                    //arrowDrawable
-                    float param = 1/anchored * slideOffset;
-                    if(param < 0) param = 0;
-                    else if(param > 1) param = 1;
-
-                    drawerArrowDrawable.setParameter(param);
-
-                    activity.getActionBar().setTitle("");
-                }else{      //from anchored to expand and vice versa
-                    drawerArrowDrawable.setParameter(1);
-                }
-//                //normal TODO
-//                    newParallaxHeaderPos = parallaxHeight*slideOffset/(1-anchored);
-//                  newParallaxHeaderPos = (height * (1 - slideOffset));
-//                    newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
-//                    paralaxHeader.setTranslationY(newParallaxHeaderPos);
-//                }
-
-                if (slideOffset == 0) {
-                    detailScrollView.setIsScrollEnable(true);
-                }
-
-            }
-
-            @Override
-            public void onPanelExpanded(View panel) {
-                Log.i(TAG, "onPanelExpanded");
-                detailScrollView.setIsScrollEnable(true);
-                nextSchedule.setVisibility(View.GONE);
-                favoriteImageButton.setVisibility(View.VISIBLE);
-//                this.setDragView(slidingDetailHeader);
-                //TODO delete titleLayout
-                activity.invalidateOptionsMenu();
-                activity.getActionBar().setTitle(resource.getTitle());
-
-            }
-
-            @Override
-            public void onPanelCollapsed(View panel) {
-                Log.i(TAG, "onPanelCollapsed");
-                nextSchedule.setVisibility(View.VISIBLE);
-                favoriteImageButton.setVisibility(View.GONE);
-//                this.setDragView(wholeSlidingLayout);
-                detailScrollView.setIsScrollEnable(false);
-                detailScrollView.fullScroll(ScrollView.FOCUS_UP);
-
-                activity.invalidateOptionsMenu();
-
-                activity.restoreTitle();
-
-            }
-
-            @Override
-            public void onPanelAnchored(View panel) {
-                Log.i(TAG, "onPanelAnchored");
-                nextSchedule.setVisibility(View.GONE);
-                favoriteImageButton.setVisibility(View.VISIBLE);
-                detailScrollView.setIsScrollEnable(false);
-
-                activity.invalidateOptionsMenu();
-
-            }
-
-            @Override
-            public void onPanelHidden(View panel) {
-                Log.i(TAG, "onPanelHidden");
-
-//                activity.invalidateOptionsMenu(); //just in case onPanelCollapsed is not called
-//                activity.restoreTitle();  //just in case onPanelCollapsed is not called
-
-
-
-            }
-        });
+//        panelSlideListener =
+        this.setPanelSlideListener(panelSlideListener);
 
         isSetup = true;
         return true;
     }
+
+
 
     private void findDetailView(Activity activity) {
         detailScrollView = (DetailScrollView) activity.findViewById(R.id.detail_scrollView);
@@ -205,7 +207,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                 else
                     ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
 
-                //TODO notify dataset changed
+                //TODO notify dataset changed (surtout List)
             }
         });
     }
@@ -259,7 +261,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
         if(!isSetup)
             try {
-                setUp();
+                setup();
             } catch (DetailSlidingUpPanelLayoutNullActivity detailSlidingUpPanelLayoutNullActivity) {
                 detailSlidingUpPanelLayoutNullActivity.printStackTrace();
             }
