@@ -31,6 +31,7 @@ import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
+import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.fragments.OutputListFragment;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
 import com.insalyon.les24heures.fragments.OutputTypeFragment;
@@ -75,6 +76,10 @@ public class MainActivity extends Activity {
 
     @InjectView(R.id.sliding_layout)
     DetailSlidingUpPanelLayout detailSlidingUpPanelLayoutLayout;
+
+    DetailFragment detailFragment;
+
+
 
     private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
     private ArrayList<Category> categories;
@@ -122,7 +127,10 @@ public class MainActivity extends Activity {
         resourceService = ResourceServiceImpl.getInstance();
         categoryService = CategoryServiceImpl.getInstance();
 
-        detailSlidingUpPanelLayoutLayout.setActivity(this);
+        detailSlidingUpPanelLayoutLayout.setActivity(this); //slidingPanel needs the activity to invalidateOptionMenu, manage appName and arrowDrawer
+        detailSlidingUpPanelLayoutLayout.setParallaxHeader(findViewById(R.id.detail_paralax_header));
+        detailFragment = (DetailFragment) fragmentManager.findFragmentById(R.id.sliding_layout_content_fragment);
+        detailSlidingUpPanelLayoutLayout.setDetailFragment(detailFragment);
 
         /*** recover data either from (by priority)
          *           savedInstanceState (rotate, restore from background)
@@ -410,7 +418,7 @@ public class MainActivity extends Activity {
                 if(m.getResource() == null){
                     detailSlidingUpPanelLayoutLayout.showPanel();
                 }else{
-                    detailSlidingUpPanelLayoutLayout.showDetailPannel(m.getResource());
+                    detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getResource());
                 }
                 break;
         }

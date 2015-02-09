@@ -1,6 +1,5 @@
 package com.insalyon.les24heures.view;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -12,8 +11,8 @@ import android.widget.TextView;
 
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
+import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.Resource;
-import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.DetailSlidingUpPanelLayoutNullActivity;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -21,19 +20,20 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 /**
  * Created by remi on 04/02/15.
  */
+//TODO faire une jolie interface du SlidingUpPanelLayout avec fragment inside et gestion du parallax header
 public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     private static final String TAG = DetailSlidingUpPanelLayout.class.getCanonicalName();
 
     private static ResourceServiceImpl resourceService = ResourceServiceImpl.getInstance();
 
-    Resource resource;
 
     private DetailScrollView detailScrollView;
     private TextView nextSchedule;
     private ImageButton favoriteImageButton;
     private TextView detailSlidingTitle;
     private TextView detailSlidingDescription;
-    private View paralaxHeader;
+
+    private View parallaxHeader;
     private DrawerArrowDrawable drawerArrowDrawable;
 
 
@@ -58,14 +58,14 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                 //parallax
                 newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
                 newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
-                paralaxHeader.setTranslationY(newParallaxHeaderPos);
+                parallaxHeader.setTranslationY(newParallaxHeaderPos);
                 //TODO on peut juste se contenter de cacher la main pic a cette etape au lieu de la bouger
 
             } else if (slideOffset < anchored) { //from visible to anchored and vice versa
                 //parallax
                 newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
                 newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
-                paralaxHeader.setTranslationY(newParallaxHeaderPos);
+                parallaxHeader.setTranslationY(newParallaxHeaderPos);
 
                 //arrowDrawable
                 float param = 1 / anchored * slideOffset;
@@ -81,7 +81,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 //                    newParallaxHeaderPos = parallaxHeight*slideOffset/(1-anchored);
 //                  newParallaxHeaderPos = (height * (1 - slideOffset));
 //                    newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
-//                    paralaxHeader.setTranslationY(newParallaxHeaderPos);
+//                    parallaxHeader.setTranslationY(newParallaxHeaderPos);
             }
 
             if (slideOffset == 0) {
@@ -131,6 +131,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
             Log.i(TAG, "onPanelHidden");
         }
     };
+    private DetailFragment detailFragment;
 
 
     public DetailSlidingUpPanelLayout(Context context) {
@@ -146,6 +147,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     }
 
 
+
     /**
      * if return false it's because the height of the view isn't yet ready, the setup will be done once the view is rendered and
      * the view height is processed
@@ -158,7 +160,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
             throw new DetailSlidingUpPanelLayoutNullActivity();
         }
 
-        findDetailView(activity);
+        findDetailView();
 
         drawerArrowDrawable = activity.getDrawerArrowDrawable();
 
@@ -168,10 +170,10 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
         final int parallaxHeight = (int) ((wideHeight - scrollingHeaderHeight) * (1-anchored));//407; //paralax height
 
         //set parallaxHeader
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) paralaxHeader.getLayoutParams();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) parallaxHeader.getLayoutParams();
         params.height = parallaxHeight;
-        paralaxHeader.setLayoutParams(params);
-        paralaxHeader.setTranslationY(wideHeight);
+        parallaxHeader.setLayoutParams(params);
+        parallaxHeader.setTranslationY(wideHeight);
 
         self = this;
 
@@ -181,7 +183,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 //        this.setDragView(wholeSlidingLayout); //default but to be clear
         detailScrollView.setIsScrollEnable(false);
 
-//        panelSlideListener =
         this.setPanelSlideListener(panelSlideListener);
 
         isSetup = true;
@@ -189,58 +190,27 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     }
 
 
+    public void setDetailFragment(DetailFragment detailFragment) {
+        this.detailFragment = detailFragment;
+    }
 
-    private void findDetailView(Activity activity) {
-        detailScrollView = (DetailScrollView) activity.findViewById(R.id.detail_scrollView);
-        nextSchedule = (TextView) activity.findViewById(R.id.detail_next_schedule);
-        favoriteImageButton = (ImageButton) activity.findViewById(R.id.detail_favorites);
-        detailSlidingTitle = (TextView) activity.findViewById(R.id.detail_sliding_title);
-        detailSlidingDescription = (TextView) activity.findViewById(R.id.detail_desciption_text);
-        paralaxHeader = activity.findViewById(R.id.detail_paralax_header);
+    public void setParallaxHeader(View parallaxHeader) {
+        this.parallaxHeader = parallaxHeader;
+    }
 
-        favoriteImageButton.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                resource.setIsFavorites(!resource.isFavorites());
-                if(resource.isFavorites())
-                    ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
-                else
-                    ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
-
-                //TODO notify dataset changed (surtout List)
-            }
-        });
+    private void findDetailView() {
+        detailScrollView = (DetailScrollView) detailFragment.getView().findViewById(R.id.detail_scrollView);
+        nextSchedule = (TextView) detailFragment.getView().findViewById(R.id.detail_next_schedule);
+        favoriteImageButton = (ImageButton) detailFragment.getView().findViewById(R.id.detail_favorites);
+        detailSlidingTitle = (TextView) detailFragment.getView().findViewById(R.id.detail_sliding_title);
+        detailSlidingDescription = (TextView) detailFragment.getView().findViewById(R.id.detail_desciption_text);
     }
 
 
 
-    public void showDetailPannel(Resource res){
-        resource = res;
-
-        detailSlidingTitle.setText(resource.getTitle());
-        detailSlidingDescription.setText(resource.getDescription());
-
-        Schedule schedule = resourceService.getNextSchedule(resource);
-        nextSchedule.setText(schedule.getPrintableDay()+"\n"+
-                schedule.getStart().getHours()+"h-"+schedule.getEnd().getHours()+"h");
-
-        if(resource.isFavorites())
-            favoriteImageButton.setImageResource(R.drawable.ic_favorites_checked);
-        else
-            favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
-
-
-        //TODO mettre à jour le pannel
-
-        //mini maps
-
-        //schedules
-
-        //optionals  pictures
-
-
+    public void showDetailPanel(Resource res){
+        detailFragment.notifyDataChanged(res);
         this.showPanel();
-
     }
 
     public Boolean hideDetailPanel(){

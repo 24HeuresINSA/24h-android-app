@@ -30,17 +30,12 @@
                 android:layout_height="match_parent"
                 android:id="@+id/main_content">
 
+                <!--REAL CONTENT-->
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="vertical"
                     android:id="@+id/content_frame"></FrameLayout>
-
-                <RelativeLayout
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:visibility="invisible"
-                    android:id="@+id/main_content_fake"></RelativeLayout>
 
                 <!--DETAIL SLIDING UP PARALLAX VIEW-->
                 <LinearLayout
@@ -68,10 +63,11 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent">
 
-                <include
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    layout="@layout/sliding_layout_content" />
+                <fragment android:name="com.insalyon.les24heures.fragments.DetailFragment"
+                    android:id="@+id/sliding_layout_content_fragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
             </RelativeLayout>
 
         </com.insalyon.les24heures.view.DetailSlidingUpPanelLayout>
