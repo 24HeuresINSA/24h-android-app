@@ -53,7 +53,9 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     ResourceMapsSearchFilter resourceMapsSearchFilter;
 
     ArrayList<Resource> displayableResourcesLists;
-    HashMap<Marker,Resource>  markerResourceMap;
+    HashMap<Marker, Resource> markerResourceMap;
+
+    Resource selectedResource;
 
 
     @Override
@@ -87,6 +89,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         googleMap = mapView.getMap();
         googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.setOnMarkerClickListener(this);
         addMarkers();
 
 
@@ -109,24 +112,28 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onMapReady(final GoogleMap map) {
         map.setMyLocationEnabled(true);
 
+        // Other supported types include: MAP_TYPE_NORMAL,
+        // MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID and MAP_TYPE_NONE MAP_TYPE_SATELLITE
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
         //to prevent user to throw up, zoom on Lyon without animateCamera
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
-        googleMap.setOnMarkerClickListener(this);
 
         //display data if already there when the fragment is created
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition arg0) {
-                restoreFilterState();
+                if (selectedResource != null) {
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedResource.getLoc(), 17));
+                } else {
+                    restoreFilterState();
+                }
 
                 // Remove listener to prevent position reset on camera move.
                 map.setOnCameraChangeListener(null);
             }
         });
 
-        // Other supported types include: MAP_TYPE_NORMAL,
-        // MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID and MAP_TYPE_NONE MAP_TYPE_SATELLITE
-        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
     @Override
@@ -170,9 +177,10 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         resourceMapsSearchFilter.filter(event.getQuery().toString());
     }
 
-    public void onEvent(ResourceSelectedEvent selectedEvent){
+    public void onEvent(ResourceSelectedEvent selectedEvent) {
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedEvent.getResource().getLoc(), 17));
-        EventBus.getDefault().removeStickyEvent(selectedEvent);
+//        EventBus.getDefault().removeStickyEvent(selectedEvent);
+        selectedResource = selectedEvent.getResource();
     }
 
     @OnClick(R.id.fab_goto_list)
@@ -184,8 +192,10 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     @Override
     public boolean onMarkerClick(final Marker marker) {
 
-        ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.SHOW,markerResourceMap.get(marker));
+        ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.SHOW, markerResourceMap.get(marker));
         eventBus.post(manageDetailSlidingUpDrawer);
+
+        selectedResource = markerResourceMap.get(marker);
 
         //TODO demander a l'activity de masquer le clavier !
 
@@ -232,7 +242,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 //                                .snippet(resource.getDescription())
                                 .position(resource.getLoc()));
 
-                markerResourceMap.put(marker,resource);
+                markerResourceMap.put(marker, resource);
                 resource.setMarker(marker); //TODO a supprimer
             }
         }
