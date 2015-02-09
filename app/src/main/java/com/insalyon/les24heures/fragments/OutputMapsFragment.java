@@ -22,6 +22,7 @@ import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
+import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.filter.ResourceMapsCategoryFilter;
@@ -34,6 +35,7 @@ import java.util.HashMap;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by remi on 26/12/14.
@@ -58,6 +60,8 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         displayName = getActivity().getResources().getString(R.string.drawer_outputtype_maps);
+
+        EventBus.getDefault().getStickyEvent(ResourceSelectedEvent.class);
 
         displayableResourcesLists = new ArrayList<>();
         displayableResourcesLists.addAll(resourcesList);
@@ -164,6 +168,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
         resourceMapsSearchFilter.filter(event.getQuery().toString());
+    }
+
+    public void onEvent(ResourceSelectedEvent selectedEvent){
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedEvent.getResource().getLoc(), 17));
+        EventBus.getDefault().removeStickyEvent(selectedEvent);
     }
 
     @OnClick(R.id.fab_goto_list)

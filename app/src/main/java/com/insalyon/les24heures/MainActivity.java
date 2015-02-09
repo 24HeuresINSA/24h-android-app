@@ -29,6 +29,7 @@ import android.widget.Toast;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
+import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.fragments.DetailFragment;
@@ -280,6 +281,7 @@ public class MainActivity extends Activity {
             public boolean onQueryTextChange(String newText) {
                 SearchEvent searchEvent = new SearchEvent(newText);
                 eventBus.post(searchEvent);
+                //TODO gros soucis, ce truc est fire quand sliding up s'ouvre....
                 searchQuery = newText;
                 return false;
             }
@@ -423,6 +425,17 @@ public class MainActivity extends Activity {
                 break;
         }
 
+    }
+
+    public void onEvent(ResourceSelectedEvent resourceSelected){
+        //Output state
+        detailSlidingUpPanelLayoutLayout.collapsePanel();
+        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
+            //just focus on resource and highlith it
+        } else {
+            //open maps on resource
+            selectMaps();
+        }
     }
 
     public void selectMaps() {

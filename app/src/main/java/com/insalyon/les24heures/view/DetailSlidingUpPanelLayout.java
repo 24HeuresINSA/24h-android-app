@@ -98,7 +98,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
             favoriteImageButton.setVisibility(View.VISIBLE);
 //                this.setDragView(slidingDetailHeader);
 
-            activity.invalidateOptionsMenu();
+//            activity.invalidateOptionsMenu();
 //                activity.getActionBar().setTitle(resource.getTitle());   => hide title in detail
 
         }
@@ -112,7 +112,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
             detailScrollView.setIsScrollEnable(false);
             detailScrollView.fullScroll(ScrollView.FOCUS_UP);
 
-            activity.invalidateOptionsMenu();
+//            activity.invalidateOptionsMenu();
             activity.restoreTitle();
         }
 
@@ -123,7 +123,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
             favoriteImageButton.setVisibility(View.VISIBLE);
             detailScrollView.setIsScrollEnable(false);
 
-            activity.invalidateOptionsMenu();
+//            activity.invalidateOptionsMenu();
         }
 
         @Override

@@ -19,6 +19,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ScheduleAdapter;
+import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by remi on 09/02/15.
@@ -60,10 +62,13 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private GoogleMap googleMap;
 
     private Boolean heavyDataUpdated = false;
+    private EventBus eventBus;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        eventBus = EventBus.getDefault();
+
 
         schedules = new ArrayList<>();
 
@@ -121,12 +126,20 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void addMarkerAndMoveCam() {
+        googleMap.clear();
         googleMap.addMarker(new MarkerOptions()
 //                                .title(resource.getTitle() + " " + resource.getCategory().getName())
 //                                .snippet(resource.getDescription())
                 .position(resource.getLoc()));
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(resource.getLoc(), 15));
+
+        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                eventBus.postSticky(new ResourceSelectedEvent(resource));
+            }
+        });
     }
 
     @OnClick(R.id.detail_favorites)
