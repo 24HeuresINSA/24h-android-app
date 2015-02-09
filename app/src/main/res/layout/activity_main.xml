@@ -59,16 +59,16 @@
 
 
             <!--SLIDING LAYOUT-->
-            <RelativeLayout
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent">
+            <!--<RelativeLayout-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="fill_parent">-->
 
                 <fragment android:name="com.insalyon.les24heures.fragments.DetailFragment"
                     android:id="@+id/sliding_layout_content_fragment"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-            </RelativeLayout>
+            <!--</RelativeLayout>-->
 
         </com.insalyon.les24heures.view.DetailSlidingUpPanelLayout>
 

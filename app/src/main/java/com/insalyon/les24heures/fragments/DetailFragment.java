@@ -6,14 +6,20 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
+import com.insalyon.les24heures.adapter.ScheduleAdapter;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
+import com.insalyon.les24heures.utils.Day;
 import com.insalyon.les24heures.view.DetailScrollView;
+
+import java.util.ArrayList;
+import java.util.Date;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -38,14 +44,19 @@ public class DetailFragment extends Fragment {
      TextView detailSlidingTitle;
     @InjectView(R.id.detail_desciption_text)
      TextView detailSlidingDescription;
+    @InjectView(R.id.detail_schedule_grid_layout)
+    GridView schedulesGrid;
 
     Resource resource;
-
+    private ScheduleAdapter scheduleAdapter;
+    private ArrayList<Schedule> schedules;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        schedules = new ArrayList<>();
 
     }
 
@@ -58,15 +69,15 @@ public class DetailFragment extends Fragment {
         view = inflater.inflate(R.layout.sliding_layout_content,container,false);
         ButterKnife.inject(this, view);
 
+        scheduleAdapter = new ScheduleAdapter(getActivity().getApplicationContext(),
+                R.layout.schedule_grid_item,schedules);
+        schedulesGrid.setAdapter(scheduleAdapter);
+
         return view;
     }
 
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
-    }
 
 
     /**
@@ -105,6 +116,10 @@ public class DetailFragment extends Fragment {
         //mini maps
 
         //schedules
+        schedules.clear();
+        schedules.addAll(resource.getSchedules());
+        scheduleAdapter.notifyDataSetChanged();
+
 
         //optionals  pictures
     }

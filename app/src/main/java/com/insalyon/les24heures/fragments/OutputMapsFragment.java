@@ -178,6 +178,8 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.SHOW,markerResourceMap.get(marker));
         eventBus.post(manageDetailSlidingUpDrawer);
 
+        //TODO demander a l'activity de masquer le clavier !
+
         return false;
     }
 
