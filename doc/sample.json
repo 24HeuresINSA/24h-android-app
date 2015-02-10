@@ -11,7 +11,7 @@
     ....
   ],
   "schedule" : null || [{"jour":"Samedi","debut":"10h00","fin":"18h00"},{"jour":"Dimanche","debut":"10h00","fin":"18h00"}],
-  "stage" : "small" || "big",
+  "stage" : "SMALL" || "BIG",
   "category" : category
 }
 
