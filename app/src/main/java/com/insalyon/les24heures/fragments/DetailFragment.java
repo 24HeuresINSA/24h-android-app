@@ -1,12 +1,16 @@
 package com.insalyon.les24heures.fragments;
 
 import android.app.Fragment;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.view.PagerAdapter;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.GridView;
 import android.widget.ImageButton;
 import android.widget.TextView;
@@ -17,6 +21,8 @@ import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.insalyon.les24heures.JazzyViewPager.JazzyViewPager;
+import com.insalyon.les24heures.JazzyViewPager.OutlineContainer;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ScheduleAdapter;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
@@ -64,6 +70,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private Boolean heavyDataUpdated = false;
     private EventBus eventBus;
 
+    private JazzyViewPager mJazzy;
+    private android.content.Context appContext;
+    private MainAdapter picturePagerAdapter;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,6 +81,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
 
         schedules = new ArrayList<>();
+
+        appContext = getActivity().getApplicationContext();
 
     }
 
@@ -102,7 +114,55 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
+        setupJazziness(JazzyViewPager.TransitionEffect.Standard);
+
         return view;
+    }
+
+    private void setupJazziness(JazzyViewPager.TransitionEffect effect) {
+        mJazzy = (JazzyViewPager) view.findViewById(R.id.jazzy_pager);
+        mJazzy.setTransitionEffect(effect);
+        picturePagerAdapter = new MainAdapter();
+        mJazzy.setAdapter(picturePagerAdapter);
+        mJazzy.setPageMargin(30);
+
+    }
+
+    private class MainAdapter extends PagerAdapter {
+        @Override
+        public Object instantiateItem(ViewGroup container, final int position) {
+            TextView text = new TextView(appContext);
+            text.setGravity(Gravity.CENTER);
+            text.setTextSize(30);
+            text.setTextColor(Color.WHITE);
+            text.setText("Page " + position);
+            text.setPadding(30, 30, 30, 30);
+            int bg = Color.rgb((int) Math.floor(Math.random()*128)+64,
+                    (int) Math.floor(Math.random()*128)+64,
+                    (int) Math.floor(Math.random()*128)+64);
+            text.setBackgroundColor(bg);
+            container.addView(text, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            mJazzy.setObjectForPosition(text, position);
+            return text;
+        }
+
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object obj) {
+            container.removeView(mJazzy.findViewFromObject(position));
+        }
+        @Override
+        public int getCount() {
+            return 10;
+        }
+        @Override
+        public boolean isViewFromObject(View view, Object obj) {
+            if (view instanceof OutlineContainer) {
+                return ((OutlineContainer) view).getChildAt(0) == obj;
+            } else {
+                return view == obj;
+            }
+        }
     }
 
 

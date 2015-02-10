@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -32,6 +33,7 @@ import com.insalyon.les24heures.utils.SlidingUpPannelState;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -125,6 +127,12 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             public void onCameraChange(CameraPosition arg0) {
                 if (selectedResource != null) {
                     googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedResource.getLoc(), 17));
+                    for (Map.Entry<Marker, Resource> entry : markerResourceMap.entrySet()) {
+                        if(entry.getValue() == selectedResource){
+                            entry.getKey().setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                            break;
+                        }
+                    }
                 } else {
                     restoreFilterState();
                 }
@@ -194,6 +202,18 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.SHOW, markerResourceMap.get(marker));
         eventBus.post(manageDetailSlidingUpDrawer);
+
+        if(selectedResource != null){
+            for (Map.Entry<Marker, Resource> entry : markerResourceMap.entrySet()) {
+                if(entry.getValue() == selectedResource){
+                    entry.getKey().setIcon(BitmapDescriptorFactory.defaultMarker());
+                    break;
+                }
+            }
+        }
+
+       marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
 
         selectedResource = markerResourceMap.get(marker);
 

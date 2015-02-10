@@ -11,4 +11,8 @@
     <color name="accent">#ff4081</color>
     <color name="accent_pressed">#f50057</color>
     <color name="light_gray">#c2c7cc</color>
+
+
+    <!--JAZZYPAGER-->
+    <color name="holo_blue">#FF33E5B5</color>
 </resources>

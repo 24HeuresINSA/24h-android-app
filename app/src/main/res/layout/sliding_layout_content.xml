@@ -126,7 +126,17 @@
                 android:orientation="vertical"
                 android:layout_width="fill_parent"
                 android:layout_height="200dp"
-                android:id="@+id/detail_carousel_layout"></LinearLayout>
+                android:id="@+id/detail_carousel_layout">
+
+
+                <com.insalyon.les24heures.JazzyViewPager.JazzyViewPager
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/jazzy_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                </LinearLayout>
 
             <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                 android:name="com.google.android.gms.maps.MapFragment"
