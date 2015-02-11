@@ -11,8 +11,8 @@ import retrofit.http.GET;
  */
 public interface ResourceRetrofitService {
 
-//    @GET("/anim/animations.json")
-    @GET("/artist/artists.json")
+    @GET("/anim/animations.json")
+//    @GET("/artist/artists.json")
     void getResources(Callback<AssomakerDTO> cb);
 
 }

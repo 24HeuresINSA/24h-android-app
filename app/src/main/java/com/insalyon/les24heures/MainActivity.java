@@ -121,8 +121,8 @@ public class MainActivity extends Activity {
                 .setEndpoint(getResources().getString(R.string.backend_url_local))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-        //resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
-        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);
+        resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
+//        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);
         fragmentManager = getFragmentManager();
         //dependency injection instead ?
         resourceService = ResourceServiceImpl.getInstance();

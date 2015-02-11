@@ -133,9 +133,17 @@ public class ResourceServiceImpl implements ResourceService  {
 
                 ArrayList<NightResourceDTO> nightResourceDTOs = assomakerDTO.getArtists();
 
+                //TODO bricolage temporaire pour le double backend
+                ResourcesUpdatedEvent resourcesUpdatedEvent;
+                if (nightResourceDTOs!= null){
+                     resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs),
+                            fromDTO(nightResourceDTOs));
+                }else{
+                     resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs));
+                    resourcesUpdatedEvent.setNightResourceList(new ArrayList<NightResource>());
+                }
 
-                ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs),
-                                    fromDTO(nightResourceDTOs));
+
                 eventBus.post(resourcesUpdatedEvent);
             }
 
