@@ -22,9 +22,11 @@ import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.utils.SlidingUpPannelState;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -163,9 +165,10 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     @Override
     public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
         Resource resource = (Resource) parent.getItemAtPosition(position);
-        //TODO details : cf DSF
-        Toast.makeText(getActivity().getApplicationContext(),
-                resource.getTitle(), Toast.LENGTH_SHORT).show();
+
+        ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.ANCHORED,
+                resource);
+        eventBus.post(manageDetailSlidingUpDrawer);
     }
 
     @Override
@@ -189,10 +192,14 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
             top = view.getChildAt(0).getTop();
         }
 
+        ManageDetailSlidingUpDrawer slidingUpEvent = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE,null);
+
         if (firstVisibleItem > lastVisibleItem) {
             //scroll down
             if (!isScrollingDown) {
                 fabGotoMaps.hide();
+                eventBus.post(slidingUpEvent);
+
             }
             isScrollingDown = true;
             isScrollingUp = false;
@@ -208,6 +215,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
                 //scroll down
                 if (!isScrollingDown) {
                     fabGotoMaps.hide();
+                    eventBus.post(slidingUpEvent);
                 }
                 isScrollingDown = true;
                 isScrollingUp = false;

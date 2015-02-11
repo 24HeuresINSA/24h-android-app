@@ -177,8 +177,8 @@ public class MainActivity extends Activity {
 
         if (resourcesList == null) {
             resourcesList = new ArrayList<>();
-            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
-//            resourceService.getResourcesAsyncMock();
+//            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
+            resourceService.getResourcesAsyncMock();
         }
 
         if (categoriesSelected == null) {
@@ -448,6 +448,12 @@ public class MainActivity extends Activity {
                 }else{
                     detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getResource());
                 }
+                break;
+            case ANCHORED:
+                if(m.getResource() != null){
+                    detailFragment.notifyDataChanged(m.getResource());
+                }
+                detailSlidingUpPanelLayoutLayout.anchorPanel();
                 break;
         }
 
