@@ -1,6 +1,5 @@
 package com.insalyon.les24heures;
 
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -98,9 +97,6 @@ public class MainActivity extends Activity {
     private String searchQuery;
     private Menu mMenu;
 
-    public DrawerArrowDrawable getDrawerArrowDrawable() {
-        return drawerArrowDrawable;
-    }
 
 
 
@@ -110,6 +106,7 @@ public class MainActivity extends Activity {
      */
 
     @Override
+    //dans NavigationActivity sauf startRightOutput
     protected void onCreate(Bundle savedInstanceState) {
         /*** init services ***/
         super.onCreate(savedInstanceState);
@@ -127,11 +124,13 @@ public class MainActivity extends Activity {
         resourceService = ResourceServiceImpl.getInstance();
         categoryService = CategoryServiceImpl.getInstance();
 
+        ///////////////////////// day, night need one
         detailSlidingUpPanelLayoutLayout.setActivity(this); //slidingPanel needs the activity to invalidateOptionMenu, manage appName and arrowDrawer
         detailSlidingUpPanelLayoutLayout.setParallaxHeader(findViewById(R.id.detail_paralax_header));
         detailFragment = (DetailFragment) fragmentManager.findFragmentById(R.id.sliding_layout_content_fragment);
         detailSlidingUpPanelLayoutLayout.setDetailFragment(detailFragment);
 
+        ///////////////////////// all
         /*** recover data either from (by priority)
          *           savedInstanceState (rotate, restore from background)
          *           getIntent (start from another activity, another apps) TODO
@@ -203,6 +202,7 @@ public class MainActivity extends Activity {
         drawerLayout.setDrawerListener(drawerListener);
 
 
+        /////////////////////////day
         /*** start the right ouptut : Maps or List ***/
         if (savedInstanceState == null) {
             //default start : get from manifest
@@ -225,6 +225,8 @@ public class MainActivity extends Activity {
         }
     }
 
+    //day & night
+    //dans NavigationActivity et demande et choisi l'impl en fonction du curent fragment
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         globalMenu = menu;
@@ -306,13 +308,17 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    //day & night
+    //dans NavigationActivity
     private void disableFavoritesFilter(MenuItem favoritesItem) {
         if (isFavoritesChecked) {
             toggleFavorites(favoritesItem);
         }
     }
 
+    //can be day & night (just un parent commun a  detailSlidingUpPanelLayoutLayout
     @Override
+    //dans NavigationActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         //click on the appName or the appIcone
@@ -358,6 +364,8 @@ public class MainActivity extends Activity {
 
     }
 
+    //day & night
+    //dans NavigationActivity
     private void toggleFavorites(MenuItem item) {
         ArrayList<Category> list = new ArrayList<>();
         list.addAll(getCategoriesSelectedFromDrawer());
@@ -376,7 +384,9 @@ public class MainActivity extends Activity {
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
+    //day & night
     @Override
+    //dans NavigationActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
         mMenu = menu;
         customOnOptionsMenu();
@@ -386,6 +396,8 @@ public class MainActivity extends Activity {
     /**
      * invalidateOptionsMenu refire search from searchWidget, painful !
      */
+    //day & night
+    //dans NavigationActivity et demande et choisi l'impl en fonction du curent fragment
     public void customOnOptionsMenu() {
         boolean drawerOpen = drawerLayout.isDrawerVisible();//drawerLayout.isDrawerVisible(drawerView);
         Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
@@ -399,6 +411,7 @@ public class MainActivity extends Activity {
      * Activity is alive       *
      */
 
+    //day
     public void onEvent(ResourcesUpdatedEvent event) {
         // super.onEvent(event);
         Log.d(TAG + "onEvent(ResourcesUpdatedEvent)", event.getResourceList().toString());
@@ -429,6 +442,7 @@ public class MainActivity extends Activity {
 
     }
 
+    //day
     public void onEvent(ResourceSelectedEvent resourceSelected){
         //Output state
         detailSlidingUpPanelLayoutLayout.collapsePanel();
@@ -440,22 +454,30 @@ public class MainActivity extends Activity {
         }
     }
 
+    //day
+    //dans DayFragment
     public void selectMaps() {
         Fragment mapsFragment = new OutputMapsFragment();
         replaceContentFragment(mapsFragment);
     }
 
+    //day
+    //dans DayFragment
     public void selectList() {
         Fragment listFragment = new OutputListFragment();
         replaceContentFragment(listFragment);
     }
 
+    //all
     @Override
+    //dans NavigationActivity
     public void setTitle(CharSequence title) {
         getActionBar().setTitle(title);
     }
 
+    //can be day & night (just un parent commun a  detailSlidingUpPanelLayoutLayout
     @Override
+    //dans NavigationActivity et demande au currentFragment son slidingLayout
     public void onBackPressed() {
         if(drawerLayout.isDrawerOpen()){
             drawerLayout.closeDrawer();
@@ -473,6 +495,7 @@ public class MainActivity extends Activity {
      * Activity is no more alive       *
      */
 
+    //day,  night need one, pas forcement
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -492,6 +515,7 @@ public class MainActivity extends Activity {
         //resources
         outState.putParcelableArrayList("resourcesList", resourcesList);
 
+        ///////////////////////////day and night
         //action bar menu
         SearchView searchView =
                 (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
@@ -506,6 +530,8 @@ public class MainActivity extends Activity {
      * Activity methods      *
      */
 
+    //day (peut etre night en a besoin d'un)
+    //dans NavigationActivity et demande au currentFragment son slidingLayout
     private void replaceContentFragment(Fragment fragment) {
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
@@ -529,6 +555,7 @@ public class MainActivity extends Activity {
      * Drawer methods and inner classes //TODO creer un fragment pour la navigation drawer et mettre ca dedans
      */
 
+    //day
     private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -536,6 +563,48 @@ public class MainActivity extends Activity {
         }
     }
 
+    //day
+    private void selectCategory(int position) {
+        categoriesSelected = getCategoriesSelectedFromDrawer();
+        if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
+            categoriesSelected.add(new Category("favorites"));
+        }
+
+        CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(categoriesSelected);
+
+        // update selected item and title, then close the drawer
+        if (categoriesList.isItemChecked(position)) {
+            Log.i(TAG + "selectCategory", "categoy added :" + navigationDrawerCategories[position]);
+            categoriesSelectedEvent.setFilterAction(FilterAction.ADDED);
+            eventBus.post(categoriesSelectedEvent);
+
+        } else if (!categoriesList.isItemChecked(position)) {
+            Log.i(TAG + "selectCategory", "categoy removed :" + navigationDrawerCategories[position]);
+            categoriesSelectedEvent.setFilterAction(FilterAction.REMOVED);
+            eventBus.post(categoriesSelectedEvent);
+        }
+
+        drawerLayout.closeDrawer();
+    }
+
+    //day
+    private ArrayList<Category> getCategoriesSelectedFromDrawer() {
+        ArrayList<Category> categoriesSelected = new ArrayList<>();
+
+        int len = categoriesList.getCount();
+        SparseBooleanArray checked = categoriesList.getCheckedItemPositions();
+        for (int i = 0; i < len; i++)
+            if (checked.get(i)) {
+                categoriesSelected.add(categories.get(i));
+            }
+        return categoriesSelected;
+    }
+
+
+
+
+    //day + night (all need one)
+    //dans NavigationActivity
     private class DrawerListener extends DrawerLayout.SimpleDrawerListener {
         private MenuItem itemFav;
         private MenuItem itemSearch;
@@ -572,6 +641,7 @@ public class MainActivity extends Activity {
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
             drawerLayout.setIsDrawerOpen(false);
+            //TODO create a parent of OutputTypeFragment which only contains abstract getDisplayName
             getActionBar().setTitle(
                     ((OutputTypeFragment) getFragmentManager().findFragmentById(R.id.content_frame))
                             .getDisplayName());
@@ -579,40 +649,7 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void selectCategory(int position) {
-        categoriesSelected = getCategoriesSelectedFromDrawer();
-        if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
-            categoriesSelected.add(new Category("favorites"));
-        }
 
-        CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(categoriesSelected);
-
-        // update selected item and title, then close the drawer
-        if (categoriesList.isItemChecked(position)) {
-            Log.i(TAG + "selectCategory", "categoy added :" + navigationDrawerCategories[position]);
-            categoriesSelectedEvent.setFilterAction(FilterAction.ADDED);
-            eventBus.post(categoriesSelectedEvent);
-
-        } else if (!categoriesList.isItemChecked(position)) {
-            Log.i(TAG + "selectCategory", "categoy removed :" + navigationDrawerCategories[position]);
-            categoriesSelectedEvent.setFilterAction(FilterAction.REMOVED);
-            eventBus.post(categoriesSelectedEvent);
-        }
-
-        drawerLayout.closeDrawer();
-    }
-
-    private ArrayList<Category> getCategoriesSelectedFromDrawer() {
-        ArrayList<Category> categoriesSelected = new ArrayList<>();
-
-        int len = categoriesList.getCount();
-        SparseBooleanArray checked = categoriesList.getCheckedItemPositions();
-        for (int i = 0; i < len; i++)
-            if (checked.get(i)) {
-                categoriesSelected.add(categories.get(i));
-            }
-        return categoriesSelected;
-    }
 
 
 
@@ -625,8 +662,8 @@ public class MainActivity extends Activity {
      * Action bar methods
      */
 
-
-
+    //all
+    //dans NavigationActity
     public void restoreTitle(){
         //TODO faire comme pour les menu item
         String str;
@@ -640,6 +677,12 @@ public class MainActivity extends Activity {
             setTitle(str);
         }
     }
+
+    //dans NavigationActity
+    public DrawerArrowDrawable getDrawerArrowDrawable() {
+        return drawerArrowDrawable;
+    }
+
 
 
 }
