@@ -45,6 +45,7 @@ import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
+import com.insalyon.les24heures.view.CustomDrawerLayout;
 import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
 import com.insalyon.les24heures.view.DrawerArrowDrawable;
 
@@ -69,7 +70,7 @@ public class MainActivity extends Activity {
     private CategoryService categoryService;
 
     @InjectView(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
+    CustomDrawerLayout drawerLayout;
     @InjectView(R.id.left_drawer)
     View drawerView;
     @InjectView(R.id.left_drawer_categories_list)
@@ -92,18 +93,15 @@ public class MainActivity extends Activity {
     private Menu globalMenu;
 
 
-    //isDrawerOpen only switches when the drawer is fully opened
-    private Boolean isDrawerOpen = false;
+
     private Boolean isFavoritesChecked = false;
     private String searchQuery;
-    private float offset;
     private Menu mMenu;
 
     public DrawerArrowDrawable getDrawerArrowDrawable() {
         return drawerArrowDrawable;
     }
 
-    private boolean flipped;
 
 
 
@@ -189,9 +187,10 @@ public class MainActivity extends Activity {
 
         // set a custom shadow that overlays the main content when the drawer opens
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        drawerLayout.setDrawerView(drawerView);
         // set up the drawer's list view with items and click listener
         categoriesList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item_category, navigationDrawerCategories));
-        categoriesList.setOnItemClickListener(new DrawerItemClickListener());
+        categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
         getActionBar().setHomeButtonEnabled(true);
 
         //arrow/sandwich
@@ -254,7 +253,7 @@ public class MainActivity extends Activity {
             @Override
             public void onClick(View v) {
                 setArrow();
-                disabledDrawerSwipe();
+                drawerLayout.disabledDrawerSwipe();
                 disableFavoritesFilter(favoritesItem);
             }
         });
@@ -263,7 +262,7 @@ public class MainActivity extends Activity {
             @Override
             public boolean onClose() {
                 setSandwich();
-                enabledDrawerSwipe();
+                drawerLayout.enabledDrawerSwipe();
                 searchQuery = null;
                 return false;
             }
@@ -321,7 +320,7 @@ public class MainActivity extends Activity {
             //search widget is active
             if (!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()) {
                 setSandwich();
-                enabledDrawerSwipe();
+                drawerLayout.enabledDrawerSwipe();
                 SearchView searchView =
                         (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
                 searchView.onActionViewCollapsed();
@@ -333,7 +332,7 @@ public class MainActivity extends Activity {
             }
             //default
             else{
-                toggleDrawer();
+                drawerLayout.toggleDrawer();
             }
             return true;
         }
@@ -388,7 +387,7 @@ public class MainActivity extends Activity {
      * invalidateOptionsMenu refire search from searchWidget, painful !
      */
     public void customOnOptionsMenu() {
-        boolean drawerOpen = drawerLayout.isDrawerVisible(drawerView);
+        boolean drawerOpen = drawerLayout.isDrawerVisible();//drawerLayout.isDrawerVisible(drawerView);
         Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
         mMenu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
         mMenu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
@@ -407,6 +406,7 @@ public class MainActivity extends Activity {
         resourcesList.addAll(event.getResourceList());
     }
 
+    //TODO move dans DetailSlidingUpPanelLayout
     public void onEvent(ManageDetailSlidingUpDrawer m){
         switch (m.getState()){
             case COLLAPSE:
@@ -457,8 +457,8 @@ public class MainActivity extends Activity {
 
     @Override
     public void onBackPressed() {
-        if(isDrawerOpen){
-            closeDrawer();
+        if(drawerLayout.isDrawerOpen()){
+            drawerLayout.closeDrawer();
         }else if (detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded()) {
             detailSlidingUpPanelLayoutLayout.collapsePanel();
         } else if (!detailSlidingUpPanelLayoutLayout.isPanelHidden()) {
@@ -526,10 +526,10 @@ public class MainActivity extends Activity {
 
 
     /**
-     * Drawer methods and inner classes //TODO faire une subclasse de DrawerLayout
+     * Drawer methods and inner classes //TODO creer un fragment pour la navigation drawer et mettre ca dedans
      */
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+    private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectCategory(position);
@@ -543,29 +543,26 @@ public class MainActivity extends Activity {
         @Override
         public void onDrawerOpened(View drawerView) {
             super.onDrawerOpened(drawerView);
-            isDrawerOpen = true;
+            drawerLayout.setIsDrawerOpen(true);
             getActionBar().setTitle(R.string.app_name);
         }
 
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
-            offset = slideOffset;
             // Sometimes slideOffset ends up so close to but not quite 1 or 0.
             if (slideOffset >= .995) {
-                flipped = true;
-                drawerArrowDrawable.setFlip(flipped);
+                drawerArrowDrawable.setFlip(true);
             } else if (slideOffset <= .005) {
-                flipped = false;
-                drawerArrowDrawable.setFlip(flipped);
+                drawerArrowDrawable.setFlip(false);
             }
-            drawerArrowDrawable.setParameter(offset);
+            drawerArrowDrawable.setParameter(slideOffset);
 
             if (itemFav == null) {
                 itemFav = globalMenu.findItem(R.id.menu_favorites);
                 itemSearch = globalMenu.findItem(R.id.menu_search);
             }
 
-            if (offset > 0.95)
+            if (slideOffset > 0.95)
                 return;
             itemFav.getIcon().setAlpha((int) (255 - slideOffset * 255));
             itemSearch.getActionView().setAlpha(1 - slideOffset);
@@ -574,7 +571,7 @@ public class MainActivity extends Activity {
         @Override
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
-            isDrawerOpen = false;
+            drawerLayout.setIsDrawerOpen(false);
             getActionBar().setTitle(
                     ((OutputTypeFragment) getFragmentManager().findFragmentById(R.id.content_frame))
                             .getDisplayName());
@@ -602,7 +599,7 @@ public class MainActivity extends Activity {
             eventBus.post(categoriesSelectedEvent);
         }
 
-        drawerLayout.closeDrawer(drawerView);
+        drawerLayout.closeDrawer();
     }
 
     private ArrayList<Category> getCategoriesSelectedFromDrawer() {
@@ -617,38 +614,10 @@ public class MainActivity extends Activity {
         return categoriesSelected;
     }
 
-    private void toggleDrawer() {
-        if (isDrawerOpen()) {
-            closeDrawer();
-        } else {
-            openDrawer();
-        }
-
-    }
-
-    private boolean isDrawerOpen() {
-        return drawerLayout.isDrawerOpen(drawerView);
-    }
-
-    public void openDrawer() {
-        drawerLayout.openDrawer(drawerView);
 
 
-    }
-
-    public void closeDrawer() {
-        drawerLayout.closeDrawer(drawerView);
 
 
-    }
-
-    private void disabledDrawerSwipe() {
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    }
-
-    private void enabledDrawerSwipe() {
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }
 
 
 
