@@ -96,9 +96,7 @@ public class MainActivity extends Activity {
     private Boolean isFavoritesChecked = false;
     private String searchQuery;
     private Menu mMenu;
-
-
-
+    private String slidingUpState;
 
 
     /**
@@ -157,6 +155,12 @@ public class MainActivity extends Activity {
                 //TODO globalMenu is null here
                 isFavoritesChecked = savedInstanceState.getBoolean("isFavoritesChecked");
             }
+            if(savedInstanceState.getString("slidingUpState") != null){
+                slidingUpState = savedInstanceState.getString("slidingUpState");
+            }
+
+
+
         }
 
         navigationDrawerCategories = getResources().getStringArray(R.array.navigation_drawer_categories); //TODO que veut en parametre ArrayAdapter ?
@@ -173,8 +177,8 @@ public class MainActivity extends Activity {
 
         if (resourcesList == null) {
             resourcesList = new ArrayList<>();
-            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
-//            resourceService.getResourcesAsyncMock();
+//            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
+            resourceService.getResourcesAsyncMock();
         }
 
         if (categoriesSelected == null) {
@@ -361,7 +365,7 @@ public class MainActivity extends Activity {
 
 
         return false;
-  
+
     }
 
     //day & night
@@ -405,6 +409,13 @@ public class MainActivity extends Activity {
         mMenu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
         mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
         mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+    }
+
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     /**
@@ -523,6 +534,19 @@ public class MainActivity extends Activity {
             outState.putString("searchQuery", searchView.getQuery().toString());
         }
         outState.putBoolean("isFavoritesChecked", globalMenu.findItem(R.id.menu_favorites).isChecked());
+
+        //sera simplifié avec la prochaine release
+        //slidingUp
+        String state = "";
+        if(detailSlidingUpPanelLayoutLayout.isPanelHidden())
+            state = "hidden";
+        else if(detailSlidingUpPanelLayoutLayout.isPanelAnchored())
+            state = "anchored";
+        else if (detailSlidingUpPanelLayoutLayout.isPanelExpanded())
+            state = "expanded";
+        else
+            state = "shown";
+        outState.putString("slidingUpState",state);
     }
 
 
@@ -650,13 +674,9 @@ public class MainActivity extends Activity {
     }
 
 
-
-
-
-
-
-
-
+    public String getSlidingUpState() {
+        return slidingUpState;
+    }
 
     /**
      * Action bar methods

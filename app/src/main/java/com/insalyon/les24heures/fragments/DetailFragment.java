@@ -84,6 +84,13 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
         appContext = getActivity().getApplicationContext();
 
+        if(savedInstanceState != null) {
+            if (savedInstanceState.getParcelable("resource") != null) {
+                resource = savedInstanceState.getParcelable("resource");
+                schedules.addAll(resource.getSchedules());
+            }
+        }
+
     }
 
 
@@ -164,9 +171,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             }
         }
     }
-
-
-
 
 
     /**
@@ -253,5 +257,16 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         else
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
 
+    }
+
+
+    /**
+     * Fragment is no more alive
+     */
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("resource", resource);
     }
 }
