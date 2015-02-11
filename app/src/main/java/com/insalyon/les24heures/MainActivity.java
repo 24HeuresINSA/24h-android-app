@@ -252,7 +252,7 @@ public class MainActivity extends Activity {
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setArrow();
+                drawerArrowDrawable.animateToArrow();
                 drawerLayout.disabledDrawerSwipe();
                 disableFavoritesFilter(favoritesItem);
             }
@@ -261,7 +261,7 @@ public class MainActivity extends Activity {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                setSandwich();
+                drawerArrowDrawable.animateToSandwich();
                 drawerLayout.enabledDrawerSwipe();
                 searchQuery = null;
                 return false;
@@ -319,7 +319,7 @@ public class MainActivity extends Activity {
         if (item.getTitle().equals(getActionBar().getTitle())) {
             //search widget is active
             if (!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()) {
-                setSandwich();
+                drawerArrowDrawable.animateToSandwich();
                 drawerLayout.enabledDrawerSwipe();
                 SearchView searchView =
                         (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
@@ -625,34 +625,7 @@ public class MainActivity extends Activity {
      * Action bar methods
      */
 
-    public void setSandwich() {
-        //tODO verifier l'etat du drawable
-        ValueAnimator animation = ValueAnimator.ofFloat(1f, 0f);
-        animation.setDuration(500);
-        animation.start();
-        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                drawerArrowDrawable.setParameter((Float) animation.getAnimatedValue());
-            }
-        });
-        drawerArrowDrawable.setParameter(0);
-    }
 
-    public void setArrow() {
-        //tODO verifier l'etat du drawable
-        ValueAnimator animation = ValueAnimator.ofFloat(0f, 1f);
-        animation.setDuration(500);
-        animation.start();
-        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                drawerArrowDrawable.setParameter((Float) animation.getAnimatedValue());
-            }
-        });
-
-        drawerArrowDrawable.setFlip(true);
-    }
 
     public void restoreTitle(){
         //TODO faire comme pour les menu item

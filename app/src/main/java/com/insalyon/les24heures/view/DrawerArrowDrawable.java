@@ -12,9 +12,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
+ *
+ * modifier by Remi Pichon for https://github.com/24HeuresINSA
  */
 package com.insalyon.les24heures.view;
 
+import android.animation.ValueAnimator;
 import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -304,4 +307,37 @@ public class DrawerArrowDrawable extends Drawable {
     scaleMatrix.setScale(density / PATH_GEN_DENSITY, density / PATH_GEN_DENSITY, 0, 0);
     path.transform(scaleMatrix);
   }
+
+    public void animateToSandwich() {
+        final DrawerArrowDrawable self = this;
+        //tODO verifier l'etat du drawable
+        ValueAnimator animation = ValueAnimator.ofFloat(1f, 0f);
+        animation.setDuration(500);
+        animation.start();
+        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                self.setParameter((Float) animation.getAnimatedValue());
+            }
+        });
+        this.setParameter(0);
+    }
+
+    public void animateToArrow() {
+        final DrawerArrowDrawable self = this;
+        //tODO verifier l'etat du drawable
+        ValueAnimator animation = ValueAnimator.ofFloat(0f, 1f);
+        animation.setDuration(500);
+        animation.start();
+        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                self.setParameter((Float) animation.getAnimatedValue());
+            }
+        });
+
+        this.setFlip(true);
+    }
+
+
 }
