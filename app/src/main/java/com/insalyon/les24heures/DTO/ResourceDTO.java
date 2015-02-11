@@ -1,10 +1,6 @@
 package com.insalyon.les24heures.DTO;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by remi on 27/12/14.
@@ -14,7 +10,7 @@ public class ResourceDTO {
     String description;
     String locX;
     String locY;
-    //ArrayList<Map<String,String>> horaires;
+    ArrayList<ScheduleDTO> horaires;
 
     @Override
     public String toString() {
@@ -51,5 +47,13 @@ public class ResourceDTO {
 
     public void setLocY(String locY) {
         this.locY = locY;
+    }
+
+    public ArrayList<ScheduleDTO> getHoraires() {
+        return horaires;
+    }
+
+    public void setHoraires(ArrayList<ScheduleDTO> horaires) {
+        this.horaires = horaires;
     }
 }

@@ -13,6 +13,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -21,21 +22,27 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
+import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.filter.ResourceMapsCategoryFilter;
 import com.insalyon.les24heures.filter.ResourceMapsSearchFilter;
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.utils.SlidingUpPannelState;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by remi on 26/12/14.
  */
-public class OutputMapsFragment extends OutputTypeFragment implements OnMapReadyCallback {
+public class OutputMapsFragment extends OutputTypeFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
     private static final String TAG = OutputMapsFragment.class.getCanonicalName();
     View view;
 
@@ -48,6 +55,9 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     ResourceMapsSearchFilter resourceMapsSearchFilter;
 
     ArrayList<Resource> displayableResourcesLists;
+    HashMap<Marker, Resource> markerResourceMap;
+
+    Resource selectedResource;
 
 
     @Override
@@ -55,10 +65,13 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         super.onCreate(savedInstanceState);
         displayName = getActivity().getResources().getString(R.string.drawer_outputtype_maps);
 
+        EventBus.getDefault().getStickyEvent(ResourceSelectedEvent.class);
+
         displayableResourcesLists = new ArrayList<>();
         displayableResourcesLists.addAll(resourcesList);
         resourceMapsCategoryFilter = new ResourceMapsCategoryFilter(resourcesList, displayableResourcesLists, this);
         resourceMapsSearchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this);
+        markerResourceMap = new HashMap<>();
 
     }
 
@@ -78,6 +91,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         googleMap = mapView.getMap();
         googleMap.getUiSettings().setZoomControlsEnabled(true);
+        googleMap.setOnMarkerClickListener(this);
         addMarkers();
 
 
@@ -100,6 +114,10 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onMapReady(final GoogleMap map) {
         map.setMyLocationEnabled(true);
 
+        // Other supported types include: MAP_TYPE_NORMAL,
+        // MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID and MAP_TYPE_NONE MAP_TYPE_SATELLITE
+        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+
         //to prevent user to throw up, zoom on Lyon without animateCamera
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
 
@@ -107,16 +125,23 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition arg0) {
-                restoreFilterState();
+                if (selectedResource != null) {
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedResource.getLoc(), 17));
+                    for (Map.Entry<Marker, Resource> entry : markerResourceMap.entrySet()) {
+                        if(entry.getValue() == selectedResource){
+                            entry.getKey().setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+                            break;
+                        }
+                    }
+                } else {
+                    restoreFilterState();
+                }
 
                 // Remove listener to prevent position reset on camera move.
                 map.setOnCameraChangeListener(null);
             }
         });
 
-        // Other supported types include: MAP_TYPE_NORMAL,
-        // MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID and MAP_TYPE_NONE MAP_TYPE_SATELLITE
-        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
     }
 
     @Override
@@ -160,9 +185,41 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         resourceMapsSearchFilter.filter(event.getQuery().toString());
     }
 
+    public void onEvent(ResourceSelectedEvent selectedEvent) {
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedEvent.getResource().getLoc(), 17));
+//        EventBus.getDefault().removeStickyEvent(selectedEvent);
+        selectedResource = selectedEvent.getResource();
+    }
+
     @OnClick(R.id.fab_goto_list)
     public void onClickFabGotoList(View v) {
         ((MainActivity) getActivity()).selectList();
+    }
+
+
+    @Override
+    public boolean onMarkerClick(final Marker marker) {
+
+        ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.SHOW, markerResourceMap.get(marker));
+        eventBus.post(manageDetailSlidingUpDrawer);
+
+        if(selectedResource != null){
+            for (Map.Entry<Marker, Resource> entry : markerResourceMap.entrySet()) {
+                if(entry.getValue() == selectedResource){
+                    entry.getKey().setIcon(BitmapDescriptorFactory.defaultMarker());
+                    break;
+                }
+            }
+        }
+
+       marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+
+
+        selectedResource = markerResourceMap.get(marker);
+
+        //TODO demander a l'activity de masquer le clavier !
+
+        return false;
     }
 
 
@@ -201,11 +258,12 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             if (resource.getMarker() == null) {
                 Marker marker = googleMap.addMarker(
                         new MarkerOptions()
-                                .title(resource.getTitle() + " " + resource.getCategory().getName())
-                                .snippet(resource.getDescription())
+//                                .title(resource.getTitle() + " " + resource.getCategory().getName())
+//                                .snippet(resource.getDescription())
                                 .position(resource.getLoc()));
 
-                resource.setMarker(marker);
+                markerResourceMap.put(marker, resource);
+                resource.setMarker(marker); //TODO a supprimer
             }
         }
     }

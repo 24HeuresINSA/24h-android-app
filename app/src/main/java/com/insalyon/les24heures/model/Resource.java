@@ -54,15 +54,32 @@ public class Resource implements Parcelable{
         this.isFavorites = isFavorites;
     }
 
+
     public Resource(Parcel in){
         this.title = in.readString();
         this.description = in.readString();
-        //TODO read schedule
+        in.readList(this.schedules,ClassLoader.getSystemClassLoader());
         this.loc = in.readParcelable(ClassLoader.getSystemClassLoader());
         this.imageUrl = in.readString();
         this.category = in.readParcelable(ClassLoader.getSystemClassLoader());
         this.isFavorites = in.readByte() != 0;
 
+    }
+
+    public String printSchedules(){
+        String str = "";
+        for (Schedule schedule : schedules) {
+            str += schedule.toString();
+            if (schedules.indexOf(schedule) != schedules.size() - 1) //if not the last
+                str += " | ";
+            if (schedules.indexOf(schedule) == 1) //only two items are displayed
+                break;
+        }
+
+        if(schedules.size() > 2)
+        str += "   ... ";
+
+        return str;
     }
 
     @Override
@@ -74,7 +91,7 @@ public class Resource implements Parcelable{
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(title);
         out.writeString(description);
-        //TODO write scedule
+        out.writeList(schedules);
         out.writeString(imageUrl);
         out.writeParcelable(loc,flags);
         out.writeParcelable(category,flags);
@@ -140,10 +157,12 @@ public class Resource implements Parcelable{
         this.category = category;
     }
 
+    @Deprecated
     public Marker getMarker() {
         return marker;
     }
 
+    @Deprecated
     public void setMarker(Marker marker) {
         this.marker = marker;
     }

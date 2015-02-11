@@ -13,4 +13,16 @@
         android:title="fav"
         android:icon="@drawable/ic_favorites_unchecked"/>
 
+    <item
+        android:id="@+id/menu_twitter"
+        android:showAsAction="always"
+        android:title="twitter"
+        android:icon="@drawable/ic_twitter"/>
+
+    <item
+        android:id="@+id/menu_facebook"
+        android:showAsAction="always"
+        android:title="facebook"
+        android:icon="@drawable/ic_facebook"/>
+
 </menu>

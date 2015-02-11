@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/detail_sliding_layout"
+    android:paddingRight="@dimen/whole_detail_padding"
+    android:paddingLeft="@dimen/whole_detail_padding">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/detail_header_height"
+        android:weightSum="5"
+        android:id="@+id/detail_sliding_layout_header"
+        android:background="#d10e2037">
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="4"
+            android:gravity="center_vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:singleLine="true"
+                android:scrollHorizontally="true"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:text="Title...."
+                android:id="@+id/detail_sliding_title" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1">
+
+            <!--<TextView-->
+                <!--android:layout_width="wrap_content"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+                <!--android:text="fav"-->
+                <!--android:id="@+id/detail_favorites"-->
+                <!--android:visibility="gone" />-->
+
+         <!---->
+            <!--blocksDescendants to prevent ImageButton to keep click event -->
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:descendantFocusability="blocksDescendants"
+                android:padding="10dp">
+
+                <ImageButton
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:id="@+id/detail_favorites"
+                    android:src="@drawable/ic_favorites_unchecked"
+                    android:background="@null"
+                    android:scaleType="centerInside"
+                    android:visibility="gone"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="sam\n10h-18h"
+                android:textSize="15dp"
+                android:id="@+id/detail_next_schedule"
+                android:layout_gravity="center"
+                android:gravity="center_vertical|right" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.insalyon.les24heures.view.DetailScrollView
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/detail_scrollView" >
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+
+
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:id="@+id/detail_schedules_layout">
+
+                <com.insalyon.les24heures.view.AutoExpandGridView
+                    android:id="@+id/detail_schedule_grid_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:numColumns="2"></com.insalyon.les24heures.view.AutoExpandGridView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/detail_description_layout">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:text="@string/fake_description_light"
+                    android:id="@+id/detail_desciption_text" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:id="@+id/detail_carousel_layout">
+
+
+                <com.insalyon.les24heures.JazzyViewPager.JazzyViewPager
+                    xmlns:android="http://schemas.android.com/apk/res/android"
+                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                    android:id="@+id/jazzy_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                </LinearLayout>
+
+            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                android:name="com.google.android.gms.maps.MapFragment"
+                android:id="@+id/detail_mini_maps"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"/>
+
+        </LinearLayout>
+
+    </com.insalyon.les24heures.view.DetailScrollView>
+
+</LinearLayout>

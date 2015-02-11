@@ -45,9 +45,35 @@
     <!--TODO should be displayed by MainActivity ??-->
     <string name="noCategoriesSelected">Feel free to select at least one category</string>
     <string name="backend_url">http://cetaitmieuxavant.24heures.org</string>
+    <string name="list_no_last_known_location" />
 
 
     <!--in ms-->
     <integer name="arrow_sandwich_duration">500</integer>
+
+
+    <!--DETAIL SLIDING UP-->
+    <string name="detail_anchored" >0.55</string>
+    <string name="fake_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</string>
+    <string name="fake_description_light">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitatio</string>
+
+
+    <!--JAZZY EFFECT-->
+
+    <string-array name="jazzy_effects">
+        <item>Standard</item>
+        <item>Tablet</item>
+        <item>CubeIn</item>
+        <item>CubeOut</item>
+        <item>FlipVertical</item>
+        <item>FlipHorizontal</item>
+        <item>Stack</item>
+        <item>ZoomIn</item>
+        <item>ZoomOut</item>
+        <item>RotateUp</item>
+        <item>RotateDown</item>
+        <item>Accordion</item>
+    </string-array>
+
 
 </resources>

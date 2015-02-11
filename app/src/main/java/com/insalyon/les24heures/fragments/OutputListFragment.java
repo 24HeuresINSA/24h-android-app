@@ -1,5 +1,6 @@
 package com.insalyon.les24heures.fragments;
 
+import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -59,6 +60,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
     ResourceAdapter resourceAdapter = null;
     private QuickReturnAttacher quickReturnAttacher;
+    private Location lastKnownPosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -73,12 +75,13 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
         view = inflater.inflate(R.layout.output_list_fragment, container, false);
         ButterKnife.inject(this, view);
+        lastKnownPosition = new Location("lastKnownPosition");
 
         setHasOptionsMenu(true);
 
         //create an ArrayAdaptar from the String Array
         resourceAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
-                R.layout.output_list_item, new ArrayList<>(resourcesList)); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
+                R.layout.output_list_item, new ArrayList<>(resourcesList),lastKnownPosition); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
 
         // Wrap your adapter with QuickReturnAdapter
         resourceListView.setAdapter(new QuickReturnAdapter(resourceAdapter));
@@ -113,6 +116,9 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         view.getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
 
         setCategoryFilter();
+
+        lastKnownPosition.setLatitude(45.78401554);
+        lastKnownPosition.setLongitude(4.8754406);
 
     }
 

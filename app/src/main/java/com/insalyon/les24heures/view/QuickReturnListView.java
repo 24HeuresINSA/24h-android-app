@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.insalyon.les24heures.utils;
+package com.insalyon.les24heures.view;
 
 import android.content.Context;
 import android.util.AttributeSet;

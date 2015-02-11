@@ -9,6 +9,7 @@ import com.insalyon.les24heures.DTO.ResourceDTO;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
 
@@ -28,6 +29,8 @@ public class ResourceServiceImpl implements ResourceService  {
 
     private static ResourceServiceImpl resourceService;
     private static CategoryServiceImpl categoryService;
+    private static ScheduleServiceImpl scheduleService;
+
 
     private EventBus eventBus;
 
@@ -41,6 +44,7 @@ public class ResourceServiceImpl implements ResourceService  {
             //synchronized (resourceService) {
                 resourceService = new ResourceServiceImpl();
                 categoryService = CategoryServiceImpl.getInstance();
+                scheduleService = ScheduleServiceImpl.getInstance();
             //}
         }
         return resourceService;
@@ -53,7 +57,8 @@ public class ResourceServiceImpl implements ResourceService  {
         Boolean isFavorites = (rand.nextInt(2) == 0 ? true : false);
 
 
-        return new Resource(resourceDTO.getNom(),resourceDTO.getDescription(),null,
+        return new Resource(resourceDTO.getNom(),resourceDTO.getDescription(),
+                scheduleService.fromDTO(resourceDTO.getHoraires()),
                 new LatLng(Double.valueOf(resourceDTO.getLocX()),Double.valueOf(resourceDTO.getLocY())), category,isFavorites);
     }
 
@@ -122,6 +127,12 @@ public class ResourceServiceImpl implements ResourceService  {
             }
         }.execute();
 
+    }
+
+    @Override
+    public Schedule getNextSchedule(Resource resource) {
+        //TODO according to current time
+        return resource.getSchedules().get(0);
     }
 
 }

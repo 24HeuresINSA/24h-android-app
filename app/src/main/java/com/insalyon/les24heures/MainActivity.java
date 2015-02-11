@@ -1,6 +1,5 @@
 package com.insalyon.les24heures;
 
-import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -24,11 +23,15 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
+import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
+import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
+import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.fragments.OutputListFragment;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
 import com.insalyon.les24heures.fragments.OutputTypeFragment;
@@ -39,9 +42,11 @@ import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
 import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
-import com.insalyon.les24heures.utils.DrawerArrowDrawable;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.utils.OutputType;
+import com.insalyon.les24heures.view.CustomDrawerLayout;
+import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
+import com.insalyon.les24heures.view.DrawerArrowDrawable;
 
 import java.util.ArrayList;
 
@@ -64,11 +69,17 @@ public class MainActivity extends Activity {
     private CategoryService categoryService;
 
     @InjectView(R.id.drawer_layout)
-    DrawerLayout drawerLayout;
+    CustomDrawerLayout drawerLayout;
     @InjectView(R.id.left_drawer)
     View drawerView;
     @InjectView(R.id.left_drawer_categories_list)
     ListView categoriesList;
+
+    @InjectView(R.id.sliding_layout)
+    DetailSlidingUpPanelLayout detailSlidingUpPanelLayoutLayout;
+
+    DetailFragment detailFragment;
+
 
 
     private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
@@ -81,18 +92,21 @@ public class MainActivity extends Activity {
     private Menu globalMenu;
 
 
-    //isDrawerOpen only switches when the drawer is fully opened
-    private Boolean isDrawerOpen = false;
+
     private Boolean isFavoritesChecked = false;
     private String searchQuery;
-    private float offset;
-    private boolean flipped;
+    private Menu mMenu;
+
+
+
+
 
     /**
      * Activity is being created       *
      */
 
     @Override
+    //dans NavigationActivity sauf startRightOutput
     protected void onCreate(Bundle savedInstanceState) {
         /*** init services ***/
         super.onCreate(savedInstanceState);
@@ -110,7 +124,13 @@ public class MainActivity extends Activity {
         resourceService = ResourceServiceImpl.getInstance();
         categoryService = CategoryServiceImpl.getInstance();
 
+        ///////////////////////// day, night need one
+        detailSlidingUpPanelLayoutLayout.setActivity(this); //slidingPanel needs the activity to invalidateOptionMenu, manage appName and arrowDrawer
+        detailSlidingUpPanelLayoutLayout.setParallaxHeader(findViewById(R.id.detail_paralax_header));
+        detailFragment = (DetailFragment) fragmentManager.findFragmentById(R.id.sliding_layout_content_fragment);
+        detailSlidingUpPanelLayoutLayout.setDetailFragment(detailFragment);
 
+        ///////////////////////// all
         /*** recover data either from (by priority)
          *           savedInstanceState (rotate, restore from background)
          *           getIntent (start from another activity, another apps) TODO
@@ -166,9 +186,10 @@ public class MainActivity extends Activity {
 
         // set a custom shadow that overlays the main content when the drawer opens
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
+        drawerLayout.setDrawerView(drawerView);
         // set up the drawer's list view with items and click listener
         categoriesList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item_category, navigationDrawerCategories));
-        categoriesList.setOnItemClickListener(new DrawerItemClickListener());
+        categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
         getActionBar().setHomeButtonEnabled(true);
 
         //arrow/sandwich
@@ -181,6 +202,7 @@ public class MainActivity extends Activity {
         drawerLayout.setDrawerListener(drawerListener);
 
 
+        /////////////////////////day
         /*** start the right ouptut : Maps or List ***/
         if (savedInstanceState == null) {
             //default start : get from manifest
@@ -203,6 +225,8 @@ public class MainActivity extends Activity {
         }
     }
 
+    //day & night
+    //dans NavigationActivity et demande et choisi l'impl en fonction du curent fragment
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         globalMenu = menu;
@@ -230,8 +254,8 @@ public class MainActivity extends Activity {
         searchView.setOnSearchClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                setArrow();
-                disabledDrawerSwipe();
+                drawerArrowDrawable.animateToArrow();
+                drawerLayout.disabledDrawerSwipe();
                 disableFavoritesFilter(favoritesItem);
             }
         });
@@ -239,8 +263,8 @@ public class MainActivity extends Activity {
         searchView.setOnCloseListener(new SearchView.OnCloseListener() {
             @Override
             public boolean onClose() {
-                setSandwich();
-                enabledDrawerSwipe();
+                drawerArrowDrawable.animateToSandwich();
+                drawerLayout.enabledDrawerSwipe();
                 searchQuery = null;
                 return false;
             }
@@ -259,6 +283,7 @@ public class MainActivity extends Activity {
             public boolean onQueryTextChange(String newText) {
                 SearchEvent searchEvent = new SearchEvent(newText);
                 eventBus.post(searchEvent);
+                //TODO gros soucis, ce truc est fire quand sliding up s'ouvre....
                 searchQuery = newText;
                 return false;
             }
@@ -283,26 +308,37 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    //day & night
+    //dans NavigationActivity
     private void disableFavoritesFilter(MenuItem favoritesItem) {
         if (isFavoritesChecked) {
             toggleFavorites(favoritesItem);
         }
     }
 
+    //can be day & night (just un parent commun a  detailSlidingUpPanelLayoutLayout
     @Override
+    //dans NavigationActivity
     public boolean onOptionsItemSelected(MenuItem item) {
 
         //click on the appName or the appIcone
         if (item.getTitle().equals(getActionBar().getTitle())) {
+            //search widget is active
             if (!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()) {
-                setSandwich();
-                enabledDrawerSwipe();
+                drawerArrowDrawable.animateToSandwich();
+                drawerLayout.enabledDrawerSwipe();
                 SearchView searchView =
                         (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
                 searchView.onActionViewCollapsed();
                 searchQuery = null;
-            } else {
-                toggleDrawer();
+            }
+            //detail is visible
+            else if(detailSlidingUpPanelLayoutLayout.isPanelAnchored() || detailSlidingUpPanelLayoutLayout.isPanelExpanded()){
+                detailSlidingUpPanelLayoutLayout.collapsePanel();
+            }
+            //default
+            else{
+                drawerLayout.toggleDrawer();
             }
             return true;
         }
@@ -313,6 +349,14 @@ public class MainActivity extends Activity {
                 toggleFavorites(item);
 
                 return true;
+            case R.id.menu_twitter:
+                Toast toast = Toast.makeText(getApplicationContext(), "twitter clicked", Toast.LENGTH_SHORT);
+                toast.show();
+                return true;
+            case R.id.menu_facebook:
+                Toast toast2 = Toast.makeText(getApplicationContext(), "facebook clicked", Toast.LENGTH_SHORT);
+                toast2.show();
+                return true;
         }
 
 
@@ -320,6 +364,8 @@ public class MainActivity extends Activity {
 
     }
 
+    //day & night
+    //dans NavigationActivity
     private void toggleFavorites(MenuItem item) {
         ArrayList<Category> list = new ArrayList<>();
         list.addAll(getCategoriesSelectedFromDrawer());
@@ -338,25 +384,34 @@ public class MainActivity extends Activity {
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
+    //day & night
     @Override
+    //dans NavigationActivity
     public boolean onPrepareOptionsMenu(Menu menu) {
-        boolean drawerOpen = drawerLayout.isDrawerVisible(drawerView);
-
-
-        hideOptionsMenu(menu, drawerOpen);
-
+        mMenu = menu;
+        customOnOptionsMenu();
         return super.onPrepareOptionsMenu(menu);
     }
 
-    private void hideOptionsMenu(Menu menu, boolean drawerOpen) {
-        menu.findItem(R.id.menu_search).setVisible(!drawerOpen);
-        menu.findItem(R.id.menu_favorites).setVisible(!drawerOpen);
+    /**
+     * invalidateOptionsMenu refire search from searchWidget, painful !
+     */
+    //day & night
+    //dans NavigationActivity et demande et choisi l'impl en fonction du curent fragment
+    public void customOnOptionsMenu() {
+        boolean drawerOpen = drawerLayout.isDrawerVisible();//drawerLayout.isDrawerVisible(drawerView);
+        Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
+        mMenu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
+        mMenu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
+        mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+        mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
     }
 
     /**
      * Activity is alive       *
      */
 
+    //day
     public void onEvent(ResourcesUpdatedEvent event) {
         // super.onEvent(event);
         Log.d(TAG + "onEvent(ResourcesUpdatedEvent)", event.getResourceList().toString());
@@ -364,26 +419,83 @@ public class MainActivity extends Activity {
         resourcesList.addAll(event.getResourceList());
     }
 
+    //TODO move dans DetailSlidingUpPanelLayout
+    public void onEvent(ManageDetailSlidingUpDrawer m){
+        switch (m.getState()){
+            case COLLAPSE:
+                detailSlidingUpPanelLayoutLayout.collapsePanel();
+                break;
+            case EXPAND:
+                detailSlidingUpPanelLayoutLayout.expandPanel();
+                break;
+            case HIDE:
+                detailSlidingUpPanelLayoutLayout.hidePanel();
+                break;
+            case SHOW:
+                if(m.getResource() == null){
+                    detailSlidingUpPanelLayoutLayout.showPanel();
+                }else{
+                    detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getResource());
+                }
+                break;
+        }
+
+    }
+
+    //day
+    public void onEvent(ResourceSelectedEvent resourceSelected){
+        //Output state
+        detailSlidingUpPanelLayoutLayout.collapsePanel();
+        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
+            //just focus on resource and highlith it
+        } else {
+            //open maps on resource
+            selectMaps();
+        }
+    }
+
+    //day
+    //dans DayFragment
     public void selectMaps() {
         Fragment mapsFragment = new OutputMapsFragment();
         replaceContentFragment(mapsFragment);
     }
 
+    //day
+    //dans DayFragment
     public void selectList() {
         Fragment listFragment = new OutputListFragment();
         replaceContentFragment(listFragment);
     }
 
+    //all
     @Override
+    //dans NavigationActivity
     public void setTitle(CharSequence title) {
         getActionBar().setTitle(title);
     }
 
+    //can be day & night (just un parent commun a  detailSlidingUpPanelLayoutLayout
+    @Override
+    //dans NavigationActivity et demande au currentFragment son slidingLayout
+    public void onBackPressed() {
+        if(drawerLayout.isDrawerOpen()){
+            drawerLayout.closeDrawer();
+        }else if (detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded()) {
+            detailSlidingUpPanelLayoutLayout.collapsePanel();
+        } else if (!detailSlidingUpPanelLayoutLayout.isPanelHidden()) {
+            detailSlidingUpPanelLayoutLayout.hideDetailPanel();
+        }else {
+           super.onBackPressed();
+        }
+
+    }
 
     /**
      * Activity is no more alive       *
      */
 
+    //day,  night need one, pas forcement
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -403,6 +515,7 @@ public class MainActivity extends Activity {
         //resources
         outState.putParcelableArrayList("resourcesList", resourcesList);
 
+        ///////////////////////////day and night
         //action bar menu
         SearchView searchView =
                 (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
@@ -417,6 +530,8 @@ public class MainActivity extends Activity {
      * Activity methods      *
      */
 
+    //day (peut etre night en a besoin d'un)
+    //dans NavigationActivity et demande au currentFragment son slidingLayout
     private void replaceContentFragment(Fragment fragment) {
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
@@ -435,63 +550,20 @@ public class MainActivity extends Activity {
         ft.replace(R.id.content_frame, fragment).commit();
     }
 
+
     /**
-     * Drawer methods and inner classes
+     * Drawer methods and inner classes //TODO creer un fragment pour la navigation drawer et mettre ca dedans
      */
 
-    private class DrawerItemClickListener implements ListView.OnItemClickListener {
+    //day
+    private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectCategory(position);
         }
     }
 
-    private class DrawerListener extends DrawerLayout.SimpleDrawerListener {
-        private MenuItem itemFav;
-        private MenuItem itemSearch;
-
-        @Override
-        public void onDrawerOpened(View drawerView) {
-            super.onDrawerOpened(drawerView);
-            isDrawerOpen = true;
-            getActionBar().setTitle(R.string.app_name);
-        }
-
-        @Override
-        public void onDrawerSlide(View drawerView, float slideOffset) {
-            offset = slideOffset;
-            // Sometimes slideOffset ends up so close to but not quite 1 or 0.
-            if (slideOffset >= .995) {
-                flipped = true;
-                drawerArrowDrawable.setFlip(flipped);
-            } else if (slideOffset <= .005) {
-                flipped = false;
-                drawerArrowDrawable.setFlip(flipped);
-            }
-            drawerArrowDrawable.setParameter(offset);
-
-            if (itemFav == null) {
-                itemFav = globalMenu.findItem(R.id.menu_favorites);
-                itemSearch = globalMenu.findItem(R.id.menu_search);
-            }
-
-            if (offset > 0.95)
-                return;
-            itemFav.getIcon().setAlpha((int) (255 - slideOffset * 255));
-            itemSearch.getActionView().setAlpha(1 - slideOffset);
-        }
-
-        @Override
-        public void onDrawerClosed(View drawerView) {
-            super.onDrawerClosed(drawerView);
-            isDrawerOpen = false;
-            getActionBar().setTitle(
-                    ((OutputTypeFragment) getFragmentManager().findFragmentById(R.id.content_frame))
-                            .getDisplayName());
-
-        }
-    }
-
+    //day
     private void selectCategory(int position) {
         categoriesSelected = getCategoriesSelectedFromDrawer();
         if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
@@ -512,9 +584,10 @@ public class MainActivity extends Activity {
             eventBus.post(categoriesSelectedEvent);
         }
 
-        drawerLayout.closeDrawer(drawerView);
+        drawerLayout.closeDrawer();
     }
 
+    //day
     private ArrayList<Category> getCategoriesSelectedFromDrawer() {
         ArrayList<Category> categoriesSelected = new ArrayList<>();
 
@@ -527,61 +600,89 @@ public class MainActivity extends Activity {
         return categoriesSelected;
     }
 
-    private void toggleDrawer() {
-        if (drawerLayout.isDrawerOpen(drawerView)) {
-            closeDrawer();
-        } else {
-            openDrawer();
+
+
+
+    //day + night (all need one)
+    //dans NavigationActivity
+    private class DrawerListener extends DrawerLayout.SimpleDrawerListener {
+        private MenuItem itemFav;
+        private MenuItem itemSearch;
+
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            super.onDrawerOpened(drawerView);
+            drawerLayout.setIsDrawerOpen(true);
+            getActionBar().setTitle(R.string.app_name);
         }
 
-    }
-
-    public void openDrawer() {
-        drawerLayout.openDrawer(drawerView);
-
-
-    }
-
-    public void closeDrawer() {
-        drawerLayout.closeDrawer(drawerView);
-
-
-    }
-
-    public void setArrow() {
-        ValueAnimator animation = ValueAnimator.ofFloat(0f, 1f);
-        animation.setDuration(500);
-        animation.start();
-        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                drawerArrowDrawable.setParameter((Float) animation.getAnimatedValue());
+        @Override
+        public void onDrawerSlide(View drawerView, float slideOffset) {
+            // Sometimes slideOffset ends up so close to but not quite 1 or 0.
+            if (slideOffset >= .995) {
+                drawerArrowDrawable.setFlip(true);
+            } else if (slideOffset <= .005) {
+                drawerArrowDrawable.setFlip(false);
             }
-        });
+            drawerArrowDrawable.setParameter(slideOffset);
 
-        drawerArrowDrawable.setFlip(true);
-    }
-
-    private void disabledDrawerSwipe() {
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
-    }
-
-    private void enabledDrawerSwipe() {
-        drawerLayout.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
-    }
-
-    public void setSandwich() {
-        ValueAnimator animation = ValueAnimator.ofFloat(1f, 0f);
-        animation.setDuration(500);
-        animation.start();
-        animation.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animation) {
-                drawerArrowDrawable.setParameter((Float) animation.getAnimatedValue());
+            if (itemFav == null) {
+                itemFav = globalMenu.findItem(R.id.menu_favorites);
+                itemSearch = globalMenu.findItem(R.id.menu_search);
             }
-        });
-        drawerArrowDrawable.setParameter(0);
+
+            if (slideOffset > 0.95)
+                return;
+            itemFav.getIcon().setAlpha((int) (255 - slideOffset * 255));
+            itemSearch.getActionView().setAlpha(1 - slideOffset);
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+            super.onDrawerClosed(drawerView);
+            drawerLayout.setIsDrawerOpen(false);
+            //TODO create a parent of OutputTypeFragment which only contains abstract getDisplayName
+            getActionBar().setTitle(
+                    ((OutputTypeFragment) getFragmentManager().findFragmentById(R.id.content_frame))
+                            .getDisplayName());
+
+        }
     }
+
+
+
+
+
+
+
+
+
+
+    /**
+     * Action bar methods
+     */
+
+    //all
+    //dans NavigationActity
+    public void restoreTitle(){
+        //TODO faire comme pour les menu item
+        String str;
+        if(fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class){
+            str = (getResources().getString(R.string.drawer_outputtype_maps));
+        }else{
+            str = (getResources().getString(R.string.drawer_outputtype_list));
+        }
+
+        if(str != getActionBar().getTitle()){
+            setTitle(str);
+        }
+    }
+
+    //dans NavigationActity
+    public DrawerArrowDrawable getDrawerArrowDrawable() {
+        return drawerArrowDrawable;
+    }
+
 
 
 }
