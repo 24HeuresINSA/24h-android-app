@@ -177,8 +177,8 @@ public class MainActivity extends Activity {
 
         if (resourcesList == null) {
             resourcesList = new ArrayList<>();
-//            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
-            resourceService.getResourcesAsyncMock();
+            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
+//            resourceService.getResourcesAsyncMock();
         }
 
         if (categoriesSelected == null) {

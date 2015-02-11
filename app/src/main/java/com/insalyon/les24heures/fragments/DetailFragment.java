@@ -221,8 +221,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private void updateHeavyData(){
         if(!heavyDataUpdated) {
 
-            //TODO mettre à jour le panel
-
             //mini maps
             //the map update
             addMarkerAndMoveCam();
@@ -233,7 +231,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             schedules.addAll(resource.getSchedules());
             scheduleAdapter.notifyDataSetChanged();
 
-
             //optionals  pictures
 
             heavyDataUpdated = true;
@@ -242,7 +239,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void notifyDataChanged(Resource res) {
-        resource = res;
+        if(res != null)
+             resource = res;
         heavyDataUpdated = false;
 
         detailSlidingTitle.setText(resource.getTitle());

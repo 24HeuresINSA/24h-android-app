@@ -209,6 +209,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                     this.showPanel();
                     break;
             }
+            detailFragment.notifyDataChanged(null);
         }
 
         return true;
