@@ -37,21 +37,7 @@ public class DayResource extends Resource{
         this.loc = in.readParcelable(ClassLoader.getSystemClassLoader());
     }
 
-    public String printSchedules(){
-        String str = "";
-        for (Schedule schedule : schedules) {
-            str += schedule.toString();
-            if (schedules.indexOf(schedule) != schedules.size() - 1) //if not the last
-                str += " | ";
-            if (schedules.indexOf(schedule) == 1) //only two items are displayed
-                break;
-        }
 
-        if(schedules.size() > 2)
-        str += "   ... ";
-
-        return str;
-    }
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
