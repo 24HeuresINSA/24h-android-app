@@ -36,7 +36,7 @@ import com.insalyon.les24heures.fragments.OutputListFragment;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
 import com.insalyon.les24heures.fragments.OutputTypeFragment;
 import com.insalyon.les24heures.model.Category;
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.service.CategoryService;
 import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
@@ -85,7 +85,7 @@ public class MainActivity extends Activity {
     private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
     private ArrayList<Category> categories;
     private ArrayList<Category> categoriesSelected;
-    private ArrayList<Resource> resourcesList;
+    private ArrayList<DayResource> resourcesList;
 
     private DrawerArrowDrawable drawerArrowDrawable;
     private DrawerLayout.SimpleDrawerListener drawerListener;
@@ -429,9 +429,9 @@ public class MainActivity extends Activity {
     //day
     public void onEvent(ResourcesUpdatedEvent event) {
         // super.onEvent(event);
-        Log.d(TAG + "onEvent(ResourcesUpdatedEvent)", event.getResourceList().toString());
+        Log.d(TAG + "onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
         resourcesList.clear();
-        resourcesList.addAll(event.getResourceList());
+        resourcesList.addAll(event.getDayResourceList());
     }
 
     //TODO move dans DetailSlidingUpPanelLayout
@@ -454,16 +454,16 @@ public class MainActivity extends Activity {
                 break;
             case SHOW:
                 hideKeyboard();
-                if(m.getResource() == null){
+                if(m.getDayResource() == null){
                     detailSlidingUpPanelLayoutLayout.showPanel();
                 }else{
-                    detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getResource());
+                    detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getDayResource());
                 }
                 break;
             case ANCHORED:
                 hideKeyboard();
-                if(m.getResource() != null){
-                    detailFragment.notifyDataChanged(m.getResource());
+                if(m.getDayResource() != null){
+                    detailFragment.notifyDataChanged(m.getDayResource());
                 }
                 detailSlidingUpPanelLayoutLayout.anchorPanel();
                 break;

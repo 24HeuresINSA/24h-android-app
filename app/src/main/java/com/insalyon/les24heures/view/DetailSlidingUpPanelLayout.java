@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.fragments.DetailFragment;
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.DetailSlidingUpPanelLayoutNullActivity;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -234,7 +234,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
 
 
-    public void showDetailPanel(Resource res){
+    public void showDetailPanel(DayResource res){
         detailFragment.notifyDataChanged(res);
         this.showPanel();
     }

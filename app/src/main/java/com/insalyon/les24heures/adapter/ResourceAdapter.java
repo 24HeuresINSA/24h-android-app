@@ -17,7 +17,7 @@ import com.insalyon.les24heures.filter.ResourceCategoryFilter;
 import com.insalyon.les24heures.filter.ResourceListCategoryFilter;
 import com.insalyon.les24heures.filter.ResourceListSearchFilter;
 import com.insalyon.les24heures.filter.ResourceSearchFilter;
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 
 import java.util.ArrayList;
 
@@ -26,23 +26,23 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by remi on 27/12/14.
  */
-public class ResourceAdapter extends ArrayAdapter<Resource>  {
+public class ResourceAdapter extends ArrayAdapter<DayResource>  {
 
     private final EventBus eventBus;
-    private ArrayList<Resource> originalList;
-    private ArrayList<Resource> resourceList;
+    private ArrayList<DayResource> originalList;
+    private ArrayList<DayResource> dayResourceList;
     private ResourceSearchFilter resourceSearchFilter;
     private ResourceCategoryFilter resourceCategoryFilter;
     LayoutInflater vi;
     Location lastKnownPosition;
 
     public ResourceAdapter(Context context, int textViewResourceId,
-                           ArrayList<Resource> resources, Location lastKnownPosition) {
-        super(context, textViewResourceId, resources);
-        this.resourceList = new ArrayList<>();
-        this.resourceList.addAll(resources);
+                           ArrayList<DayResource> dayResources, Location lastKnownPosition) {
+        super(context, textViewResourceId, dayResources);
+        this.dayResourceList = new ArrayList<>();
+        this.dayResourceList.addAll(dayResources);
         this.originalList = new ArrayList<>();
-        this.originalList.addAll(resources);
+        this.originalList.addAll(dayResources);
         this.lastKnownPosition = lastKnownPosition;
 
         this.vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -55,7 +55,7 @@ public class ResourceAdapter extends ArrayAdapter<Resource>  {
     @Override
     public Filter getFilter() {
         if (resourceSearchFilter == null) {
-            resourceSearchFilter = new ResourceListSearchFilter(originalList, resourceList, this);
+            resourceSearchFilter = new ResourceListSearchFilter(originalList, dayResourceList, this);
         }
         return resourceSearchFilter;
     }
@@ -63,7 +63,7 @@ public class ResourceAdapter extends ArrayAdapter<Resource>  {
 
     public Filter getCategoryFilter() {
         if (resourceCategoryFilter == null) {
-            resourceCategoryFilter = new ResourceListCategoryFilter(originalList, resourceList, this);
+            resourceCategoryFilter = new ResourceListCategoryFilter(originalList, dayResourceList, this);
         }
         return resourceCategoryFilter;
     }
@@ -94,29 +94,29 @@ public class ResourceAdapter extends ArrayAdapter<Resource>  {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final Resource resource = resourceList.get(position);
+        final DayResource dayResource = dayResourceList.get(position);
 
         holder.favorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                resource.setIsFavorites(!resource.isFavorites());
-                if(resource.isFavorites())
+                dayResource.setIsFavorites(!dayResource.isFavorites());
+                if(dayResource.isFavorites())
                     ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
                 else
                     ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
             }
         });
 
-        holder.title.setText(resource.getTitle());
+        holder.title.setText(dayResource.getTitle());
         holder.title.setSelected(true);
-        if(resource.isFavorites())
+        if(dayResource.isFavorites())
             holder.favorites.setImageResource(R.drawable.ic_favorites_checked);
         else
             holder.favorites.setImageResource(R.drawable.ic_favorites_unchecked);
-        holder.schedule.setText(resource.printSchedules());
+        holder.schedule.setText(dayResource.printSchedules());
         Location loc = new Location("loc");
-        loc.setLongitude(resource.getLoc().longitude);
-        loc.setLatitude(resource.getLoc().latitude);
+        loc.setLongitude(dayResource.getLoc().longitude);
+        loc.setLatitude(dayResource.getLoc().latitude);
         if(lastKnownPosition != null){
             Integer distance = Math.round(lastKnownPosition.distanceTo(loc));
             holder.distance.setText((distance < 1000) ? distance+"m":distance/1000+"km");
@@ -134,9 +134,9 @@ public class ResourceAdapter extends ArrayAdapter<Resource>  {
 
 
     public void onEvent(ResourcesUpdatedEvent event) {
-        Log.d("onEvent(ResourcesUpdatedEvent)", event.getResourceList().toString());
+        Log.d("onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
         originalList.clear();
-        originalList.addAll(event.getResourceList());
+        originalList.addAll(event.getDayResourceList());
     }
 
     @Deprecated

@@ -1,7 +1,7 @@
 package com.insalyon.les24heures.service;
 
 import com.insalyon.les24heures.DTO.ResourceDTO;
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.Schedule;
 
 import java.util.ArrayList;
@@ -11,9 +11,9 @@ import java.util.ArrayList;
  */
 public interface ResourceService {
 
-    public Resource fromDTO(ResourceDTO resourceDTO);
+    public DayResource fromDTO(ResourceDTO resourceDTO);
 
-    public ArrayList<Resource> fromDTO(ArrayList<ResourceDTO> resourceDTOs);
+    public ArrayList<DayResource> fromDTO(ArrayList<ResourceDTO> resourceDTOs);
 
     public void getResourcesAsyncFromBackend(ResourceRetrofitService resourceRetrofitService);
 
@@ -22,5 +22,5 @@ public interface ResourceService {
     public void getResourcesAsyncMock();
 
 
-    public Schedule getNextSchedule(Resource resource);
+    public Schedule getNextSchedule(DayResource dayResource);
 }

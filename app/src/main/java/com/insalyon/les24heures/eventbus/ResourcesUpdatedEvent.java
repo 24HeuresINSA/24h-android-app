@@ -1,6 +1,6 @@
 package com.insalyon.les24heures.eventbus;
 
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 
 import java.util.List;
 
@@ -8,17 +8,17 @@ import java.util.List;
  * Created by remi on 27/12/14.
  */
 public class ResourcesUpdatedEvent {
-    List<Resource> resourceList;
+    List<DayResource> dayResourceList;
 
-    public ResourcesUpdatedEvent(List<Resource> resourceList) {
-        this.resourceList = resourceList;
+    public ResourcesUpdatedEvent(List<DayResource> dayResourceList) {
+        this.dayResourceList = dayResourceList;
     }
 
-    public List<Resource> getResourceList() {
-        return resourceList;
+    public List<DayResource> getDayResourceList() {
+        return dayResourceList;
     }
 
-    public void setResourceList(List<Resource> resourceList) {
-        this.resourceList = resourceList;
+    public void setDayResourceList(List<DayResource> dayResourceList) {
+        this.dayResourceList = dayResourceList;
     }
 }

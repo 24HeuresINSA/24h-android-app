@@ -13,7 +13,7 @@ import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.Category;
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 
 import java.util.ArrayList;
 
@@ -28,7 +28,7 @@ public class OutputTypeFragment extends Fragment {
     View view;
     ArrayList<Category> categoriesSelected;
     String searchQuery;
-    ArrayList<Resource> resourcesList;
+    ArrayList<DayResource> resourcesList;
 
     public String displayName;
 
@@ -98,9 +98,9 @@ public class OutputTypeFragment extends Fragment {
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
-        Log.d("onEvent(ResourcesUpdatedEvent)", event.getResourceList().toString());
+        Log.d("onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
         resourcesList.clear();
-        resourcesList.addAll(event.getResourceList());
+        resourcesList.addAll(event.getDayResourceList());
     }
 
     public void onEvent(SearchEvent event) {

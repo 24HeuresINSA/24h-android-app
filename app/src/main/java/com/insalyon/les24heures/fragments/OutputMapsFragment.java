@@ -28,7 +28,7 @@ import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.filter.ResourceMapsCategoryFilter;
 import com.insalyon.les24heures.filter.ResourceMapsSearchFilter;
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.utils.SlidingUpPannelState;
 
 import java.util.ArrayList;
@@ -54,10 +54,10 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     ResourceMapsCategoryFilter resourceMapsCategoryFilter;
     ResourceMapsSearchFilter resourceMapsSearchFilter;
 
-    ArrayList<Resource> displayableResourcesLists;
-    HashMap<Marker, Resource> markerResourceMap;
+    ArrayList<DayResource> displayableResourcesLists;
+    HashMap<Marker, DayResource> markerResourceMap;
 
-    Resource selectedResource;
+    DayResource selectedDayResource;
 
 
     @Override
@@ -125,10 +125,10 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
             @Override
             public void onCameraChange(CameraPosition arg0) {
-                if (selectedResource != null) {
-                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedResource.getLoc(), 17));
-                    for (Map.Entry<Marker, Resource> entry : markerResourceMap.entrySet()) {
-                        if(entry.getValue() == selectedResource){
+                if (selectedDayResource != null) {
+                    googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedDayResource.getLoc(), 17));
+                    for (Map.Entry<Marker, DayResource> entry : markerResourceMap.entrySet()) {
+                        if (entry.getValue() == selectedDayResource) {
                             entry.getKey().setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
                             break;
                         }
@@ -161,7 +161,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-        Log.d(TAG + "onEvent(CategoryEvent)", event.getResourceList().toString());
+        Log.d(TAG + "onEvent(CategoryEvent)", event.getDayResourceList().toString());
 
         if (spinner) {
             getActivity().runOnUiThread(new Runnable() {
@@ -186,9 +186,9 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     }
 
     public void onEvent(ResourceSelectedEvent selectedEvent) {
-        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedEvent.getResource().getLoc(), 17));
+        googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedEvent.getDayResource().getLoc(), 17));
 //        EventBus.getDefault().removeStickyEvent(selectedEvent);
-        selectedResource = selectedEvent.getResource();
+        selectedDayResource = selectedEvent.getDayResource();
     }
 
     @OnClick(R.id.fab_goto_list)
@@ -203,9 +203,9 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.SHOW, markerResourceMap.get(marker));
         eventBus.post(manageDetailSlidingUpDrawer);
 
-        if(selectedResource != null){
-            for (Map.Entry<Marker, Resource> entry : markerResourceMap.entrySet()) {
-                if(entry.getValue() == selectedResource){
+        if(selectedDayResource != null){
+            for (Map.Entry<Marker, DayResource> entry : markerResourceMap.entrySet()) {
+                if(entry.getValue() == selectedDayResource){
                     entry.getKey().setIcon(BitmapDescriptorFactory.defaultMarker());
                     break;
                 }
@@ -215,7 +215,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
 
 
-        selectedResource = markerResourceMap.get(marker);
+        selectedDayResource = markerResourceMap.get(marker);
 
 
         return false;
@@ -235,8 +235,8 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        for (Resource resource : resourcesList) {
-            resource.setMarker(null);
+        for (DayResource dayResource : resourcesList) {
+            dayResource.setMarker(null);
             //TODO en attendant de trouver mieux
         }
     }
@@ -253,16 +253,16 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             spinner = true;
             return;
         }
-        for (Resource resource : resourcesList) {
-            if (resource.getMarker() == null) {
+        for (DayResource dayResource : resourcesList) {
+            if (dayResource.getMarker() == null) {
                 Marker marker = googleMap.addMarker(
                         new MarkerOptions()
 //                                .title(resource.getTitle() + " " + resource.getCategory().getName())
 //                                .snippet(resource.getDescription())
-                                .position(resource.getLoc()));
+                                .position(dayResource.getLoc()));
 
-                markerResourceMap.put(marker, resource);
-                resource.setMarker(marker); //TODO a supprimer
+                markerResourceMap.put(marker, dayResource);
+                dayResource.setMarker(marker); //TODO a supprimer
             }
         }
     }
@@ -270,8 +270,8 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     private LatLngBounds.Builder getBuilder() {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         //include only resource selected by a one of the filter
-        for (Resource resource : displayableResourcesLists) {
-            builder.include(resource.getMarker().getPosition());
+        for (DayResource dayResource : displayableResourcesLists) {
+            builder.include(dayResource.getMarker().getPosition());
         }
         return builder;
     }

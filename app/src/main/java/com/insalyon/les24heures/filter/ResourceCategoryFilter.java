@@ -2,7 +2,7 @@ package com.insalyon.les24heures.filter;
 
 import android.widget.Filter;
 
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,15 +12,15 @@ import java.util.Arrays;
  */
 public abstract class ResourceCategoryFilter extends Filter {
 
-    ArrayList<Resource> originalList;
-    ArrayList<Resource> resourceList;
+    ArrayList<DayResource> originalList;
+    ArrayList<DayResource> dayResourceList;
 
     ArrayList<String> selectedCategories;
 
-    public ResourceCategoryFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList) {
+    public ResourceCategoryFilter(ArrayList<DayResource> originalList, ArrayList<DayResource> dayResourceList) {
         //we need pointer to inform the array adapter of what we are doing
         this.originalList = originalList;
-        this.resourceList = resourceList;
+        this.dayResourceList = dayResourceList;
     }
 
     @Override
@@ -34,13 +34,13 @@ public abstract class ResourceCategoryFilter extends Filter {
                     );
 
             if (selectedCategories.size() != 0) {
-                ArrayList<Resource> filteredItems = new ArrayList<Resource>();
+                ArrayList<DayResource> filteredItems = new ArrayList<DayResource>();
 
                 for (int i = 0, l = originalList.size(); i < l; i++) {
-                    Resource resource = originalList.get(i);
+                    DayResource dayResource = originalList.get(i);
                     //effective search pattern
-                    if (isDisplayable(resource))
-                        filteredItems.add(resource);
+                    if (isDisplayable(dayResource))
+                        filteredItems.add(dayResource);
                 }
                 result.count = filteredItems.size();
                 result.values = filteredItems;
@@ -61,14 +61,14 @@ public abstract class ResourceCategoryFilter extends Filter {
     }
 
 
-    private Boolean isDisplayable(Resource resource) {
+    private Boolean isDisplayable(DayResource dayResource) {
         if (selectedCategories.contains("favorites")) {
             if (selectedCategories.size() == 1)
-                return resource.isFavorites();
-            return resource.isFavorites() &&
-                    (selectedCategories.contains(resource.getCategory().toString()));
+                return dayResource.isFavorites();
+            return dayResource.isFavorites() &&
+                    (selectedCategories.contains(dayResource.getCategory().toString()));
         }
-        return selectedCategories.contains(resource.getCategory().toString());
+        return selectedCategories.contains(dayResource.getCategory().toString());
     }
 
 }

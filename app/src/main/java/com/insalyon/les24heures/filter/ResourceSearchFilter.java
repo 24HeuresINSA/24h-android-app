@@ -2,7 +2,7 @@ package com.insalyon.les24heures.filter;
 
 import android.widget.Filter;
 
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 
 import java.util.ArrayList;
 
@@ -11,14 +11,14 @@ import java.util.ArrayList;
  */
 public abstract class ResourceSearchFilter extends Filter {
 
-    ArrayList<Resource> originalList;
-    ArrayList<Resource> resourceList;
+    ArrayList<DayResource> originalList;
+    ArrayList<DayResource> dayResourceList;
 
 
-    public ResourceSearchFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList) {
+    public ResourceSearchFilter(ArrayList<DayResource> originalList, ArrayList<DayResource> dayResourceList) {
         //we need pointer to inform the array adapter of what we are doing
         this.originalList = originalList;
-        this.resourceList = resourceList;
+        this.dayResourceList = dayResourceList;
     }
 
     @Override
@@ -27,13 +27,13 @@ public abstract class ResourceSearchFilter extends Filter {
         FilterResults result = new FilterResults();
         if (constraint != null && constraint.toString().length() > 0) {
             constraint = constraint.toString().toLowerCase();
-            ArrayList<Resource> filteredItems = new ArrayList<Resource>();
+            ArrayList<DayResource> filteredItems = new ArrayList<DayResource>();
 
             for (int i = 0, l = originalList.size(); i < l; i++) {
-                Resource resource = originalList.get(i);
+                DayResource dayResource = originalList.get(i);
                 //effective search pattern
-                if (resource.getTitle().toString().toLowerCase().contains(constraint))
-                    filteredItems.add(resource);
+                if (dayResource.getTitle().toString().toLowerCase().contains(constraint))
+                    filteredItems.add(dayResource);
             }
             result.count = filteredItems.size();
             result.values = filteredItems;

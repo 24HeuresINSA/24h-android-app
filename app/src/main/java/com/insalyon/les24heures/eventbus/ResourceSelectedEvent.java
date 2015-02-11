@@ -1,22 +1,22 @@
 package com.insalyon.les24heures.eventbus;
 
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 
 /**
  * Created by remi on 09/02/15.
  */
 public class ResourceSelectedEvent {
-    private Resource resource;
+    private DayResource dayResource;
 
-    public ResourceSelectedEvent(Resource resource) {
-        this.resource = resource;
+    public ResourceSelectedEvent(DayResource dayResource) {
+        this.dayResource = dayResource;
     }
 
-    public Resource getResource() {
-        return resource;
+    public DayResource getDayResource() {
+        return dayResource;
     }
 
-    public void setResource(Resource resource) {
-        this.resource = resource;
+    public void setDayResource(DayResource dayResource) {
+        this.dayResource = dayResource;
     }
 }

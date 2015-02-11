@@ -1,7 +1,7 @@
 package com.insalyon.les24heures.filter;
 
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 
 import java.util.ArrayList;
 
@@ -13,21 +13,21 @@ public class ResourceMapsCategoryFilter extends ResourceCategoryFilter {
 
     OutputMapsFragment outputMapsFragment;
 
-    public ResourceMapsCategoryFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList, OutputMapsFragment outputMapsFragment) {
-        super(originalList, resourceList);
+    public ResourceMapsCategoryFilter(ArrayList<DayResource> originalList, ArrayList<DayResource> dayResourceList, OutputMapsFragment outputMapsFragment) {
+        super(originalList, dayResourceList);
         this.outputMapsFragment = outputMapsFragment;
     }
 
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        resourceList.clear();
-        resourceList.addAll((ArrayList<Resource>) results.values);
+        dayResourceList.clear();
+        dayResourceList.addAll((ArrayList<DayResource>) results.values);
 
-        for (Resource resource : originalList) {
-            resource.getMarker().setVisible(false);
+        for (DayResource dayResource : originalList) {
+            dayResource.getMarker().setVisible(false);
         }
-        for (Resource resource : resourceList) {
-            resource.getMarker().setVisible(true);
+        for (DayResource dayResource : dayResourceList) {
+            dayResource.getMarker().setVisible(true);
         }
         outputMapsFragment.moveCamera();
     }

@@ -25,7 +25,7 @@ import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.utils.SlidingUpPannelState;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -164,10 +164,10 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
     @Override
     public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
-        Resource resource = (Resource) parent.getItemAtPosition(position);
+        DayResource dayResource = (DayResource) parent.getItemAtPosition(position);
 
         ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.ANCHORED,
-                resource);
+                dayResource);
         eventBus.post(manageDetailSlidingUpDrawer);
     }
 

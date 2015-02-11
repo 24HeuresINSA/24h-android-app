@@ -26,7 +26,7 @@ import com.insalyon.les24heures.JazzyViewPager.OutlineContainer;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ScheduleAdapter;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.view.DetailScrollView;
@@ -62,7 +62,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     @InjectView(R.id.detail_sliding_layout_header)
     View slidingHeader;
 
-    Resource resource;
+    DayResource dayResource;
     private ScheduleAdapter scheduleAdapter;
     private ArrayList<Schedule> schedules;
     private GoogleMap googleMap;
@@ -86,8 +86,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
         if(savedInstanceState != null) {
             if (savedInstanceState.getParcelable("resource") != null) {
-                resource = savedInstanceState.getParcelable("resource");
-                schedules.addAll(resource.getSchedules());
+                dayResource = savedInstanceState.getParcelable("resource");
+                schedules.addAll(dayResource.getSchedules());
             }
         }
 
@@ -178,7 +178,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
      */
     @Override
     public void onMapReady(final GoogleMap map) {
-        if(resource != null) {
+        if(dayResource != null) {
             addMarkerAndMoveCam();
         }else{
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
@@ -194,22 +194,22 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         googleMap.addMarker(new MarkerOptions()
 //                                .title(resource.getTitle() + " " + resource.getCategory().getName())
 //                                .snippet(resource.getDescription())
-                .position(resource.getLoc()));
+                .position(dayResource.getLoc()));
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(resource.getLoc(), 15));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dayResource.getLoc(), 15));
 
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                eventBus.postSticky(new ResourceSelectedEvent(resource));
+                eventBus.postSticky(new ResourceSelectedEvent(dayResource));
             }
         });
     }
 
     @OnClick(R.id.detail_favorites)
     public void onClickFav(View v){
-        resource.setIsFavorites(!resource.isFavorites());
-        if(resource.isFavorites())
+        dayResource.setIsFavorites(!dayResource.isFavorites());
+        if(dayResource.isFavorites())
             ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
         else
             ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
@@ -228,7 +228,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
             //schedules
             schedules.clear();
-            schedules.addAll(resource.getSchedules());
+            schedules.addAll(dayResource.getSchedules());
             scheduleAdapter.notifyDataSetChanged();
 
             //optionals  pictures
@@ -238,19 +238,19 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    public void notifyDataChanged(Resource res) {
+    public void notifyDataChanged(DayResource res) {
         if(res != null)
-             resource = res;
+             dayResource = res;
         heavyDataUpdated = false;
 
-        detailSlidingTitle.setText(resource.getTitle());
-        detailSlidingDescription.setText(resource.getDescription());
+        detailSlidingTitle.setText(dayResource.getTitle());
+        detailSlidingDescription.setText(dayResource.getDescription());
 
-        Schedule schedule = resourceService.getNextSchedule(resource);
+        Schedule schedule = resourceService.getNextSchedule(dayResource);
         nextSchedule.setText(schedule.getPrintableDay()+"\n"+
                 schedule.getStart().getHours()+"h-"+schedule.getEnd().getHours()+"h");
 
-        if(resource.isFavorites())
+        if(dayResource.isFavorites())
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_checked);
         else
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
@@ -265,6 +265,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("resource", resource);
+        outState.putParcelable("resource", dayResource);
     }
 }
