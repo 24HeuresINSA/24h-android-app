@@ -19,13 +19,13 @@ public class DayResource extends Resource{
     Marker marker;
 
 
-    @Deprecated
     public DayResource(String title, String description, List<Schedule> schedules, LatLng loc, Category category) {
         super( title,  description,schedules,  false,  category);
         this.loc = loc;
     }
 
 
+    @Deprecated
     public DayResource(String title, String description, List<Schedule> schedules, LatLng loc, Category category, Boolean isFavorites) {
         super(title,  description,schedules,  isFavorites,  category);
         this.loc = loc;
@@ -35,6 +35,7 @@ public class DayResource extends Resource{
     public DayResource(Parcel in){
         super(in);
         this.loc = in.readParcelable(ClassLoader.getSystemClassLoader());
+
     }
 
 
@@ -59,4 +60,6 @@ public class DayResource extends Resource{
     public void setMarker(Marker marker) {
         this.marker = marker;
     }
+
+
 }

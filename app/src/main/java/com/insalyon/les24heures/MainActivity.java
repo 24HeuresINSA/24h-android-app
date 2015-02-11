@@ -97,6 +97,7 @@ public class MainActivity extends Activity {
     private String searchQuery;
     private Menu mMenu;
     private String slidingUpState;
+    private RestAdapter restAdapterLocal;
 
 
     /**
@@ -116,7 +117,12 @@ public class MainActivity extends Activity {
                 .setEndpoint(getResources().getString(R.string.backend_url))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-        resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
+        restAdapterLocal = new RestAdapter.Builder()
+                .setEndpoint(getResources().getString(R.string.backend_url_local))
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+        //resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
+        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);
         fragmentManager = getFragmentManager();
         //dependency injection instead ?
         resourceService = ResourceServiceImpl.getInstance();
@@ -177,8 +183,8 @@ public class MainActivity extends Activity {
 
         if (resourcesList == null) {
             resourcesList = new ArrayList<>();
-//            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
-            resourceService.getResourcesAsyncMock();
+            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
+//            resourceService.getResourcesAsyncMock();
         }
 
         if (categoriesSelected == null) {
