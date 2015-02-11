@@ -277,9 +277,7 @@ public class MainActivity extends Activity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                hideKeyboard();
                 return false;
             }
 
@@ -300,9 +298,7 @@ public class MainActivity extends Activity {
                     searchView.setIconified(false);
                     searchView.setQuery(searchQuery.toString(), true);
                     //TODO it doesn't work, the soft keyboard is displayed anyway...
-                    InputMethodManager imm = (InputMethodManager) getSystemService(
-                            Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    hideKeyboard();
                 }
         }
 
@@ -310,6 +306,14 @@ public class MainActivity extends Activity {
         disableFavoritesFilter(favoritesItem);
 
         return true;
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+//        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
     }
 
     //day & night
@@ -432,17 +436,24 @@ public class MainActivity extends Activity {
 
     //TODO move dans DetailSlidingUpPanelLayout
     public void onEvent(ManageDetailSlidingUpDrawer m){
+
+        //TODO demander a l'activity de masquer le clavier !
+
+
         switch (m.getState()){
             case COLLAPSE:
+                hideKeyboard();
                 detailSlidingUpPanelLayoutLayout.collapsePanel();
                 break;
             case EXPAND:
+                hideKeyboard();
                 detailSlidingUpPanelLayoutLayout.expandPanel();
                 break;
             case HIDE:
                 detailSlidingUpPanelLayoutLayout.hidePanel();
                 break;
             case SHOW:
+                hideKeyboard();
                 if(m.getResource() == null){
                     detailSlidingUpPanelLayoutLayout.showPanel();
                 }else{
@@ -450,6 +461,7 @@ public class MainActivity extends Activity {
                 }
                 break;
             case ANCHORED:
+                hideKeyboard();
                 if(m.getResource() != null){
                     detailFragment.notifyDataChanged(m.getResource());
                 }

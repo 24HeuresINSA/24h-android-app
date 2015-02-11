@@ -217,7 +217,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         selectedResource = markerResourceMap.get(marker);
 
-        //TODO demander a l'activity de masquer le clavier !
 
         return false;
     }
