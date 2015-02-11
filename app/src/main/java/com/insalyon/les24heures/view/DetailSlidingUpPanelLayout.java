@@ -189,6 +189,29 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
         this.setPanelSlideListener(panelSlideListener);
 
         isSetup = true;
+
+        //setup previous sliding state
+        String previousState = ((MainActivity) activity).getSlidingUpState();
+        Log.d(TAG,"previous state "+previousState);
+        if(previousState != null) {
+            switch (previousState) {
+                case "hidden":
+                    this.hidePanel();
+                    break;
+                case "anchored":
+                    this.anchorPanel();
+                    panelSlideListener.onPanelSlide(null,anchored-0.001f); //pour provoquer le deplacement du paralax header
+                    break;
+                case "expanded":
+                    this.expandPanel();
+                    break;
+                case "shown":
+                    this.showPanel();
+                    break;
+            }
+            detailFragment.notifyDataChanged(null);
+        }
+
         return true;
     }
 

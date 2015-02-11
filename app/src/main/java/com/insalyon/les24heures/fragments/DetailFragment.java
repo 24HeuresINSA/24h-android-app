@@ -84,6 +84,13 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
         appContext = getActivity().getApplicationContext();
 
+        if(savedInstanceState != null) {
+            if (savedInstanceState.getParcelable("resource") != null) {
+                resource = savedInstanceState.getParcelable("resource");
+                schedules.addAll(resource.getSchedules());
+            }
+        }
+
     }
 
 
@@ -166,9 +173,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
-
-
     /**
      * Fragment is alive
      */
@@ -217,8 +221,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private void updateHeavyData(){
         if(!heavyDataUpdated) {
 
-            //TODO mettre à jour le panel
-
             //mini maps
             //the map update
             addMarkerAndMoveCam();
@@ -229,7 +231,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             schedules.addAll(resource.getSchedules());
             scheduleAdapter.notifyDataSetChanged();
 
-
             //optionals  pictures
 
             heavyDataUpdated = true;
@@ -238,7 +239,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void notifyDataChanged(Resource res) {
-        resource = res;
+        if(res != null)
+             resource = res;
         heavyDataUpdated = false;
 
         detailSlidingTitle.setText(resource.getTitle());
@@ -253,5 +255,16 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         else
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
 
+    }
+
+
+    /**
+     * Fragment is no more alive
+     */
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("resource", resource);
     }
 }

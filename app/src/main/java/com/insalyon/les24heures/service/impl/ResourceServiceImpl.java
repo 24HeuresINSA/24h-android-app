@@ -12,8 +12,11 @@ import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
+import com.insalyon.les24heures.utils.Day;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -115,11 +118,14 @@ public class ResourceServiceImpl implements ResourceService  {
                     e.printStackTrace();
                 }
                 ArrayList<Resource> resourcesList = new ArrayList<>();
-                resourcesList.add(new Resource("se divertir", "les plaisirs c'est bien pour les calins et les chateau coconuts", null, new LatLng(45.783088762965, 4.8747852427139), categoryService.getCategories().get(0)));
-                resourcesList.add(new Resource("se cultiver", "la culture on s'en fout sauf Alexis et Jeaaane", null, new LatLng(45.783514302374, 4.8747852427139), categoryService.getCategories().get(1)));
-                resourcesList.add(new Resource("du sport", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", null, new LatLng(45.784196093864, 4.8747852427139), categoryService.getCategories().get(2)));
-                resourcesList.add(new Resource("mes favoris", "mes favoris pour bien montrer que j'ai des gouts de merde", null, new LatLng(45.783827609484, 4.8747852427139), categoryService.getCategories().get(3)));
-                resourcesList.add(new Resource("lieux utiles", "où qu'on boit où qu'on pisse, où qu'on mange", null, new LatLng(45.784196093888, 4.8747852427139), categoryService.getCategories().get(4)));
+
+                List<Schedule> schedules = new ArrayList<Schedule>();
+                schedules.add(new Schedule(Day.MONDAY,new Date(),new Date()));
+                resourcesList.add(new Resource("se divertir", "les plaisirs c'est bien pour les calins et les chateau coconuts", schedules, new LatLng(45.783088762965, 4.8747852427139), categoryService.getCategories().get(0)));
+                resourcesList.add(new Resource("se cultiver", "la culture on s'en fout sauf Alexis et Jeaaane", schedules, new LatLng(45.783514302374, 4.8747852427139), categoryService.getCategories().get(1)));
+                resourcesList.add(new Resource("du sport", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", schedules, new LatLng(45.784196093864, 4.8747852427139), categoryService.getCategories().get(2)));
+                resourcesList.add(new Resource("mes favoris", "mes favoris pour bien montrer que j'ai des gouts de merde", schedules, new LatLng(45.783827609484, 4.8747852427139), categoryService.getCategories().get(2)));
+                resourcesList.add(new Resource("lieux utiles", "où qu'on boit où qu'on pisse, où qu'on mange", schedules, new LatLng(45.784196093888, 4.8747852427139), categoryService.getCategories().get(0)));
 
                 ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(resourcesList);
                 eventBus.post(resourcesUpdatedEvent);

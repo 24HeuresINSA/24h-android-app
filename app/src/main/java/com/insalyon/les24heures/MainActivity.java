@@ -96,9 +96,7 @@ public class MainActivity extends Activity {
     private Boolean isFavoritesChecked = false;
     private String searchQuery;
     private Menu mMenu;
-
-
-
+    private String slidingUpState;
 
 
     /**
@@ -157,6 +155,12 @@ public class MainActivity extends Activity {
                 //TODO globalMenu is null here
                 isFavoritesChecked = savedInstanceState.getBoolean("isFavoritesChecked");
             }
+            if(savedInstanceState.getString("slidingUpState") != null){
+                slidingUpState = savedInstanceState.getString("slidingUpState");
+            }
+
+
+
         }
 
         navigationDrawerCategories = getResources().getStringArray(R.array.navigation_drawer_categories); //TODO que veut en parametre ArrayAdapter ?
@@ -173,8 +177,8 @@ public class MainActivity extends Activity {
 
         if (resourcesList == null) {
             resourcesList = new ArrayList<>();
-            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
-//            resourceService.getResourcesAsyncMock();
+//            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
+            resourceService.getResourcesAsyncMock();
         }
 
         if (categoriesSelected == null) {
@@ -273,9 +277,7 @@ public class MainActivity extends Activity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(
-                        Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                hideKeyboard();
                 return false;
             }
 
@@ -296,9 +298,7 @@ public class MainActivity extends Activity {
                     searchView.setIconified(false);
                     searchView.setQuery(searchQuery.toString(), true);
                     //TODO it doesn't work, the soft keyboard is displayed anyway...
-                    InputMethodManager imm = (InputMethodManager) getSystemService(
-                            Context.INPUT_METHOD_SERVICE);
-                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0);
+                    hideKeyboard();
                 }
         }
 
@@ -306,6 +306,14 @@ public class MainActivity extends Activity {
         disableFavoritesFilter(favoritesItem);
 
         return true;
+    }
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+//        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
     }
 
     //day & night
@@ -407,6 +415,13 @@ public class MainActivity extends Activity {
         mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
     }
 
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
     /**
      * Activity is alive       *
      */
@@ -421,22 +436,36 @@ public class MainActivity extends Activity {
 
     //TODO move dans DetailSlidingUpPanelLayout
     public void onEvent(ManageDetailSlidingUpDrawer m){
+
+        //TODO demander a l'activity de masquer le clavier !
+
+
         switch (m.getState()){
             case COLLAPSE:
+                hideKeyboard();
                 detailSlidingUpPanelLayoutLayout.collapsePanel();
                 break;
             case EXPAND:
+                hideKeyboard();
                 detailSlidingUpPanelLayoutLayout.expandPanel();
                 break;
             case HIDE:
                 detailSlidingUpPanelLayoutLayout.hidePanel();
                 break;
             case SHOW:
+                hideKeyboard();
                 if(m.getResource() == null){
                     detailSlidingUpPanelLayoutLayout.showPanel();
                 }else{
                     detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getResource());
                 }
+                break;
+            case ANCHORED:
+                hideKeyboard();
+                if(m.getResource() != null){
+                    detailFragment.notifyDataChanged(m.getResource());
+                }
+                detailSlidingUpPanelLayoutLayout.anchorPanel();
                 break;
         }
 
@@ -523,6 +552,19 @@ public class MainActivity extends Activity {
             outState.putString("searchQuery", searchView.getQuery().toString());
         }
         outState.putBoolean("isFavoritesChecked", globalMenu.findItem(R.id.menu_favorites).isChecked());
+
+        //sera simplifié avec la prochaine release
+        //slidingUp
+        String state = "";
+        if(detailSlidingUpPanelLayoutLayout.isPanelHidden())
+            state = "hidden";
+        else if(detailSlidingUpPanelLayoutLayout.isPanelAnchored())
+            state = "anchored";
+        else if (detailSlidingUpPanelLayoutLayout.isPanelExpanded())
+            state = "expanded";
+        else
+            state = "shown";
+        outState.putString("slidingUpState",state);
     }
 
 
@@ -650,13 +692,9 @@ public class MainActivity extends Activity {
     }
 
 
-
-
-
-
-
-
-
+    public String getSlidingUpState() {
+        return slidingUpState;
+    }
 
     /**
      * Action bar methods
