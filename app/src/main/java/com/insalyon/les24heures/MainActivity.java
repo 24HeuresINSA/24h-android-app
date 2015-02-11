@@ -106,7 +106,7 @@ public class MainActivity extends Activity {
      */
 
     @Override
-    //dans NavigationActivity sauf startRightOutput
+    //dans NavigationActivity sauf startRightOutput  
     protected void onCreate(Bundle savedInstanceState) {
         /*** init services ***/
         super.onCreate(savedInstanceState);
