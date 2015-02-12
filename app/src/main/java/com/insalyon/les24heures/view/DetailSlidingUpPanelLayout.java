@@ -116,6 +116,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 //            activity.invalidateOptionsMenu();
             activity.customOnOptionsMenu();
             activity.restoreTitle();
+
+
         }
 
         @Override
@@ -127,6 +129,9 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
             activity.customOnOptionsMenu();
 //            activity.invalidateOptionsMenu();
+
+            //if anchored without touching header, need update
+            detailFragment.updateHeavyData();
         }
 
         @Override
@@ -210,7 +215,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                     this.showPanel();
                     break;
             }
-            detailFragment.notifyDataChanged(null);
+            detailFragment.notifyDataChanged((DayResource)null);
+            //il faut le faire pour NightResource aussi, mais comment..., activity le sait...
         }
 
         return true;

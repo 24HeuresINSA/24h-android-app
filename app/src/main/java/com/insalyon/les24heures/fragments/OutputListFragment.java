@@ -192,7 +192,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
             top = view.getChildAt(0).getTop();
         }
 
-        ManageDetailSlidingUpDrawer slidingUpEvent = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE,null);
+        ManageDetailSlidingUpDrawer slidingUpEvent = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE,(DayResource)null);
 
         if (firstVisibleItem > lastVisibleItem) {
             //scroll down

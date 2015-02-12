@@ -9,12 +9,15 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
+import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.utils.SlidingUpPannelState;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by remi on 11/02/15.
@@ -62,6 +65,13 @@ public class ArtistFragment extends ContentFrameFragment<NightResource>  {
     public void onEvent(SearchEvent event) {
         Log.d("onEvent(SearchEvent)", event.getQuery().toString());
         //TODO
+    }
+
+    @OnClick(R.id.artists_fragment_text)
+    public void onClick(){
+        ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.ANCHORED,
+                resourcesList.get(0));
+        eventBus.post(manageDetailSlidingUpDrawer);
     }
 
 

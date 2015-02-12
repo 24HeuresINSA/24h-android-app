@@ -2,6 +2,7 @@ package com.insalyon.les24heures.service;
 
 import com.insalyon.les24heures.DTO.DayResourceDTO;
 import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 
 import java.util.ArrayList;
@@ -22,5 +23,5 @@ public interface ResourceService {
     public void getResourcesAsyncMock();
 
 
-    public Schedule getNextSchedule(DayResource dayResource);
+    public Schedule getNextSchedule(Resource dayResource);
 }

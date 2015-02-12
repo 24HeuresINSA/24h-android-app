@@ -486,6 +486,8 @@ public class MainActivity extends Activity {
                 hideKeyboard();
                 if(m.getDayResource() != null){
                     detailFragment.notifyDataChanged(m.getDayResource());
+                } else if(m.getNightResource() != null){
+                    detailFragment.notifyDataChanged(m.getNightResource());
                 }
                 detailSlidingUpPanelLayoutLayout.anchorPanel();
                 break;
@@ -629,10 +631,6 @@ public class MainActivity extends Activity {
         }
 
         ft.replace(R.id.content_frame, fragment).commit();
-//
-////        //TODO replace detailFragment
-//        detailFragment = (DetailFragment) fragmentManager.findFragmentById(R.id.sliding_layout_content_fragment);
-//        detailSlidingUpPanelLayoutLayout.setDetailFragment(detailFragment);
 
     }
 

@@ -11,6 +11,7 @@ import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
@@ -140,7 +141,11 @@ public class ResourceServiceImpl implements ResourceService  {
                             fromDTO(nightResourceDTOs));
                 }else{
                      resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs));
-                    resourcesUpdatedEvent.setNightResourceList(new ArrayList<NightResource>());
+                    ArrayList<NightResource> mockArtist = new ArrayList<NightResource>();
+                    List<Schedule> schedules = new ArrayList<Schedule>();
+                    schedules.add(new Schedule(Day.MONDAY,new Date(),new Date()));
+                    mockArtist.add(new NightResource("untitle","blabla",schedules,new Category("pouet","ic"),"fb","tweet","site","BIG"));
+                    resourcesUpdatedEvent.setNightResourceList(mockArtist);
                 }
 
 
@@ -187,7 +192,7 @@ public class ResourceServiceImpl implements ResourceService  {
     }
 
     @Override
-    public Schedule getNextSchedule(DayResource dayResource) {
+    public Schedule getNextSchedule(Resource dayResource) {
         //TODO according to current time
         return dayResource.getSchedules().get(0);
     }

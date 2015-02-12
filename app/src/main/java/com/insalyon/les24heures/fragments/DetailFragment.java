@@ -27,6 +27,8 @@ import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ScheduleAdapter;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.view.DetailScrollView;
@@ -61,8 +63,18 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     GridView schedulesGrid;
     @InjectView(R.id.detail_sliding_layout_header)
     View slidingHeader;
+    @InjectView(R.id.detail_url)
+    View detailUrlContainer;
+    @InjectView(R.id.detail_url_facebook)
+    TextView urlFacebook;
+    @InjectView(R.id.detail_url_twitter)
+    TextView urlTwitter;
+    @InjectView(R.id.detail_url_web)
+    TextView urlWeb;
+    @InjectView(R.id.detail_mini_maps_holder)
+            View miniMapsHolder;
 
-    DayResource dayResource;
+    Resource resource;
     private ScheduleAdapter scheduleAdapter;
     private ArrayList<Schedule> schedules;
     private GoogleMap googleMap;
@@ -86,8 +98,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
         if(savedInstanceState != null) {
             if (savedInstanceState.getParcelable("resource") != null) {
-                dayResource = savedInstanceState.getParcelable("resource");
-                schedules.addAll(dayResource.getSchedules());
+                resource = savedInstanceState.getParcelable("resource");
+                schedules.addAll(resource.getSchedules());
             }
         }
 
@@ -178,7 +190,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
      */
     @Override
     public void onMapReady(final GoogleMap map) {
-        if(dayResource != null) {
+        if(resource != null && resource.getClass() == DayResource.class) {
             addMarkerAndMoveCam();
         }else{
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
@@ -194,22 +206,22 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         googleMap.addMarker(new MarkerOptions()
 //                                .title(resource.getTitle() + " " + resource.getCategory().getName())
 //                                .snippet(resource.getDescription())
-                .position(dayResource.getLoc()));
+                .position(((DayResource) resource).getLoc()));
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(dayResource.getLoc(), 15));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(((DayResource)resource).getLoc(), 15));
 
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                eventBus.postSticky(new ResourceSelectedEvent(dayResource));
+                eventBus.postSticky(new ResourceSelectedEvent((DayResource)resource));
             }
         });
     }
 
     @OnClick(R.id.detail_favorites)
     public void onClickFav(View v){
-        dayResource.setIsFavorites(!dayResource.isFavorites());
-        if(dayResource.isFavorites())
+        resource.setIsFavorites(!resource.isFavorites());
+        if(resource.isFavorites())
             ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
         else
             ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
@@ -218,17 +230,29 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void updateHeavyData(){
+    public void updateHeavyData(){
         if(!heavyDataUpdated) {
 
-            //mini maps
-            //the map update
-            addMarkerAndMoveCam();
+            if(resource.getClass() == DayResource.class) {
+                //mini maps
+                addMarkerAndMoveCam();
+
+                miniMapsHolder.setVisibility(View.VISIBLE);
+                detailUrlContainer.setVisibility(View.GONE);
+
+            }else if(resource.getClass() == NightResource.class) {
+                urlFacebook.setText(((NightResource)resource).getFacebookUrl());
+                urlWeb.setText(((NightResource)resource).getSiteUrl());
+                urlTwitter.setText(((NightResource)resource).getTwitterUrl());
+
+                miniMapsHolder.setVisibility(View.GONE);
+                detailUrlContainer.setVisibility(View.VISIBLE);
+            }
 
 
             //schedules
             schedules.clear();
-            schedules.addAll(dayResource.getSchedules());
+            schedules.addAll(resource.getSchedules());
             scheduleAdapter.notifyDataSetChanged();
 
             //optionals  pictures
@@ -238,24 +262,26 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         }
     }
 
-    public void notifyDataChanged(DayResource res) {
+    public void notifyDataChanged(Resource res) {
         if(res != null)
-             dayResource = res;
+             resource = res;
         heavyDataUpdated = false;
 
-        detailSlidingTitle.setText(dayResource.getTitle());
-        detailSlidingDescription.setText(dayResource.getDescription());
+        detailSlidingTitle.setText(resource.getTitle());
+        detailSlidingDescription.setText(resource.getDescription());
 
-        Schedule schedule = resourceService.getNextSchedule(dayResource);
+        Schedule schedule = resourceService.getNextSchedule(resource);
         nextSchedule.setText(schedule.getPrintableDay()+"\n"+
                 schedule.getStart().getHours()+"h-"+schedule.getEnd().getHours()+"h");
 
-        if(dayResource.isFavorites())
+        if(resource.isFavorites())
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_checked);
         else
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
 
     }
+
+
 
 
     /**
@@ -265,6 +291,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("resource", dayResource);
+        outState.putParcelable("resource", resource);
     }
 }
