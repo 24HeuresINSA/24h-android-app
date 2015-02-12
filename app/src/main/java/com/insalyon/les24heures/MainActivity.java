@@ -31,12 +31,15 @@ import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
+import com.insalyon.les24heures.fragments.ArtistFragment;
+import com.insalyon.les24heures.fragments.ContentFrameFragment;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.fragments.OutputListFragment;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
 import com.insalyon.les24heures.fragments.OutputTypeFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.service.CategoryService;
 import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
@@ -52,6 +55,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import retrofit.RestAdapter;
 
@@ -85,7 +89,8 @@ public class MainActivity extends Activity {
     private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
     private ArrayList<Category> categories;
     private ArrayList<Category> categoriesSelected;
-    private ArrayList<DayResource> resourcesList;
+    private ArrayList<DayResource> dayResourceArrayList;
+    private ArrayList<NightResource> nightResourceArrayList;
 
     private DrawerArrowDrawable drawerArrowDrawable;
     private DrawerLayout.SimpleDrawerListener drawerListener;
@@ -121,8 +126,8 @@ public class MainActivity extends Activity {
                 .setEndpoint(getResources().getString(R.string.backend_url_local))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-        resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
-//        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);
+//        resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
+        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);
         fragmentManager = getFragmentManager();
         //dependency injection instead ?
         resourceService = ResourceServiceImpl.getInstance();
@@ -149,8 +154,11 @@ public class MainActivity extends Activity {
             if (savedInstanceState.getParcelableArrayList("categoriesSelected") != null) {
                 categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
             }
-            if (savedInstanceState.getParcelableArrayList("resourcesList") != null) {
-                resourcesList = savedInstanceState.getParcelableArrayList("resourcesList");
+            if (savedInstanceState.getParcelableArrayList("dayResourceArrayList") != null) {
+                dayResourceArrayList = savedInstanceState.getParcelableArrayList("dayResourceArrayList");
+            }
+            if (savedInstanceState.getParcelableArrayList("nightResourceArrayList") != null) {
+                nightResourceArrayList = savedInstanceState.getParcelableArrayList("nightResourceArrayList");
             }
             if (savedInstanceState.getString("searchQuery") != null) {
                 SearchEvent searchEvent = new SearchEvent(savedInstanceState.getString("searchQuery").toString());
@@ -181,8 +189,9 @@ public class MainActivity extends Activity {
             categoryService.setCategories(categories);
         }
 
-        if (resourcesList == null) {
-            resourcesList = new ArrayList<>();
+        if (dayResourceArrayList == null || nightResourceArrayList == null) {
+            dayResourceArrayList = new ArrayList<>();
+            nightResourceArrayList = new ArrayList<>();
             resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
 //            resourceService.getResourcesAsyncMock();
         }
@@ -426,6 +435,7 @@ public class MainActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        onClickArtist(null);
     }
 
     /**
@@ -436,8 +446,10 @@ public class MainActivity extends Activity {
     public void onEvent(ResourcesUpdatedEvent event) {
         // super.onEvent(event);
         Log.d(TAG + "onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
-        resourcesList.clear();
-        resourcesList.addAll(event.getDayResourceList());
+        dayResourceArrayList.clear();
+        dayResourceArrayList.addAll(event.getDayResourceList());
+        nightResourceArrayList.clear();
+        nightResourceArrayList.addAll(event.getNightResourceList());
     }
 
     //TODO move dans DetailSlidingUpPanelLayout
@@ -504,6 +516,15 @@ public class MainActivity extends Activity {
     }
 
     //all
+    @OnClick(R.id.navigation_drawer_artists)
+    public void onClickArtist(View v){
+        Fragment artistFragment = new ArtistFragment();
+        replaceContentFragment(artistFragment);
+        drawerLayout.closeDrawer();
+
+    }
+
+    //all
     @Override
     //dans NavigationActivity
     public void setTitle(CharSequence title) {
@@ -548,7 +569,8 @@ public class MainActivity extends Activity {
         ArrayList<Category> categoriesSelected = getCategoriesSelectedFromDrawer();
         outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
         //resources
-        outState.putParcelableArrayList("resourcesList", resourcesList);
+        outState.putParcelableArrayList("dayResourceArrayList", dayResourceArrayList);
+        outState.putParcelableArrayList("nightResourceArrayList", nightResourceArrayList);
 
         ///////////////////////////day and night
         //action bar menu
@@ -583,19 +605,27 @@ public class MainActivity extends Activity {
     private void replaceContentFragment(Fragment fragment) {
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
-        bundleArgs.putParcelableArrayList("resourcesList", resourcesList);
         searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
         bundleArgs.putString("searchQuery", searchQuery);
         fragment.setArguments(bundleArgs);
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
-        if (fragment.getClass() == OutputListFragment.class)
-            ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
-        else
-            ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
+        if(fragment.getClass() == OutputListFragment.class ||fragment.getClass() == OutputMapsFragment.class) {
+            bundleArgs.putParcelableArrayList("resourcesList", dayResourceArrayList);
+
+            if (fragment.getClass() == OutputListFragment.class)
+                ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
+            else
+                ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
+
+        } else if(fragment.getClass() == ArtistFragment.class){
+            bundleArgs.putParcelableArrayList("resourcesList", nightResourceArrayList);
+
+        }
 
         ft.replace(R.id.content_frame, fragment).commit();
+
     }
 
 
@@ -630,6 +660,13 @@ public class MainActivity extends Activity {
             Log.i(TAG + "selectCategory", "categoy removed :" + navigationDrawerCategories[position]);
             categoriesSelectedEvent.setFilterAction(FilterAction.REMOVED);
             eventBus.post(categoriesSelectedEvent);
+        }
+
+        Class<? extends Fragment> currentFragment = fragmentManager.findFragmentById(R.id.content_frame).getClass();
+
+        if (currentFragment != OutputTypeFragment.class) {
+           selectMaps();
+
         }
 
         drawerLayout.closeDrawer();
@@ -691,7 +728,7 @@ public class MainActivity extends Activity {
             drawerLayout.setIsDrawerOpen(false);
             //TODO create a parent of OutputTypeFragment which only contains abstract getDisplayName
             getActionBar().setTitle(
-                    ((OutputTypeFragment) getFragmentManager().findFragmentById(R.id.content_frame))
+                    ((ContentFrameFragment) getFragmentManager().findFragmentById(R.id.content_frame))
                             .getDisplayName());
 
         }

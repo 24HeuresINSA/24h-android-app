@@ -1,47 +1,37 @@
 package com.insalyon.les24heures.fragments;
 
-import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
-import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.NightResource;
 
-import java.util.ArrayList;
-
 import butterknife.ButterKnife;
-import de.greenrobot.event.EventBus;
+import butterknife.InjectView;
 
 /**
  * Created by remi on 11/02/15.
  */
-public class ArtistFragment extends Fragment  {
+public class ArtistFragment extends ContentFrameFragment<NightResource>  {
     private static final String TAG = OutputMapsFragment.class.getCanonicalName();
     View view;
-    private String displayName;
-    private EventBus eventBus;
-    private ArrayList<NightResource> resourcesList;
 
+    @InjectView(R.id.artists_fragment_text)
+    TextView text;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        eventBus = EventBus.getDefault();
-        displayName = getActivity().getResources().getString(R.string.drawer_outputtype_list);
+        displayName = getActivity().getResources().getString(R.string.artist_fragment_name);
     }
 
-    @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        ((MainActivity) getActivity()).setTitle(displayName);
-    }
 
 
     @Nullable
@@ -51,8 +41,9 @@ public class ArtistFragment extends Fragment  {
         
         view = inflater.inflate(R.layout.artists_fragment,container,false);
         ButterKnife.inject(this, view);
-        
-        
+
+        text.setText(resourcesList.toString());
+
         return view;
     }
 
@@ -64,6 +55,8 @@ public class ArtistFragment extends Fragment  {
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getNightResourceList().toString());
         resourcesList.clear();
         resourcesList.addAll(event.getNightResourceList());
+        text.setText(resourcesList.toString());
+
     }
 
     public void onEvent(SearchEvent event) {
@@ -73,7 +66,6 @@ public class ArtistFragment extends Fragment  {
 
 
 
-    public String getDisplayName() {
-        return displayName;
-    }
+
+
 }

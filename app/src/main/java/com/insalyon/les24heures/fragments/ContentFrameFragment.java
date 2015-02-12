@@ -22,7 +22,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by remi on 11/02/15.
  */
-public class ContentFrameFragment<T extends Resource> extends Fragment {
+public abstract class ContentFrameFragment<T extends Resource> extends Fragment {
     EventBus eventBus;
 
     View view;

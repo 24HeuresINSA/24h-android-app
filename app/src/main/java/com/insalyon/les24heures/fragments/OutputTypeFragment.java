@@ -2,7 +2,6 @@ package com.insalyon.les24heures.fragments;
 
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
@@ -20,10 +19,8 @@ import de.greenrobot.event.EventBus;
 public class OutputTypeFragment extends ContentFrameFragment<DayResource>   {
     EventBus eventBus;
 
-    View view;
     ArrayList<Category> categoriesSelected;
 
-    public String displayName;
 
 
     @Override

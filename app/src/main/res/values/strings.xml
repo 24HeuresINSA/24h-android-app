@@ -77,4 +77,9 @@
     </string-array>
 
 
+
+    <!--Artists-->
+    <string name="artist_fragment_name">Artists</string>
+
+
 </resources>
