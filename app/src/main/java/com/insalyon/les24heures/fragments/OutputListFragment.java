@@ -12,7 +12,6 @@ import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.felipecsl.quickreturn.library.AbsListViewQuickReturnAttacher;
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
@@ -57,8 +56,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     FloatingActionButton fabGotoMaps;
 
 
-    //see spinner adapter
-    Boolean spinner = false; //TODO mettre en place un vrai spinner
 
     ResourceAdapter resourceAdapter = null;
     private QuickReturnAttacher quickReturnAttacher;
@@ -131,25 +128,14 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
         Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
-        resourceAdapter.getCategoryFilter().filter(
-                (event.getCategories().size() != 0) ? event.getCategories().toString() : null
-        );
+        setCategoryFilter();
 
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
         setCategoryFilter();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (spinner) {
-                    spinner = false;
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            }
-        });
+
     }
 
     public void onEvent(SearchEvent event) {

@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.insalyon.les24heures.MainActivity;
+import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
@@ -24,6 +26,10 @@ import de.greenrobot.event.EventBus;
  */
 public abstract class ContentFrameFragment<T extends Resource> extends Fragment {
     EventBus eventBus;
+
+    //see spinner adapter
+    Boolean spinner = false; //TODO mettre en place un vrai spinner
+
 
     View view;
     ArrayList<Category> categoriesSelected;
@@ -101,6 +107,17 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
 //        resourcesList.clear();
 //        resourcesList.addAll(event.getDayResourceList());
+        if (spinner) {
+            getActivity().runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
+                    toast.show();
+                }
+            });
+
+            spinner = false;
+        }
     }
 
     public void onEvent(SearchEvent event) {

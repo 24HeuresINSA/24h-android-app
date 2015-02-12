@@ -46,7 +46,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     private static final String TAG = OutputMapsFragment.class.getCanonicalName();
     View view;
 
-    Boolean spinner = false; //TODO mettre en place un vrai spinner
 
     MapView mapView;
     GoogleMap googleMap;
@@ -163,17 +162,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         super.onEvent(event);
         Log.d(TAG + "onEvent(CategoryEvent)", event.getDayResourceList().toString());
 
-        if (spinner) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
 
-            spinner = false;
-        }
         addMarkers();
         resourceMapsCategoryFilter.filter(
                 (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null

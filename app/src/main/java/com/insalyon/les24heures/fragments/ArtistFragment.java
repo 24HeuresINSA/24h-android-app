@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
+import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
@@ -54,17 +55,34 @@ public class ArtistFragment extends ContentFrameFragment<NightResource>  {
      * Fragment is alive      *
      */
 
+    /**
+     * Fragment is alive       *
+     */
+    public void onEvent(CategoriesSelectedEvent event) {
+        super.onEvent(event);
+        Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
+        //TODO
+//        resourceAdapter.getCategoryFilter().filter(
+//                (event.getCategories().size() != 0) ? event.getCategories().toString() : null
+//        );
+
+    }
+
     public void onEvent(ResourcesUpdatedEvent event) {
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getNightResourceList().toString());
         resourcesList.clear();
         resourcesList.addAll(event.getNightResourceList());
         text.setText(resourcesList.toString());
+        //TODO
+//        setCategoryFilter();
 
     }
 
     public void onEvent(SearchEvent event) {
         Log.d("onEvent(SearchEvent)", event.getQuery().toString());
         //TODO
+//        resourceAdapter.getFilter().filter(event.getQuery().toString());
+
     }
 
     @OnClick(R.id.artists_fragment_text)

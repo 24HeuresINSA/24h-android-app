@@ -36,7 +36,6 @@ import com.insalyon.les24heures.fragments.ContentFrameFragment;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.fragments.OutputListFragment;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
-import com.insalyon.les24heures.fragments.OutputTypeFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
@@ -670,9 +669,8 @@ public class MainActivity extends Activity {
 
         Class<? extends Fragment> currentFragment = fragmentManager.findFragmentById(R.id.content_frame).getClass();
 
-        if (currentFragment != OutputTypeFragment.class) {
+        if (!(currentFragment == OutputListFragment.class || currentFragment == OutputMapsFragment.class)) {
            selectMaps();
-
         }
 
         drawerLayout.closeDrawer();
