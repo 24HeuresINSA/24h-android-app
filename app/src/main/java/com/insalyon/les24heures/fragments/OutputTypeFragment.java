@@ -101,16 +101,16 @@ public class OutputTypeFragment extends ContentFrameFragment<DayResource>   {
      * Fragment is no more alive      *
      */
 
-//    @Override
-//    public void onSaveInstanceState(Bundle outState) {
-//        super.onSaveInstanceState(outState);
-//        //categories state
-//        outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
-//        //search state
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        //categories state
+        outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        //search state
 //        outState.putString("searchQuery", searchQuery);
-//        //resources
+        //resources
 //        outState.putParcelableArrayList("resourcesList", resourcesList);
-//    }
+    }
 
 //    @Override
 //    public void onPause() {

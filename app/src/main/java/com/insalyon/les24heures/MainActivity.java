@@ -126,8 +126,8 @@ public class MainActivity extends Activity {
                 .setEndpoint(getResources().getString(R.string.backend_url_local))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-//        resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
-        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);
+        resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
+//        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);
         fragmentManager = getFragmentManager();
         //dependency injection instead ?
         resourceService = ResourceServiceImpl.getInstance();
@@ -136,8 +136,12 @@ public class MainActivity extends Activity {
         ///////////////////////// day, night need one
         detailSlidingUpPanelLayoutLayout.setActivity(this); //slidingPanel needs the activity to invalidateOptionMenu, manage appName and arrowDrawer
         detailSlidingUpPanelLayoutLayout.setParallaxHeader(findViewById(R.id.detail_paralax_header));
+
+//
+
         detailFragment = (DetailFragment) fragmentManager.findFragmentById(R.id.sliding_layout_content_fragment);
         detailSlidingUpPanelLayoutLayout.setDetailFragment(detailFragment);
+
 
         ///////////////////////// all
         /*** recover data either from (by priority)
@@ -435,7 +439,7 @@ public class MainActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
-        onClickArtist(null);
+        //onClickArtist(null);
     }
 
     /**
@@ -625,6 +629,10 @@ public class MainActivity extends Activity {
         }
 
         ft.replace(R.id.content_frame, fragment).commit();
+//
+////        //TODO replace detailFragment
+//        detailFragment = (DetailFragment) fragmentManager.findFragmentById(R.id.sliding_layout_content_fragment);
+//        detailSlidingUpPanelLayoutLayout.setDetailFragment(detailFragment);
 
     }
 

@@ -157,6 +157,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
      * @return
      */
     public Boolean setup() throws DetailSlidingUpPanelLayoutNullActivity {
+
         if(wideHeight == null)
             return false;
         if(activity == null){
@@ -255,7 +256,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         wideHeight = MeasureSpec.getSize(heightMeasureSpec);
 
-        if(!isSetup)
+        if(!isSetup && detailFragment != null)
             try {
                 setup();
             } catch (DetailSlidingUpPanelLayoutNullActivity detailSlidingUpPanelLayoutNullActivity) {
