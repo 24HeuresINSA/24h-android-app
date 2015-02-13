@@ -3,7 +3,6 @@ package com.insalyon.les24heures.eventbus;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.utils.FilterAction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,21 +12,19 @@ public class CategoriesSelectedEvent {
     List<Category> categories;
     FilterAction filterAction;
 
-    @Override
-    public String toString() {
-        return categories.toString();
-    }
-
     public CategoriesSelectedEvent(List<Category> categories) {
         this.categories = categories;
     }
-
 
     public CategoriesSelectedEvent(List<Category> categories, FilterAction filterAction) {
         this.categories = categories;
         this.filterAction = filterAction;
     }
 
+    @Override
+    public String toString() {
+        return categories.toString();
+    }
 
     public FilterAction getFilterAction() {
         return filterAction;

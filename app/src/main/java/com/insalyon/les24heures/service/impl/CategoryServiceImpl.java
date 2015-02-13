@@ -1,7 +1,5 @@
 package com.insalyon.les24heures.service.impl;
 
-import android.content.SharedPreferences;
-
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.service.CategoryService;
@@ -17,26 +15,25 @@ import de.greenrobot.event.EventBus;
 public class CategoryServiceImpl implements CategoryService {
 
     private static CategoryServiceImpl categoryService;
-
-    private EventBus eventBus;
     private static List<Category> categories = new ArrayList<>();
+    private EventBus eventBus;
 
 
-    private CategoryServiceImpl(){
+    private CategoryServiceImpl() {
         eventBus = EventBus.getDefault();
 
     }
 
-    public static CategoryServiceImpl getInstance(){
-        if(categoryService == null){
+    public static CategoryServiceImpl getInstance() {
+        if (categoryService == null) {
 //            synchronized (categoryService) {
-                categoryService = new CategoryServiceImpl();
+            categoryService = new CategoryServiceImpl();
 //            }
         }
         return categoryService;
     }
 
-    public void onEvent(CategoriesUpdatedEvent categoriesUpdatedEvent){
+    public void onEvent(CategoriesUpdatedEvent categoriesUpdatedEvent) {
         this.setCategories(categoriesUpdatedEvent.getCategories());
     }
 

@@ -31,10 +31,6 @@ public class CustomDrawerLayout extends DrawerLayout {
     }
 
 
-
-
-
-
     public void disabledDrawerSwipe() {
         this.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED);
     }
@@ -55,7 +51,7 @@ public class CustomDrawerLayout extends DrawerLayout {
         this.closeDrawer(drawerView);
     }
 
-    public Boolean isDrawerVisible(){
+    public Boolean isDrawerVisible() {
         return this.isDrawerVisible(drawerView);
     }
 

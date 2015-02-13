@@ -8,8 +8,8 @@ import java.util.ArrayList;
  * Created by remi on 11/02/15.
  */
 public class NightResourceDTO {
-   String name;
-   String mainPictureUrl;
+    String name;
+    String mainPictureUrl;
     ArrayList<ScheduleDTO> horaires;
     String description;
     String stage;

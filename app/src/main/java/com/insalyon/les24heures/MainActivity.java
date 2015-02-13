@@ -66,25 +66,17 @@ public class MainActivity extends Activity {
     EventBus eventBus;
     RestAdapter restAdapter;
     ResourceRetrofitService resourceRetrofitService;
-
-
-    private ResourceService resourceService;
-    private CategoryService categoryService;
-
     @InjectView(R.id.drawer_layout)
     CustomDrawerLayout drawerLayout;
     @InjectView(R.id.left_drawer)
     View drawerView;
     @InjectView(R.id.left_drawer_categories_list)
     ListView categoriesList;
-
     @InjectView(R.id.sliding_layout)
     DetailSlidingUpPanelLayout detailSlidingUpPanelLayoutLayout;
-
     DetailFragment detailFragment;
-
-
-
+    private ResourceService resourceService;
+    private CategoryService categoryService;
     private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
     private ArrayList<Category> categories;
     private ArrayList<Category> categoriesSelected;
@@ -94,7 +86,6 @@ public class MainActivity extends Activity {
     private DrawerArrowDrawable drawerArrowDrawable;
     private DrawerLayout.SimpleDrawerListener drawerListener;
     private Menu globalMenu;
-
 
 
     private Boolean isFavoritesChecked = false;
@@ -172,10 +163,9 @@ public class MainActivity extends Activity {
                 //TODO globalMenu is null here
                 isFavoritesChecked = savedInstanceState.getBoolean("isFavoritesChecked");
             }
-            if(savedInstanceState.getString("slidingUpState") != null){
+            if (savedInstanceState.getString("slidingUpState") != null) {
                 slidingUpState = savedInstanceState.getString("slidingUpState");
             }
-
 
 
         }
@@ -359,11 +349,11 @@ public class MainActivity extends Activity {
                 searchQuery = null;
             }
             //detail is visible
-            else if(detailSlidingUpPanelLayoutLayout.isPanelAnchored() || detailSlidingUpPanelLayoutLayout.isPanelExpanded()){
+            else if (detailSlidingUpPanelLayoutLayout.isPanelAnchored() || detailSlidingUpPanelLayoutLayout.isPanelExpanded()) {
                 detailSlidingUpPanelLayoutLayout.collapsePanel();
             }
             //default
-            else{
+            else {
                 drawerLayout.toggleDrawer();
             }
             return true;
@@ -434,7 +424,6 @@ public class MainActivity extends Activity {
     }
 
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -456,12 +445,12 @@ public class MainActivity extends Activity {
     }
 
     //TODO move dans DetailSlidingUpPanelLayout
-    public void onEvent(ManageDetailSlidingUpDrawer m){
+    public void onEvent(ManageDetailSlidingUpDrawer m) {
 
         //TODO demander a l'activity de masquer le clavier !
 
 
-        switch (m.getState()){
+        switch (m.getState()) {
             case COLLAPSE:
                 hideKeyboard();
                 detailSlidingUpPanelLayoutLayout.collapsePanel();
@@ -475,17 +464,17 @@ public class MainActivity extends Activity {
                 break;
             case SHOW:
                 hideKeyboard();
-                if(m.getDayResource() == null){
+                if (m.getDayResource() == null) {
                     detailSlidingUpPanelLayoutLayout.showPanel();
-                }else{
+                } else {
                     detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getDayResource());
                 }
                 break;
             case ANCHORED:
                 hideKeyboard();
-                if(m.getDayResource() != null){
+                if (m.getDayResource() != null) {
                     detailFragment.notifyDataChanged(m.getDayResource());
-                } else if(m.getNightResource() != null){
+                } else if (m.getNightResource() != null) {
                     detailFragment.notifyDataChanged(m.getNightResource());
                 }
                 detailSlidingUpPanelLayoutLayout.anchorPanel();
@@ -495,7 +484,7 @@ public class MainActivity extends Activity {
     }
 
     //day
-    public void onEvent(ResourceSelectedEvent resourceSelected){
+    public void onEvent(ResourceSelectedEvent resourceSelected) {
         //Output state
         detailSlidingUpPanelLayoutLayout.collapsePanel();
         if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
@@ -522,7 +511,7 @@ public class MainActivity extends Activity {
 
     //all
     @OnClick(R.id.navigation_drawer_artists)
-    public void onClickArtist(View v){
+    public void onClickArtist(View v) {
         Fragment artistFragment = new ArtistFragment();
         replaceContentFragment(artistFragment);
         drawerLayout.closeDrawer();
@@ -540,14 +529,14 @@ public class MainActivity extends Activity {
     @Override
     //dans NavigationActivity et demande au currentFragment son slidingLayout
     public void onBackPressed() {
-        if(drawerLayout.isDrawerOpen()){
+        if (drawerLayout.isDrawerOpen()) {
             drawerLayout.closeDrawer();
-        }else if (detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded()) {
+        } else if (detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded()) {
             detailSlidingUpPanelLayoutLayout.collapsePanel();
         } else if (!detailSlidingUpPanelLayoutLayout.isPanelHidden()) {
             detailSlidingUpPanelLayoutLayout.hideDetailPanel();
-        }else {
-           super.onBackPressed();
+        } else {
+            super.onBackPressed();
         }
 
     }
@@ -589,15 +578,15 @@ public class MainActivity extends Activity {
         //sera simplifié avec la prochaine release
         //slidingUp
         String state = "";
-        if(detailSlidingUpPanelLayoutLayout.isPanelHidden())
+        if (detailSlidingUpPanelLayoutLayout.isPanelHidden())
             state = "hidden";
-        else if(detailSlidingUpPanelLayoutLayout.isPanelAnchored())
+        else if (detailSlidingUpPanelLayoutLayout.isPanelAnchored())
             state = "anchored";
         else if (detailSlidingUpPanelLayoutLayout.isPanelExpanded())
             state = "expanded";
         else
             state = "shown";
-        outState.putString("slidingUpState",state);
+        outState.putString("slidingUpState", state);
     }
 
 
@@ -616,7 +605,7 @@ public class MainActivity extends Activity {
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
-        if(fragment.getClass() == OutputListFragment.class ||fragment.getClass() == OutputMapsFragment.class) {
+        if (fragment.getClass() == OutputListFragment.class || fragment.getClass() == OutputMapsFragment.class) {
             bundleArgs.putParcelableArrayList("resourcesList", dayResourceArrayList);
 
             if (fragment.getClass() == OutputListFragment.class)
@@ -624,26 +613,13 @@ public class MainActivity extends Activity {
             else
                 ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
 
-        } else if(fragment.getClass() == ArtistFragment.class){
+        } else if (fragment.getClass() == ArtistFragment.class) {
             bundleArgs.putParcelableArrayList("resourcesList", nightResourceArrayList);
 
         }
 
         ft.replace(R.id.content_frame, fragment).commit();
 
-    }
-
-
-    /**
-     * Drawer methods and inner classes //TODO creer un fragment pour la navigation drawer et mettre ca dedans
-     */
-
-    //day
-    private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectCategory(position);
-        }
     }
 
     //day
@@ -670,7 +646,7 @@ public class MainActivity extends Activity {
         Class<? extends Fragment> currentFragment = fragmentManager.findFragmentById(R.id.content_frame).getClass();
 
         if (!(currentFragment == OutputListFragment.class || currentFragment == OutputMapsFragment.class)) {
-           selectMaps();
+            selectMaps();
         }
 
         drawerLayout.closeDrawer();
@@ -689,8 +665,46 @@ public class MainActivity extends Activity {
         return categoriesSelected;
     }
 
+    public String getSlidingUpState() {
+        return slidingUpState;
+    }
 
+    /**
+     * Action bar methods
+     */
 
+    //all
+    //dans NavigationActity
+    public void restoreTitle() {
+        //TODO faire comme pour les menu item
+        String str;
+        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
+            str = (getResources().getString(R.string.drawer_outputtype_maps));
+        } else {
+            str = (getResources().getString(R.string.drawer_outputtype_list));
+        }
+
+        if (str != getActionBar().getTitle()) {
+            setTitle(str);
+        }
+    }
+
+    //dans NavigationActity
+    public DrawerArrowDrawable getDrawerArrowDrawable() {
+        return drawerArrowDrawable;
+    }
+
+    /**
+     * Drawer methods and inner classes //TODO creer un fragment pour la navigation drawer et mettre ca dedans
+     */
+
+    //day
+    private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectCategory(position);
+        }
+    }
 
     //day + night (all need one)
     //dans NavigationActivity
@@ -737,37 +751,6 @@ public class MainActivity extends Activity {
 
         }
     }
-
-
-    public String getSlidingUpState() {
-        return slidingUpState;
-    }
-
-    /**
-     * Action bar methods
-     */
-
-    //all
-    //dans NavigationActity
-    public void restoreTitle(){
-        //TODO faire comme pour les menu item
-        String str;
-        if(fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class){
-            str = (getResources().getString(R.string.drawer_outputtype_maps));
-        }else{
-            str = (getResources().getString(R.string.drawer_outputtype_list));
-        }
-
-        if(str != getActionBar().getTitle()){
-            setTitle(str);
-        }
-    }
-
-    //dans NavigationActity
-    public DrawerArrowDrawable getDrawerArrowDrawable() {
-        return drawerArrowDrawable;
-    }
-
 
 
 }

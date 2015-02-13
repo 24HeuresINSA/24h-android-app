@@ -163,7 +163,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     }
 
 
-
     public void onEvent(ResourceSelectedEvent selectedEvent) {
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedEvent.getDayResource().getLoc(), 17));
 //        EventBus.getDefault().removeStickyEvent(selectedEvent);
@@ -182,16 +181,16 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.SHOW, markerResourceMap.get(marker));
         eventBus.post(manageDetailSlidingUpDrawer);
 
-        if(selectedDayResource != null){
+        if (selectedDayResource != null) {
             for (Map.Entry<Marker, DayResource> entry : markerResourceMap.entrySet()) {
-                if(entry.getValue() == selectedDayResource){
+                if (entry.getValue() == selectedDayResource) {
                     entry.getKey().setIcon(BitmapDescriptorFactory.defaultMarker());
                     break;
                 }
             }
         }
 
-       marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
         selectedDayResource = markerResourceMap.get(marker);
 
         return false;

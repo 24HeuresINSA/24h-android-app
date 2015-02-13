@@ -27,12 +27,12 @@ public class ResourcesUpdatedEvent {
         return nightResourceList;
     }
 
-    public List<DayResource> getDayResourceList() {
-        return dayResourceList;
-    }
-
     @Deprecated
     public void setNightResourceList(ArrayList<NightResource> nightResourceList) {
         this.nightResourceList = nightResourceList;
+    }
+
+    public List<DayResource> getDayResourceList() {
+        return dayResourceList;
     }
 }

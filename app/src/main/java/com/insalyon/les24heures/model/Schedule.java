@@ -23,7 +23,7 @@ public class Schedule implements Parcelable {
     }
 
 
-    public Schedule(Parcel in){
+    public Schedule(Parcel in) {
         this.start = new Date(in.readLong());
         this.end = new Date(in.readLong());
         this.day = Day.valueOf(in.readString());
@@ -46,13 +46,13 @@ public class Schedule implements Parcelable {
 
     @Override
     public String toString() {
-        return getPrintableDay()+ " " + start.getHours()+"h-"+end.getHours()+"h";
+        return getPrintableDay() + " " + start.getHours() + "h-" + end.getHours() + "h";
     }
 
-    public String getPrintableDay(){
+    public String getPrintableDay() {
         //TODO avoir ca dans un fichier de conf
 
-        switch (day){
+        switch (day) {
             case FRIDAY:
                 return "Vend";
             case SATURDAY:

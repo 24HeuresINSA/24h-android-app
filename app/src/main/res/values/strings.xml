@@ -10,7 +10,7 @@
     <!--Navigation Drawer-->
 
     <!--Drawer Day-->
-   <string-array name="navigation_drawer_categories">     <!--TODO viendra du backend-->
+    <string-array name="navigation_drawer_categories">     <!--TODO viendra du backend-->
         <item>se divertir</item>
         <item>se cultiver</item>
         <item>du sport</item>
@@ -19,8 +19,6 @@
         <item>Maps</item>
         <item>Listes</item>
     </string-array>
-
-
 
 
     <!--Evening Day-->
@@ -41,7 +39,6 @@
     <!--List Output-->
 
 
-
     <!--TODO should be displayed by MainActivity ??-->
     <string name="noCategoriesSelected">Feel free to select at least one category</string>
     <string name="backend_url">http://cetaitmieuxavant.24heures.org</string>
@@ -54,7 +51,7 @@
 
 
     <!--DETAIL SLIDING UP-->
-    <string name="detail_anchored" >0.55</string>
+    <string name="detail_anchored">0.55</string>
     <string name="fake_description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum</string>
     <string name="fake_description_light">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitatio</string>
 
@@ -75,7 +72,6 @@
         <item>RotateDown</item>
         <item>Accordion</item>
     </string-array>
-
 
 
     <!--Artists-->

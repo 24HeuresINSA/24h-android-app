@@ -12,10 +12,6 @@ public class ManageDetailSlidingUpDrawer {
     DayResource dayResource;
     NightResource nightResource;
 
-    public DayResource getDayResource() {
-        return dayResource;
-    }
-
     public ManageDetailSlidingUpDrawer(SlidingUpPannelState state, DayResource dayResource) {
         this.state = state;
         this.dayResource = dayResource;
@@ -24,6 +20,10 @@ public class ManageDetailSlidingUpDrawer {
     public ManageDetailSlidingUpDrawer(SlidingUpPannelState state, NightResource nightResource) {
         this.state = state;
         this.nightResource = nightResource;
+    }
+
+    public DayResource getDayResource() {
+        return dayResource;
     }
 
     public NightResource getNightResource() {

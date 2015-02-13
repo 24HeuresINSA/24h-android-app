@@ -19,24 +19,20 @@ import java.util.ArrayList;
  * Created by remi on 13/02/15.
  */
 public abstract class ResourceAdapter<T extends Resource> extends ArrayAdapter<T> {
+    ArrayList<T> originalList;
+    ArrayList<T> resourceList;
     private ResourceSearchFilter resourceSearchFilter;
     private ResourceCategoryFilter resourceCategoryFilter;
 
-    ArrayList<T> originalList;
-    ArrayList<T> resourceList;
-
 
     public ResourceAdapter(Context context, int textViewResourceId,
-                              ArrayList<T> resources) {
+                           ArrayList<T> resources) {
         super(context, textViewResourceId, resources);
         this.resourceList = new ArrayList<>();
         this.resourceList.addAll(resources);
         this.originalList = new ArrayList<>();
         this.originalList.addAll(resources);
     }
-
-
-
 
 
     //il faut que ce soit ResourceAdapter qui cree les filters car ils ont besoin des pointeurs utilisés par ResourceAdapter qui
@@ -68,6 +64,7 @@ public abstract class ResourceAdapter<T extends Resource> extends ArrayAdapter<T
 
 
     public abstract void onEvent(ResourcesUpdatedEvent event);
+
     public abstract View getView(final int position, View convertView, ViewGroup parent);
 
 }

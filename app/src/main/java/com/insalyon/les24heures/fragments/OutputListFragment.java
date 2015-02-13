@@ -51,15 +51,26 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     ListView resourceListView;
     @InjectView(R.id.listView_header)
     View quickReturnListHeader;
+    private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        public void onGlobalLayout() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            } else {
+                view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            }
+            // Add a quick return targetView to the attacher
+            quickReturnAttacher.addTargetView(quickReturnListHeader, QuickReturnTargetView.POSITION_TOP, quickReturnListHeader.getHeight());
+        }
+    };
     @InjectView(R.id.fab_goto_maps)
     FloatingActionButton fabGotoMaps;
-
-
-
     DayResourceAdapter dayResourceAdapter = null;
     private QuickReturnAttacher quickReturnAttacher;
     private Location lastKnownPosition;
-
+    private int lastVisibleItem = 0;
+    private int lastY = 0;
+    private Boolean isScrollingUp = false;
+    private Boolean isScrollingDown = false;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,7 +91,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
         //create an ArrayAdaptar from the String Array
         dayResourceAdapter = new DayResourceAdapter(this.getActivity().getApplicationContext(),
-                R.layout.output_list_item, new ArrayList<>(resourcesList),lastKnownPosition); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
+                R.layout.output_list_item, new ArrayList<>(resourcesList), lastKnownPosition); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
 
         //get filters than are managed by ContentFrameFragment
         searchFilter = dayResourceAdapter.getFilter();
@@ -91,20 +102,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
         return view;
     }
-
-
-    private ViewTreeObserver.OnGlobalLayoutListener mGlobalLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
-        public void onGlobalLayout() {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                view.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            } else {
-                view.getViewTreeObserver().removeGlobalOnLayoutListener(this);
-            }
-            // Add a quick return targetView to the attacher
-            quickReturnAttacher.addTargetView(quickReturnListHeader, QuickReturnTargetView.POSITION_TOP, quickReturnListHeader.getHeight());
-        }
-    };
-
 
     @Override
     public void onResume() {
@@ -124,7 +121,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         lastKnownPosition.setLongitude(4.8754406);
 
     }
-
 
     /**
      * Fragment is alive       *
@@ -164,11 +160,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     public void onScrollStateChanged(AbsListView view, int scrollState) {
     }
 
-    private int lastVisibleItem = 0;
-    private int lastY = 0;
-    private Boolean isScrollingUp = false;
-    private Boolean isScrollingDown = false;
-
     @Override
     public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
         int top = 0;
@@ -176,7 +167,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
             top = view.getChildAt(0).getTop();
         }
 
-        ManageDetailSlidingUpDrawer slidingUpEvent = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE,(DayResource)null);
+        ManageDetailSlidingUpDrawer slidingUpEvent = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE, (DayResource) null);
 
         if (firstVisibleItem > lastVisibleItem) {
             //scroll down
@@ -226,8 +217,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         super.onPause();
         resourceListView.setOnScrollListener(null);
     }
-
-
 
 
 }

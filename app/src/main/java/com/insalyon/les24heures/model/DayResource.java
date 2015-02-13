@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by remi on 26/12/14.
  */
-public class DayResource extends Resource{
+public class DayResource extends Resource {
 
     LatLng loc;
 
@@ -20,24 +20,23 @@ public class DayResource extends Resource{
 
 
     public DayResource(String title, String description, List<Schedule> schedules, LatLng loc, Category category) {
-        super( title,  description,schedules,  false,  category);
+        super(title, description, schedules, false, category);
         this.loc = loc;
     }
 
 
     @Deprecated
     public DayResource(String title, String description, List<Schedule> schedules, LatLng loc, Category category, Boolean isFavorites) {
-        super(title,  description,schedules,  isFavorites,  category);
+        super(title, description, schedules, isFavorites, category);
         this.loc = loc;
     }
 
 
-    public DayResource(Parcel in){
+    public DayResource(Parcel in) {
         super(in);
         this.loc = in.readParcelable(ClassLoader.getSystemClassLoader());
 
     }
-
 
 
     @Override

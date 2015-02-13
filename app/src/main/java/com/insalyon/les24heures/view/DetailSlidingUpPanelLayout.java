@@ -21,7 +21,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
  * Created by remi on 04/02/15.
  */
 //TODO faire une jolie interface du SlidingUpPanelLayout avec fragment inside et gestion du parallax header
-public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
+public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     private static final String TAG = DetailSlidingUpPanelLayout.class.getCanonicalName();
 
     private static ResourceServiceImpl resourceService = ResourceServiceImpl.getInstance();
@@ -44,8 +44,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
     private float anchored;
     private int scrollingHeaderHeight;
-    private DetailSlidingUpPanelLayout self;
-
     private PanelSlideListener panelSlideListener = new PanelSlideListener() {
         @Override
         public void onPanelSlide(View panel, float slideOffset) {
@@ -139,6 +137,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
             Log.i(TAG, "onPanelHidden");
         }
     };
+    private DetailSlidingUpPanelLayout self;
     private DetailFragment detailFragment;
 
 
@@ -155,17 +154,17 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     }
 
 
-
     /**
      * if return false it's because the height of the view isn't yet ready, the setup will be done once the view is rendered and
      * the view height is processed
+     *
      * @return
      */
     public Boolean setup() throws DetailSlidingUpPanelLayoutNullActivity {
 
-        if(wideHeight == null)
+        if (wideHeight == null)
             return false;
-        if(activity == null){
+        if (activity == null) {
             throw new DetailSlidingUpPanelLayoutNullActivity();
         }
 
@@ -176,7 +175,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
         //get params
         anchored = Float.parseFloat(getResources().getString(R.string.detail_anchored));
         scrollingHeaderHeight = (int) getResources().getDimension(R.dimen.detail_header_height);
-        final int parallaxHeight = (int) ((wideHeight - scrollingHeaderHeight) * (1-anchored));//407; //paralax height
+        final int parallaxHeight = (int) ((wideHeight - scrollingHeaderHeight) * (1 - anchored));//407; //paralax height
 
         //set parallaxHeader
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) parallaxHeader.getLayoutParams();
@@ -198,15 +197,15 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
         //setup previous sliding state
         String previousState = ((MainActivity) activity).getSlidingUpState();
-        Log.d(TAG,"previous state "+previousState);
-        if(previousState != null) {
+        Log.d(TAG, "previous state " + previousState);
+        if (previousState != null) {
             switch (previousState) {
                 case "hidden":
                     this.hidePanel();
                     break;
                 case "anchored":
                     this.anchorPanel();
-                    panelSlideListener.onPanelSlide(null,anchored-0.001f); //pour provoquer le deplacement du paralax header
+                    panelSlideListener.onPanelSlide(null, anchored - 0.001f); //pour provoquer le deplacement du paralax header
                     break;
                 case "expanded":
                     this.expandPanel();
@@ -215,7 +214,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                     this.showPanel();
                     break;
             }
-            detailFragment.notifyDataChanged((DayResource)null);
+            detailFragment.notifyDataChanged((DayResource) null);
             //il faut le faire pour NightResource aussi, mais comment..., activity le sait...
         }
 
@@ -240,29 +239,28 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     }
 
 
-
-    public void showDetailPanel(DayResource res){
+    public void showDetailPanel(DayResource res) {
         detailFragment.notifyDataChanged(res);
         this.showPanel();
     }
 
-    public Boolean hideDetailPanel(){
-        if(!this.isPanelHidden()) {
+    public Boolean hideDetailPanel() {
+        if (!this.isPanelHidden()) {
             this.hidePanel();
             return true;
-        }else{
+        } else {
             return false;
         }
 
     }
 
     @Override
-    protected void onMeasure (int widthMeasureSpec, int heightMeasureSpec){
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         //ce sont les dimensions en pixels sans la action bar
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         wideHeight = MeasureSpec.getSize(heightMeasureSpec);
 
-        if(!isSetup && detailFragment != null)
+        if (!isSetup && detailFragment != null)
             try {
                 setup();
             } catch (DetailSlidingUpPanelLayoutNullActivity detailSlidingUpPanelLayoutNullActivity) {
@@ -276,7 +274,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
     }
 
 
-    public Boolean isAnchoredOrExpanded(){
+    public Boolean isAnchoredOrExpanded() {
         return this.isPanelExpanded() || this.isPanelAnchored();
     }
 

@@ -27,19 +27,14 @@ import de.greenrobot.event.EventBus;
  */
 public abstract class ContentFrameFragment<T extends Resource> extends Fragment {
     private static final String TAG = ContentFrameFragment.class.getCanonicalName();
-
+    public String displayName;
     EventBus eventBus;
-
     //see spinner adapter
     Boolean spinner = false; //TODO mettre en place un vrai spinner
-
     View view;
     ArrayList<Category> categoriesSelected;
     String searchQuery;
     ArrayList<T> resourcesList;
-
-    public String displayName;
-
     Filter searchFilter;
     Filter categoryFilter;
 
@@ -127,10 +122,10 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
 
     public void onEvent(SearchEvent event) {
         Log.d("onEvent(SearchEvent)", event.getQuery().toString());
-        if(searchFilter != null) {
+        if (searchFilter != null) {
             searchFilter.filter(event.getQuery().toString());
-        }else
-            Log.e(TAG,"search filter is null");
+        } else
+            Log.e(TAG, "search filter is null");
     }
 
     /**
@@ -168,11 +163,11 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
      * Fragment methods        *
      */
     protected Boolean setCategoryFilter() {
-        if(categoryFilter != null) {
+        if (categoryFilter != null) {
             categoryFilter.filter(
                     (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null);
-        }else
-            Log.e(TAG,"category filter is null");
+        } else
+            Log.e(TAG, "category filter is null");
 
         return true;
     }

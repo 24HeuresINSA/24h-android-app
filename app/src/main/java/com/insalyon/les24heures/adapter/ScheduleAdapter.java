@@ -23,7 +23,7 @@ public class ScheduleAdapter extends ArrayAdapter<Schedule> {
 
 
     public ScheduleAdapter(Context applicationContext, int schedule_grid_item, ArrayList<Schedule> schedules) {
-        super(applicationContext,schedule_grid_item,schedules);
+        super(applicationContext, schedule_grid_item, schedules);
         this.schedules = schedules;
         this.schedule_grid_item = schedule_grid_item;
 
@@ -31,18 +31,12 @@ public class ScheduleAdapter extends ArrayAdapter<Schedule> {
 
     }
 
-    private class ViewHolder{
-        TextView day;
-        TextView hours;
-    }
-
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
 
-        if(convertView == null){
-            convertView = vi.inflate(schedule_grid_item,null);
+        if (convertView == null) {
+            convertView = vi.inflate(schedule_grid_item, null);
 
             holder = new ViewHolder();
 
@@ -50,7 +44,7 @@ public class ScheduleAdapter extends ArrayAdapter<Schedule> {
             holder.hours = (TextView) convertView.findViewById(R.id.schedule_item_hours);
 
             convertView.setTag(holder);
-        }else {
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
@@ -61,6 +55,10 @@ public class ScheduleAdapter extends ArrayAdapter<Schedule> {
         return convertView;
     }
 
+    private class ViewHolder {
+        TextView day;
+        TextView hours;
+    }
 
 
 }

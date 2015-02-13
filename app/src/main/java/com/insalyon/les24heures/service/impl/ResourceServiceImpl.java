@@ -31,7 +31,7 @@ import retrofit.client.Response;
 /**
  * Created by remi on 27/12/14.
  */
-public class ResourceServiceImpl implements ResourceService  {
+public class ResourceServiceImpl implements ResourceService {
 
     private static ResourceServiceImpl resourceService;
     private static CategoryServiceImpl categoryService;
@@ -40,23 +40,23 @@ public class ResourceServiceImpl implements ResourceService  {
 
     private EventBus eventBus;
 
-    private ResourceServiceImpl(){
+    private ResourceServiceImpl() {
         eventBus = EventBus.getDefault();
 
     }
 
-    public static ResourceServiceImpl getInstance(){
-        if(resourceService == null){
+    public static ResourceServiceImpl getInstance() {
+        if (resourceService == null) {
             //synchronized (resourceService) {
-                resourceService = new ResourceServiceImpl();
-                categoryService = CategoryServiceImpl.getInstance();
-                scheduleService = ScheduleServiceImpl.getInstance();
+            resourceService = new ResourceServiceImpl();
+            categoryService = CategoryServiceImpl.getInstance();
+            scheduleService = ScheduleServiceImpl.getInstance();
             //}
         }
         return resourceService;
     }
 
-    public DayResource fromDTO(DayResourceDTO dayResourceDTO){
+    public DayResource fromDTO(DayResourceDTO dayResourceDTO) {
         //TODO doit venir du backend
         Random rand = new Random();
         Category category = categoryService.getCategories().get(rand.nextInt(categoryService.getCategories().size()));
@@ -69,12 +69,12 @@ public class ResourceServiceImpl implements ResourceService  {
                 dayResourceDTO.getDescription(),
                 scheduleService.fromDTO(dayResourceDTO.getHoraires()),
                 new LatLng(Double.valueOf(dayResourceDTO.getLocX()),
-                Double.valueOf(dayResourceDTO.getLocY())),
+                        Double.valueOf(dayResourceDTO.getLocY())),
                 category,
                 isFavorites);
     }
 
-    public NightResource fromDTO(NightResourceDTO nightResourceDTO){
+    public NightResource fromDTO(NightResourceDTO nightResourceDTO) {
         //TODO doit venir du backend
         Random rand = new Random();
         Category category = categoryService.getCategories().get(rand.nextInt(categoryService.getCategories().size()));
@@ -91,7 +91,6 @@ public class ResourceServiceImpl implements ResourceService  {
                 nightResourceDTO.getSite_url(),
                 nightResourceDTO.getStage());
     }
-
 
 
     public ArrayList<DayResource> fromDTO(ArrayList<DayResourceDTO> dayResourceDTOs) {
@@ -117,7 +116,7 @@ public class ResourceServiceImpl implements ResourceService  {
     }
 
 
-    public void getResourcesAsyncFromBackend(ResourceRetrofitService resourceRetrofitService){
+    public void getResourcesAsyncFromBackend(ResourceRetrofitService resourceRetrofitService) {
         resourceRetrofitService.getResources(new Callback<AssomakerDTO>() {
             @Override
             public void success(AssomakerDTO assomakerDTO, Response response) {
@@ -136,18 +135,18 @@ public class ResourceServiceImpl implements ResourceService  {
 
                 //TODO bricolage temporaire pour le double backend
                 ResourcesUpdatedEvent resourcesUpdatedEvent;
-                if (nightResourceDTOs!= null){
-                     resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs),
+                if (nightResourceDTOs != null) {
+                    resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs),
                             fromDTO(nightResourceDTOs));
-                }else{
-                     resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs));
+                } else {
+                    resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs));
                     ArrayList<NightResource> mockArtist = new ArrayList<NightResource>();
 
                     List<Schedule> schedules = new ArrayList<Schedule>();
-                    schedules.add(new Schedule(Day.MONDAY,new Date(),new Date()));
+                    schedules.add(new Schedule(Day.MONDAY, new Date(), new Date()));
 
-                    mockArtist.add(new NightResource("untitle","blabla",schedules,new Category("pouet","ic"),"fb","tweet","site","BIG"));
-                    mockArtist.add(new NightResource("deuxtitle","blabla",schedules,new Category("pouet","ic"),"fb","tweet","site","BIG"));
+                    mockArtist.add(new NightResource("untitle", "blabla", schedules, new Category("pouet", "ic"), "fb", "tweet", "site", "BIG"));
+                    mockArtist.add(new NightResource("deuxtitle", "blabla", schedules, new Category("pouet", "ic"), "fb", "tweet", "site", "BIG"));
 
                     resourcesUpdatedEvent.setNightResourceList(mockArtist);
                 }
@@ -167,11 +166,11 @@ public class ResourceServiceImpl implements ResourceService  {
 
     }
 
-    public void getResourcesAsyncMock(){
-        new AsyncTask(){
+    public void getResourcesAsyncMock() {
+        new AsyncTask() {
             @Override
             protected Object doInBackground(Object[] params) {
-                Log.d("mock","");
+                Log.d("mock", "");
                 try {
                     Thread.sleep(1000);
                 } catch (InterruptedException e) {
@@ -180,7 +179,7 @@ public class ResourceServiceImpl implements ResourceService  {
                 ArrayList<DayResource> resourcesList = new ArrayList<>();
 
                 List<Schedule> schedules = new ArrayList<Schedule>();
-                schedules.add(new Schedule(Day.MONDAY,new Date(),new Date()));
+                schedules.add(new Schedule(Day.MONDAY, new Date(), new Date()));
                 resourcesList.add(new DayResource("se divertir", "les plaisirs c'est bien pour les calins et les chateau coconuts", schedules, new LatLng(45.783088762965, 4.8747852427139), categoryService.getCategories().get(0)));
                 resourcesList.add(new DayResource("se cultiver", "la culture on s'en fout sauf Alexis et Jeaaane", schedules, new LatLng(45.783514302374, 4.8747852427139), categoryService.getCategories().get(1)));
                 resourcesList.add(new DayResource("du sport", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", schedules, new LatLng(45.784196093864, 4.8747852427139), categoryService.getCategories().get(2)));

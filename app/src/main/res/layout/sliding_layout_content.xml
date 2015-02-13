@@ -1,102 +1,102 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
     android:id="@+id/detail_sliding_layout"
-    android:paddingRight="@dimen/whole_detail_padding"
-    android:paddingLeft="@dimen/whole_detail_padding">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/whole_detail_padding"
+    android:paddingRight="@dimen/whole_detail_padding">
 
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/detail_sliding_layout_header"
         android:layout_width="fill_parent"
         android:layout_height="@dimen/detail_header_height"
-        android:weightSum="5"
-        android:id="@+id/detail_sliding_layout_header"
-        android:background="#d10e2037">
+        android:background="#d10e2037"
+        android:orientation="horizontal"
+        android:weightSum="5">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
             android:layout_weight="4"
-            android:gravity="center_vertical">
+            android:gravity="center_vertical"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/detail_sliding_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:singleLine="true"
-                android:scrollHorizontally="true"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
                 android:text="Title...."
-                android:id="@+id/detail_sliding_title" />
+                android:textAppearance="?android:attr/textAppearanceLarge" />
         </LinearLayout>
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="fill_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <!--<TextView-->
-                <!--android:layout_width="wrap_content"-->
-                <!--android:layout_height="wrap_content"-->
-                <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-                <!--android:text="fav"-->
-                <!--android:id="@+id/detail_favorites"-->
-                <!--android:visibility="gone" />-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
+            <!--android:text="fav"-->
+            <!--android:id="@+id/detail_favorites"-->
+            <!--android:visibility="gone" />-->
 
-         <!---->
+            <!---->
             <!--blocksDescendants to prevent ImageButton to keep click event -->
             <LinearLayout
-                android:orientation="horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:descendantFocusability="blocksDescendants"
+                android:orientation="horizontal"
                 android:padding="10dp">
 
                 <ImageButton
+                    android:id="@+id/detail_favorites"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:id="@+id/detail_favorites"
-                    android:src="@drawable/ic_favorites_unchecked"
                     android:background="@null"
                     android:scaleType="centerInside"
-                    android:visibility="gone"/>
+                    android:src="@drawable/ic_favorites_unchecked"
+                    android:visibility="gone" />
 
             </LinearLayout>
 
             <TextView
+                android:id="@+id/detail_next_schedule"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="sam\n10h-18h"
-                android:textSize="15dp"
-                android:id="@+id/detail_next_schedule"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|right" />
+                android:gravity="center_vertical|right"
+                android:text="sam\n10h-18h"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="15dp" />
         </LinearLayout>
 
     </LinearLayout>
 
     <com.insalyon.les24heures.view.DetailScrollView
+        android:id="@+id/detail_scrollView"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_scrollView" >
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
-
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
 
             <LinearLayout
-                android:orientation="vertical"
+                android:id="@+id/detail_schedules_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/detail_schedules_layout">
+                android:orientation="vertical">
 
                 <com.insalyon.les24heures.view.AutoExpandGridView
                     android:id="@+id/detail_schedule_grid_layout"
@@ -107,76 +107,75 @@
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="horizontal"
+                android:id="@+id/detail_description_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:id="@+id/detail_description_layout">
+                android:orientation="horizontal">
 
                 <TextView
+                    android:id="@+id/detail_desciption_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="@string/fake_description_light"
-                    android:id="@+id/detail_desciption_text" />
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
 
             </LinearLayout>
 
             <LinearLayout
-                android:orientation="vertical"
+                android:id="@+id/detail_carousel_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="200dp"
-                android:id="@+id/detail_carousel_layout">
+                android:orientation="vertical">
 
 
-                <com.insalyon.les24heures.JazzyViewPager.JazzyViewPager
-                    xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
+                <com.insalyon.les24heures.JazzyViewPager.JazzyViewPager xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/jazzy_pager"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
-                </LinearLayout>
+            </LinearLayout>
 
-        <LinearLayout
-            android:orientation="vertical"
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/detail_mini_maps_holder">
-            <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-                android:name="com.google.android.gms.maps.MapFragment"
-                android:id="@+id/detail_mini_maps"
-                android:layout_width="match_parent"
-                android:layout_height="200dp"/>
-        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/detail_mini_maps_holder"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical">
+
+                <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/detail_mini_maps"
+                    android:name="com.google.android.gms.maps.MapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp" />
+            </LinearLayout>
 
 
             <LinearLayout
-                android:orientation="vertical"
+                android:id="@+id/detail_url"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:id="@+id/detail_url">
+                android:orientation="vertical">
 
                 <TextView
+                    android:id="@+id/detail_url_web"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Large Text"
-                    android:id="@+id/detail_url_web" />
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <TextView
+                    android:id="@+id/detail_url_facebook"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Large Text"
-                    android:id="@+id/detail_url_facebook" />
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
 
                 <TextView
+                    android:id="@+id/detail_url_twitter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceLarge"
                     android:text="Large Text"
-                    android:id="@+id/detail_url_twitter" />
+                    android:textAppearance="?android:attr/textAppearanceLarge" />
             </LinearLayout>
 
         </LinearLayout>

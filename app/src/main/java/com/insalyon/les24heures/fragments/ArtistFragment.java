@@ -26,7 +26,7 @@ import butterknife.InjectView;
 /**
  * Created by remi on 11/02/15.
  */
-public class ArtistFragment extends ContentFrameFragment<NightResource>  {
+public class ArtistFragment extends ContentFrameFragment<NightResource> {
     private static final String TAG = OutputMapsFragment.class.getCanonicalName();
     View view;
 
@@ -41,13 +41,12 @@ public class ArtistFragment extends ContentFrameFragment<NightResource>  {
     }
 
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        
-        view = inflater.inflate(R.layout.artists_fragment,container,false);
+
+        view = inflater.inflate(R.layout.artists_fragment, container, false);
         ButterKnife.inject(this, view);
 
         //create an ArrayAdaptar from the String Array
@@ -96,10 +95,6 @@ public class ArtistFragment extends ContentFrameFragment<NightResource>  {
         super.onEvent(event);
         Log.d("onEvent(SearchEvent)", event.getQuery().toString());
     }
-
-
-
-
 
 
 }

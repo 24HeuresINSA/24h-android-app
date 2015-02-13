@@ -20,7 +20,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by remi on 27/12/14.
  */
-public class NightResourceAdapter extends ResourceAdapter<NightResource>  {
+public class NightResourceAdapter extends ResourceAdapter<NightResource> {
 
     private final EventBus eventBus;
     private final int viewId;
@@ -39,14 +39,6 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource>  {
         //je voulais pas ca moi !
         eventBus = EventBus.getDefault();
         eventBus.register(this);
-    }
-
-
-
-    private class ViewHolder {
-        TextView title;
-        TextView schedule;
-        ImageButton favorites;
     }
 
     @Override
@@ -81,25 +73,27 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource>  {
 
         holder.title.setText(nightResource.getTitle());
         holder.title.setSelected(true);
-        if(nightResource.isFavorites())
+        if (nightResource.isFavorites())
             holder.favorites.setImageResource(R.drawable.ic_favorites_checked);
         else
             holder.favorites.setImageResource(R.drawable.ic_favorites_unchecked);
         holder.schedule.setText(nightResource.printSchedules());
 
 
-
         return convertView;
 
     }
-
-
-
 
     public void onEvent(ResourcesUpdatedEvent event) {
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getNightResourceList().toString());
         originalList.clear();
         originalList.addAll(event.getNightResourceList());
+    }
+
+    private class ViewHolder {
+        TextView title;
+        TextView schedule;
+        ImageButton favorites;
     }
 
 

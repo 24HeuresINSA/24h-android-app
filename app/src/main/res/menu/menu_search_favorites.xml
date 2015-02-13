@@ -1,28 +1,28 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
         android:id="@+id/menu_search"
         android:actionViewClass="android.widget.SearchView"
         android:showAsAction="always"
-        android:title="Search"/>
+        android:title="Search" />
 
 
     <item
         android:id="@+id/menu_favorites"
+        android:icon="@drawable/ic_favorites_unchecked"
         android:showAsAction="always"
-        android:title="fav"
-        android:icon="@drawable/ic_favorites_unchecked"/>
+        android:title="fav" />
 
     <item
         android:id="@+id/menu_twitter"
+        android:icon="@drawable/ic_twitter"
         android:showAsAction="always"
-        android:title="twitter"
-        android:icon="@drawable/ic_twitter"/>
+        android:title="twitter" />
 
     <item
         android:id="@+id/menu_facebook"
+        android:icon="@drawable/ic_facebook"
         android:showAsAction="always"
-        android:title="facebook"
-        android:icon="@drawable/ic_facebook"/>
+        android:title="facebook" />
 
 </menu>

@@ -9,6 +9,16 @@ import java.util.List;
  * Created by remi on 11/02/15.
  */
 public class Resource implements Parcelable {
+    public static final Parcelable.Creator<DayResource> CREATOR
+            = new Parcelable.Creator<DayResource>() {
+        public DayResource createFromParcel(Parcel in) {
+            return new DayResource(in);
+        }
+
+        public DayResource[] newArray(int size) {
+            return new DayResource[size];
+        }
+    };
     String title;
     String description;
     List<Schedule> schedules;
@@ -23,7 +33,20 @@ public class Resource implements Parcelable {
         this.category = category;
     }
 
-    public String printSchedules(){
+    public Resource(Parcel in) {
+        this.title = in.readString();
+        this.description = in.readString();
+        in.readList(this.schedules, ClassLoader.getSystemClassLoader());
+        this.category = in.readParcelable(ClassLoader.getSystemClassLoader());
+        this.isFavorites = in.readByte() != 0;
+
+    }
+
+    public static Creator<DayResource> getCreator() {
+        return CREATOR;
+    }
+
+    public String printSchedules() {
         String str = "";
         for (Schedule schedule : schedules) {
             str += schedule.toString();
@@ -33,19 +56,10 @@ public class Resource implements Parcelable {
                 break;
         }
 
-        if(schedules.size() > 2)
+        if (schedules.size() > 2)
             str += "   ... ";
 
         return str;
-    }
-
-    public Resource(Parcel in){
-        this.title = in.readString();
-        this.description = in.readString();
-        in.readList(this.schedules,ClassLoader.getSystemClassLoader());
-        this.category = in.readParcelable(ClassLoader.getSystemClassLoader());
-        this.isFavorites = in.readByte() != 0;
-
     }
 
     @Override
@@ -58,21 +72,9 @@ public class Resource implements Parcelable {
         out.writeString(title);
         out.writeString(description);
         out.writeList(schedules);
-        out.writeParcelable(category,flags);
+        out.writeParcelable(category, flags);
         out.writeByte((byte) (isFavorites ? 1 : 0));
     }
-
-    public static final Parcelable.Creator<DayResource> CREATOR
-            = new Parcelable.Creator<DayResource>() {
-        public DayResource createFromParcel(Parcel in) {
-            return new DayResource(in);
-        }
-
-        public DayResource[] newArray(int size) {
-            return new DayResource[size];
-        }
-    };
-
 
     public String getTitle() {
         return title;
@@ -112,9 +114,5 @@ public class Resource implements Parcelable {
 
     public void setCategory(Category category) {
         this.category = category;
-    }
-
-    public static Creator<DayResource> getCreator() {
-        return CREATOR;
     }
 }

@@ -2,7 +2,6 @@ package com.insalyon.les24heures.service;
 
 import com.insalyon.les24heures.DTO.AssomakerDTO;
 
-
 import retrofit.Callback;
 import retrofit.http.GET;
 

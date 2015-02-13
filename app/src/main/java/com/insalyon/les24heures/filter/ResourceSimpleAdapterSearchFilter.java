@@ -23,10 +23,10 @@ public class ResourceSimpleAdapterSearchFilter<T extends Resource> extends Resou
                                   FilterResults results) {
 
         resourceList.clear();
-        resourceList.addAll((ArrayList<T>)results.values);
+        resourceList.addAll((ArrayList<T>) results.values);
         resourceAdapter.notifyDataSetChanged();
         resourceAdapter.clear(); //will clear resourceAdapter.resourceList
-        for(int i = 0, l = resourceList.size(); i < l; i++) {
+        for (int i = 0, l = resourceList.size(); i < l; i++) {
             resourceAdapter.add(resourceList.get(i)); //will populate resourceAdapter.resourceList
         }
         resourceAdapter.notifyDataSetInvalidated();

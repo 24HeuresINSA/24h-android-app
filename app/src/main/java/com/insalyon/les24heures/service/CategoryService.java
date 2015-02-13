@@ -2,7 +2,6 @@ package com.insalyon.les24heures.service;
 
 import com.insalyon.les24heures.model.Category;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

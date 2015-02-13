@@ -9,15 +9,15 @@ import java.util.List;
  */
 public class NightResource extends Resource {
 
-   private String facebookUrl;
+    private String facebookUrl;
     private String twitterUrl;
     private String siteUrl;
     private String stage;
 
 
     @Deprecated
-    public NightResource(String title, String description, List<Schedule> schedules, Category category, Boolean isFavorites,String facebookUrl, String twitterUrl, String siteUrl,String stage) {
-        super(title,  description,schedules,  isFavorites,  category);
+    public NightResource(String title, String description, List<Schedule> schedules, Category category, Boolean isFavorites, String facebookUrl, String twitterUrl, String siteUrl, String stage) {
+        super(title, description, schedules, isFavorites, category);
         this.facebookUrl = facebookUrl;
         this.twitterUrl = twitterUrl;
         this.siteUrl = siteUrl;
@@ -25,8 +25,8 @@ public class NightResource extends Resource {
     }
 
 
-    public NightResource(String title, String description, List<Schedule> schedules, Category category,String facebookUrl, String twitterUrl, String siteUrl,String stage) {
-        super(title,  description,schedules, false, category);
+    public NightResource(String title, String description, List<Schedule> schedules, Category category, String facebookUrl, String twitterUrl, String siteUrl, String stage) {
+        super(title, description, schedules, false, category);
         this.facebookUrl = facebookUrl;
         this.twitterUrl = twitterUrl;
         this.siteUrl = siteUrl;
@@ -34,16 +34,13 @@ public class NightResource extends Resource {
     }
 
 
-
-
-    public NightResource(Parcel in){
+    public NightResource(Parcel in) {
         super(in);
         this.facebookUrl = in.readString();
         this.twitterUrl = in.readString();
         this.siteUrl = in.readString();
         this.stage = in.readString();
     }
-
 
 
     @Override

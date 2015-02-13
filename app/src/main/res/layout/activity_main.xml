@@ -19,38 +19,38 @@
             android:layout_height="match_parent"
             android:gravity="bottom"
             sothree:panelHeight="@dimen/detail_header_height"
-            sothree:shadowHeight="4dp"
-            sothree:paralaxOffset="200dp">
+            sothree:paralaxOffset="200dp"
+            sothree:shadowHeight="4dp">
             <!--sothree:umanoDragView="@+id/detail_sliding_layout_header"-->
             <!-->-->
 
             <!-- MAIN CONTENT -->
             <RelativeLayout
+                android:id="@+id/main_content"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/main_content">
+                android:layout_height="match_parent">
 
                 <!--REAL CONTENT-->
                 <FrameLayout
+                    android:id="@+id/content_frame"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:id="@+id/content_frame"></FrameLayout>
+                    android:orientation="vertical"></FrameLayout>
 
                 <!--DETAIL SLIDING UP PARALLAX VIEW-->
                 <LinearLayout
-                    android:orientation="vertical"
+                    android:id="@+id/detail_paralax_header"
                     android:layout_width="fill_parent"
                     android:layout_height="100dp"
                     android:background="#ffffbc53"
-                    android:id="@+id/detail_paralax_header"
+                    android:orientation="vertical"
                     android:padding="50px">
 
                     <LinearLayout
-                        android:orientation="horizontal"
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:background="#ffa6ff30"
+                        android:orientation="horizontal"
                         android:padding="50px"></LinearLayout>
 
                 </LinearLayout>
@@ -60,13 +60,14 @@
 
             <!--SLIDING LAYOUT-->
             <!--<RelativeLayout-->
-                <!--android:layout_width="fill_parent"-->
-                <!--android:layout_height="fill_parent">-->
+            <!--android:layout_width="fill_parent"-->
+            <!--android:layout_height="fill_parent">-->
 
-                <fragment android:name="com.insalyon.les24heures.fragments.DetailFragment"
-                    android:id="@+id/sliding_layout_content_fragment"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+            <fragment
+                android:id="@+id/sliding_layout_content_fragment"
+                android:name="com.insalyon.les24heures.fragments.DetailFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <!--</RelativeLayout>-->
 

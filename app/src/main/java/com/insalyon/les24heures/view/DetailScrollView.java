@@ -12,14 +12,6 @@ public class DetailScrollView extends ScrollView {
 
     private Boolean isScrollEnable = true;
 
-    public Boolean getIsScrollEnable() {
-        return isScrollEnable;
-    }
-
-    public void setIsScrollEnable(Boolean isScrollEnable) {
-        this.isScrollEnable = isScrollEnable;
-    }
-
     public DetailScrollView(Context context) {
         super(context);
     }
@@ -32,11 +24,19 @@ public class DetailScrollView extends ScrollView {
         super(context, attrs, defStyleAttr);
     }
 
+    public Boolean getIsScrollEnable() {
+        return isScrollEnable;
+    }
+
+    public void setIsScrollEnable(Boolean isScrollEnable) {
+        this.isScrollEnable = isScrollEnable;
+    }
+
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if(isScrollEnable) {
+        if (isScrollEnable) {
             return super.onTouchEvent(ev);
-        }else {
+        } else {
             return false;
         }
     }

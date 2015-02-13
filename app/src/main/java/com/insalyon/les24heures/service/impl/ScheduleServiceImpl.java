@@ -14,8 +14,8 @@ import java.util.Date;
 public class ScheduleServiceImpl implements ScheduleService {
     private static ScheduleServiceImpl scheduleService;
 
-    public static ScheduleServiceImpl getInstance(){
-        if(scheduleService == null){
+    public static ScheduleServiceImpl getInstance() {
+        if (scheduleService == null) {
             //synchronized (resourceService) {
             scheduleService = new ScheduleServiceImpl();
             //}
@@ -28,7 +28,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         Day day;
         Date start = getHour(scheduleDTO.getDebut());
         Date end = getHour(scheduleDTO.getFin());
-        switch (scheduleDTO.getJour()){
+        switch (scheduleDTO.getJour()) {
             case "Samedi":
                 day = Day.SATURDAY;
                 break;
@@ -44,30 +44,27 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
 
 
-
-        return new Schedule(day,start,end);
+        return new Schedule(day, start, end);
     }
-
-
 
 
     private Date getHour(String debut) {
 
         int i;
-        if(debut.length() == 5)
+        if (debut.length() == 5)
             i = 0;
         else
             i = 1;
 
-        return new Date(0,0,0,
-                (int)Integer.valueOf(debut.substring(0,2-i)),
-                        (int)Integer.valueOf(debut.substring(3-i,5-i)));
+        return new Date(0, 0, 0,
+                (int) Integer.valueOf(debut.substring(0, 2 - i)),
+                (int) Integer.valueOf(debut.substring(3 - i, 5 - i)));
     }
 
 
     @Override
     public ArrayList<Schedule> fromDTO(ArrayList<ScheduleDTO> scheduleDTOs) {
-        ArrayList<Schedule>  schedules = new ArrayList<>();
+        ArrayList<Schedule> schedules = new ArrayList<>();
 
         for (ScheduleDTO scheduleDTO : scheduleDTOs) {
             schedules.add(this.fromDTO(scheduleDTO));

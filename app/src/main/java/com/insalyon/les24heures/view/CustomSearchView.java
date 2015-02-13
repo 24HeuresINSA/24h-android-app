@@ -20,13 +20,13 @@ public class CustomSearchView extends SearchView {
     @Override
     public void onActionViewExpanded() {
         super.onActionViewExpanded();
-        Log.d("pouet","expand");
+        Log.d("pouet", "expand");
     }
 
     @Override
     public void onActionViewCollapsed() {
         super.onActionViewCollapsed();
-        Log.d("pouet","collapse");
+        Log.d("pouet", "collapse");
 
     }
 

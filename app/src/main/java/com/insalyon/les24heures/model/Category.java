@@ -7,6 +7,16 @@ import android.os.Parcelable;
  * Created by remi on 26/12/14.
  */
 public class Category implements Parcelable {
+    public static final Parcelable.Creator<Category> CREATOR
+            = new Parcelable.Creator<Category>() {
+        public Category createFromParcel(Parcel in) {
+            return new Category(in);
+        }
+
+        public Category[] newArray(int size) {
+            return new Category[size];
+        }
+    };
     String name;
     String iconeName = "pouet";
 
@@ -34,17 +44,6 @@ public class Category implements Parcelable {
         out.writeString(name);
         out.writeString(iconeName);
     }
-
-    public static final Parcelable.Creator<Category> CREATOR
-            = new Parcelable.Creator<Category>() {
-        public Category createFromParcel(Parcel in) {
-            return new Category(in);
-        }
-
-        public Category[] newArray(int size) {
-            return new Category[size];
-        }
-    };
 
     //TODO faire le equals sur autre chose que 'name'
     @Override

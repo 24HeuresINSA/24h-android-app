@@ -45,20 +45,18 @@ import de.greenrobot.event.EventBus;
  */
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = OutputMapsFragment.class.getCanonicalName();
-    View view;
-
     private static ResourceServiceImpl resourceService = ResourceServiceImpl.getInstance();
-
+    View view;
     @InjectView(R.id.detail_scrollView)
-     DetailScrollView detailScrollView;
+    DetailScrollView detailScrollView;
     @InjectView(R.id.detail_next_schedule)
-     TextView nextSchedule;
+    TextView nextSchedule;
     @InjectView(R.id.detail_favorites)
-     ImageButton favoriteImageButton;
+    ImageButton favoriteImageButton;
     @InjectView(R.id.detail_sliding_title)
-     TextView detailSlidingTitle;
+    TextView detailSlidingTitle;
     @InjectView(R.id.detail_desciption_text)
-     TextView detailSlidingDescription;
+    TextView detailSlidingDescription;
     @InjectView(R.id.detail_schedule_grid_layout)
     GridView schedulesGrid;
     @InjectView(R.id.detail_sliding_layout_header)
@@ -72,7 +70,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     @InjectView(R.id.detail_url_web)
     TextView urlWeb;
     @InjectView(R.id.detail_mini_maps_holder)
-            View miniMapsHolder;
+    View miniMapsHolder;
 
     Resource resource;
     private ScheduleAdapter scheduleAdapter;
@@ -96,7 +94,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
         appContext = getActivity().getApplicationContext();
 
-        if(savedInstanceState != null) {
+        if (savedInstanceState != null) {
             if (savedInstanceState.getParcelable("resource") != null) {
                 resource = savedInstanceState.getParcelable("resource");
                 schedules.addAll(resource.getSchedules());
@@ -111,11 +109,11 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        view = inflater.inflate(R.layout.sliding_layout_content,container,false);
+        view = inflater.inflate(R.layout.sliding_layout_content, container, false);
         ButterKnife.inject(this, view);
 
         scheduleAdapter = new ScheduleAdapter(getActivity().getApplicationContext(),
-                R.layout.schedule_grid_item,schedules);
+                R.layout.schedule_grid_item, schedules);
         schedulesGrid.setAdapter(scheduleAdapter);
 
         MapFragment mapFragment = (MapFragment) getFragmentManager()
@@ -147,52 +145,14 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private class MainAdapter extends PagerAdapter {
-        @Override
-        public Object instantiateItem(ViewGroup container, final int position) {
-            TextView text = new TextView(appContext);
-            text.setGravity(Gravity.CENTER);
-            text.setTextSize(30);
-            text.setTextColor(Color.WHITE);
-            text.setText("Page " + position);
-            text.setPadding(30, 30, 30, 30);
-            int bg = Color.rgb((int) Math.floor(Math.random()*128)+64,
-                    (int) Math.floor(Math.random()*128)+64,
-                    (int) Math.floor(Math.random()*128)+64);
-            text.setBackgroundColor(bg);
-            container.addView(text, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-            mJazzy.setObjectForPosition(text, position);
-            return text;
-        }
-
-
-        @Override
-        public void destroyItem(ViewGroup container, int position, Object obj) {
-            container.removeView(mJazzy.findViewFromObject(position));
-        }
-        @Override
-        public int getCount() {
-            return 10;
-        }
-        @Override
-        public boolean isViewFromObject(View view, Object obj) {
-            if (view instanceof OutlineContainer) {
-                return ((OutlineContainer) view).getChildAt(0) == obj;
-            } else {
-                return view == obj;
-            }
-        }
-    }
-
-
     /**
      * Fragment is alive
      */
     @Override
     public void onMapReady(final GoogleMap map) {
-        if(resource != null && resource.getClass() == DayResource.class) {
+        if (resource != null && resource.getClass() == DayResource.class) {
             addMarkerAndMoveCam();
-        }else{
+        } else {
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
         }
 
@@ -208,20 +168,20 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 //                                .snippet(resource.getDescription())
                 .position(((DayResource) resource).getLoc()));
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(((DayResource)resource).getLoc(), 15));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(((DayResource) resource).getLoc(), 15));
 
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                eventBus.postSticky(new ResourceSelectedEvent((DayResource)resource));
+                eventBus.postSticky(new ResourceSelectedEvent((DayResource) resource));
             }
         });
     }
 
     @OnClick(R.id.detail_favorites)
-    public void onClickFav(View v){
+    public void onClickFav(View v) {
         resource.setIsFavorites(!resource.isFavorites());
-        if(resource.isFavorites())
+        if (resource.isFavorites())
             ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
         else
             ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
@@ -230,20 +190,20 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void updateHeavyData(){
-        if(!heavyDataUpdated) {
+    public void updateHeavyData() {
+        if (!heavyDataUpdated) {
 
-            if(resource.getClass() == DayResource.class) {
+            if (resource.getClass() == DayResource.class) {
                 //mini maps
                 addMarkerAndMoveCam();
 
                 miniMapsHolder.setVisibility(View.VISIBLE);
                 detailUrlContainer.setVisibility(View.GONE);
 
-            }else if(resource.getClass() == NightResource.class) {
-                urlFacebook.setText(((NightResource)resource).getFacebookUrl());
-                urlWeb.setText(((NightResource)resource).getSiteUrl());
-                urlTwitter.setText(((NightResource)resource).getTwitterUrl());
+            } else if (resource.getClass() == NightResource.class) {
+                urlFacebook.setText(((NightResource) resource).getFacebookUrl());
+                urlWeb.setText(((NightResource) resource).getSiteUrl());
+                urlTwitter.setText(((NightResource) resource).getTwitterUrl());
 
                 miniMapsHolder.setVisibility(View.GONE);
                 detailUrlContainer.setVisibility(View.VISIBLE);
@@ -263,26 +223,23 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     }
 
     public void notifyDataChanged(Resource res) {
-        if(res != null)
-             resource = res;
+        if (res != null)
+            resource = res;
         heavyDataUpdated = false;
 
         detailSlidingTitle.setText(resource.getTitle());
         detailSlidingDescription.setText(resource.getDescription());
 
         Schedule schedule = resourceService.getNextSchedule(resource);
-        nextSchedule.setText(schedule.getPrintableDay()+"\n"+
-                schedule.getStart().getHours()+"h-"+schedule.getEnd().getHours()+"h");
+        nextSchedule.setText(schedule.getPrintableDay() + "\n" +
+                schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h");
 
-        if(resource.isFavorites())
+        if (resource.isFavorites())
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_checked);
         else
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
 
     }
-
-
-
 
     /**
      * Fragment is no more alive
@@ -292,5 +249,44 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putParcelable("resource", resource);
+    }
+
+    private class MainAdapter extends PagerAdapter {
+        @Override
+        public Object instantiateItem(ViewGroup container, final int position) {
+            TextView text = new TextView(appContext);
+            text.setGravity(Gravity.CENTER);
+            text.setTextSize(30);
+            text.setTextColor(Color.WHITE);
+            text.setText("Page " + position);
+            text.setPadding(30, 30, 30, 30);
+            int bg = Color.rgb((int) Math.floor(Math.random() * 128) + 64,
+                    (int) Math.floor(Math.random() * 128) + 64,
+                    (int) Math.floor(Math.random() * 128) + 64);
+            text.setBackgroundColor(bg);
+            container.addView(text, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            mJazzy.setObjectForPosition(text, position);
+            return text;
+        }
+
+
+        @Override
+        public void destroyItem(ViewGroup container, int position, Object obj) {
+            container.removeView(mJazzy.findViewFromObject(position));
+        }
+
+        @Override
+        public int getCount() {
+            return 10;
+        }
+
+        @Override
+        public boolean isViewFromObject(View view, Object obj) {
+            if (view instanceof OutlineContainer) {
+                return ((OutlineContainer) view).getChildAt(0) == obj;
+            } else {
+                return view == obj;
+            }
+        }
     }
 }

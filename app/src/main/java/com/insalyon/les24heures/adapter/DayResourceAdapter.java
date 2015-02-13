@@ -20,7 +20,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by remi on 27/12/14.
  */
-public class DayResourceAdapter extends ResourceAdapter<DayResource>  {
+public class DayResourceAdapter extends ResourceAdapter<DayResource> {
 
     private final EventBus eventBus;
     private final int viewId;
@@ -39,15 +39,6 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource>  {
         //je voulais pas ca moi !
         eventBus = EventBus.getDefault();
         eventBus.register(this);
-    }
-
-
-
-    private class ViewHolder {
-        TextView title;
-        TextView distance;
-        TextView schedule;
-        ImageButton favorites;
     }
 
     @Override
@@ -74,7 +65,7 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource>  {
             @Override
             public void onClick(View v) {
                 dayResource.setIsFavorites(!dayResource.isFavorites());
-                if(dayResource.isFavorites())
+                if (dayResource.isFavorites())
                     ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
                 else
                     ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
@@ -83,7 +74,7 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource>  {
 
         holder.title.setText(dayResource.getTitle());
         holder.title.setSelected(true);
-        if(dayResource.isFavorites())
+        if (dayResource.isFavorites())
             holder.favorites.setImageResource(R.drawable.ic_favorites_checked);
         else
             holder.favorites.setImageResource(R.drawable.ic_favorites_unchecked);
@@ -91,26 +82,29 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource>  {
         Location loc = new Location("loc");
         loc.setLongitude(dayResource.getLoc().longitude);
         loc.setLatitude(dayResource.getLoc().latitude);
-        if(lastKnownPosition != null){
+        if (lastKnownPosition != null) {
             Integer distance = Math.round(lastKnownPosition.distanceTo(loc));
-            holder.distance.setText((distance < 1000) ? distance+"m":distance/1000+"km");
+            holder.distance.setText((distance < 1000) ? distance + "m" : distance / 1000 + "km");
         } else {
             holder.distance.setText(R.string.list_no_last_known_location);
         }
-
 
 
         return convertView;
 
     }
 
-
-
-
     public void onEvent(ResourcesUpdatedEvent event) {
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
         originalList.clear();
         originalList.addAll(event.getDayResourceList());
+    }
+
+    private class ViewHolder {
+        TextView title;
+        TextView distance;
+        TextView schedule;
+        ImageButton favorites;
     }
 
 

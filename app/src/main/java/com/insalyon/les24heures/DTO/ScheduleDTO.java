@@ -15,9 +15,6 @@ public class ScheduleDTO {
     }
 
 
-
-
-
     public String getJour() {
         return jour;
     }
