@@ -1,7 +1,6 @@
 package com.insalyon.les24heures.filter;
 
 import com.insalyon.les24heures.adapter.ResourceAdapter;
-import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;

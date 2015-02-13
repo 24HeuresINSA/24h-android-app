@@ -33,7 +33,6 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     //see spinner adapter
     Boolean spinner = false; //TODO mettre en place un vrai spinner
 
-
     View view;
     ArrayList<Category> categoriesSelected;
     String searchQuery;
@@ -72,11 +71,6 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
             }
             searchQuery = getArguments().getString("searchQuery"); //we want null if there is no searchQuery
         }
-//        if (resourcesList == null || categoriesSelected == null) {
-//            Log.e("OutputTypeFragment", "resourcesList or categoriesSelected are null. Are you sur you create the fragment with these parameters ?");
-//        }
-
-
     }
 
 
@@ -114,8 +108,7 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
 
     public void onEvent(ResourcesUpdatedEvent event) {
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
-//        resourcesList.clear();
-//        resourcesList.addAll(event.getDayResourceList());
+
         if (spinner) {
             getActivity().runOnUiThread(new Runnable() {
                 @Override
@@ -138,8 +131,6 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
             searchFilter.filter(event.getQuery().toString());
         }else
             Log.e(TAG,"search filter is null");
-
-
     }
 
     /**
@@ -177,7 +168,6 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
      * Fragment methods        *
      */
     protected Boolean setCategoryFilter() {
-//        dayResourceAdapter.getCategoryFilter().
         if(categoryFilter != null) {
             categoryFilter.filter(
                     (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null);

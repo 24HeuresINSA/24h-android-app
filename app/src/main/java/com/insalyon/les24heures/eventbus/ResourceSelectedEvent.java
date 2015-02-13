@@ -16,7 +16,4 @@ public class ResourceSelectedEvent {
         return dayResource;
     }
 
-    public void setDayResource(DayResource dayResource) {
-        this.dayResource = dayResource;
-    }
 }

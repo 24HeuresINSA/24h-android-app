@@ -24,8 +24,6 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource>  {
 
     private final EventBus eventBus;
     private final int viewId;
-//    private ArrayList<DayResource> originalList;
-//    private ArrayList<DayResource> dayResourceList;
 
     LayoutInflater vi;
     Location lastKnownPosition;
@@ -33,10 +31,6 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource>  {
     public NightResourceAdapter(Context context, int textViewResourceId,
                                 ArrayList<NightResource> dayResources) {
         super(context, textViewResourceId, dayResources);
-//        this.dayResourceList = new ArrayList<>();
-//        this.dayResourceList.addAll(dayResources);
-//        this.originalList = new ArrayList<>();
-//        this.originalList.addAll(dayResources);
         this.viewId = textViewResourceId;
 
 

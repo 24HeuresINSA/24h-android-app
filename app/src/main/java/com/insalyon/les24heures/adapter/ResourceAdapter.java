@@ -33,13 +33,6 @@ public abstract class ResourceAdapter<T extends Resource> extends ArrayAdapter<T
         this.resourceList.addAll(resources);
         this.originalList = new ArrayList<>();
         this.originalList.addAll(resources);
-//        this.lastKnownPosition = lastKnownPosition;
-
-//        this.vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-//        je voulais pas ca moi !
-//        eventBus = EventBus.getDefault();
-//        eventBus.register(this);
     }
 
 

@@ -151,27 +151,15 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
-        Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
-//        categoryFilter.filter(
-//                (event.getCategories().size() != 0) ? event.getCategories().toString() : null
-//        );
-
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-        Log.d(TAG + "onEvent(CategoryEvent)", event.getDayResourceList().toString());
-
-
         addMarkers();
-//        setCategoryFilter();
     }
-
-
 
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
-//        setSearchFilter(event);
     }
 
 
@@ -204,10 +192,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         }
 
        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
-
-
         selectedDayResource = markerResourceMap.get(marker);
-
 
         return false;
     }
@@ -248,8 +233,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             if (dayResource.getMarker() == null) {
                 Marker marker = googleMap.addMarker(
                         new MarkerOptions()
-//                                .title(resource.getTitle() + " " + resource.getCategory().getName())
-//                                .snippet(resource.getDescription())
                                 .position(dayResource.getLoc()));
 
                 markerResourceMap.put(marker, dayResource);

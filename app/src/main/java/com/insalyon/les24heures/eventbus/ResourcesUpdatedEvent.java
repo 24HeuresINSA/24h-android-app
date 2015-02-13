@@ -3,6 +3,7 @@ package com.insalyon.les24heures.eventbus;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -26,15 +27,12 @@ public class ResourcesUpdatedEvent {
         return nightResourceList;
     }
 
-    public void setNightResourceList(List<NightResource> nightResourceList) {
-        this.nightResourceList = nightResourceList;
-    }
-
     public List<DayResource> getDayResourceList() {
         return dayResourceList;
     }
 
-    public void setDayResourceList(List<DayResource> dayResourceList) {
-        this.dayResourceList = dayResourceList;
+    @Deprecated
+    public void setNightResourceList(ArrayList<NightResource> nightResourceList) {
+        this.nightResourceList = nightResourceList;
     }
 }

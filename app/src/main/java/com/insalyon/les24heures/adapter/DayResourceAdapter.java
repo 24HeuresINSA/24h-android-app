@@ -24,8 +24,6 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource>  {
 
     private final EventBus eventBus;
     private final int viewId;
-//    private ArrayList<DayResource> originalList;
-//    private ArrayList<DayResource> dayResourceList;
 
     LayoutInflater vi;
     Location lastKnownPosition;
@@ -33,10 +31,6 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource>  {
     public DayResourceAdapter(Context context, int textViewResourceId,
                               ArrayList<DayResource> dayResources, Location lastKnownPosition) {
         super(context, textViewResourceId, dayResources);
-//        this.dayResourceList = new ArrayList<>();
-//        this.dayResourceList.addAll(dayResources);
-//        this.originalList = new ArrayList<>();
-//        this.originalList.addAll(dayResources);
         this.lastKnownPosition = lastKnownPosition;
         this.viewId = textViewResourceId;
 

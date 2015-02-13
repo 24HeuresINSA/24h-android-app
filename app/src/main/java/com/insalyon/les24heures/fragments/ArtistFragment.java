@@ -83,12 +83,6 @@ public class ArtistFragment extends ContentFrameFragment<NightResource>  {
      */
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
-       // Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
-
-//        resourceAdapter.getCategoryFilter().filter(
-//                (event.getCategories().size() != 0) ? event.getCategories().toString() : null
-//        );
-
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
@@ -96,16 +90,11 @@ public class ArtistFragment extends ContentFrameFragment<NightResource>  {
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getNightResourceList().toString());
         resourcesList.clear();
         resourcesList.addAll(event.getNightResourceList());
-
-//        setCategoryFilter();
-
     }
 
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
         Log.d("onEvent(SearchEvent)", event.getQuery().toString());
-//        resourceAdapter.getFilter().filter(event.getQuery().toString());
-
     }
 
 

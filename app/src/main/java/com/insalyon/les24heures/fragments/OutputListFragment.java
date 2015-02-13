@@ -131,20 +131,14 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
      */
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
-       // Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
-//        setCategoryFilter();
-
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-//        setCategoryFilter();
-
     }
 
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
-       // dayResourceAdapter.getFilter().filter(event.getQuery().toString());
     }
 
     @OnClick(R.id.fab_goto_maps)

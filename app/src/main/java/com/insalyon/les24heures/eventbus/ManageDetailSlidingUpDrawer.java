@@ -30,19 +30,8 @@ public class ManageDetailSlidingUpDrawer {
         return nightResource;
     }
 
-    public void setDayResource(DayResource dayResource) {
-        this.dayResource = dayResource;
-    }
-
-    public ManageDetailSlidingUpDrawer(SlidingUpPannelState state) {
-        this.state = state;
-    }
-
     public SlidingUpPannelState getState() {
         return state;
     }
 
-    public void setState(SlidingUpPannelState state) {
-        this.state = state;
-    }
 }
