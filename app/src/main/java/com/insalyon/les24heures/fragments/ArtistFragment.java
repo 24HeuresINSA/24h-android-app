@@ -6,13 +6,16 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.NightResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.utils.SlidingUpPannelState;
 import com.insalyon.les24heures.view.AutoExpandGridView;
 
 import java.util.ArrayList;
@@ -56,6 +59,16 @@ public class ArtistFragment extends ContentFrameFragment<NightResource>  {
         categoryFilter = nightResourceAdapter.getCategoryFilter();
 
         artistGridView.setAdapter(nightResourceAdapter);
+        artistGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                NightResource resource = (NightResource) parent.getItemAtPosition(position);
+
+                ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.ANCHORED,
+                        resource);
+                eventBus.post(manageDetailSlidingUpDrawer);
+            }
+        });
 
 
         return view;
