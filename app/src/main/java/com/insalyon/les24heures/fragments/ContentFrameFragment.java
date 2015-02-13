@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.Toast;
 
 import com.insalyon.les24heures.MainActivity;
@@ -25,6 +26,8 @@ import de.greenrobot.event.EventBus;
  * Created by remi on 11/02/15.
  */
 public abstract class ContentFrameFragment<T extends Resource> extends Fragment {
+    private static final String TAG = ContentFrameFragment.class.getCanonicalName();
+
     EventBus eventBus;
 
     //see spinner adapter
@@ -38,6 +41,9 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
 
     public String displayName;
 
+    Filter searchFilter;
+    Filter categoryFilter;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,18 +54,18 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
 
         if (savedInstanceState != null) {
             //get from restore state (when it's Android which create the fragment)
-//            if (savedInstanceState.getParcelableArrayList("categoriesSelected") != null) {
-//                categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
-//            }
+            if (savedInstanceState.getParcelableArrayList("categoriesSelected") != null) {
+                categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
+            }
             if (savedInstanceState.getParcelableArrayList("resourcesList") != null) {
                 resourcesList = savedInstanceState.getParcelableArrayList("resourcesList");
             }
             searchQuery = savedInstanceState.getString("searchQuery"); //we want null if there is no searchQuery
         } else if (getArguments() != null) {
             //get from arguments (when it's fragmentManager which create the fragment)
-//            if (getArguments().getParcelableArrayList("categoriesSelected") != null) {
-//                categoriesSelected = getArguments().getParcelableArrayList("categoriesSelected");
-//            }
+            if (getArguments().getParcelableArrayList("categoriesSelected") != null) {
+                categoriesSelected = getArguments().getParcelableArrayList("categoriesSelected");
+            }
             //get from arguments (when it's fragmentManager which create the fragment)
             if (getArguments().getParcelableArrayList("resourcesList") != null) {
                 resourcesList = getArguments().getParcelableArrayList("resourcesList");
@@ -101,6 +107,9 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
         Log.d("onevent", event.getCategories().toString());
         categoriesSelected.clear();
         categoriesSelected.addAll((ArrayList<Category>) event.getCategories());
+
+        setCategoryFilter();
+
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
@@ -118,10 +127,19 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
 
             spinner = false;
         }
+
+        setCategoryFilter();
+
     }
 
     public void onEvent(SearchEvent event) {
         Log.d("onEvent(SearchEvent)", event.getQuery().toString());
+        if(searchFilter != null) {
+            searchFilter.filter(event.getQuery().toString());
+        }else
+            Log.e(TAG,"search filter is null");
+
+
     }
 
     /**
@@ -154,4 +172,19 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     public String getDisplayName() {
         return displayName;
     }
+
+    /**
+     * Fragment methods        *
+     */
+    protected Boolean setCategoryFilter() {
+//        dayResourceAdapter.getCategoryFilter().
+        if(categoryFilter != null) {
+            categoryFilter.filter(
+                    (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null);
+        }else
+            Log.e(TAG,"category filter is null");
+
+        return true;
+    }
+
 }

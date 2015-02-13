@@ -46,6 +46,9 @@ public abstract class ResourceAdapter<T extends Resource> extends ArrayAdapter<T
 
 
 
+    //il faut que ce soit ResourceAdapter qui cree les filters car ils ont besoin des pointeurs utilisés par ResourceAdapter qui
+    //ne sont pas les memes que dans le fragment car le fragment doit conserver une copie intact des resources (car il manage lui
+    //meme la sauvegarde des resources en BundleSavedInstanceState)
 
     @Override
     public Filter getFilter() {

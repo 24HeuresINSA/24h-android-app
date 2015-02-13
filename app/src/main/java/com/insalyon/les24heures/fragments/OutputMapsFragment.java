@@ -50,8 +50,8 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     MapView mapView;
     GoogleMap googleMap;
 
-    ResourceMapsCategoryFilter resourceMapsCategoryFilter;
-    ResourceMapsSearchFilter resourceMapsSearchFilter;
+//    ResourceMapsCategoryFilter resourceMapsCategoryFilter;
+//    ResourceMapsSearchFilter resourceMapsSearchFilter;
 
     ArrayList<DayResource> displayableResourcesLists;
     HashMap<Marker, DayResource> markerResourceMap;
@@ -68,8 +68,8 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         displayableResourcesLists = new ArrayList<>();
         displayableResourcesLists.addAll(resourcesList);
-        resourceMapsCategoryFilter = new ResourceMapsCategoryFilter(resourcesList, displayableResourcesLists, this);
-        resourceMapsSearchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this);
+        categoryFilter = new ResourceMapsCategoryFilter(resourcesList, displayableResourcesLists, this);
+        searchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this);
         markerResourceMap = new HashMap<>();
 
     }
@@ -152,9 +152,9 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
         Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
-        resourceMapsCategoryFilter.filter(
-                (event.getCategories().size() != 0) ? event.getCategories().toString() : null
-        );
+//        categoryFilter.filter(
+//                (event.getCategories().size() != 0) ? event.getCategories().toString() : null
+//        );
 
     }
 
@@ -164,15 +164,17 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
 
         addMarkers();
-        resourceMapsCategoryFilter.filter(
-                (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null
-        );
+//        setCategoryFilter();
     }
+
+
 
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
-        resourceMapsSearchFilter.filter(event.getQuery().toString());
+//        setSearchFilter(event);
     }
+
+
 
     public void onEvent(ResourceSelectedEvent selectedEvent) {
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedEvent.getDayResource().getLoc(), 17));
@@ -285,13 +287,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     private void restoreFilterState() {
         //we need to restore a filter by text
         if (searchQuery != null) {
-            resourceMapsSearchFilter.filter(searchQuery.toString());
+            searchFilter.filter(searchQuery.toString());
         }
         //we need to restore a filter by categories
         else if (!categoriesSelected.isEmpty()) {
-            resourceMapsCategoryFilter.filter(
-                    (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null
-            );
+            setCategoryFilter();
         }
         //else no filter needed
     }

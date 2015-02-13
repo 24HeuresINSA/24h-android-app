@@ -61,6 +61,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     private QuickReturnAttacher quickReturnAttacher;
     private Location lastKnownPosition;
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +82,10 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         //create an ArrayAdaptar from the String Array
         dayResourceAdapter = new DayResourceAdapter(this.getActivity().getApplicationContext(),
                 R.layout.output_list_item, new ArrayList<>(resourcesList),lastKnownPosition); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
+
+        //get filters than are managed by ContentFrameFragment
+        searchFilter = dayResourceAdapter.getFilter();
+        categoryFilter = dayResourceAdapter.getCategoryFilter();
 
         // Wrap your adapter with QuickReturnAdapter
         resourceListView.setAdapter(new QuickReturnAdapter(dayResourceAdapter));
@@ -128,19 +133,19 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
         Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
-        setCategoryFilter();
+//        setCategoryFilter();
 
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-        setCategoryFilter();
+//        setCategoryFilter();
 
     }
 
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
-        dayResourceAdapter.getFilter().filter(event.getQuery().toString());
+       // dayResourceAdapter.getFilter().filter(event.getQuery().toString());
     }
 
     @OnClick(R.id.fab_goto_maps)
@@ -230,15 +235,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     }
 
 
-    /**
-     * Fragment methods        *
-     */
-    private Boolean setCategoryFilter() {
-        dayResourceAdapter.getCategoryFilter().filter(
-                (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null);
-
-        return true;
-    }
 
 
 }

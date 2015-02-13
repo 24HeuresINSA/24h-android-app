@@ -17,6 +17,8 @@ import de.greenrobot.event.EventBus;
  * Created by remi on 26/12/14.
  */
 public class OutputTypeFragment extends ContentFrameFragment<DayResource>   {
+    private static final String TAG = ContentFrameFragment.class.getCanonicalName();
+
     EventBus eventBus;
 
     ArrayList<Category> categoriesSelected;
@@ -32,18 +34,18 @@ public class OutputTypeFragment extends ContentFrameFragment<DayResource>   {
 
         if (savedInstanceState != null) {
             //get from restore state (when it's Android which create the fragment)
-            if (savedInstanceState.getParcelableArrayList("categoriesSelected") != null) {
-                categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
-            }
+//            if (savedInstanceState.getParcelableArrayList("categoriesSelected") != null) {
+//                categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
+//            }
 //            if (savedInstanceState.getParcelableArrayList("resourcesList") != null) {
 //                resourcesList = savedInstanceState.getParcelableArrayList("resourcesList");
 //            }
 //            searchQuery = savedInstanceState.getString("searchQuery"); //we want null if there is no searchQuery
         } else if (getArguments() != null) {
             //get from arguments (when it's fragmentManager which create the fragment)
-            if (getArguments().getParcelableArrayList("categoriesSelected") != null) {
-                categoriesSelected = getArguments().getParcelableArrayList("categoriesSelected");
-            }
+//            if (getArguments().getParcelableArrayList("categoriesSelected") != null) {
+//                categoriesSelected = getArguments().getParcelableArrayList("categoriesSelected");
+//            }
             //get from arguments (when it's fragmentManager which create the fragment)
 //            if (getArguments().getParcelableArrayList("resourcesList") != null) {
 //                resourcesList = getArguments().getParcelableArrayList("resourcesList");
@@ -82,19 +84,22 @@ public class OutputTypeFragment extends ContentFrameFragment<DayResource>   {
      * Fragment is alive      *
      */
     public void onEvent(CategoriesSelectedEvent event) {
-        Log.d("onevent", event.getCategories().toString());
-        categoriesSelected.clear();
-        categoriesSelected.addAll(event.getCategories());
+        super.onEvent(event);
+        Log.d(TAG+" onevent", event.getCategories().toString());
+//        categoriesSelected.clear();
+//        categoriesSelected.addAll(event.getCategories());
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
-        Log.d("onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
+        super.onEvent(event);
+        Log.d(TAG+"onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
         resourcesList.clear();
         resourcesList.addAll(event.getDayResourceList());
     }
 
     public void onEvent(SearchEvent event) {
-        Log.d("onEvent(SearchEvent)", event.getQuery().toString());
+        super.onEvent(event);
+        Log.d(TAG+"onEvent(SearchEvent)", event.getQuery().toString());
     }
 
     /**
@@ -105,7 +110,7 @@ public class OutputTypeFragment extends ContentFrameFragment<DayResource>   {
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         //categories state
-        outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
+//        outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
         //search state
 //        outState.putString("searchQuery", searchQuery);
         //resources
