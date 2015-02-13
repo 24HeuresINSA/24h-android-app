@@ -7,13 +7,15 @@ import java.util.Map;
  * Created by remi on 27/12/14.
  */
 public class AssomakerDTO {
-    Map< Integer , ArrayList<ResourceDTO>> animations;
+    Map< Integer , ArrayList<DayResourceDTO>> animations;
+    ArrayList<NightResourceDTO> artists;
 
-    public Map<Integer, ArrayList<ResourceDTO>> getAnimations() {
+
+    public Map<Integer, ArrayList<DayResourceDTO>> getAnimations() {
         return animations;
     }
 
-    public void setAnimations(Map<Integer, ArrayList<ResourceDTO>> animations) {
-        this.animations = animations;
+    public ArrayList<NightResourceDTO> getArtists() {
+        return artists;
     }
 }

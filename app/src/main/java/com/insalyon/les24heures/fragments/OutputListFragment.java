@@ -4,7 +4,6 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +11,6 @@ import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.felipecsl.quickreturn.library.AbsListViewQuickReturnAttacher;
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
@@ -20,12 +18,12 @@ import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
-import com.insalyon.les24heures.adapter.ResourceAdapter;
+import com.insalyon.les24heures.adapter.DayResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.utils.SlidingUpPannelState;
 import com.melnykov.fab.FloatingActionButton;
 
@@ -57,12 +55,11 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     FloatingActionButton fabGotoMaps;
 
 
-    //see spinner adapter
-    Boolean spinner = false; //TODO mettre en place un vrai spinner
 
-    ResourceAdapter resourceAdapter = null;
+    DayResourceAdapter dayResourceAdapter = null;
     private QuickReturnAttacher quickReturnAttacher;
     private Location lastKnownPosition;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,11 +79,15 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         setHasOptionsMenu(true);
 
         //create an ArrayAdaptar from the String Array
-        resourceAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
+        dayResourceAdapter = new DayResourceAdapter(this.getActivity().getApplicationContext(),
                 R.layout.output_list_item, new ArrayList<>(resourcesList),lastKnownPosition); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
 
+        //get filters than are managed by ContentFrameFragment
+        searchFilter = dayResourceAdapter.getFilter();
+        categoryFilter = dayResourceAdapter.getCategoryFilter();
+
         // Wrap your adapter with QuickReturnAdapter
-        resourceListView.setAdapter(new QuickReturnAdapter(resourceAdapter));
+        resourceListView.setAdapter(new QuickReturnAdapter(dayResourceAdapter));
 
         return view;
     }
@@ -130,31 +131,14 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
      */
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
-        Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
-        resourceAdapter.getCategoryFilter().filter(
-                (event.getCategories().size() != 0) ? event.getCategories().toString() : null
-        );
-
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-        setCategoryFilter();
-        getActivity().runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (spinner) {
-                    spinner = false;
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            }
-        });
     }
 
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
-        resourceAdapter.getFilter().filter(event.getQuery().toString());
     }
 
     @OnClick(R.id.fab_goto_maps)
@@ -164,10 +148,10 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
     @Override
     public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
-        Resource resource = (Resource) parent.getItemAtPosition(position);
+        DayResource dayResource = (DayResource) parent.getItemAtPosition(position);
 
         ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.ANCHORED,
-                resource);
+                dayResource);
         eventBus.post(manageDetailSlidingUpDrawer);
     }
 
@@ -192,7 +176,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
             top = view.getChildAt(0).getTop();
         }
 
-        ManageDetailSlidingUpDrawer slidingUpEvent = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE,null);
+        ManageDetailSlidingUpDrawer slidingUpEvent = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE,(DayResource)null);
 
         if (firstVisibleItem > lastVisibleItem) {
             //scroll down
@@ -244,15 +228,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     }
 
 
-    /**
-     * Fragment methods        *
-     */
-    private Boolean setCategoryFilter() {
-        resourceAdapter.getCategoryFilter().filter(
-                (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null);
-
-        return true;
-    }
 
 
 }

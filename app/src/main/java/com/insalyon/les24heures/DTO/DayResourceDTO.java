@@ -5,7 +5,7 @@ import java.util.ArrayList;
 /**
  * Created by remi on 27/12/14.
  */
-public class ResourceDTO {
+public class DayResourceDTO {
     String nom;
     String description;
     String locX;

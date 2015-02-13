@@ -41,7 +41,4 @@ public class CategoriesSelectedEvent {
         return categories;
     }
 
-    public void setCategories(List<Category> categories) {
-        this.categories = categories;
-    }
 }

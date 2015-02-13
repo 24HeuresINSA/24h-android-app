@@ -3,67 +3,24 @@ package com.insalyon.les24heures.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-
 import java.util.List;
 
 /**
- * Created by remi on 26/12/14.
+ * Created by remi on 11/02/15.
  */
-public class Resource implements Parcelable{
+public class Resource implements Parcelable {
     String title;
     String description;
     List<Schedule> schedules;
-    LatLng loc;
-    String imageUrl;
-    Category category;
     Boolean isFavorites;
+    Category category;
 
-    //TODO clairement pas cool ca
-    //en effet, si on detruit la map, les markers sont conservé ici (enfin non puisque je magouille avec le onDestroy)
-    Marker marker;
-
-
-
-    public Resource(String title, String description, List<Schedule> schedules, LatLng loc, Category category) {
+    public Resource(String title, String description, List<Schedule> schedules, Boolean isFavorites, Category category) {
         this.title = title;
         this.description = description;
         this.schedules = schedules;
-        this.loc = loc;
-        this.category = category;
-        this.isFavorites = false;
-    }
-
-    public Resource(String title, String description, List<Schedule> schedules, LatLng loc, String imageUrl, Category category) {
-        this.title = title;
-        this.description = description;
-        this.schedules = schedules;
-        this.loc = loc;
-        this.imageUrl = imageUrl;
-        this.category = category;
-        this.isFavorites = false;
-    }
-
-    public Resource(String title, String description, List<Schedule> schedules, LatLng loc, Category category, Boolean isFavorites) {
-        this.title = title;
-        this.description = description;
-        this.schedules = schedules;
-        this.loc = loc;
-        this.category = category;
         this.isFavorites = isFavorites;
-    }
-
-
-    public Resource(Parcel in){
-        this.title = in.readString();
-        this.description = in.readString();
-        in.readList(this.schedules,ClassLoader.getSystemClassLoader());
-        this.loc = in.readParcelable(ClassLoader.getSystemClassLoader());
-        this.imageUrl = in.readString();
-        this.category = in.readParcelable(ClassLoader.getSystemClassLoader());
-        this.isFavorites = in.readByte() != 0;
-
+        this.category = category;
     }
 
     public String printSchedules(){
@@ -77,9 +34,18 @@ public class Resource implements Parcelable{
         }
 
         if(schedules.size() > 2)
-        str += "   ... ";
+            str += "   ... ";
 
         return str;
+    }
+
+    public Resource(Parcel in){
+        this.title = in.readString();
+        this.description = in.readString();
+        in.readList(this.schedules,ClassLoader.getSystemClassLoader());
+        this.category = in.readParcelable(ClassLoader.getSystemClassLoader());
+        this.isFavorites = in.readByte() != 0;
+
     }
 
     @Override
@@ -92,22 +58,21 @@ public class Resource implements Parcelable{
         out.writeString(title);
         out.writeString(description);
         out.writeList(schedules);
-        out.writeString(imageUrl);
-        out.writeParcelable(loc,flags);
         out.writeParcelable(category,flags);
         out.writeByte((byte) (isFavorites ? 1 : 0));
     }
 
-    public static final Parcelable.Creator<Resource> CREATOR
-            = new Parcelable.Creator<Resource>() {
-        public Resource createFromParcel(Parcel in) {
-            return new Resource(in);
+    public static final Parcelable.Creator<DayResource> CREATOR
+            = new Parcelable.Creator<DayResource>() {
+        public DayResource createFromParcel(Parcel in) {
+            return new DayResource(in);
         }
 
-        public Resource[] newArray(int size) {
-            return new Resource[size];
+        public DayResource[] newArray(int size) {
+            return new DayResource[size];
         }
     };
+
 
     public String getTitle() {
         return title;
@@ -133,20 +98,12 @@ public class Resource implements Parcelable{
         this.schedules = schedules;
     }
 
-    public LatLng getLoc() {
-        return loc;
+    public Boolean isFavorites() {
+        return isFavorites;
     }
 
-    public void setLoc(LatLng loc) {
-        this.loc = loc;
-    }
-
-    public String getImageUrl() {
-        return imageUrl;
-    }
-
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setIsFavorites(Boolean isFavorites) {
+        this.isFavorites = isFavorites;
     }
 
     public Category getCategory() {
@@ -157,21 +114,7 @@ public class Resource implements Parcelable{
         this.category = category;
     }
 
-    @Deprecated
-    public Marker getMarker() {
-        return marker;
-    }
-
-    @Deprecated
-    public void setMarker(Marker marker) {
-        this.marker = marker;
-    }
-
-    public Boolean isFavorites() {
-        return isFavorites;
-    }
-
-    public void setIsFavorites(Boolean isFavorites) {
-        this.isFavorites = isFavorites;
+    public static Creator<DayResource> getCreator() {
+        return CREATOR;
     }
 }

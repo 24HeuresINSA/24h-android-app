@@ -31,12 +31,14 @@ import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
+import com.insalyon.les24heures.fragments.ArtistFragment;
+import com.insalyon.les24heures.fragments.ContentFrameFragment;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.fragments.OutputListFragment;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
-import com.insalyon.les24heures.fragments.OutputTypeFragment;
 import com.insalyon.les24heures.model.Category;
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.service.CategoryService;
 import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
@@ -52,6 +54,7 @@ import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 import retrofit.RestAdapter;
 
@@ -85,7 +88,8 @@ public class MainActivity extends Activity {
     private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
     private ArrayList<Category> categories;
     private ArrayList<Category> categoriesSelected;
-    private ArrayList<Resource> resourcesList;
+    private ArrayList<DayResource> dayResourceArrayList;
+    private ArrayList<NightResource> nightResourceArrayList;
 
     private DrawerArrowDrawable drawerArrowDrawable;
     private DrawerLayout.SimpleDrawerListener drawerListener;
@@ -97,6 +101,7 @@ public class MainActivity extends Activity {
     private String searchQuery;
     private Menu mMenu;
     private String slidingUpState;
+    private RestAdapter restAdapterLocal;
 
 
     /**
@@ -116,7 +121,12 @@ public class MainActivity extends Activity {
                 .setEndpoint(getResources().getString(R.string.backend_url))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
+        restAdapterLocal = new RestAdapter.Builder()
+                .setEndpoint(getResources().getString(R.string.backend_url_local))
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
         resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
+//        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);
         fragmentManager = getFragmentManager();
         //dependency injection instead ?
         resourceService = ResourceServiceImpl.getInstance();
@@ -125,8 +135,12 @@ public class MainActivity extends Activity {
         ///////////////////////// day, night need one
         detailSlidingUpPanelLayoutLayout.setActivity(this); //slidingPanel needs the activity to invalidateOptionMenu, manage appName and arrowDrawer
         detailSlidingUpPanelLayoutLayout.setParallaxHeader(findViewById(R.id.detail_paralax_header));
+
+//
+
         detailFragment = (DetailFragment) fragmentManager.findFragmentById(R.id.sliding_layout_content_fragment);
         detailSlidingUpPanelLayoutLayout.setDetailFragment(detailFragment);
+
 
         ///////////////////////// all
         /*** recover data either from (by priority)
@@ -143,8 +157,11 @@ public class MainActivity extends Activity {
             if (savedInstanceState.getParcelableArrayList("categoriesSelected") != null) {
                 categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
             }
-            if (savedInstanceState.getParcelableArrayList("resourcesList") != null) {
-                resourcesList = savedInstanceState.getParcelableArrayList("resourcesList");
+            if (savedInstanceState.getParcelableArrayList("dayResourceArrayList") != null) {
+                dayResourceArrayList = savedInstanceState.getParcelableArrayList("dayResourceArrayList");
+            }
+            if (savedInstanceState.getParcelableArrayList("nightResourceArrayList") != null) {
+                nightResourceArrayList = savedInstanceState.getParcelableArrayList("nightResourceArrayList");
             }
             if (savedInstanceState.getString("searchQuery") != null) {
                 SearchEvent searchEvent = new SearchEvent(savedInstanceState.getString("searchQuery").toString());
@@ -175,10 +192,11 @@ public class MainActivity extends Activity {
             categoryService.setCategories(categories);
         }
 
-        if (resourcesList == null) {
-            resourcesList = new ArrayList<>();
-//            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
-            resourceService.getResourcesAsyncMock();
+        if (dayResourceArrayList == null || nightResourceArrayList == null) {
+            dayResourceArrayList = new ArrayList<>();
+            nightResourceArrayList = new ArrayList<>();
+            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
+//            resourceService.getResourcesAsyncMock();
         }
 
         if (categoriesSelected == null) {
@@ -420,6 +438,7 @@ public class MainActivity extends Activity {
     @Override
     public void onResume() {
         super.onResume();
+        //onClickArtist(null);
     }
 
     /**
@@ -429,9 +448,11 @@ public class MainActivity extends Activity {
     //day
     public void onEvent(ResourcesUpdatedEvent event) {
         // super.onEvent(event);
-        Log.d(TAG + "onEvent(ResourcesUpdatedEvent)", event.getResourceList().toString());
-        resourcesList.clear();
-        resourcesList.addAll(event.getResourceList());
+        Log.d(TAG + "onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
+        dayResourceArrayList.clear();
+        dayResourceArrayList.addAll(event.getDayResourceList());
+        nightResourceArrayList.clear();
+        nightResourceArrayList.addAll(event.getNightResourceList());
     }
 
     //TODO move dans DetailSlidingUpPanelLayout
@@ -454,16 +475,18 @@ public class MainActivity extends Activity {
                 break;
             case SHOW:
                 hideKeyboard();
-                if(m.getResource() == null){
+                if(m.getDayResource() == null){
                     detailSlidingUpPanelLayoutLayout.showPanel();
                 }else{
-                    detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getResource());
+                    detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getDayResource());
                 }
                 break;
             case ANCHORED:
                 hideKeyboard();
-                if(m.getResource() != null){
-                    detailFragment.notifyDataChanged(m.getResource());
+                if(m.getDayResource() != null){
+                    detailFragment.notifyDataChanged(m.getDayResource());
+                } else if(m.getNightResource() != null){
+                    detailFragment.notifyDataChanged(m.getNightResource());
                 }
                 detailSlidingUpPanelLayoutLayout.anchorPanel();
                 break;
@@ -495,6 +518,15 @@ public class MainActivity extends Activity {
     public void selectList() {
         Fragment listFragment = new OutputListFragment();
         replaceContentFragment(listFragment);
+    }
+
+    //all
+    @OnClick(R.id.navigation_drawer_artists)
+    public void onClickArtist(View v){
+        Fragment artistFragment = new ArtistFragment();
+        replaceContentFragment(artistFragment);
+        drawerLayout.closeDrawer();
+
     }
 
     //all
@@ -542,7 +574,8 @@ public class MainActivity extends Activity {
         ArrayList<Category> categoriesSelected = getCategoriesSelectedFromDrawer();
         outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
         //resources
-        outState.putParcelableArrayList("resourcesList", resourcesList);
+        outState.putParcelableArrayList("dayResourceArrayList", dayResourceArrayList);
+        outState.putParcelableArrayList("nightResourceArrayList", nightResourceArrayList);
 
         ///////////////////////////day and night
         //action bar menu
@@ -577,19 +610,27 @@ public class MainActivity extends Activity {
     private void replaceContentFragment(Fragment fragment) {
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
-        bundleArgs.putParcelableArrayList("resourcesList", resourcesList);
         searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
         bundleArgs.putString("searchQuery", searchQuery);
         fragment.setArguments(bundleArgs);
 
         FragmentTransaction ft = fragmentManager.beginTransaction();
 
-        if (fragment.getClass() == OutputListFragment.class)
-            ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
-        else
-            ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
+        if(fragment.getClass() == OutputListFragment.class ||fragment.getClass() == OutputMapsFragment.class) {
+            bundleArgs.putParcelableArrayList("resourcesList", dayResourceArrayList);
+
+            if (fragment.getClass() == OutputListFragment.class)
+                ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
+            else
+                ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
+
+        } else if(fragment.getClass() == ArtistFragment.class){
+            bundleArgs.putParcelableArrayList("resourcesList", nightResourceArrayList);
+
+        }
 
         ft.replace(R.id.content_frame, fragment).commit();
+
     }
 
 
@@ -624,6 +665,12 @@ public class MainActivity extends Activity {
             Log.i(TAG + "selectCategory", "categoy removed :" + navigationDrawerCategories[position]);
             categoriesSelectedEvent.setFilterAction(FilterAction.REMOVED);
             eventBus.post(categoriesSelectedEvent);
+        }
+
+        Class<? extends Fragment> currentFragment = fragmentManager.findFragmentById(R.id.content_frame).getClass();
+
+        if (!(currentFragment == OutputListFragment.class || currentFragment == OutputMapsFragment.class)) {
+           selectMaps();
         }
 
         drawerLayout.closeDrawer();
@@ -685,7 +732,7 @@ public class MainActivity extends Activity {
             drawerLayout.setIsDrawerOpen(false);
             //TODO create a parent of OutputTypeFragment which only contains abstract getDisplayName
             getActionBar().setTitle(
-                    ((OutputTypeFragment) getFragmentManager().findFragmentById(R.id.content_frame))
+                    ((ContentFrameFragment) getFragmentManager().findFragmentById(R.id.content_frame))
                             .getDisplayName());
 
         }

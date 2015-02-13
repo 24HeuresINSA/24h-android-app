@@ -9,13 +9,13 @@ import java.util.ArrayList;
 /**
  * Created by remi on 27/12/14.
  */
-public abstract class ResourceSearchFilter extends Filter {
+public abstract class ResourceSearchFilter<T extends Resource> extends Filter {
 
-    ArrayList<Resource> originalList;
-    ArrayList<Resource> resourceList;
+    ArrayList<T> originalList;
+    ArrayList<T> resourceList;
 
 
-    public ResourceSearchFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList) {
+    public ResourceSearchFilter(ArrayList<T> originalList, ArrayList<T> resourceList) {
         //we need pointer to inform the array adapter of what we are doing
         this.originalList = originalList;
         this.resourceList = resourceList;
@@ -27,10 +27,10 @@ public abstract class ResourceSearchFilter extends Filter {
         FilterResults result = new FilterResults();
         if (constraint != null && constraint.toString().length() > 0) {
             constraint = constraint.toString().toLowerCase();
-            ArrayList<Resource> filteredItems = new ArrayList<Resource>();
+            ArrayList<T> filteredItems = new ArrayList<>();
 
             for (int i = 0, l = originalList.size(); i < l; i++) {
-                Resource resource = originalList.get(i);
+                T resource = originalList.get(i);
                 //effective search pattern
                 if (resource.getTitle().toString().toLowerCase().contains(constraint))
                     filteredItems.add(resource);

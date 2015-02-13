@@ -14,10 +14,18 @@
         <ListView
             android:id="@+id/left_drawer_categories_list"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="200dp"
             android:background="#111"
             android:choiceMode="multipleChoice"
             android:divider="@android:color/transparent"
             android:dividerHeight="0dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:id="@+id/navigation_drawer_artists"
+            android:textSize="40dp"
+            android:textColor="#ffffffff" />
     </LinearLayout>
 </LinearLayout>

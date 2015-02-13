@@ -1,6 +1,7 @@
 package com.insalyon.les24heures.eventbus;
 
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.utils.SlidingUpPannelState;
 
 /**
@@ -8,30 +9,29 @@ import com.insalyon.les24heures.utils.SlidingUpPannelState;
  */
 public class ManageDetailSlidingUpDrawer {
     SlidingUpPannelState state;
-    Resource resource;
+    DayResource dayResource;
+    NightResource nightResource;
 
-    public Resource getResource() {
-        return resource;
+    public DayResource getDayResource() {
+        return dayResource;
     }
 
-    public ManageDetailSlidingUpDrawer(SlidingUpPannelState state, Resource resource) {
+    public ManageDetailSlidingUpDrawer(SlidingUpPannelState state, DayResource dayResource) {
         this.state = state;
-        this.resource = resource;
+        this.dayResource = dayResource;
     }
 
-    public void setResource(Resource resource) {
-        this.resource = resource;
-    }
-
-    public ManageDetailSlidingUpDrawer(SlidingUpPannelState state) {
+    public ManageDetailSlidingUpDrawer(SlidingUpPannelState state, NightResource nightResource) {
         this.state = state;
+        this.nightResource = nightResource;
+    }
+
+    public NightResource getNightResource() {
+        return nightResource;
     }
 
     public SlidingUpPannelState getState() {
         return state;
     }
 
-    public void setState(SlidingUpPannelState state) {
-        this.state = state;
-    }
 }

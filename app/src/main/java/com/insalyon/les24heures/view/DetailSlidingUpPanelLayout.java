@@ -12,7 +12,7 @@ import android.widget.TextView;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.fragments.DetailFragment;
-import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.DetailSlidingUpPanelLayoutNullActivity;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -116,6 +116,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 //            activity.invalidateOptionsMenu();
             activity.customOnOptionsMenu();
             activity.restoreTitle();
+
+
         }
 
         @Override
@@ -127,6 +129,9 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
             activity.customOnOptionsMenu();
 //            activity.invalidateOptionsMenu();
+
+            //if anchored without touching header, need update
+            detailFragment.updateHeavyData();
         }
 
         @Override
@@ -157,6 +162,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
      * @return
      */
     public Boolean setup() throws DetailSlidingUpPanelLayoutNullActivity {
+
         if(wideHeight == null)
             return false;
         if(activity == null){
@@ -209,7 +215,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
                     this.showPanel();
                     break;
             }
-            detailFragment.notifyDataChanged(null);
+            detailFragment.notifyDataChanged((DayResource)null);
+            //il faut le faire pour NightResource aussi, mais comment..., activity le sait...
         }
 
         return true;
@@ -234,7 +241,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
 
 
 
-    public void showDetailPanel(Resource res){
+    public void showDetailPanel(DayResource res){
         detailFragment.notifyDataChanged(res);
         this.showPanel();
     }
@@ -255,7 +262,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout{
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         wideHeight = MeasureSpec.getSize(heightMeasureSpec);
 
-        if(!isSetup)
+        if(!isSetup && detailFragment != null)
             try {
                 setup();
             } catch (DetailSlidingUpPanelLayoutNullActivity detailSlidingUpPanelLayoutNullActivity) {

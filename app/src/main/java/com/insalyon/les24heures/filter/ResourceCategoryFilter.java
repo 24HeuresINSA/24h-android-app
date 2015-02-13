@@ -10,14 +10,14 @@ import java.util.Arrays;
 /**
  * Created by remi on 27/12/14.
  */
-public abstract class ResourceCategoryFilter extends Filter {
+public abstract class ResourceCategoryFilter<T extends Resource> extends Filter {
 
-    ArrayList<Resource> originalList;
-    ArrayList<Resource> resourceList;
+    ArrayList<T> originalList;
+    ArrayList<T> resourceList;
 
     ArrayList<String> selectedCategories;
 
-    public ResourceCategoryFilter(ArrayList<Resource> originalList, ArrayList<Resource> resourceList) {
+    public ResourceCategoryFilter(ArrayList<T> originalList, ArrayList<T> resourceList) {
         //we need pointer to inform the array adapter of what we are doing
         this.originalList = originalList;
         this.resourceList = resourceList;
@@ -34,13 +34,13 @@ public abstract class ResourceCategoryFilter extends Filter {
                     );
 
             if (selectedCategories.size() != 0) {
-                ArrayList<Resource> filteredItems = new ArrayList<Resource>();
+                ArrayList<Resource> filteredItems = new ArrayList<>();
 
                 for (int i = 0, l = originalList.size(); i < l; i++) {
-                    Resource resource = originalList.get(i);
+                    Resource dayResource = originalList.get(i);
                     //effective search pattern
-                    if (isDisplayable(resource))
-                        filteredItems.add(resource);
+                    if (isDisplayable(dayResource))
+                        filteredItems.add(dayResource);
                 }
                 result.count = filteredItems.size();
                 result.values = filteredItems;
@@ -61,14 +61,14 @@ public abstract class ResourceCategoryFilter extends Filter {
     }
 
 
-    private Boolean isDisplayable(Resource resource) {
+    private Boolean isDisplayable(Resource dayResource) {
         if (selectedCategories.contains("favorites")) {
             if (selectedCategories.size() == 1)
-                return resource.isFavorites();
-            return resource.isFavorites() &&
-                    (selectedCategories.contains(resource.getCategory().toString()));
+                return dayResource.isFavorites();
+            return dayResource.isFavorites() &&
+                    (selectedCategories.contains(dayResource.getCategory().toString()));
         }
-        return selectedCategories.contains(resource.getCategory().toString());
+        return selectedCategories.contains(dayResource.getCategory().toString());
     }
 
 }

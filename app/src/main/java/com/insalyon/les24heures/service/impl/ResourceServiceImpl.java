@@ -5,9 +5,12 @@ import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.insalyon.les24heures.DTO.AssomakerDTO;
-import com.insalyon.les24heures.DTO.ResourceDTO;
+import com.insalyon.les24heures.DTO.DayResourceDTO;
+import com.insalyon.les24heures.DTO.NightResourceDTO;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Category;
+import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceRetrofitService;
@@ -53,26 +56,63 @@ public class ResourceServiceImpl implements ResourceService  {
         return resourceService;
     }
 
-    public Resource fromDTO(ResourceDTO resourceDTO){
+    public DayResource fromDTO(DayResourceDTO dayResourceDTO){
+        //TODO doit venir du backend
+        Random rand = new Random();
+        Category category = categoryService.getCategories().get(rand.nextInt(categoryService.getCategories().size()));
+
+        //just pour le test
+        Boolean isFavorites = (rand.nextInt(2) == 0 ? true : false);
+
+
+        return new DayResource(dayResourceDTO.getNom(),
+                dayResourceDTO.getDescription(),
+                scheduleService.fromDTO(dayResourceDTO.getHoraires()),
+                new LatLng(Double.valueOf(dayResourceDTO.getLocX()),
+                Double.valueOf(dayResourceDTO.getLocY())),
+                category,
+                isFavorites);
+    }
+
+    public NightResource fromDTO(NightResourceDTO nightResourceDTO){
         //TODO doit venir du backend
         Random rand = new Random();
         Category category = categoryService.getCategories().get(rand.nextInt(categoryService.getCategories().size()));
         Boolean isFavorites = (rand.nextInt(2) == 0 ? true : false);
 
 
-        return new Resource(resourceDTO.getNom(),resourceDTO.getDescription(),
-                scheduleService.fromDTO(resourceDTO.getHoraires()),
-                new LatLng(Double.valueOf(resourceDTO.getLocX()),Double.valueOf(resourceDTO.getLocY())), category,isFavorites);
+        return new NightResource(nightResourceDTO.getName(),
+                nightResourceDTO.getDescription(),
+                scheduleService.fromDTO(nightResourceDTO.getHoraires()),
+                category,//nightResourceDTO.getCategory(),
+                isFavorites,
+                nightResourceDTO.getFacebook_url(),
+                nightResourceDTO.getTwitter_url(),
+                nightResourceDTO.getSite_url(),
+                nightResourceDTO.getStage());
     }
 
-    public ArrayList<Resource> fromDTO(ArrayList<ResourceDTO> resourceDTOs) {
-        ArrayList<Resource>  resources = new ArrayList<>();
 
-        for (ResourceDTO resourceDTO : resourceDTOs) {
-            resources.add(this.fromDTO(resourceDTO));
+
+    public ArrayList<DayResource> fromDTO(ArrayList<DayResourceDTO> dayResourceDTOs) {
+        ArrayList<DayResource> dayResources = new ArrayList<>();
+
+        for (DayResourceDTO dayResourceDTO : dayResourceDTOs) {
+            dayResources.add(this.fromDTO(dayResourceDTO));
         }
 
-        return resources;
+        return dayResources;
+
+    }
+
+    public ArrayList<NightResource> fromDTO(List<NightResourceDTO> nightResourceDTOs) {
+        ArrayList<NightResource> nightResources = new ArrayList<>();
+
+        for (NightResourceDTO nightResourceDTO : nightResourceDTOs) {
+            nightResources.add(this.fromDTO(nightResourceDTO));
+        }
+
+        return nightResources;
 
     }
 
@@ -84,15 +124,35 @@ public class ResourceServiceImpl implements ResourceService  {
 
                 Log.d("getResources", "sucess");
 
-                ArrayList<ResourceDTO> resourceDTOs = new ArrayList<ResourceDTO>();
+                ArrayList<DayResourceDTO> dayResourceDTOs = new ArrayList<DayResourceDTO>();
 
-                Map<Integer, ArrayList<ResourceDTO>> animations = assomakerDTO.getAnimations();
-                for (ArrayList<ResourceDTO> dtos : animations.values()) {
-                    resourceDTOs.addAll(dtos);
+                Map<Integer, ArrayList<DayResourceDTO>> animations = assomakerDTO.getAnimations();
+                for (ArrayList<DayResourceDTO> dtos : animations.values()) {
+                    dayResourceDTOs.addAll(dtos);
                 }
-                Log.d("getResources",resourceDTOs.toString());
+                Log.d("getResources", dayResourceDTOs.toString());
 
-                ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(resourceDTOs));
+                ArrayList<NightResourceDTO> nightResourceDTOs = assomakerDTO.getArtists();
+
+                //TODO bricolage temporaire pour le double backend
+                ResourcesUpdatedEvent resourcesUpdatedEvent;
+                if (nightResourceDTOs!= null){
+                     resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs),
+                            fromDTO(nightResourceDTOs));
+                }else{
+                     resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs));
+                    ArrayList<NightResource> mockArtist = new ArrayList<NightResource>();
+
+                    List<Schedule> schedules = new ArrayList<Schedule>();
+                    schedules.add(new Schedule(Day.MONDAY,new Date(),new Date()));
+
+                    mockArtist.add(new NightResource("untitle","blabla",schedules,new Category("pouet","ic"),"fb","tweet","site","BIG"));
+                    mockArtist.add(new NightResource("deuxtitle","blabla",schedules,new Category("pouet","ic"),"fb","tweet","site","BIG"));
+
+                    resourcesUpdatedEvent.setNightResourceList(mockArtist);
+                }
+
+
                 eventBus.post(resourcesUpdatedEvent);
             }
 
@@ -117,15 +177,15 @@ public class ResourceServiceImpl implements ResourceService  {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                ArrayList<Resource> resourcesList = new ArrayList<>();
+                ArrayList<DayResource> resourcesList = new ArrayList<>();
 
                 List<Schedule> schedules = new ArrayList<Schedule>();
                 schedules.add(new Schedule(Day.MONDAY,new Date(),new Date()));
-                resourcesList.add(new Resource("se divertir", "les plaisirs c'est bien pour les calins et les chateau coconuts", schedules, new LatLng(45.783088762965, 4.8747852427139), categoryService.getCategories().get(0)));
-                resourcesList.add(new Resource("se cultiver", "la culture on s'en fout sauf Alexis et Jeaaane", schedules, new LatLng(45.783514302374, 4.8747852427139), categoryService.getCategories().get(1)));
-                resourcesList.add(new Resource("du sport", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", schedules, new LatLng(45.784196093864, 4.8747852427139), categoryService.getCategories().get(2)));
-                resourcesList.add(new Resource("mes favoris", "mes favoris pour bien montrer que j'ai des gouts de merde", schedules, new LatLng(45.783827609484, 4.8747852427139), categoryService.getCategories().get(2)));
-                resourcesList.add(new Resource("lieux utiles", "où qu'on boit où qu'on pisse, où qu'on mange", schedules, new LatLng(45.784196093888, 4.8747852427139), categoryService.getCategories().get(0)));
+                resourcesList.add(new DayResource("se divertir", "les plaisirs c'est bien pour les calins et les chateau coconuts", schedules, new LatLng(45.783088762965, 4.8747852427139), categoryService.getCategories().get(0)));
+                resourcesList.add(new DayResource("se cultiver", "la culture on s'en fout sauf Alexis et Jeaaane", schedules, new LatLng(45.783514302374, 4.8747852427139), categoryService.getCategories().get(1)));
+                resourcesList.add(new DayResource("du sport", "du sport pour les pédales et éliminer l'apero parce qu'il ne faut pas déconner", schedules, new LatLng(45.784196093864, 4.8747852427139), categoryService.getCategories().get(2)));
+                resourcesList.add(new DayResource("mes favoris", "mes favoris pour bien montrer que j'ai des gouts de merde", schedules, new LatLng(45.783827609484, 4.8747852427139), categoryService.getCategories().get(2)));
+                resourcesList.add(new DayResource("lieux utiles", "où qu'on boit où qu'on pisse, où qu'on mange", schedules, new LatLng(45.784196093888, 4.8747852427139), categoryService.getCategories().get(0)));
 
                 ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(resourcesList);
                 eventBus.post(resourcesUpdatedEvent);
@@ -136,9 +196,9 @@ public class ResourceServiceImpl implements ResourceService  {
     }
 
     @Override
-    public Schedule getNextSchedule(Resource resource) {
+    public Schedule getNextSchedule(Resource dayResource) {
         //TODO according to current time
-        return resource.getSchedules().get(0);
+        return dayResource.getSchedules().get(0);
     }
 
 }

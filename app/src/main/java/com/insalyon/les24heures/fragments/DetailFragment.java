@@ -26,6 +26,8 @@ import com.insalyon.les24heures.JazzyViewPager.OutlineContainer;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ScheduleAdapter;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
+import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
@@ -61,6 +63,16 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     GridView schedulesGrid;
     @InjectView(R.id.detail_sliding_layout_header)
     View slidingHeader;
+    @InjectView(R.id.detail_url)
+    View detailUrlContainer;
+    @InjectView(R.id.detail_url_facebook)
+    TextView urlFacebook;
+    @InjectView(R.id.detail_url_twitter)
+    TextView urlTwitter;
+    @InjectView(R.id.detail_url_web)
+    TextView urlWeb;
+    @InjectView(R.id.detail_mini_maps_holder)
+            View miniMapsHolder;
 
     Resource resource;
     private ScheduleAdapter scheduleAdapter;
@@ -178,7 +190,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
      */
     @Override
     public void onMapReady(final GoogleMap map) {
-        if(resource != null) {
+        if(resource != null && resource.getClass() == DayResource.class) {
             addMarkerAndMoveCam();
         }else{
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
@@ -194,14 +206,14 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         googleMap.addMarker(new MarkerOptions()
 //                                .title(resource.getTitle() + " " + resource.getCategory().getName())
 //                                .snippet(resource.getDescription())
-                .position(resource.getLoc()));
+                .position(((DayResource) resource).getLoc()));
 
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(resource.getLoc(), 15));
+        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(((DayResource)resource).getLoc(), 15));
 
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng latLng) {
-                eventBus.postSticky(new ResourceSelectedEvent(resource));
+                eventBus.postSticky(new ResourceSelectedEvent((DayResource)resource));
             }
         });
     }
@@ -218,12 +230,24 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    private void updateHeavyData(){
+    public void updateHeavyData(){
         if(!heavyDataUpdated) {
 
-            //mini maps
-            //the map update
-            addMarkerAndMoveCam();
+            if(resource.getClass() == DayResource.class) {
+                //mini maps
+                addMarkerAndMoveCam();
+
+                miniMapsHolder.setVisibility(View.VISIBLE);
+                detailUrlContainer.setVisibility(View.GONE);
+
+            }else if(resource.getClass() == NightResource.class) {
+                urlFacebook.setText(((NightResource)resource).getFacebookUrl());
+                urlWeb.setText(((NightResource)resource).getSiteUrl());
+                urlTwitter.setText(((NightResource)resource).getTwitterUrl());
+
+                miniMapsHolder.setVisibility(View.GONE);
+                detailUrlContainer.setVisibility(View.VISIBLE);
+            }
 
 
             //schedules
@@ -256,6 +280,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
 
     }
+
+
 
 
     /**
