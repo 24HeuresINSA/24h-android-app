@@ -19,7 +19,7 @@ import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
-import com.insalyon.les24heures.adapter.ResourceAdapter;
+import com.insalyon.les24heures.adapter.DayResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
@@ -57,7 +57,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
 
 
-    ResourceAdapter resourceAdapter = null;
+    DayResourceAdapter dayResourceAdapter = null;
     private QuickReturnAttacher quickReturnAttacher;
     private Location lastKnownPosition;
 
@@ -79,11 +79,11 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         setHasOptionsMenu(true);
 
         //create an ArrayAdaptar from the String Array
-        resourceAdapter = new ResourceAdapter(this.getActivity().getApplicationContext(),
+        dayResourceAdapter = new DayResourceAdapter(this.getActivity().getApplicationContext(),
                 R.layout.output_list_item, new ArrayList<>(resourcesList),lastKnownPosition); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
 
         // Wrap your adapter with QuickReturnAdapter
-        resourceListView.setAdapter(new QuickReturnAdapter(resourceAdapter));
+        resourceListView.setAdapter(new QuickReturnAdapter(dayResourceAdapter));
 
         return view;
     }
@@ -140,7 +140,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
-        resourceAdapter.getFilter().filter(event.getQuery().toString());
+        dayResourceAdapter.getFilter().filter(event.getQuery().toString());
     }
 
     @OnClick(R.id.fab_goto_maps)
@@ -234,7 +234,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
      * Fragment methods        *
      */
     private Boolean setCategoryFilter() {
-        resourceAdapter.getCategoryFilter().filter(
+        dayResourceAdapter.getCategoryFilter().filter(
                 (categoriesSelected.size() != 0) ? categoriesSelected.toString() : null);
 
         return true;

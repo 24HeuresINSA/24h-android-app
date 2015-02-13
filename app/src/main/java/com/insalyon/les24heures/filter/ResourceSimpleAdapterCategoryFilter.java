@@ -2,17 +2,18 @@ package com.insalyon.les24heures.filter;
 
 import com.insalyon.les24heures.adapter.ResourceAdapter;
 import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
 
 /**
  * Created by remi on 20/01/15.
  */
-public class ResourceSimpleAdapterCategoryFilter extends ResourceCategoryFilter<DayResource> {
+public class ResourceSimpleAdapterCategoryFilter<T extends Resource> extends ResourceCategoryFilter<T> {
     ResourceAdapter resourceAdapter;
 
 
-    public ResourceSimpleAdapterCategoryFilter(ArrayList<DayResource> originalList, ArrayList<DayResource> dayResourceList, ResourceAdapter resourceAdapter) {
+    public ResourceSimpleAdapterCategoryFilter(ArrayList<T> originalList, ArrayList<T> dayResourceList, ResourceAdapter resourceAdapter) {
         super(originalList, dayResourceList);
         this.resourceAdapter = resourceAdapter;
     }
@@ -23,7 +24,7 @@ public class ResourceSimpleAdapterCategoryFilter extends ResourceCategoryFilter<
                                   FilterResults results) {
 
         resourceList.clear();
-        resourceList.addAll((ArrayList<DayResource>) results.values);
+        resourceList.addAll((ArrayList<T>) results.values);
         resourceAdapter.notifyDataSetChanged();
         resourceAdapter.clear(); //will clear resourceAdapter.resourceList
         for (int i = 0, l = resourceList.size(); i < l; i++) {
