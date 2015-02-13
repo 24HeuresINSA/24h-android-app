@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by remi on 20/01/15.
  */
-public class ResourceListCategoryFilter extends ResourceCategoryFilter {
+public class ResourceListCategoryFilter extends ResourceCategoryFilter<DayResource> {
     ResourceAdapter resourceAdapter;
 
 
@@ -22,12 +22,12 @@ public class ResourceListCategoryFilter extends ResourceCategoryFilter {
     protected void publishResults(CharSequence constraint,
                                   FilterResults results) {
 
-        dayResourceList.clear();
-        dayResourceList.addAll((ArrayList<DayResource>) results.values);
+        resourceList.clear();
+        resourceList.addAll((ArrayList<DayResource>) results.values);
         resourceAdapter.notifyDataSetChanged();
         resourceAdapter.clear(); //will clear resourceAdapter.resourceList
-        for (int i = 0, l = dayResourceList.size(); i < l; i++) {
-            resourceAdapter.add(dayResourceList.get(i)); //will populate resourceAdapter.resourceList
+        for (int i = 0, l = resourceList.size(); i < l; i++) {
+            resourceAdapter.add(resourceList.get(i)); //will populate resourceAdapter.resourceList
         }
         resourceAdapter.notifyDataSetInvalidated();
     }

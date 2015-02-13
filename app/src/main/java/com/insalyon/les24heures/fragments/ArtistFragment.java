@@ -73,7 +73,7 @@ public class ArtistFragment extends ContentFrameFragment<NightResource>  {
         resourcesList.clear();
         resourcesList.addAll(event.getNightResourceList());
         text.setText(resourcesList.toString());
-        //TODO
+
 //        setCategoryFilter();
 
     }

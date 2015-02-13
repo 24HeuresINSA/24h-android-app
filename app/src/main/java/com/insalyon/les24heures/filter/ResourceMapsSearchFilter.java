@@ -8,7 +8,7 @@ import java.util.ArrayList;
 /**
  * Created by remi on 20/01/15.
  */
-public class ResourceMapsSearchFilter extends ResourceSearchFilter {
+public class ResourceMapsSearchFilter extends ResourceSearchFilter<DayResource> {
 
     OutputMapsFragment outputMapsFragment;
 
@@ -21,14 +21,14 @@ public class ResourceMapsSearchFilter extends ResourceSearchFilter {
 
     @Override
     protected void publishResults(CharSequence constraint, FilterResults results) {
-        dayResourceList.clear();
-        dayResourceList.addAll((ArrayList<DayResource>) results.values);
+        resourceList.clear();
+        resourceList.addAll((ArrayList<DayResource>) results.values);
 
         for (DayResource dayResource : originalList) {
             dayResource.getMarker().setVisible(false);
         }
 
-        for (DayResource dayResource : dayResourceList) {
+        for (DayResource dayResource : resourceList) {
             dayResource.getMarker().setVisible(true);
         }
 

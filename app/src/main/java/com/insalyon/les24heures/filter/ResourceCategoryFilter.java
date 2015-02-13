@@ -2,7 +2,7 @@ package com.insalyon.les24heures.filter;
 
 import android.widget.Filter;
 
-import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.Resource;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,17 +10,17 @@ import java.util.Arrays;
 /**
  * Created by remi on 27/12/14.
  */
-public abstract class ResourceCategoryFilter extends Filter {
+public abstract class ResourceCategoryFilter<T extends Resource> extends Filter {
 
-    ArrayList<DayResource> originalList;
-    ArrayList<DayResource> dayResourceList;
+    ArrayList<T> originalList;
+    ArrayList<T> resourceList;
 
     ArrayList<String> selectedCategories;
 
-    public ResourceCategoryFilter(ArrayList<DayResource> originalList, ArrayList<DayResource> dayResourceList) {
+    public ResourceCategoryFilter(ArrayList<T> originalList, ArrayList<T> resourceList) {
         //we need pointer to inform the array adapter of what we are doing
         this.originalList = originalList;
-        this.dayResourceList = dayResourceList;
+        this.resourceList = resourceList;
     }
 
     @Override
@@ -34,10 +34,10 @@ public abstract class ResourceCategoryFilter extends Filter {
                     );
 
             if (selectedCategories.size() != 0) {
-                ArrayList<DayResource> filteredItems = new ArrayList<DayResource>();
+                ArrayList<Resource> filteredItems = new ArrayList<>();
 
                 for (int i = 0, l = originalList.size(); i < l; i++) {
-                    DayResource dayResource = originalList.get(i);
+                    Resource dayResource = originalList.get(i);
                     //effective search pattern
                     if (isDisplayable(dayResource))
                         filteredItems.add(dayResource);
@@ -61,7 +61,7 @@ public abstract class ResourceCategoryFilter extends Filter {
     }
 
 
-    private Boolean isDisplayable(DayResource dayResource) {
+    private Boolean isDisplayable(Resource dayResource) {
         if (selectedCategories.contains("favorites")) {
             if (selectedCategories.size() == 1)
                 return dayResource.isFavorites();
