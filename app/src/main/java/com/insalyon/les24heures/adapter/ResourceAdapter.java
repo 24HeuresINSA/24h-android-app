@@ -14,8 +14,8 @@ import android.widget.TextView;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.filter.ResourceCategoryFilter;
-import com.insalyon.les24heures.filter.ResourceListCategoryFilter;
-import com.insalyon.les24heures.filter.ResourceListSearchFilter;
+import com.insalyon.les24heures.filter.ResourceSimpleAdapterCategoryFilter;
+import com.insalyon.les24heures.filter.ResourceSimpleAdapterSearchFilter;
 import com.insalyon.les24heures.filter.ResourceSearchFilter;
 import com.insalyon.les24heures.model.DayResource;
 
@@ -55,7 +55,7 @@ public class ResourceAdapter extends ArrayAdapter<DayResource>  {
     @Override
     public Filter getFilter() {
         if (resourceSearchFilter == null) {
-            resourceSearchFilter = new ResourceListSearchFilter(originalList, dayResourceList, this);
+            resourceSearchFilter = new ResourceSimpleAdapterSearchFilter(originalList, dayResourceList, this);
         }
         return resourceSearchFilter;
     }
@@ -63,7 +63,7 @@ public class ResourceAdapter extends ArrayAdapter<DayResource>  {
 
     public Filter getCategoryFilter() {
         if (resourceCategoryFilter == null) {
-            resourceCategoryFilter = new ResourceListCategoryFilter(originalList, dayResourceList, this);
+            resourceCategoryFilter = new ResourceSimpleAdapterCategoryFilter(originalList, dayResourceList, this);
         }
         return resourceCategoryFilter;
     }

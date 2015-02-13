@@ -8,11 +8,11 @@ import java.util.ArrayList;
 /**
  * Created by remi on 20/01/15.
  */
-public class ResourceListCategoryFilter extends ResourceCategoryFilter<DayResource> {
+public class ResourceSimpleAdapterSearchFilter extends ResourceSearchFilter<DayResource> {
     ResourceAdapter resourceAdapter;
 
 
-    public ResourceListCategoryFilter(ArrayList<DayResource> originalList, ArrayList<DayResource> dayResourceList, ResourceAdapter resourceAdapter) {
+    public ResourceSimpleAdapterSearchFilter(ArrayList<DayResource> originalList, ArrayList<DayResource> dayResourceList, ResourceAdapter resourceAdapter) {
         super(originalList, dayResourceList);
         this.resourceAdapter = resourceAdapter;
     }
@@ -23,10 +23,10 @@ public class ResourceListCategoryFilter extends ResourceCategoryFilter<DayResour
                                   FilterResults results) {
 
         resourceList.clear();
-        resourceList.addAll((ArrayList<DayResource>) results.values);
+        resourceList.addAll((ArrayList<DayResource>)results.values);
         resourceAdapter.notifyDataSetChanged();
         resourceAdapter.clear(); //will clear resourceAdapter.resourceList
-        for (int i = 0, l = resourceList.size(); i < l; i++) {
+        for(int i = 0, l = resourceList.size(); i < l; i++) {
             resourceAdapter.add(resourceList.get(i)); //will populate resourceAdapter.resourceList
         }
         resourceAdapter.notifyDataSetInvalidated();
