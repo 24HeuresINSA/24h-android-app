@@ -142,9 +142,13 @@ public class ResourceServiceImpl implements ResourceService  {
                 }else{
                      resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs));
                     ArrayList<NightResource> mockArtist = new ArrayList<NightResource>();
+
                     List<Schedule> schedules = new ArrayList<Schedule>();
                     schedules.add(new Schedule(Day.MONDAY,new Date(),new Date()));
+
                     mockArtist.add(new NightResource("untitle","blabla",schedules,new Category("pouet","ic"),"fb","tweet","site","BIG"));
+                    mockArtist.add(new NightResource("deuxtitle","blabla",schedules,new Category("pouet","ic"),"fb","tweet","site","BIG"));
+
                     resourcesUpdatedEvent.setNightResourceList(mockArtist);
                 }
 

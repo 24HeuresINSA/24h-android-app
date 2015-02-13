@@ -4,7 +4,6 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -132,7 +131,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
      */
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
-        Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
+       // Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
 //        setCategoryFilter();
 
     }

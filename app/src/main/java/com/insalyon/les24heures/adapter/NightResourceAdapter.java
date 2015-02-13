@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
-import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.NightResource;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by remi on 27/12/14.
  */
-public class DayResourceAdapter extends ResourceAdapter<DayResource>  {
+public class NightResourceAdapter extends ResourceAdapter<NightResource>  {
 
     private final EventBus eventBus;
     private final int viewId;
@@ -30,15 +30,15 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource>  {
     LayoutInflater vi;
     Location lastKnownPosition;
 
-    public DayResourceAdapter(Context context, int textViewResourceId,
-                              ArrayList<DayResource> dayResources, Location lastKnownPosition) {
+    public NightResourceAdapter(Context context, int textViewResourceId,
+                                ArrayList<NightResource> dayResources) {
         super(context, textViewResourceId, dayResources);
 //        this.dayResourceList = new ArrayList<>();
 //        this.dayResourceList.addAll(dayResources);
 //        this.originalList = new ArrayList<>();
 //        this.originalList.addAll(dayResources);
-        this.lastKnownPosition = lastKnownPosition;
         this.viewId = textViewResourceId;
+
 
         this.vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -51,7 +51,6 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource>  {
 
     private class ViewHolder {
         TextView title;
-        TextView distance;
         TextView schedule;
         ImageButton favorites;
     }
@@ -65,44 +64,34 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource>  {
             convertView = vi.inflate(viewId, null); //TODO use the one in the fields
 
             holder = new ViewHolder();
-            holder.title = (TextView) convertView.findViewById(R.id.list_item_title_text);
-            holder.distance = (TextView) convertView.findViewById(R.id.list_item_distance_text);
-            holder.schedule = (TextView) convertView.findViewById(R.id.list_item_schedule_text);
-            holder.favorites = (ImageButton) convertView.findViewById(R.id.list_item_favorite);
+            holder.title = (TextView) convertView.findViewById(R.id.artist_grid_item_title_text);
+            holder.schedule = (TextView) convertView.findViewById(R.id.artist_grid_item_schedule_text);
+            holder.favorites = (ImageButton) convertView.findViewById(R.id.artist_grid_item_favorite);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        final DayResource dayResource = resourceList.get(position);
+        final NightResource nightResource = resourceList.get(position);
 
         holder.favorites.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dayResource.setIsFavorites(!dayResource.isFavorites());
-                if(dayResource.isFavorites())
+                nightResource.setIsFavorites(!nightResource.isFavorites());
+                if (nightResource.isFavorites())
                     ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
                 else
                     ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
             }
         });
 
-        holder.title.setText(dayResource.getTitle());
+        holder.title.setText(nightResource.getTitle());
         holder.title.setSelected(true);
-        if(dayResource.isFavorites())
+        if(nightResource.isFavorites())
             holder.favorites.setImageResource(R.drawable.ic_favorites_checked);
         else
             holder.favorites.setImageResource(R.drawable.ic_favorites_unchecked);
-        holder.schedule.setText(dayResource.printSchedules());
-        Location loc = new Location("loc");
-        loc.setLongitude(dayResource.getLoc().longitude);
-        loc.setLatitude(dayResource.getLoc().latitude);
-        if(lastKnownPosition != null){
-            Integer distance = Math.round(lastKnownPosition.distanceTo(loc));
-            holder.distance.setText((distance < 1000) ? distance+"m":distance/1000+"km");
-        } else {
-            holder.distance.setText(R.string.list_no_last_known_location);
-        }
+        holder.schedule.setText(nightResource.printSchedules());
 
 
 
@@ -114,9 +103,9 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource>  {
 
 
     public void onEvent(ResourcesUpdatedEvent event) {
-        Log.d("onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
+        Log.d("onEvent(ResourcesUpdatedEvent)", event.getNightResourceList().toString());
         originalList.clear();
-        originalList.addAll(event.getDayResourceList());
+        originalList.addAll(event.getNightResourceList());
     }
 
 

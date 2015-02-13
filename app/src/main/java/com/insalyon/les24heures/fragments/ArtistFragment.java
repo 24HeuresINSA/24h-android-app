@@ -6,19 +6,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
+import com.insalyon.les24heures.adapter.NightResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
-import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.NightResource;
-import com.insalyon.les24heures.utils.SlidingUpPannelState;
+import com.insalyon.les24heures.view.AutoExpandGridView;
+
+import java.util.ArrayList;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 
 /**
  * Created by remi on 11/02/15.
@@ -27,8 +27,9 @@ public class ArtistFragment extends ContentFrameFragment<NightResource>  {
     private static final String TAG = OutputMapsFragment.class.getCanonicalName();
     View view;
 
-    @InjectView(R.id.artists_fragment_text)
-    TextView text;
+    @InjectView(R.id.artiste_fragment_grid_layout)
+    AutoExpandGridView artistGridView;
+    private NightResourceAdapter nightResourceAdapter;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,16 @@ public class ArtistFragment extends ContentFrameFragment<NightResource>  {
         view = inflater.inflate(R.layout.artists_fragment,container,false);
         ButterKnife.inject(this, view);
 
-        text.setText(resourcesList.toString());
+        //create an ArrayAdaptar from the String Array
+        nightResourceAdapter = new NightResourceAdapter(this.getActivity().getApplicationContext(),
+                R.layout.artist_grid_item, new ArrayList<>(resourcesList)); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
+
+        //get filters than are managed by ContentFrameFragment
+        searchFilter = nightResourceAdapter.getFilter();
+        categoryFilter = nightResourceAdapter.getCategoryFilter();
+
+        artistGridView.setAdapter(nightResourceAdapter);
+
 
         return view;
     }
@@ -60,8 +70,8 @@ public class ArtistFragment extends ContentFrameFragment<NightResource>  {
      */
     public void onEvent(CategoriesSelectedEvent event) {
         super.onEvent(event);
-        Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
-        //TODO
+       // Log.d(TAG + "onEvent(CategoryEvent)", event.getCategories().toString());
+
 //        resourceAdapter.getCategoryFilter().filter(
 //                (event.getCategories().size() != 0) ? event.getCategories().toString() : null
 //        );
@@ -69,28 +79,22 @@ public class ArtistFragment extends ContentFrameFragment<NightResource>  {
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
+        super.onEvent(event);
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getNightResourceList().toString());
         resourcesList.clear();
         resourcesList.addAll(event.getNightResourceList());
-        text.setText(resourcesList.toString());
 
 //        setCategoryFilter();
 
     }
 
     public void onEvent(SearchEvent event) {
+        super.onEvent(event);
         Log.d("onEvent(SearchEvent)", event.getQuery().toString());
-        //TODO
 //        resourceAdapter.getFilter().filter(event.getQuery().toString());
 
     }
 
-    @OnClick(R.id.artists_fragment_text)
-    public void onClick(){
-        ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.ANCHORED,
-                resourcesList.get(0));
-        eventBus.post(manageDetailSlidingUpDrawer);
-    }
 
 
 

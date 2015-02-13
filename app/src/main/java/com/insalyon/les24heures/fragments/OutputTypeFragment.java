@@ -21,7 +21,6 @@ public class OutputTypeFragment extends ContentFrameFragment<DayResource>   {
 
     EventBus eventBus;
 
-    ArrayList<Category> categoriesSelected;
 
 
 
