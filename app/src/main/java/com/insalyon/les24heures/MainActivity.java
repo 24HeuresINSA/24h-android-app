@@ -293,7 +293,7 @@ public class MainActivity extends Activity {
             public boolean onQueryTextChange(String newText) {
                 SearchEvent searchEvent = new SearchEvent(newText);
                 eventBus.post(searchEvent);
-                //TODO gros soucis, ce truc est fire quand sliding up s'ouvre....
+                //TODO gros soucis, ce truc est fire quand sliding up s'ouvre et aussi au chandgement d'output...
                 searchQuery = newText;
                 return false;
             }

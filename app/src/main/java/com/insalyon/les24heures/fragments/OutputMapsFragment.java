@@ -1,5 +1,6 @@
 package com.insalyon.les24heures.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -73,10 +74,26 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         searchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this);
         markerResourceMap = new HashMap<>();
 
-        if(savedInstanceState != null){
-            if(savedInstanceState.getParcelable("cameraPosition") != null){
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getParcelable("cameraPosition") != null) {
                 initialCameraPosition = savedInstanceState.getParcelable("cameraPosition");
             }
+        }
+
+        if (initialCameraPosition == null) {
+            SharedPreferences pref = getActivity().getPreferences(0);
+            String lat = "45.74968239082803";
+            String lng = "4.852847680449486";
+            String zoom = "12";
+            String tilt = "0";
+            String bearing = "0";
+            lat = pref.getString("lat", lat);
+            lng = pref.getString("lng", lng);
+            zoom = pref.getString("zoom", zoom);
+            tilt = pref.getString("tilt", tilt);
+            bearing = pref.getString("bearing", bearing);
+            initialCameraPosition = new CameraPosition(
+                    new LatLng(Double.valueOf(lat), Double.valueOf(lng)), Float.valueOf(zoom), Float.valueOf(tilt), Float.valueOf(bearing));
         }
 
     }
@@ -124,11 +141,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         // MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID and MAP_TYPE_NONE MAP_TYPE_SATELLITE
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        if(initialCameraPosition != null){
+        //if (initialCameraPosition != null) //{
             googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(initialCameraPosition));
-        }else
-           //to prevent user to throw up, zoom on Lyon without animateCamera
-            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
+       // } else
+            //to prevent user to throw up, zoom on Lyon without animateCamera
+           // googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
 
         //display data if already there when the fragment is created
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
@@ -160,16 +177,16 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     }
 
     public void onEvent(CategoriesSelectedEvent event) {
-        super.onEvent(event);
+      super.onEvent(event);
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-        addMarkers();
+       addMarkers();
     }
 
     public void onEvent(SearchEvent event) {
-        super.onEvent(event);
+      super.onEvent(event);
     }
 
 
@@ -179,8 +196,8 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         selectedDayResource = selectedEvent.getDayResource();
     }
 
-    public void onEvent(ManageDetailSlidingUpDrawer event){
-        if(event.getState().equals(SlidingUpPannelState.HIDE)){
+    public void onEvent(ManageDetailSlidingUpDrawer event) {
+        if (event.getState().equals(SlidingUpPannelState.HIDE)) {
             selectedDayResource.getMarker().setIcon(BitmapDescriptorFactory.defaultMarker());
         }
     }
@@ -220,12 +237,24 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onPause() {
         super.onPause();
         googleMap.setMyLocationEnabled(false);
+
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getActivity().getPreferences(0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("lat", String.valueOf(googleMap.getCameraPosition().target.latitude));
+        editor.putString("lng", String.valueOf(googleMap.getCameraPosition().target.longitude));
+        editor.putString("zoom", String.valueOf(googleMap.getCameraPosition().zoom));
+        editor.putString("bearing", String.valueOf(googleMap.getCameraPosition().bearing));
+        editor.putString("title", String.valueOf(googleMap.getCameraPosition().tilt));
+        // Commit the edits!
+        editor.commit();
     }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("cameraPosition",googleMap.getCameraPosition());
+        outState.putParcelable("cameraPosition", googleMap.getCameraPosition());
     }
 
     @Override
