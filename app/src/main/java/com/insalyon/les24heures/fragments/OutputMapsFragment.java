@@ -57,6 +57,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     HashMap<Marker, DayResource> markerResourceMap;
 
     DayResource selectedDayResource;
+    CameraPosition initialCameraPosition;
 
 
     @Override
@@ -71,6 +72,12 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         categoryFilter = new ResourceMapsCategoryFilter(resourcesList, displayableResourcesLists, this);
         searchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this);
         markerResourceMap = new HashMap<>();
+
+        if(savedInstanceState != null){
+            if(savedInstanceState.getParcelable("cameraPosition") != null){
+                initialCameraPosition = savedInstanceState.getParcelable("cameraPosition");
+            }
+        }
 
     }
 
@@ -117,8 +124,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         // MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID and MAP_TYPE_NONE MAP_TYPE_SATELLITE
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        //to prevent user to throw up, zoom on Lyon without animateCamera
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
+        if(initialCameraPosition != null){
+            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(initialCameraPosition));
+        }else
+           //to prevent user to throw up, zoom on Lyon without animateCamera
+            googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
 
         //display data if already there when the fragment is created
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
@@ -210,6 +220,12 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onPause() {
         super.onPause();
         googleMap.setMyLocationEnabled(false);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("cameraPosition",googleMap.getCameraPosition());
     }
 
     @Override
