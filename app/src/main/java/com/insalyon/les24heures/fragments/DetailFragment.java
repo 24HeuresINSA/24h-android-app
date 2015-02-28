@@ -225,6 +225,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     public void notifyDataChanged(Resource res) {
         if (res != null)
             resource = res;
+        if(resource == null)
+            return;
         heavyDataUpdated = false;
 
         detailSlidingTitle.setText(resource.getTitle());
