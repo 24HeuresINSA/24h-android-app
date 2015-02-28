@@ -169,6 +169,12 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         selectedDayResource = selectedEvent.getDayResource();
     }
 
+    public void onEvent(ManageDetailSlidingUpDrawer event){
+        if(event.getState().equals(SlidingUpPannelState.HIDE)){
+            selectedDayResource.getMarker().setIcon(BitmapDescriptorFactory.defaultMarker());
+        }
+    }
+
     @OnClick(R.id.fab_goto_list)
     public void onClickFabGotoList(View v) {
         ((MainActivity) getActivity()).selectList();

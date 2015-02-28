@@ -11,11 +11,16 @@ import android.widget.TextView;
 
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
+import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.DetailSlidingUpPanelLayoutNullActivity;
+import com.insalyon.les24heures.utils.SlidingUpPannelState;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by remi on 04/02/15.
@@ -25,6 +30,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     private static final String TAG = DetailSlidingUpPanelLayout.class.getCanonicalName();
 
     private static ResourceServiceImpl resourceService = ResourceServiceImpl.getInstance();
+    EventBus eventBus;
 
 
     private DetailScrollView detailScrollView;
@@ -135,6 +141,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         @Override
         public void onPanelHidden(View panel) {
             Log.i(TAG, "onPanelHidden");
+            eventBus.post(new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE,(NightResource)null));
         }
     };
     private DetailSlidingUpPanelLayout self;
@@ -169,6 +176,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         }
 
         findDetailView();
+        eventBus = EventBus.getDefault(); //pas ouf, mettre dans le constructeur par défaut ?
 
         drawerArrowDrawable = activity.getDrawerArrowDrawable();
 
