@@ -37,6 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
@@ -50,6 +51,8 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
     MapView mapView;
     GoogleMap googleMap;
+    @InjectView(R.id.progress_wheel)
+    View progressBar;
 
 //    ResourceMapsCategoryFilter resourceMapsCategoryFilter;
 //    ResourceMapsSearchFilter resourceMapsSearchFilter;
@@ -268,15 +271,12 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     }
 
 
+
     /**
      * Fragment methods *
      */
     private void addMarkers() {
         if (resourcesList.isEmpty()) {
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesFound, Toast.LENGTH_SHORT);
-            toast.show();
-            //TODO display a spinner
-            spinner = true;
             return;
         }
         for (DayResource dayResource : resourcesList) {
@@ -328,5 +328,15 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         }
         //else no filter needed
     }
+
+
+    protected void displayProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+    }
+
 
 }

@@ -5,10 +5,21 @@
     android:orientation="vertical">
 
 
+    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+        android:id="@+id/progress_wheel"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        style="@style/GNowProgressBar"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
     <com.insalyon.les24heures.view.AutoExpandGridView
         android:id="@+id/artiste_fragment_grid_layout"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:columnCount="2"
         android:numColumns="2"></com.insalyon.les24heures.view.AutoExpandGridView>
+
 </LinearLayout>

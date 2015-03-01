@@ -65,6 +65,9 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     };
     @InjectView(R.id.fab_goto_maps)
     FloatingActionButton fabGotoMaps;
+    @InjectView(R.id.progress_wheel)
+    View progressBar;
+
     DayResourceAdapter dayResourceAdapter = null;
     private QuickReturnAttacher quickReturnAttacher;
     private Location lastKnownPosition;
@@ -247,6 +250,8 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     }
 
 
+
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
@@ -268,4 +273,16 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     private void restoreListPosition(){
         resourceListView.setSelectionFromTop(indexPosition, listPosition);
     }
+
+
+    protected void displayProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+    }
+
+
+
 }
