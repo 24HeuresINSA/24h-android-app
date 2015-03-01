@@ -13,18 +13,17 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.insalyon.les24heures.adapter.CategoryAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
@@ -200,7 +199,7 @@ public class MainActivity extends Activity {
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         drawerLayout.setDrawerView(drawerView);
         // set up the drawer's list view with items and click listener
-        categoriesList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item_category, navigationDrawerCategories));
+        categoriesList.setAdapter(new CategoryAdapter(this, R.layout.drawer_list_item_category, categories));
         categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
         getActionBar().setHomeButtonEnabled(true);
 
@@ -390,7 +389,7 @@ public class MainActivity extends Activity {
             item.setIcon(R.drawable.ic_favorites_unchecked);
             isFavoritesChecked = false;
         } else {
-            list.add((new Category("favorites")));
+            list.add((new Category("FAVORITES__")));
             item.setChecked(true);
             item.setIcon(R.drawable.ic_favorites_checked);
             isFavoritesChecked = true;
@@ -626,19 +625,17 @@ public class MainActivity extends Activity {
     private void selectCategory(int position) {
         categoriesSelected = getCategoriesSelectedFromDrawer();
         if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
-            categoriesSelected.add(new Category("favorites"));
+            categoriesSelected.add(new Category("FAVORITES__"));
         }
 
         CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(categoriesSelected);
 
         // update selected item and title, then close the drawer
         if (categoriesList.isItemChecked(position)) {
-            Log.i(TAG + "selectCategory", "categoy added :" + navigationDrawerCategories[position]);
             categoriesSelectedEvent.setFilterAction(FilterAction.ADDED);
             eventBus.post(categoriesSelectedEvent);
 
         } else if (!categoriesList.isItemChecked(position)) {
-            Log.i(TAG + "selectCategory", "categoy removed :" + navigationDrawerCategories[position]);
             categoriesSelectedEvent.setFilterAction(FilterAction.REMOVED);
             eventBus.post(categoriesSelectedEvent);
         }
@@ -656,12 +653,11 @@ public class MainActivity extends Activity {
     private ArrayList<Category> getCategoriesSelectedFromDrawer() {
         ArrayList<Category> categoriesSelected = new ArrayList<>();
 
-        int len = categoriesList.getCount();
-        SparseBooleanArray checked = categoriesList.getCheckedItemPositions();
-        for (int i = 0; i < len; i++)
-            if (checked.get(i)) {
-                categoriesSelected.add(categories.get(i));
-            }
+        int checkedPos = categoriesList.getCheckedItemPosition();
+        if(checkedPos != categoriesList.getCount()-1){
+            categoriesSelected.add(categories.get(checkedPos));
+        }
+
         return categoriesSelected;
     }
 

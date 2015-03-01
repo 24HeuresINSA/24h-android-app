@@ -33,7 +33,7 @@ public abstract class ResourceCategoryFilter<T extends Resource> extends Filter 
                             ((String) constraint).substring(1, constraint.length() - 1).split(", "))
                     );
 
-            if (selectedCategories.size() != 0) {
+            if (selectedCategories.size() != 0){
                 ArrayList<Resource> filteredItems = new ArrayList<>();
 
                 for (int i = 0, l = originalList.size(); i < l; i++) {
@@ -62,7 +62,7 @@ public abstract class ResourceCategoryFilter<T extends Resource> extends Filter 
 
 
     private Boolean isDisplayable(Resource dayResource) {
-        if (selectedCategories.contains("favorites")) {
+        if (selectedCategories.contains("FAVORITES__")) {
             if (selectedCategories.size() == 1)
                 return dayResource.isFavorites();
             return dayResource.isFavorites() &&
