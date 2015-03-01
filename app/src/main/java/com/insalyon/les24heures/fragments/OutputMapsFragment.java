@@ -59,6 +59,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
     ArrayList<DayResource> displayableResourcesLists;
     HashMap<Marker, DayResource> markerResourceMap;
+    HashMap<DayResource, Marker> resourceMarkerMap;
 
     DayResource selectedDayResource;
     CameraPosition initialCameraPosition;
@@ -71,11 +72,14 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         EventBus.getDefault().getStickyEvent(ResourceSelectedEvent.class);
 
+        markerResourceMap = new HashMap<>();
+        resourceMarkerMap = new HashMap<>();
+
         displayableResourcesLists = new ArrayList<>();
         displayableResourcesLists.addAll(resourcesList);
-        categoryFilter = new ResourceMapsCategoryFilter(resourcesList, displayableResourcesLists, this);
-        searchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this);
-        markerResourceMap = new HashMap<>();
+        categoryFilter = new ResourceMapsCategoryFilter(resourcesList, displayableResourcesLists, this,resourceMarkerMap);
+        searchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this,resourceMarkerMap);
+
 
         if (savedInstanceState != null) {
             if (savedInstanceState.getParcelable("cameraPosition") != null) {
@@ -201,7 +205,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
     public void onEvent(ManageDetailSlidingUpDrawer event) {
         if (event.getState().equals(SlidingUpPannelState.HIDE)) {
-            selectedDayResource.getMarker().setIcon(BitmapDescriptorFactory.defaultMarker());
+            resourceMarkerMap.get(selectedDayResource).setIcon(BitmapDescriptorFactory.defaultMarker());
         }
     }
 
@@ -264,10 +268,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        for (DayResource dayResource : resourcesList) {
-            dayResource.setMarker(null);
-            //TODO en attendant de trouver mieux
-        }
     }
 
 
@@ -280,13 +280,13 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
             return;
         }
         for (DayResource dayResource : resourcesList) {
-            if (dayResource.getMarker() == null) {
+            if (resourceMarkerMap.get(dayResource) == null) {
                 Marker marker = googleMap.addMarker(
                         new MarkerOptions()
                                 .position(dayResource.getLoc()));
 
                 markerResourceMap.put(marker, dayResource);
-                dayResource.setMarker(marker); //TODO a supprimer
+                resourceMarkerMap.put(dayResource, marker);
             }
         }
     }
@@ -295,7 +295,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         //include only resource selected by a one of the filter
         for (DayResource dayResource : displayableResourcesLists) {
-            builder.include(dayResource.getMarker().getPosition());
+            builder.include(resourceMarkerMap.get(dayResource).getPosition());
         }
         return builder;
     }
