@@ -12,6 +12,7 @@ import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.felipecsl.quickreturn.library.AbsListViewQuickReturnAttacher;
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
@@ -172,6 +173,50 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     @Override
     public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
         return true;
+    }
+
+   @OnClick(R.id.list_sort_alphabetical)
+   public void onSortAlphabeticalClick(View v){
+       if(!v.isSelected()){
+           v.setSelected(true);
+           //TODO
+           Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort A-Z clicked", Toast.LENGTH_SHORT);
+           toast.show();
+       }else{
+           v.setSelected(false);
+           //TODO
+           Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort Z-A clicked", Toast.LENGTH_SHORT);
+           toast.show();
+       }
+
+   }
+
+    @OnClick(R.id.list_sort_loc)
+    public void onSortLocClick(View v){
+        if(!v.isSelected()){
+            v.setSelected(true);
+            //TODO
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort loc clicked", Toast.LENGTH_SHORT);
+            toast.show();
+        }else{
+            //nothing to do
+            v.setSelected(false);
+        }
+
+    }
+
+    @OnClick(R.id.list_sort_time_loc)
+    public void onSortTimeLocClick(View v){
+        if(!v.isSelected()){
+            v.setSelected(true);
+            //TODO
+            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort time loc clicked", Toast.LENGTH_SHORT);
+            toast.show();
+        }else{
+            //nothing to do
+            v.setSelected(false);
+        }
+
     }
 
     @Override
