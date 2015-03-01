@@ -170,7 +170,7 @@ public class MainActivity extends Activity {
 
         }
 
-        navigationDrawerCategories = getResources().getStringArray(R.array.navigation_drawer_categories); //TODO que veut en parametre ArrayAdapter ?
+        navigationDrawerCategories = getResources().getStringArray(R.array.navigation_drawer_categories);
         if (categories == null) {
             //viendra du backend
             categories = new ArrayList<>();
@@ -744,7 +744,6 @@ public class MainActivity extends Activity {
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
             drawerLayout.setIsDrawerOpen(false);
-            //TODO create a parent of OutputTypeFragment which only contains abstract getDisplayName
             getActionBar().setTitle(
                     ((ContentFrameFragment) getFragmentManager().findFragmentById(R.id.content_frame))
                             .getDisplayName());

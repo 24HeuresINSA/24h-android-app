@@ -1,5 +1,6 @@
 package com.insalyon.les24heures.fragments;
 
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -71,11 +72,24 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     private int lastY = 0;
     private Boolean isScrollingUp = false;
     private Boolean isScrollingDown = false;
+    private int listPosition = 0;
+    private int indexPosition = 0;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         displayName = getActivity().getResources().getString(R.string.drawer_outputtype_list);
+
+        if(savedInstanceState != null){
+            listPosition = savedInstanceState.getInt("position");
+            indexPosition = savedInstanceState.getInt("indexPosition");
+        }
+
+        if (listPosition == 0 ) {
+            SharedPreferences pref = getActivity().getPreferences(0);
+            listPosition = pref.getInt("position",0);
+            indexPosition = pref.getInt("indexPosition",0);
+        }
     }
 
     @Nullable
@@ -120,6 +134,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         lastKnownPosition.setLatitude(45.78401554);
         lastKnownPosition.setLongitude(4.8754406);
 
+        restoreListPosition();
     }
 
     /**
@@ -216,7 +231,41 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     public void onPause() {
         super.onPause();
         resourceListView.setOnScrollListener(null);
+
+        int index = resourceListView.getFirstVisiblePosition();
+        View v = resourceListView.getChildAt(0);
+        int top = (v == null) ? 0 : (v.getTop() - resourceListView.getPaddingTop());
+
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getActivity().getPreferences(0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putInt("position", top);
+        editor.putInt("indexPosition", index);
+        // Commit the edits!
+        editor.commit();
     }
 
 
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // save index and top position
+        int index = resourceListView.getFirstVisiblePosition();
+        View v = resourceListView.getChildAt(0);
+        int top = (v == null) ? 0 : (v.getTop() - resourceListView.getPaddingTop());
+        outState.putInt("position", top);
+        outState.putInt("indexPosition", index);
+
+    }
+
+
+    /**
+     * Fragment methods
+     */
+
+    private void restoreListPosition(){
+        resourceListView.setSelectionFromTop(indexPosition, listPosition);
+    }
 }
