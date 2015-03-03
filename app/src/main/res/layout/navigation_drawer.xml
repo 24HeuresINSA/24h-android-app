@@ -14,7 +14,7 @@
         <ListView
             android:id="@+id/left_drawer_categories_list"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="wrap_content"
             android:background="#111"
             android:choiceMode="singleChoice"
             android:divider="@android:color/transparent"

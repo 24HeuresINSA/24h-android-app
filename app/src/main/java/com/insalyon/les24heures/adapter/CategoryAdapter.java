@@ -1,7 +1,6 @@
 package com.insalyon.les24heures.adapter;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +24,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
     private final int viewId;
     private final EventBus eventBus;
+    private Boolean init = false;
 
     LayoutInflater vi;
     private List<Category> categories;
@@ -33,7 +33,9 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
         super(context, resource, categories);
         this.viewId = resource;
         this.categories = categories;
-        this.categories.add(new Category("all","pouet"));
+//        this.categories = new ArrayList<>();
+//        this.categories.addAll(categories);
+//        this.categories.add(new Category("allConstructor","pouet"));//TODO all category....
 
         this.vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -63,17 +65,17 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
         holder.title.setText(category.getName());
 
-        ((ListView)parent).setItemChecked(position,position == categories.size()-1);
+        if(!init && position == categories.size()-1){
+            ((ListView)parent).setItemChecked(position,position == categories.size()-1);
+            init = true;
+        }
 
         return convertView;
 
     }
 
     public void onEvent(CategoriesUpdatedEvent event) {
-        Log.d("onEvent(ResourcesUpdatedEvent)", event.getCategories().toString());
-        categories.clear();
-        categories.addAll(event.getCategories());
-       categories.add(new Category("all", "pouet")); //TODO all category....
+        this.notifyDataSetInvalidated();
     }
 
 

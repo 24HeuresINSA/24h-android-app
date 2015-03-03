@@ -72,7 +72,7 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
             }
         });
 
-        holder.title.setText(dayResource.getTitle());
+        holder.title.setText(dayResource.getTitle()+dayResource.getCategory());
         holder.title.setSelected(true);
         if (dayResource.isFavorites())
             holder.favorites.setImageResource(R.drawable.ic_favorites_checked);
