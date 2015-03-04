@@ -63,6 +63,8 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
             searchQuery = getArguments().getString("searchQuery"); //we want null if there is no searchQuery
         }
 
+        categoriesSelected = new ArrayList<>(categoriesSelected);
+
 
     }
 

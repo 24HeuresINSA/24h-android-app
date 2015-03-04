@@ -79,7 +79,7 @@ public class MainActivity extends Activity {
     private CategoryService categoryService;
     private ArrayList<Category> categories;
     //need a list to store a category and favorites or not (it's a bad code resulting from the old impl where it could be possible to select several categories)
-    private ArrayList<Category> categoriesSelected;
+    private ArrayList<Category> selectedCategories = new ArrayList<>();
     private ArrayList<DayResource> dayResourceArrayList;
     private ArrayList<NightResource> nightResourceArrayList;
 
@@ -145,7 +145,7 @@ public class MainActivity extends Activity {
                 categories = savedInstanceState.getParcelableArrayList("categories");
             }
             if (savedInstanceState.getParcelableArrayList("categoriesSelected") != null) {
-                categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
+                selectedCategories = savedInstanceState.getParcelableArrayList("selectedCategories");
             }
             if (savedInstanceState.getParcelableArrayList("dayResourceArrayList") != null) {
                 dayResourceArrayList = savedInstanceState.getParcelableArrayList("dayResourceArrayList");
@@ -177,8 +177,8 @@ public class MainActivity extends Activity {
 //            resourceService.getResourcesAsyncMock();
         }
 
-        if (categoriesSelected == null) {
-            categoriesSelected = new ArrayList<>();
+        if (selectedCategories == null) {
+            selectedCategories = new ArrayList<>();
         }
 
 
@@ -372,7 +372,7 @@ public class MainActivity extends Activity {
     //dans NavigationActivity
     private void toggleFavorites(MenuItem item) {
         ArrayList<Category> list = new ArrayList<>();
-//        list.addAll(categoriesSelected);
+        list.addAll(selectedCategories);
         if (item.isChecked()) {
             item.setChecked(false);
             item.setIcon(R.drawable.ic_favorites_unchecked);
@@ -555,7 +555,7 @@ public class MainActivity extends Activity {
         //categories
         outState.putParcelableArrayList("categories", categories);
         //categories state
-        outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        outState.putParcelableArrayList("selectedCategories", selectedCategories);
         //resources
         outState.putParcelableArrayList("dayResourceArrayList", dayResourceArrayList);
         outState.putParcelableArrayList("nightResourceArrayList", nightResourceArrayList);
@@ -592,7 +592,7 @@ public class MainActivity extends Activity {
     //dans NavigationActivity et demande au currentFragment son slidingLayout
     private void replaceContentFragment(Fragment fragment) {
         Bundle bundleArgs = new Bundle();
-        bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
         searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
         bundleArgs.putString("searchQuery", searchQuery);
         fragment.setArguments(bundleArgs);
@@ -618,26 +618,24 @@ public class MainActivity extends Activity {
 
     //day
     private void selectCategory(int position) {
-        List<Category> categoriesSelected = new ArrayList<>();
+        List<Category> catSelected = new ArrayList<>();
 
 
 
-        CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(categoriesSelected);
+        CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(catSelected);
 
         // update selected item and title, then close the drawer
         if (categoriesList.isItemChecked(position)) {
-            categoriesSelected.clear();
+            catSelected.clear();
+            selectedCategories.clear();
             if(categories.get(position).getIconeName() != "ic_ALLCATEGORY" ){
-                categoriesSelected.add(categories.get(position));
+                catSelected.add(categories.get(position));
+                selectedCategories.add(categories.get(position));
             }
-            categoriesSelectedEvent.setFilterAction(FilterAction.ADDED);
-
-        } else if (!categoriesList.isItemChecked(position)) {
-            categoriesSelectedEvent.setFilterAction(FilterAction.REMOVED);
         }
 
         if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
-            categoriesSelected.add(new Category("FAVORITES","ic_FAVORITES"));
+            catSelected.add(new Category("FAVORITES","ic_FAVORITES"));
         }
 
         eventBus.post(categoriesSelectedEvent);
