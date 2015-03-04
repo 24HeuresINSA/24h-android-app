@@ -372,7 +372,7 @@ public class MainActivity extends Activity {
     //dans NavigationActivity
     private void toggleFavorites(MenuItem item) {
         ArrayList<Category> list = new ArrayList<>();
-        list.addAll(categoriesSelected);
+//        list.addAll(categoriesSelected);
         if (item.isChecked()) {
             item.setChecked(false);
             item.setIcon(R.drawable.ic_favorites_unchecked);
@@ -619,9 +619,7 @@ public class MainActivity extends Activity {
     //day
     private void selectCategory(int position) {
         List<Category> categoriesSelected = new ArrayList<>();
-        if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
-            categoriesSelected.add(new Category("FAVORITES","ic_FAVORITES"));
-        }
+
 
 
         CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(categoriesSelected);
@@ -633,12 +631,17 @@ public class MainActivity extends Activity {
                 categoriesSelected.add(categories.get(position));
             }
             categoriesSelectedEvent.setFilterAction(FilterAction.ADDED);
-            eventBus.post(categoriesSelectedEvent);
 
         } else if (!categoriesList.isItemChecked(position)) {
             categoriesSelectedEvent.setFilterAction(FilterAction.REMOVED);
-            eventBus.post(categoriesSelectedEvent);
         }
+
+        if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
+            categoriesSelected.add(new Category("FAVORITES","ic_FAVORITES"));
+        }
+
+        eventBus.post(categoriesSelectedEvent);
+
 
         Class<? extends Fragment> currentFragment = fragmentManager.findFragmentById(R.id.content_frame).getClass();
 
