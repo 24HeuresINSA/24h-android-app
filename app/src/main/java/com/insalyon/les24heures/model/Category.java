@@ -21,9 +21,7 @@ public class Category implements Parcelable {
     String name;
     String iconeName;
 
-    public Category(String name) {
-        this.name = name;
-    }
+
 
     public Category(String name, String iconeName) {
         this.name = name;

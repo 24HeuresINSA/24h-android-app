@@ -126,10 +126,10 @@ public class ResourceServiceImpl implements ResourceService {
 
                 //bricolage temporaire pour les category qui ne sont pas encore dans le backend
                 ArrayList<Category> categories = new ArrayList<Category>();
-                categories.add(new Category("CAT1","ic-CAT1"));
-                categories.add(new Category("CAT2","ic-CAT2"));
-                categories.add(new Category("CAT3","ic-CAT3"));
-                categories.add(new Category("ALL","ic-ALLCATEGORY"));//WARNING ic-ALLCATEGORY is mandatory for the filter
+                categories.add(new Category("CAT1","ic_CAT1"));
+                categories.add(new Category("CAT2","ic_CAT2"));
+                categories.add(new Category("CAT3","ic_CAT3"));
+                categories.add(new Category("ALL","ic_ALLCATEGORY"));//WARNING ic-ALLCATEGORY is mandatory for the filter
                 CategoriesUpdatedEvent categoriesUpdatedEvent = new CategoriesUpdatedEvent(categories);
                 eventBus.post(categoriesUpdatedEvent);
                 categoryService.setCategories(categories);

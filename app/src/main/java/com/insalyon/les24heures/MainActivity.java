@@ -378,12 +378,13 @@ public class MainActivity extends Activity {
             item.setIcon(R.drawable.ic_favorites_unchecked);
             isFavoritesChecked = false;
         } else {
-            list.add((new Category("FAVORITES__")));
+            list.add((new Category("FAVORITES","ic_FAVORITES")));
             item.setChecked(true);
             item.setIcon(R.drawable.ic_favorites_checked);
             isFavoritesChecked = true;
         }
         CategoriesSelectedEvent event = new CategoriesSelectedEvent(list);
+        event.setFilterAction(FilterAction.ADDED);
         eventBus.post(event);
     }
 
@@ -619,7 +620,7 @@ public class MainActivity extends Activity {
     private void selectCategory(int position) {
         List<Category> categoriesSelected = new ArrayList<>();
         if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
-            categoriesSelected.add(new Category("FAVORITES__"));
+            categoriesSelected.add(new Category("FAVORITES","ic_FAVORITES"));
         }
 
 
@@ -628,7 +629,7 @@ public class MainActivity extends Activity {
         // update selected item and title, then close the drawer
         if (categoriesList.isItemChecked(position)) {
             categoriesSelected.clear();
-            if(categories.get(position).getIconeName() != "ic-ALLCATEGORY" ){
+            if(categories.get(position).getIconeName() != "ic_ALLCATEGORY" ){
                 categoriesSelected.add(categories.get(position));
             }
             categoriesSelectedEvent.setFilterAction(FilterAction.ADDED);

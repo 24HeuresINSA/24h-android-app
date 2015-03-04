@@ -26,6 +26,7 @@ import com.insalyon.les24heures.JazzyViewPager.OutlineContainer;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ScheduleAdapter;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
+import com.insalyon.les24heures.eventbus.ResourceUpdatedEvent;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Resource;
@@ -186,7 +187,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         else
             ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
 
-        //TODO notify dataset changed (surtout List)
+        eventBus.post(new ResourceUpdatedEvent());
 
     }
 

@@ -23,6 +23,7 @@ import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.DayResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
+import com.insalyon.les24heures.eventbus.ResourceUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.DayResource;
@@ -154,6 +155,10 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
+    }
+
+    public void onEvent(ResourceUpdatedEvent event){
+        dayResourceAdapter.notifyDataSetInvalidated();
     }
 
     @OnClick(R.id.fab_goto_maps)
