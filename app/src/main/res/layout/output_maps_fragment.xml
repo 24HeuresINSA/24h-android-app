@@ -14,6 +14,16 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+            android:id="@+id/progress_wheel"
+            android:layout_width="match_parent"
+            android:layout_height="4dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            style="@style/GNowProgressBar"
+            android:indeterminate="true"
+            android:visibility="gone" />
+
 
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/fab_goto_list"

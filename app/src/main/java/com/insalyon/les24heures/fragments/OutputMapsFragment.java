@@ -1,5 +1,6 @@
 package com.insalyon.les24heures.fragments;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -36,6 +37,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import butterknife.ButterKnife;
+import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
@@ -49,14 +51,18 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
     MapView mapView;
     GoogleMap googleMap;
+    @InjectView(R.id.progress_wheel)
+    View progressBar;
 
 //    ResourceMapsCategoryFilter resourceMapsCategoryFilter;
 //    ResourceMapsSearchFilter resourceMapsSearchFilter;
 
     ArrayList<DayResource> displayableResourcesLists;
     HashMap<Marker, DayResource> markerResourceMap;
+    HashMap<DayResource, Marker> resourceMarkerMap;
 
     DayResource selectedDayResource;
+    CameraPosition initialCameraPosition;
 
 
     @Override
@@ -66,11 +72,36 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
         EventBus.getDefault().getStickyEvent(ResourceSelectedEvent.class);
 
+        markerResourceMap = new HashMap<>();
+        resourceMarkerMap = new HashMap<>();
+
         displayableResourcesLists = new ArrayList<>();
         displayableResourcesLists.addAll(resourcesList);
-        categoryFilter = new ResourceMapsCategoryFilter(resourcesList, displayableResourcesLists, this);
-        searchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this);
-        markerResourceMap = new HashMap<>();
+        categoryFilter = new ResourceMapsCategoryFilter(resourcesList, displayableResourcesLists, this,resourceMarkerMap);
+        searchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this,resourceMarkerMap);
+
+
+        if (savedInstanceState != null) {
+            if (savedInstanceState.getParcelable("cameraPosition") != null) {
+                initialCameraPosition = savedInstanceState.getParcelable("cameraPosition");
+            }
+        }
+
+        if (initialCameraPosition == null) {
+            SharedPreferences pref = getActivity().getPreferences(0);
+            String lat = "45.74968239082803";
+            String lng = "4.852847680449486";
+            String zoom = "12";
+            String tilt = "0";
+            String bearing = "0";
+            lat = pref.getString("lat", lat);
+            lng = pref.getString("lng", lng);
+            zoom = pref.getString("zoom", zoom);
+            tilt = pref.getString("tilt", tilt);
+            bearing = pref.getString("bearing", bearing);
+            initialCameraPosition = new CameraPosition(
+                    new LatLng(Double.valueOf(lat), Double.valueOf(lng)), Float.valueOf(zoom), Float.valueOf(tilt), Float.valueOf(bearing));
+        }
 
     }
 
@@ -117,8 +148,11 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         // MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID and MAP_TYPE_NONE MAP_TYPE_SATELLITE
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-        //to prevent user to throw up, zoom on Lyon without animateCamera
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
+        //if (initialCameraPosition != null) //{
+            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(initialCameraPosition));
+       // } else
+            //to prevent user to throw up, zoom on Lyon without animateCamera
+           // googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
 
         //display data if already there when the fragment is created
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
@@ -150,16 +184,16 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     }
 
     public void onEvent(CategoriesSelectedEvent event) {
-        super.onEvent(event);
+      super.onEvent(event);
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-        addMarkers();
+       addMarkers();
     }
 
     public void onEvent(SearchEvent event) {
-        super.onEvent(event);
+      super.onEvent(event);
     }
 
 
@@ -167,6 +201,12 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedEvent.getDayResource().getLoc(), 17));
 //        EventBus.getDefault().removeStickyEvent(selectedEvent);
         selectedDayResource = selectedEvent.getDayResource();
+    }
+
+    public void onEvent(ManageDetailSlidingUpDrawer event) {
+        if (event.getState().equals(SlidingUpPannelState.HIDE)) {
+            resourceMarkerMap.get(selectedDayResource).setIcon(BitmapDescriptorFactory.defaultMarker());
+        }
     }
 
     @OnClick(R.id.fab_goto_list)
@@ -204,17 +244,32 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public void onPause() {
         super.onPause();
         googleMap.setMyLocationEnabled(false);
+
+        // We need an Editor object to make preference changes.
+        // All objects are from android.context.Context
+        SharedPreferences settings = getActivity().getPreferences(0);
+        SharedPreferences.Editor editor = settings.edit();
+        editor.putString("lat", String.valueOf(googleMap.getCameraPosition().target.latitude));
+        editor.putString("lng", String.valueOf(googleMap.getCameraPosition().target.longitude));
+        editor.putString("zoom", String.valueOf(googleMap.getCameraPosition().zoom));
+        editor.putString("bearing", String.valueOf(googleMap.getCameraPosition().bearing));
+        editor.putString("title", String.valueOf(googleMap.getCameraPosition().tilt));
+        // Commit the edits!
+        editor.commit();
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putParcelable("cameraPosition", googleMap.getCameraPosition());
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
         mapView.onDestroy();
-        for (DayResource dayResource : resourcesList) {
-            dayResource.setMarker(null);
-            //TODO en attendant de trouver mieux
-        }
     }
+
 
 
     /**
@@ -222,20 +277,16 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
      */
     private void addMarkers() {
         if (resourcesList.isEmpty()) {
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.noResourcesFound, Toast.LENGTH_SHORT);
-            toast.show();
-            //TODO display a spinner
-            spinner = true;
             return;
         }
         for (DayResource dayResource : resourcesList) {
-            if (dayResource.getMarker() == null) {
+            if (resourceMarkerMap.get(dayResource) == null) {
                 Marker marker = googleMap.addMarker(
                         new MarkerOptions()
                                 .position(dayResource.getLoc()));
 
                 markerResourceMap.put(marker, dayResource);
-                dayResource.setMarker(marker); //TODO a supprimer
+                resourceMarkerMap.put(dayResource, marker);
             }
         }
     }
@@ -244,7 +295,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         //include only resource selected by a one of the filter
         for (DayResource dayResource : displayableResourcesLists) {
-            builder.include(dayResource.getMarker().getPosition());
+            builder.include(resourceMarkerMap.get(dayResource).getPosition());
         }
         return builder;
     }
@@ -277,5 +328,15 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         }
         //else no filter needed
     }
+
+
+    protected void displayProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideProgress() {
+        progressBar.setVisibility(View.GONE);
+    }
+
 
 }

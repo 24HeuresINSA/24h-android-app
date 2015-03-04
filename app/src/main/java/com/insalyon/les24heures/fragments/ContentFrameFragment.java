@@ -8,10 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
-import android.widget.Toast;
 
 import com.insalyon.les24heures.MainActivity;
-import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
@@ -29,8 +27,6 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     private static final String TAG = ContentFrameFragment.class.getCanonicalName();
     public String displayName;
     EventBus eventBus;
-    //see spinner adapter
-    Boolean spinner = false; //TODO mettre en place un vrai spinner
     View view;
     ArrayList<Category> categoriesSelected;
     String searchQuery;
@@ -66,6 +62,10 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
             }
             searchQuery = getArguments().getString("searchQuery"); //we want null if there is no searchQuery
         }
+
+        categoriesSelected = new ArrayList<>(categoriesSelected);
+
+
     }
 
 
@@ -86,6 +86,9 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     public void onResume() {
         super.onResume();
         eventBus.registerSticky(this);
+        if(resourcesList.size() == 0){
+            displayProgress();
+        }
 
     }
 
@@ -104,20 +107,9 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     public void onEvent(ResourcesUpdatedEvent event) {
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
 
-        if (spinner) {
-            getActivity().runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.resources_found, Toast.LENGTH_SHORT);
-                    toast.show();
-                }
-            });
-
-            spinner = false;
-        }
+        hideProgress();
 
         setCategoryFilter();
-
     }
 
     public void onEvent(SearchEvent event) {
@@ -171,5 +163,10 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
 
         return true;
     }
+
+
+    protected abstract void displayProgress();
+
+    protected abstract void hideProgress();
 
 }

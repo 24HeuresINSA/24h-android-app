@@ -47,7 +47,7 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
         ViewHolder holder = null;
 
         if (convertView == null) {
-            convertView = vi.inflate(viewId, null); //TODO use the one in the fields
+            convertView = vi.inflate(viewId, null);
 
             holder = new ViewHolder();
             holder.title = (TextView) convertView.findViewById(R.id.list_item_title_text);
@@ -72,7 +72,7 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
             }
         });
 
-        holder.title.setText(dayResource.getTitle());
+        holder.title.setText(dayResource.getTitle()+dayResource.getCategory());
         holder.title.setSelected(true);
         if (dayResource.isFavorites())
             holder.favorites.setImageResource(R.drawable.ic_favorites_checked);

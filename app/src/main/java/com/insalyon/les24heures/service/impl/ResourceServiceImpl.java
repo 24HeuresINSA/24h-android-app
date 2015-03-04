@@ -7,6 +7,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.insalyon.les24heures.DTO.AssomakerDTO;
 import com.insalyon.les24heures.DTO.DayResourceDTO;
 import com.insalyon.les24heures.DTO.NightResourceDTO;
+import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
@@ -59,7 +60,7 @@ public class ResourceServiceImpl implements ResourceService {
     public DayResource fromDTO(DayResourceDTO dayResourceDTO) {
         //TODO doit venir du backend
         Random rand = new Random();
-        Category category = categoryService.getCategories().get(rand.nextInt(categoryService.getCategories().size()));
+        Category category = categoryService.getCategories().get(rand.nextInt(categoryService.getCategories().size()-1));
 
         //just pour le test
         Boolean isFavorites = (rand.nextInt(2) == 0 ? true : false);
@@ -77,7 +78,7 @@ public class ResourceServiceImpl implements ResourceService {
     public NightResource fromDTO(NightResourceDTO nightResourceDTO) {
         //TODO doit venir du backend
         Random rand = new Random();
-        Category category = categoryService.getCategories().get(rand.nextInt(categoryService.getCategories().size()));
+        Category category = categoryService.getCategories().get(rand.nextInt(categoryService.getCategories().size()-1));
         Boolean isFavorites = (rand.nextInt(2) == 0 ? true : false);
 
 
@@ -122,6 +123,17 @@ public class ResourceServiceImpl implements ResourceService {
             public void success(AssomakerDTO assomakerDTO, Response response) {
 
                 Log.d("getResources", "sucess");
+
+                //bricolage temporaire pour les category qui ne sont pas encore dans le backend
+                ArrayList<Category> categories = new ArrayList<Category>();
+                categories.add(new Category("CAT1","ic_CAT1"));
+                categories.add(new Category("CAT2","ic_CAT2"));
+                categories.add(new Category("CAT3","ic_CAT3"));
+                categories.add(new Category("ALL","ic_ALLCATEGORY"));//WARNING ic-ALLCATEGORY is mandatory for the filter
+                CategoriesUpdatedEvent categoriesUpdatedEvent = new CategoriesUpdatedEvent(categories);
+                eventBus.post(categoriesUpdatedEvent);
+                categoryService.setCategories(categories);
+
 
                 ArrayList<DayResourceDTO> dayResourceDTOs = new ArrayList<DayResourceDTO>();
 

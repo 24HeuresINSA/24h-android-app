@@ -17,12 +17,11 @@ public class Category implements Parcelable {
             return new Category[size];
         }
     };
-    String name;
-    String iconeName = "pouet";
 
-    public Category(String name) {
-        this.name = name;
-    }
+    String name;
+    String iconeName;
+
+
 
     public Category(String name, String iconeName) {
         this.name = name;
@@ -53,7 +52,7 @@ public class Category implements Parcelable {
 
         Category category = (Category) o;
 
-        if (!name.equals(category.name)) return false;
+        if (!iconeName.equals(category.iconeName)) return false;
 
         return true;
     }
@@ -65,7 +64,7 @@ public class Category implements Parcelable {
 
     @Override
     public String toString() {
-        return name;
+        return iconeName;
     }
 
     public String getName() {

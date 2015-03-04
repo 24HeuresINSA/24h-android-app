@@ -9,12 +9,7 @@
 
     <!--Navigation Drawer-->
 
-    <!--Drawer Day-->
-    <string-array name="navigation_drawer_categories">     <!--TODO viendra du backend-->
-        <item>se divertir</item>
-        <item>se cultiver</item>
-        <item>du sport</item>
-    </string-array>
+
     <string-array name="navigation_drawer_ouputtypes">
         <item>Maps</item>
         <item>Listes</item>

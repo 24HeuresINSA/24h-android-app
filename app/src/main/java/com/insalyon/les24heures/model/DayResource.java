@@ -3,7 +3,6 @@ package com.insalyon.les24heures.model;
 import android.os.Parcel;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 
 import java.util.List;
 
@@ -13,11 +12,6 @@ import java.util.List;
 public class DayResource extends Resource {
 
     LatLng loc;
-
-
-    @Deprecated
-    Marker marker;
-
 
     public DayResource(String title, String description, List<Schedule> schedules, LatLng loc, Category category) {
         super(title, description, schedules, false, category);
@@ -47,17 +41,6 @@ public class DayResource extends Resource {
 
     public LatLng getLoc() {
         return loc;
-    }
-
-
-    @Deprecated
-    public Marker getMarker() {
-        return marker;
-    }
-
-    @Deprecated
-    public void setMarker(Marker marker) {
-        this.marker = marker;
     }
 
 

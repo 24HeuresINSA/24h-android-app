@@ -32,6 +32,9 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
 
     @InjectView(R.id.artiste_fragment_grid_layout)
     AutoExpandGridView artistGridView;
+    @InjectView(R.id.progress_wheel)
+    View progressBar;
+
     private NightResourceAdapter nightResourceAdapter;
 
     @Override
@@ -94,6 +97,16 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
         Log.d("onEvent(SearchEvent)", event.getQuery().toString());
+    }
+
+
+
+    protected void displayProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideProgress() {
+        progressBar.setVisibility(View.GONE);
     }
 
 

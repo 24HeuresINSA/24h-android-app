@@ -13,18 +13,17 @@ import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.insalyon.les24heures.adapter.CategoryAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
@@ -51,6 +50,7 @@ import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
 import com.insalyon.les24heures.view.DrawerArrowDrawable;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -77,9 +77,9 @@ public class MainActivity extends Activity {
     DetailFragment detailFragment;
     private ResourceService resourceService;
     private CategoryService categoryService;
-    private String[] navigationDrawerCategories; //viendra du backend, a supprimer du manifest
     private ArrayList<Category> categories;
-    private ArrayList<Category> categoriesSelected;
+    //need a list to store a category and favorites or not (it's a bad code resulting from the old impl where it could be possible to select several categories)
+    private ArrayList<Category> selectedCategories = new ArrayList<>();
     private ArrayList<DayResource> dayResourceArrayList;
     private ArrayList<NightResource> nightResourceArrayList;
 
@@ -137,7 +137,6 @@ public class MainActivity extends Activity {
         /*** recover data either from (by priority)
          *           savedInstanceState (rotate, restore from background)
          *           getIntent (start from another activity, another apps) TODO
-         *           sharedPreferences (start,rotate, restore from bg) TODO
          *           localStorage (start) TODO
          *           backend (if needed TODO)
          */
@@ -146,7 +145,7 @@ public class MainActivity extends Activity {
                 categories = savedInstanceState.getParcelableArrayList("categories");
             }
             if (savedInstanceState.getParcelableArrayList("categoriesSelected") != null) {
-                categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
+                selectedCategories = savedInstanceState.getParcelableArrayList("selectedCategories");
             }
             if (savedInstanceState.getParcelableArrayList("dayResourceArrayList") != null) {
                 dayResourceArrayList = savedInstanceState.getParcelableArrayList("dayResourceArrayList");
@@ -160,7 +159,7 @@ public class MainActivity extends Activity {
                 searchQuery = savedInstanceState.getString("searchQuery").toString();
             }
             if (savedInstanceState.getBoolean("isFavoritesChecked")) {
-                //TODO globalMenu is null here
+                //globalMenu is null here
                 isFavoritesChecked = savedInstanceState.getBoolean("isFavoritesChecked");
             }
             if (savedInstanceState.getString("slidingUpState") != null) {
@@ -170,27 +169,16 @@ public class MainActivity extends Activity {
 
         }
 
-        navigationDrawerCategories = getResources().getStringArray(R.array.navigation_drawer_categories); //TODO que veut en parametre ArrayAdapter ?
-        if (categories == null) {
-            //viendra du backend
-            categories = new ArrayList<>();
-            for (String navigationDrawerCategory : navigationDrawerCategories) {
-                categories.add(new Category(navigationDrawerCategory));
-            }
-            eventBus.post(new CategoriesUpdatedEvent(categories));
-            //TODO comprendre pourquoi est ce que je dois faire ca, meme si au final la réponse ne servira pas pour ce cas precis
-            categoryService.setCategories(categories);
-        }
-
-        if (dayResourceArrayList == null || nightResourceArrayList == null) {
+        if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null) {
             dayResourceArrayList = new ArrayList<>();
             nightResourceArrayList = new ArrayList<>();
+            categories = new ArrayList<>();
             resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
 //            resourceService.getResourcesAsyncMock();
         }
 
-        if (categoriesSelected == null) {
-            categoriesSelected = new ArrayList<>();
+        if (selectedCategories == null) {
+            selectedCategories = new ArrayList<>();
         }
 
 
@@ -200,7 +188,7 @@ public class MainActivity extends Activity {
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         drawerLayout.setDrawerView(drawerView);
         // set up the drawer's list view with items and click listener
-        categoriesList.setAdapter(new ArrayAdapter<String>(this, R.layout.drawer_list_item_category, navigationDrawerCategories));
+        categoriesList.setAdapter(new CategoryAdapter(this, R.layout.drawer_list_item_category, categories));
         categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
         getActionBar().setHomeButtonEnabled(true);
 
@@ -293,7 +281,7 @@ public class MainActivity extends Activity {
             public boolean onQueryTextChange(String newText) {
                 SearchEvent searchEvent = new SearchEvent(newText);
                 eventBus.post(searchEvent);
-                //TODO gros soucis, ce truc est fire quand sliding up s'ouvre....
+                //TODO gros soucis, ce truc est fire quand sliding up s'ouvre et aussi au chandgement d'output...
                 searchQuery = newText;
                 return false;
             }
@@ -384,18 +372,19 @@ public class MainActivity extends Activity {
     //dans NavigationActivity
     private void toggleFavorites(MenuItem item) {
         ArrayList<Category> list = new ArrayList<>();
-        list.addAll(getCategoriesSelectedFromDrawer());
+        list.addAll(selectedCategories);
         if (item.isChecked()) {
             item.setChecked(false);
             item.setIcon(R.drawable.ic_favorites_unchecked);
             isFavoritesChecked = false;
         } else {
-            list.add((new Category("favorites")));
+            list.add((new Category("FAVORITES","ic_FAVORITES")));
             item.setChecked(true);
             item.setIcon(R.drawable.ic_favorites_checked);
             isFavoritesChecked = true;
         }
         CategoriesSelectedEvent event = new CategoriesSelectedEvent(list);
+        event.setFilterAction(FilterAction.ADDED);
         eventBus.post(event);
     }
 
@@ -442,6 +431,12 @@ public class MainActivity extends Activity {
         dayResourceArrayList.addAll(event.getDayResourceList());
         nightResourceArrayList.clear();
         nightResourceArrayList.addAll(event.getNightResourceList());
+    }
+
+    public void onEvent(CategoriesUpdatedEvent event) {
+        Log.d("onEvent(ResourcesUpdatedEvent)", event.getCategories().toString());
+        categories.clear();
+        categories.addAll(event.getCategories());
     }
 
     //TODO move dans DetailSlidingUpPanelLayout
@@ -560,8 +555,7 @@ public class MainActivity extends Activity {
         //categories
         outState.putParcelableArrayList("categories", categories);
         //categories state
-        ArrayList<Category> categoriesSelected = getCategoriesSelectedFromDrawer();
-        outState.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        outState.putParcelableArrayList("selectedCategories", selectedCategories);
         //resources
         outState.putParcelableArrayList("dayResourceArrayList", dayResourceArrayList);
         outState.putParcelableArrayList("nightResourceArrayList", nightResourceArrayList);
@@ -598,7 +592,7 @@ public class MainActivity extends Activity {
     //dans NavigationActivity et demande au currentFragment son slidingLayout
     private void replaceContentFragment(Fragment fragment) {
         Bundle bundleArgs = new Bundle();
-        bundleArgs.putParcelableArrayList("categoriesSelected", categoriesSelected);
+        bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
         searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
         bundleArgs.putString("searchQuery", searchQuery);
         fragment.setArguments(bundleArgs);
@@ -624,24 +618,28 @@ public class MainActivity extends Activity {
 
     //day
     private void selectCategory(int position) {
-        categoriesSelected = getCategoriesSelectedFromDrawer();
-        if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
-            categoriesSelected.add(new Category("favorites"));
-        }
+        List<Category> catSelected = new ArrayList<>();
 
-        CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(categoriesSelected);
+
+
+        CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(catSelected);
 
         // update selected item and title, then close the drawer
         if (categoriesList.isItemChecked(position)) {
-            Log.i(TAG + "selectCategory", "categoy added :" + navigationDrawerCategories[position]);
-            categoriesSelectedEvent.setFilterAction(FilterAction.ADDED);
-            eventBus.post(categoriesSelectedEvent);
-
-        } else if (!categoriesList.isItemChecked(position)) {
-            Log.i(TAG + "selectCategory", "categoy removed :" + navigationDrawerCategories[position]);
-            categoriesSelectedEvent.setFilterAction(FilterAction.REMOVED);
-            eventBus.post(categoriesSelectedEvent);
+            catSelected.clear();
+            selectedCategories.clear();
+            if(categories.get(position).getIconeName() != "ic_ALLCATEGORY" ){
+                catSelected.add(categories.get(position));
+                selectedCategories.add(categories.get(position));
+            }
         }
+
+        if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
+            catSelected.add(new Category("FAVORITES","ic_FAVORITES"));
+        }
+
+        eventBus.post(categoriesSelectedEvent);
+
 
         Class<? extends Fragment> currentFragment = fragmentManager.findFragmentById(R.id.content_frame).getClass();
 
@@ -652,18 +650,6 @@ public class MainActivity extends Activity {
         drawerLayout.closeDrawer();
     }
 
-    //day
-    private ArrayList<Category> getCategoriesSelectedFromDrawer() {
-        ArrayList<Category> categoriesSelected = new ArrayList<>();
-
-        int len = categoriesList.getCount();
-        SparseBooleanArray checked = categoriesList.getCheckedItemPositions();
-        for (int i = 0; i < len; i++)
-            if (checked.get(i)) {
-                categoriesSelected.add(categories.get(i));
-            }
-        return categoriesSelected;
-    }
 
     public String getSlidingUpState() {
         return slidingUpState;
@@ -744,7 +730,6 @@ public class MainActivity extends Activity {
         public void onDrawerClosed(View drawerView) {
             super.onDrawerClosed(drawerView);
             drawerLayout.setIsDrawerOpen(false);
-            //TODO create a parent of OutputTypeFragment which only contains abstract getDisplayName
             getActionBar().setTitle(
                     ((ContentFrameFragment) getFragmentManager().findFragmentById(R.id.content_frame))
                             .getDisplayName());

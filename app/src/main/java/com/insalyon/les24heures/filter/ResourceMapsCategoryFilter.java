@@ -1,9 +1,12 @@
 package com.insalyon.les24heures.filter;
 
+import com.google.android.gms.maps.model.Marker;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
 import com.insalyon.les24heures.model.DayResource;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by remi on 20/01/15.
@@ -12,10 +15,12 @@ public class ResourceMapsCategoryFilter extends ResourceCategoryFilter<DayResour
 
 
     OutputMapsFragment outputMapsFragment;
+    Map<DayResource,Marker> resourceMarkerMap;
 
-    public ResourceMapsCategoryFilter(ArrayList<DayResource> originalList, ArrayList<DayResource> dayResourceList, OutputMapsFragment outputMapsFragment) {
+    public ResourceMapsCategoryFilter(ArrayList<DayResource> originalList, ArrayList<DayResource> dayResourceList, OutputMapsFragment outputMapsFragment, HashMap<DayResource, Marker> resourceMarkerMap) {
         super(originalList, dayResourceList);
         this.outputMapsFragment = outputMapsFragment;
+       this.resourceMarkerMap = resourceMarkerMap;
     }
 
     @Override
@@ -24,10 +29,10 @@ public class ResourceMapsCategoryFilter extends ResourceCategoryFilter<DayResour
         resourceList.addAll((ArrayList<DayResource>) results.values);
 
         for (DayResource dayResource : originalList) {
-            dayResource.getMarker().setVisible(false);
+            resourceMarkerMap.get(dayResource).setVisible(false);
         }
         for (DayResource dayResource : resourceList) {
-            dayResource.getMarker().setVisible(true);
+            resourceMarkerMap.get(dayResource).setVisible(true);
         }
         outputMapsFragment.moveCamera();
     }

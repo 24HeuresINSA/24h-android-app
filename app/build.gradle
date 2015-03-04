@@ -32,5 +32,6 @@ dependencies {
     compile 'com.felipecsl.quickreturn:library:1.5.0'
     compile 'com.melnykov:floatingactionbutton:1.1.0'
     compile 'com.sothree.slidinguppanel:library:2.0.4'
-
+    compile 'com.nispok:snackbar:2.10.0'
+    compile 'com.hannesdorfmann.smoothprogressbar:library:1.0.0'
 }
