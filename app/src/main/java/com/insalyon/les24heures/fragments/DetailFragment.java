@@ -117,7 +117,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 R.layout.schedule_grid_item, schedules);
         schedulesGrid.setAdapter(scheduleAdapter);
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
+        MapFragment mapFragment = (MapFragment) getChildFragmentManager()
                 .findFragmentById(R.id.detail_mini_maps);
         mapFragment.getMapAsync(this);
         googleMap = mapFragment.getMap();

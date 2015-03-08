@@ -2,9 +2,11 @@ package com.insalyon.les24heures.fragments;
 
 import android.content.SharedPreferences;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +14,7 @@ import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.felipecsl.quickreturn.library.AbsListViewQuickReturnAttacher;
@@ -27,10 +30,13 @@ import com.insalyon.les24heures.eventbus.ResourceUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.utils.AlphabeticalReverseSortComparator;
+import com.insalyon.les24heures.utils.AlphabeticalSortComparator;
 import com.insalyon.les24heures.utils.SlidingUpPannelState;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -69,6 +75,9 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     FloatingActionButton fabGotoMaps;
     @InjectView(R.id.progress_wheel)
     View progressBar;
+
+    @InjectView(R.id.sort_AZ_text)
+    TextView sortAZText;
 
     DayResourceAdapter dayResourceAdapter = null;
     private QuickReturnAttacher quickReturnAttacher;
@@ -187,11 +196,28 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
            //TODO
            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort A-Z clicked", Toast.LENGTH_SHORT);
            toast.show();
+           sortAZText.setText(R.string.za_sorted_label);
+           //TODO do the alphabetical sort
+           Log.d(TAG, "before : "+resourcesList);
+           Collections.sort(resourcesList, new AlphabeticalSortComparator());
+           Log.d(TAG, "after : "+resourcesList);
+           ResourcesUpdatedEvent event = new ResourcesUpdatedEvent(resourcesList, null);
+           eventBus.post(event);
+           dayResourceAdapter.notifyDataSetChanged();
+
        }else{
            v.setSelected(false);
            //TODO
            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort Z-A clicked", Toast.LENGTH_SHORT);
            toast.show();
+           sortAZText.setText(R.string.az_sorted_label);
+           //TODO do the reverse alphabetical sort
+           Log.d(TAG, "before : "+resourcesList);
+           Collections.sort(resourcesList, new AlphabeticalReverseSortComparator());
+           Log.d(TAG, "after : "+resourcesList);
+           ResourcesUpdatedEvent event = new ResourcesUpdatedEvent(resourcesList, null);
+           eventBus.post(event);
+           dayResourceAdapter.notifyDataSetChanged();
        }
 
    }

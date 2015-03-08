@@ -49,6 +49,7 @@
                         android:layout_gravity="center_vertical"
                         android:gravity="center_horizontal"
                         android:text="A-Z"
+                        android:id="@+id/sort_AZ_text"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
                 </LinearLayout>
 
