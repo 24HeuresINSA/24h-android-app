@@ -12,8 +12,11 @@ import android.widget.TextView;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.utils.AlphabeticalReverseSortComparator;
+import com.insalyon.les24heures.utils.AlphabeticalSortComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import de.greenrobot.event.EventBus;
 
@@ -100,6 +103,28 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
         originalList.addAll(event.getDayResourceList());
         notifyDataSetChanged();
     }
+
+    public void sortAZ(){
+        Collections.sort(resourceList, new AlphabeticalSortComparator());
+        Collections.sort(originalList, new AlphabeticalSortComparator());
+        this.notifyDataSetChanged();
+    }
+
+    public void sortZA(){
+        Collections.sort(resourceList, new AlphabeticalReverseSortComparator());
+        Collections.sort(originalList, new AlphabeticalReverseSortComparator());
+        this.notifyDataSetChanged();
+    }
+
+    public void sortLoc(){
+        //TODO sort loc
+    }
+
+    public void sortTimeLoc(){
+        //TODO sort time loc
+    }
+
+
 
     private class ViewHolder {
         TextView title;

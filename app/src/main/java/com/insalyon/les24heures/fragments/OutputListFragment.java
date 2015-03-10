@@ -2,11 +2,9 @@ package com.insalyon.les24heures.fragments;
 
 import android.content.SharedPreferences;
 import android.location.Location;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +13,6 @@ import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.felipecsl.quickreturn.library.AbsListViewQuickReturnAttacher;
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
@@ -30,13 +27,10 @@ import com.insalyon.les24heures.eventbus.ResourceUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.DayResource;
-import com.insalyon.les24heures.utils.AlphabeticalReverseSortComparator;
-import com.insalyon.les24heures.utils.AlphabeticalSortComparator;
 import com.insalyon.les24heures.utils.SlidingUpPannelState;
 import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -193,31 +187,12 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
    public void onSortAlphabeticalClick(View v){
        if(!v.isSelected()){
            v.setSelected(true);
-           //TODO
-           Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort A-Z clicked", Toast.LENGTH_SHORT);
-           toast.show();
            sortAZText.setText(R.string.za_sorted_label);
-           //TODO do the alphabetical sort
-           Log.d(TAG, "before : "+resourcesList);
-           Collections.sort(resourcesList, new AlphabeticalSortComparator());
-           Log.d(TAG, "after : "+resourcesList);
-           ResourcesUpdatedEvent event = new ResourcesUpdatedEvent(resourcesList, null);
-           eventBus.post(event);
-           dayResourceAdapter.notifyDataSetChanged();
-
+           dayResourceAdapter.sortAZ();
        }else{
            v.setSelected(false);
-           //TODO
-           Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort Z-A clicked", Toast.LENGTH_SHORT);
-           toast.show();
            sortAZText.setText(R.string.az_sorted_label);
-           //TODO do the reverse alphabetical sort
-           Log.d(TAG, "before : "+resourcesList);
-           Collections.sort(resourcesList, new AlphabeticalReverseSortComparator());
-           Log.d(TAG, "after : "+resourcesList);
-           ResourcesUpdatedEvent event = new ResourcesUpdatedEvent(resourcesList, null);
-           eventBus.post(event);
-           dayResourceAdapter.notifyDataSetChanged();
+           dayResourceAdapter.sortZA();
        }
 
    }
@@ -226,9 +201,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     public void onSortLocClick(View v){
         if(!v.isSelected()){
             v.setSelected(true);
-            //TODO
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort loc clicked", Toast.LENGTH_SHORT);
-            toast.show();
+            dayResourceAdapter.sortLoc();
         }else{
             //nothing to do
             v.setSelected(false);
@@ -240,9 +213,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     public void onSortTimeLocClick(View v){
         if(!v.isSelected()){
             v.setSelected(true);
-            //TODO
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort time loc clicked", Toast.LENGTH_SHORT);
-            toast.show();
+            dayResourceAdapter.sortTimeLoc();
         }else{
             //nothing to do
             v.setSelected(false);

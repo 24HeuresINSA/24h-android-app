@@ -1,10 +1,13 @@
 package com.insalyon.les24heures.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -117,7 +120,15 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 R.layout.schedule_grid_item, schedules);
         schedulesGrid.setAdapter(scheduleAdapter);
 
-        MapFragment mapFragment = (MapFragment) getChildFragmentManager()
+        FragmentManager fm;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Log.d(TAG, "using getFragmentManager");
+            fm = getFragmentManager();
+        } else {
+            Log.d(TAG, "using getChildFragmentManager");
+            fm = getChildFragmentManager();
+        }
+        MapFragment mapFragment = (MapFragment) fm
                 .findFragmentById(R.id.detail_mini_maps);
         mapFragment.getMapAsync(this);
         googleMap = mapFragment.getMap();
