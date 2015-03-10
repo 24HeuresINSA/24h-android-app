@@ -16,9 +16,11 @@ import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceRetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
+import com.insalyon.les24heures.utils.AlphabeticalSortComparator;
 import com.insalyon.les24heures.utils.Day;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -150,8 +152,11 @@ public class ResourceServiceImpl implements ResourceService {
                 if (nightResourceDTOs != null) {
                     resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs),
                             fromDTO(nightResourceDTOs));
+                    Collections.sort(resourcesUpdatedEvent.getDayResourceList(),new AlphabeticalSortComparator());
+                    Collections.sort(resourcesUpdatedEvent.getNightResourceList(),new AlphabeticalSortComparator());
                 } else {
                     resourcesUpdatedEvent = new ResourcesUpdatedEvent(fromDTO(dayResourceDTOs));
+                    Collections.sort(resourcesUpdatedEvent.getDayResourceList(),new AlphabeticalSortComparator());
                     ArrayList<NightResource> mockArtist = new ArrayList<NightResource>();
 
                     List<Schedule> schedules = new ArrayList<Schedule>();
