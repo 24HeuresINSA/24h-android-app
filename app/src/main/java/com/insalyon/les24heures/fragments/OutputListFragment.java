@@ -23,7 +23,6 @@ import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.DayResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
-import com.insalyon.les24heures.eventbus.ResourceUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.DayResource;
@@ -160,9 +159,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         super.onEvent(event);
     }
 
-    public void onEvent(ResourceUpdatedEvent event){
-        dayResourceAdapter.notifyDataSetInvalidated();
-    }
 
     @OnClick(R.id.fab_goto_maps)
     public void onClickFabGotoMaps(View v) {
@@ -309,6 +305,9 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         int top = (v == null) ? 0 : (v.getTop() - resourceListView.getPaddingTop());
         outState.putInt("position", top);
         outState.putInt("indexPosition", index);
+
+        //sorted resources
+        outState.putParcelableArrayList("resourcesList", dayResourceAdapter.getResources());
 
     }
 

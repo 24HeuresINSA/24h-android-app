@@ -101,6 +101,7 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
         originalList.clear();
         originalList.addAll(event.getDayResourceList());
+       sortAZ();
         notifyDataSetChanged();
     }
 
@@ -122,6 +123,10 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
 
     public void sortTimeLoc(){
         //TODO sort time loc
+    }
+
+    public ArrayList<DayResource> getResources(){
+        return originalList;
     }
 
 
