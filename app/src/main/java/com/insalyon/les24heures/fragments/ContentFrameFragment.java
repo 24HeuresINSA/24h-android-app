@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 
-import com.insalyon.les24heures.MainActivity;
+import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
@@ -79,7 +79,7 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((MainActivity) getActivity()).setTitle(displayName);
+        ((DayActivity) getActivity()).setTitle(displayName);
     }
 
     @Override

@@ -36,10 +36,10 @@ public class DayActivity extends BaseDynamicDataActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.day_activity);
 
-        //override Base's DrawerCategoriesClickListener
-        categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
 
+    }
 
+    private void startPreferedOutput(Bundle savedInstanceState) {
         /*** start the right ouptut : Maps or List ***/
         if (savedInstanceState == null) {
             //default start : get from manifest
@@ -60,11 +60,19 @@ public class DayActivity extends BaseDynamicDataActivity {
                 selectMaps();
             }
         }
+    }
+
+    //here we do all the stuff requiring the view
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        //override Base's DrawerCategoriesClickListener
+        categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
+
+        startPreferedOutput(savedInstanceState);
 
 
     }
-
-
 
     public void onEvent(ResourceSelectedEvent resourceSelected) {
         //Output state
@@ -108,7 +116,7 @@ public class DayActivity extends BaseDynamicDataActivity {
             ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
 
 
-        ft.replace(R.id.content_frame, fragment).commit();
+        ft.replace(R.id.day_output_holder, fragment).commit();
 
     }
 

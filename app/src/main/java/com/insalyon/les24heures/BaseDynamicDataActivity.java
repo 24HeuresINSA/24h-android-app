@@ -30,7 +30,6 @@ import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.fragments.ArtistFragment;
 import com.insalyon.les24heures.fragments.ContentFrameFragment;
 import com.insalyon.les24heures.fragments.DetailFragment;
-import com.insalyon.les24heures.fragments.OutputMapsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
@@ -565,16 +564,17 @@ public abstract class BaseDynamicDataActivity extends Activity {
     //dans NavigationActity
     public void restoreTitle() {
         //TODO faire comme pour les menu item
-        String str;
-        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
-            str = (getResources().getString(R.string.drawer_outputtype_maps));
-        } else {
-            str = (getResources().getString(R.string.drawer_outputtype_list));
-        }
-
-        if (str != getActionBar().getTitle()) {
-            setTitle(str);
-        }
+        Log.e(TAG,"restoreTitle TODO");
+//        String str;
+//        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
+//            str = (getResources().getString(R.string.drawer_outputtype_maps));
+//        } else {
+//            str = (getResources().getString(R.string.drawer_outputtype_list));
+//        }
+//
+//        if (str != getActionBar().getTitle()) {
+//            setTitle(str);
+//        }
     }
 
     public DrawerArrowDrawable getDrawerArrowDrawable() {

@@ -10,7 +10,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.BaseDynamicDataActivity;
-import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.fragments.DetailFragment;
@@ -205,7 +204,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         isSetup = true;
 
         //setup previous sliding state
-        String previousState = ((MainActivity) activity).getSlidingUpState();
+        String previousState =  activity.getSlidingUpState();
         Log.d(TAG, "previous state " + previousState);
         if (previousState != null) {
             switch (previousState) {
