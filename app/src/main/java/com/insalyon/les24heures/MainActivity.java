@@ -6,9 +6,6 @@ import android.os.Bundle;
 public class MainActivity extends BaseDynamicDataActivity {
     private static final String TAG = MainActivity.class.getCanonicalName();
 
-
-
-
     @Override
     //dans NavigationActivity sauf startRightOutput  
     protected void onCreate(Bundle savedInstanceState) {
@@ -16,9 +13,6 @@ public class MainActivity extends BaseDynamicDataActivity {
         setContentView(R.layout.activity_main);
 
     }
-
-
-
 
 }
 

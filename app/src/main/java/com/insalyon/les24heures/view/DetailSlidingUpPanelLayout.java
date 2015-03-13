@@ -161,6 +161,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     }
 
 
+
     /**
      * if return false it's because the height of the view isn't yet ready, the setup will be done once the view is rendered and
      * the view height is processed

@@ -36,10 +36,20 @@ public class DayActivity extends BaseDynamicDataActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.day_activity);
 
-
     }
 
-    private void startPreferedOutput(Bundle savedInstanceState) {
+    //here we do all the stuff requiring the view
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        //override Base's DrawerCategoriesClickListener
+        categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
+
+        startPreferredOutput(savedInstanceState);
+    }
+
+    //TODO is it still up ?
+    private void startPreferredOutput(Bundle savedInstanceState) {
         /*** start the right ouptut : Maps or List ***/
         if (savedInstanceState == null) {
             //default start : get from manifest
@@ -62,17 +72,10 @@ public class DayActivity extends BaseDynamicDataActivity {
         }
     }
 
-    //here we do all the stuff requiring the view
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        //override Base's DrawerCategoriesClickListener
-        categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
 
-        startPreferedOutput(savedInstanceState);
-
-
-    }
+    /**
+     * Activity is alive
+     */
 
     public void onEvent(ResourceSelectedEvent resourceSelected) {
         //Output state
@@ -85,6 +88,33 @@ public class DayActivity extends BaseDynamicDataActivity {
         }
     }
 
+    /**
+     * Activity is no more alive
+     */
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        //Output state
+        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == OutputMapsFragment.class) {
+            outState.putString("outputType", OutputType.MAPS.toString());
+        } else {
+            outState.putString("outputType", OutputType.LIST.toString());
+        }
+    }
+
+    private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectCategory(position);
+        }
+    }
+
+
+    /**
+     * Activity's methods
+     */
 
     public void selectMaps() {
         Fragment mapsFragment = new OutputMapsFragment();
@@ -97,8 +127,6 @@ public class DayActivity extends BaseDynamicDataActivity {
     }
 
     private void replaceContentFragment(Fragment fragment) {
-
-        //TODO remplacer le fragment ou juste faire une animation pour afficher/masquer au besoin les fragments tout le temps vivant ?
 
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
@@ -120,36 +148,10 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-
-        //TODO a adapter en fonction de la maniere dont on switch de list a maps
-
-        //Output state
-        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == OutputMapsFragment.class) {
-            outState.putString("outputType", OutputType.MAPS.toString());
-        } else {
-            outState.putString("outputType", OutputType.LIST.toString());
-        }
-    }
-
-    private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectCategory(position);
-
-        }
-    }
-
-    //day
     private void selectCategory(int position) {
         drawerLayout.closeDrawer();
 
-
         List<Category> catSelected = new ArrayList<>();
-
-
 
         CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(catSelected);
 
@@ -169,18 +171,7 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         eventBus.post(categoriesSelectedEvent);
 
-//
-//        Class<? extends Fragment> currentFragment = fragmentManager.findFragmentById(R.id.day_output_holder).getClass();
-//
-//        if (!(currentFragment == OutputListFragment.class || currentFragment == OutputMapsFragment.class)) {
-//            selectMaps();
-//        }
-
     }
-
-
-
-
 
 }
 

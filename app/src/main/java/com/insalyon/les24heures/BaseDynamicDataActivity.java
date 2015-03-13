@@ -94,6 +94,9 @@ public abstract class BaseDynamicDataActivity extends Activity {
     private BaseDynamicDataActivity self = this;
 
 
+    /**
+     * Activity is being created
+     */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -111,13 +114,10 @@ public abstract class BaseDynamicDataActivity extends Activity {
         resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
 //        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);
         fragmentManager = getFragmentManager();
-        //dependency injection instead ?
         resourceService = ResourceServiceImpl.getInstance();
         categoryService = CategoryServiceImpl.getInstance();
 
 
-
-        ///////////////////////// all
         /*** recover data either from (by priority)
          *           savedInstanceState (rotate, restore from background)
          *           getIntent (start from another activity, another apps) TODO
@@ -167,8 +167,6 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
     }
 
-
-
     private void setupDetailFragment() {
         detailSlidingUpPanelLayoutLayout.setActivity(this); //slidingPanel needs the activity to invalidateOptionMenu, manage appName and arrowDrawer
         detailSlidingUpPanelLayoutLayout.setParallaxHeader(findViewById(R.id.detail_paralax_header));
@@ -196,57 +194,6 @@ public abstract class BaseDynamicDataActivity extends Activity {
         drawerLayout.setDrawerListener(drawerListener);
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-
-        ButterKnife.inject(this, this);  //==> TODO voir si la fille arrive a injecter les vues de sa mere
-        setupNavigationDrawer();
-        setupDetailFragment();
-
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        eventBus.register(this);
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.e("multi activities onpause",this.toString());
-        EventBus.getDefault().unregister(this);
-
-
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.e("multi activities ondestroy", this.toString());
-
-    }
-
-    //day
-    public void onEvent(ResourcesUpdatedEvent event) {
-        // super.onEvent(event);
-        Log.d(TAG + "onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
-        dayResourceArrayList.clear();
-        dayResourceArrayList.addAll(event.getDayResourceList());
-        nightResourceArrayList.clear();
-        nightResourceArrayList.addAll(event.getNightResourceList());
-        Log.e("multi activities event",this.toString());
-    }
-
-    public void onEvent(CategoriesUpdatedEvent event) {
-        Log.d("onEvent(ResourcesUpdatedEvent)", event.getCategories().toString());
-        categories.clear();
-        categories.addAll(event.getCategories());
-    }
-
-    //day & night
-    //dans NavigationActivity et demande et choisi l'impl en fonction du curent fragment
     @Override
     public boolean onCreateOptionsMenu(final Menu menu) {
         globalMenu = menu;
@@ -324,26 +271,82 @@ public abstract class BaseDynamicDataActivity extends Activity {
         return true;
     }
 
-    private void hideKeyboard() {
-        InputMethodManager imm = (InputMethodManager) getSystemService(
-                Context.INPUT_METHOD_SERVICE);
-//        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
-        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
-
-    }
-
-    //day & night
-    //dans NavigationActivity
-    private void disableFavoritesFilter(MenuItem favoritesItem) {
-        if (isFavoritesChecked) {
-            toggleFavorites(favoritesItem);
-        }
-    }
-
-
-    //can be day & night (just un parent commun a  detailSlidingUpPanelLayoutLayout
     @Override
-    //dans NavigationActivity
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+
+        ButterKnife.inject(this);
+        setupNavigationDrawer();
+        setupDetailFragment();
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        eventBus.register(this);
+    }
+
+    /**
+     * Activity is alive
+     */
+
+    public void onEvent(ResourcesUpdatedEvent event) {
+        dayResourceArrayList.clear();
+        dayResourceArrayList.addAll(event.getDayResourceList());
+        nightResourceArrayList.clear();
+        nightResourceArrayList.addAll(event.getNightResourceList());
+    }
+
+    public void onEvent(CategoriesUpdatedEvent event) {
+        categories.clear();
+        categories.addAll(event.getCategories());
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (drawerLayout.isDrawerOpen()) {
+            drawerLayout.closeDrawer();
+        } else if (detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded()) {
+            detailSlidingUpPanelLayoutLayout.collapsePanel();
+        } else if (!detailSlidingUpPanelLayoutLayout.isPanelHidden()) {
+            detailSlidingUpPanelLayoutLayout.hideDetailPanel();
+        } else {
+            super.onBackPressed();
+        }
+
+    }
+
+    /**
+     * invalidateOptionsMenu refire search from searchWidget, painful !
+     */
+    public void customOnOptionsMenu() {
+        boolean drawerOpen = drawerLayout.isDrawerVisible();//drawerLayout.isDrawerVisible(drawerView);
+        Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
+        mMenu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
+        mMenu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
+        mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+        mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+    }
+
+    @OnClick(R.id.navigation_drawer_artists)
+    public void onClickArtist(View v) {
+        Fragment artistFragment = new ArtistFragment();
+//        replaceContentFragment(artistFragment);
+        drawerLayout.closeDrawer();
+        nextActivity = NightActivity.class;
+
+    }
+
+    /* Called whenever we call invalidateOptionsMenu() */
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        mMenu = menu;
+        customOnOptionsMenu();
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
         //click on the appName or the appIcone
@@ -390,99 +393,19 @@ public abstract class BaseDynamicDataActivity extends Activity {
     }
 
 
-
-
-    //day & night
-    //dans NavigationActivity
-    private void toggleFavorites(MenuItem item) {
-        ArrayList<Category> list = new ArrayList<>();
-        list.addAll(selectedCategories);
-        if (item.isChecked()) {
-            item.setChecked(false);
-            item.setIcon(R.drawable.ic_favorites_unchecked);
-            isFavoritesChecked = false;
-        } else {
-            list.add((new Category("FAVORITES","ic_FAVORITES")));
-            item.setChecked(true);
-            item.setIcon(R.drawable.ic_favorites_checked);
-            isFavoritesChecked = true;
-        }
-        CategoriesSelectedEvent event = new CategoriesSelectedEvent(list);
-        event.setFilterAction(FilterAction.ADDED);
-        eventBus.post(event);
-    }
-
-    /* Called whenever we call invalidateOptionsMenu() */
-    //day & night
-    @Override
-    //dans NavigationActivity
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        mMenu = menu;
-        customOnOptionsMenu();
-        return super.onPrepareOptionsMenu(menu);
-    }
-
-
     /**
-     * invalidateOptionsMenu refire search from searchWidget, painful !
+     * Activity is no more alive
      */
-    //day & night
-    //dans NavigationActivity et demande et choisi l'impl en fonction du curent fragment
-    public void customOnOptionsMenu() {
-        boolean drawerOpen = drawerLayout.isDrawerVisible();//drawerLayout.isDrawerVisible(drawerView);
-        Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
-        mMenu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
-        mMenu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
-        mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
-        mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
-    }
 
-    /**
-     * Activity is alive
-     */
-    //can be day & night (just un parent commun a  detailSlidingUpPanelLayoutLayout
     @Override
-    //dans NavigationActivity et demande au currentFragment son slidingLayout
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen()) {
-            drawerLayout.closeDrawer();
-        } else if (detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded()) {
-            detailSlidingUpPanelLayoutLayout.collapsePanel();
-        } else if (!detailSlidingUpPanelLayoutLayout.isPanelHidden()) {
-            detailSlidingUpPanelLayoutLayout.hideDetailPanel();
-        } else {
-            super.onBackPressed();
-        }
-
+    protected void onPause() {
+        super.onPause();
+        EventBus.getDefault().unregister(this);
     }
 
-
-    //all
-    @OnClick(R.id.navigation_drawer_artists)
-    public void onClickArtist(View v) {
-        Fragment artistFragment = new ArtistFragment();
-//        replaceContentFragment(artistFragment);
-        drawerLayout.closeDrawer();
-        nextActivity = NightActivity.class;
-
-    }
-
-    //all
-    @Override
-    //dans NavigationActivity
-    public void setTitle(CharSequence title) {
-        getActionBar().setTitle(title);
-    }
-
-
-    /**
-     * Activity no more alive
-     */
-    //day,  night need one, pas forcement
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-
 
         //categories
         outState.putParcelableArrayList("categories", categories);
@@ -492,7 +415,6 @@ public abstract class BaseDynamicDataActivity extends Activity {
         outState.putParcelableArrayList("dayResourceArrayList", dayResourceArrayList);
         outState.putParcelableArrayList("nightResourceArrayList", nightResourceArrayList);
 
-        ///////////////////////////day and night
         //action bar menu
         SearchView searchView =
                 (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
@@ -515,14 +437,110 @@ public abstract class BaseDynamicDataActivity extends Activity {
         outState.putString("slidingUpState", state);
     }
 
+
+    /**
+     * Activity methods
+     */
+
+    private void hideKeyboard() {
+        InputMethodManager imm = (InputMethodManager) getSystemService(
+                Context.INPUT_METHOD_SERVICE);
+//        imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+        imm.hideSoftInputFromWindow(getCurrentFocus().getWindowToken(), 0);
+
+    }
+
     public String getSlidingUpState() {
         return slidingUpState;
     }
 
+    /**
+     * Action bar methods
+     */
 
+    private void disableFavoritesFilter(MenuItem favoritesItem) {
+        if (isFavoritesChecked) {
+            toggleFavorites(favoritesItem);
+        }
+    }
 
-    //day + night (all need one)
-    //dans NavigationActivity
+    private void toggleFavorites(MenuItem item) {
+        ArrayList<Category> list = new ArrayList<>();
+        list.addAll(selectedCategories);
+        if (item.isChecked()) {
+            item.setChecked(false);
+            item.setIcon(R.drawable.ic_favorites_unchecked);
+            isFavoritesChecked = false;
+        } else {
+            list.add((new Category("FAVORITES", "ic_FAVORITES")));
+            item.setChecked(true);
+            item.setIcon(R.drawable.ic_favorites_checked);
+            isFavoritesChecked = true;
+        }
+        CategoriesSelectedEvent event = new CategoriesSelectedEvent(list);
+        event.setFilterAction(FilterAction.ADDED);
+        eventBus.post(event);
+    }
+
+    //TODO
+    public void restoreTitle() {
+        //TODO faire comme pour les menu item
+        Log.e(TAG, "restoreTitle TODO");
+//        String str;
+//        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
+//            str = (getResources().getString(R.string.drawer_outputtype_maps));
+//        } else {
+//            str = (getResources().getString(R.string.drawer_outputtype_list));
+//        }
+//
+//        if (str != getActionBar().getTitle()) {
+//            setTitle(str);
+//        }
+    }
+
+    @Override
+    public void setTitle(CharSequence title) {
+        getActionBar().setTitle(title);
+    }
+
+    public DrawerArrowDrawable getDrawerArrowDrawable() {
+        return drawerArrowDrawable;
+    }
+
+    /**
+     * Navigation Drawer
+     */
+
+    public void onEvent(ManageDetailSlidingUpDrawer m) {
+
+        switch (m.getState()) {
+            case COLLAPSE:
+                detailSlidingUpPanelLayoutLayout.collapsePanel();
+                break;
+            case EXPAND:
+                detailSlidingUpPanelLayoutLayout.expandPanel();
+                break;
+            case HIDE:
+                detailSlidingUpPanelLayoutLayout.hidePanel();
+                break;
+            case SHOW:
+                if (m.getDayResource() == null) {
+                    detailSlidingUpPanelLayoutLayout.showPanel();
+                } else {
+                    detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getDayResource());
+                }
+                break;
+            case ANCHORED:
+                if (m.getDayResource() != null) {
+                    detailFragment.notifyDataChanged(m.getDayResource());
+                } else if (m.getNightResource() != null) {
+                    detailFragment.notifyDataChanged(m.getNightResource());
+                }
+                detailSlidingUpPanelLayoutLayout.anchorPanel();
+                break;
+        }
+    }
+
     private class DrawerListener extends DrawerLayout.SimpleDrawerListener {
         private MenuItem itemFav;
         private MenuItem itemSearch;
@@ -561,99 +579,30 @@ public abstract class BaseDynamicDataActivity extends Activity {
             drawerLayout.setIsDrawerOpen(false);
 
             //TODO ceci appartient à la journée, il faudrait surcharger que le onDrawerClose
-            if( getFragmentManager().findFragmentById(R.id.day_output_holder) != null)
+            if (getFragmentManager().findFragmentById(R.id.day_output_holder) != null)
                 getActionBar().setTitle(
                         ((ContentFrameFragment) getFragmentManager().findFragmentById(R.id.day_output_holder))
                                 .getDisplayName());
 
-            //TODO switch activity if needed
-            if(nextActivity !=  null){
+            //switch activity if needed
+            if (nextActivity != null) {
                 Intent intent = new Intent(self, nextActivity);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
                 startActivity(intent);
-                overridePendingTransition(0,0);
+                overridePendingTransition(0, 0);
                 finish();
-//                overridePendingTransition(R.animator.push_up_in,R.animator.push_up_out);
             }
 
         }
     }
 
-    /**
-     * Action bar methods
-     */
-
-    //all
-    //dans NavigationActity
-    public void restoreTitle() {
-        //TODO faire comme pour les menu item
-        Log.e(TAG,"restoreTitle TODO");
-//        String str;
-//        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
-//            str = (getResources().getString(R.string.drawer_outputtype_maps));
-//        } else {
-//            str = (getResources().getString(R.string.drawer_outputtype_list));
-//        }
-//
-//        if (str != getActionBar().getTitle()) {
-//            setTitle(str);
-//        }
-    }
-
-    public DrawerArrowDrawable getDrawerArrowDrawable() {
-        return drawerArrowDrawable;
-    }
-
-
-
-    //TODO move dans DetailSlidingUpPanelLayout
-    public void onEvent(ManageDetailSlidingUpDrawer m) {
-
-        //TODO demander a l'activity de masquer le clavier !
-
-
-        switch (m.getState()) {
-            case COLLAPSE:
-//                hideKeyboard();
-                detailSlidingUpPanelLayoutLayout.collapsePanel();
-                break;
-            case EXPAND:
-//                hideKeyboard();
-                detailSlidingUpPanelLayoutLayout.expandPanel();
-                break;
-            case HIDE:
-                detailSlidingUpPanelLayoutLayout.hidePanel();
-                break;
-            case SHOW:
-//                hideKeyboard();
-                if (m.getDayResource() == null) {
-                    detailSlidingUpPanelLayoutLayout.showPanel();
-                } else {
-                    detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getDayResource());
-                }
-                break;
-            case ANCHORED:
-//                hideKeyboard();
-                if (m.getDayResource() != null) {
-                    detailFragment.notifyDataChanged(m.getDayResource());
-                } else if (m.getNightResource() != null) {
-                    detailFragment.notifyDataChanged(m.getNightResource());
-                }
-                detailSlidingUpPanelLayoutLayout.anchorPanel();
-                break;
-        }
-
-    }
-
-    //day
     private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//            selectCategory(position);
             Intent intent = new Intent(self, DayActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
             startActivity(intent);
-            overridePendingTransition(0,0);
+            overridePendingTransition(0, 0);
             finish();
         }
     }

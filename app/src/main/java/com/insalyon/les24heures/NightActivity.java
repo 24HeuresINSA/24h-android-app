@@ -23,25 +23,19 @@ public class NightActivity extends BaseDynamicDataActivity {
         super.onPostCreate(savedInstanceState);
 
         startFragment();
-
     }
-
-
 
 
     private void startFragment() {
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
+        bundleArgs.putParcelableArrayList("resourcesList", nightResourceArrayList);
         searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
         bundleArgs.putString("searchQuery", searchQuery);
+
         Fragment fragment = new ArtistFragment();
         fragment.setArguments(bundleArgs);
-
         FragmentTransaction ft = fragmentManager.beginTransaction();
-
-         bundleArgs.putParcelableArrayList("resourcesList", nightResourceArrayList);
-
-
         ft.replace(R.id.content_frame, fragment).commit();
     }
 }
