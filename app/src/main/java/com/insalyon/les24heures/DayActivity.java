@@ -1,6 +1,7 @@
 package com.insalyon.les24heures;
 
 import android.app.Fragment;
+import android.app.FragmentTransaction;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -10,7 +11,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
-import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.fragments.OutputListFragment;
 import com.insalyon.les24heures.fragments.OutputMapsFragment;
@@ -31,7 +31,6 @@ public class DayActivity extends BaseDynamicDataActivity {
      */
 
     @Override
-    //dans NavigationActivity sauf startRightOutput  
     protected void onCreate(Bundle savedInstanceState) {
         /*** init services ***/
         super.onCreate(savedInstanceState);
@@ -41,7 +40,6 @@ public class DayActivity extends BaseDynamicDataActivity {
         categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
 
 
-        /////////////////////////day
         /*** start the right ouptut : Maps or List ***/
         if (savedInstanceState == null) {
             //default start : get from manifest
@@ -66,13 +64,8 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     }
 
-    public void onEvent(CategoriesUpdatedEvent event) {
-        Log.d("onEvent(ResourcesUpdatedEvent)", event.getCategories().toString());
-        categories.clear();
-        categories.addAll(event.getCategories());
-    }
 
-    //day
+
     public void onEvent(ResourceSelectedEvent resourceSelected) {
         //Output state
         detailSlidingUpPanelLayoutLayout.collapsePanel();
@@ -85,45 +78,37 @@ public class DayActivity extends BaseDynamicDataActivity {
     }
 
 
-
-
-    //day
-    //dans DayFragment
     public void selectMaps() {
         Fragment mapsFragment = new OutputMapsFragment();
         replaceContentFragment(mapsFragment);
     }
 
-    //day
-    //dans DayFragment
     public void selectList() {
         Fragment listFragment = new OutputListFragment();
         replaceContentFragment(listFragment);
     }
 
-    //day (peut etre night en a besoin d'un)
-    //dans NavigationActivity et demande au currentFragment son slidingLayout
     private void replaceContentFragment(Fragment fragment) {
 
         //TODO remplacer le fragment ou juste faire une animation pour afficher/masquer au besoin les fragments tout le temps vivant ?
 
-//        Bundle bundleArgs = new Bundle();
-//        bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
-//        searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
-//        bundleArgs.putString("searchQuery", searchQuery);
-//        fragment.setArguments(bundleArgs);
-//
-//        FragmentTransaction ft = fragmentManager.beginTransaction();
-//
-//        bundleArgs.putParcelableArrayList("resourcesList", dayResourceArrayList);
-//
-//        if (fragment.getClass() == OutputListFragment.class)
-//            ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
-//        else
-//            ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
-//
-//
-//        ft.replace(R.id.content_frame, fragment).commit();
+        Bundle bundleArgs = new Bundle();
+        bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
+        searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
+        bundleArgs.putString("searchQuery", searchQuery);
+        fragment.setArguments(bundleArgs);
+
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+
+        bundleArgs.putParcelableArrayList("resourcesList", dayResourceArrayList);
+
+        if (fragment.getClass() == OutputListFragment.class)
+            ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
+        else
+            ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
+
+
+        ft.replace(R.id.content_frame, fragment).commit();
 
     }
 
@@ -133,12 +118,12 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         //TODO a adapter en fonction de la maniere dont on switch de list a maps
 
-//        //Output state
-//        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
-//            outState.putString("outputType", OutputType.MAPS.toString());
-//        } else {
-//            outState.putString("outputType", OutputType.LIST.toString());
-//        }
+        //Output state
+        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
+            outState.putString("outputType", OutputType.MAPS.toString());
+        } else {
+            outState.putString("outputType", OutputType.LIST.toString());
+        }
     }
 
     private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {

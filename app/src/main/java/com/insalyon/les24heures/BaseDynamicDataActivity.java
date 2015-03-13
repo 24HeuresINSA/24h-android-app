@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.insalyon.les24heures.adapter.CategoryAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
@@ -166,10 +167,6 @@ public abstract class BaseDynamicDataActivity extends Activity {
             selectedCategories = new ArrayList<>();
         }
 
-
-
-
-
     }
 
 
@@ -178,12 +175,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
         detailSlidingUpPanelLayoutLayout.setActivity(this); //slidingPanel needs the activity to invalidateOptionMenu, manage appName and arrowDrawer
         detailSlidingUpPanelLayoutLayout.setParallaxHeader(findViewById(R.id.detail_paralax_header));
 
-
-//        detailFragment = new DetailFragment();
-//        FragmentTransaction ft = fragmentManager.beginTransaction();
-//        ft.replace(R.id.sliding_layout_content_fragment,detailFragment).commit();
-
-      detailFragment = (DetailFragment) fragmentManager.findFragmentById(R.id.sliding_layout_content_fragment);
+        detailFragment = (DetailFragment) fragmentManager.findFragmentById(R.id.sliding_layout_content_fragment);
         detailSlidingUpPanelLayoutLayout.setDetailFragment(detailFragment);
     }
 
@@ -224,6 +216,12 @@ public abstract class BaseDynamicDataActivity extends Activity {
         dayResourceArrayList.addAll(event.getDayResourceList());
         nightResourceArrayList.clear();
         nightResourceArrayList.addAll(event.getNightResourceList());
+    }
+
+    public void onEvent(CategoriesUpdatedEvent event) {
+        Log.d("onEvent(ResourcesUpdatedEvent)", event.getCategories().toString());
+        categories.clear();
+        categories.addAll(event.getCategories());
     }
 
     //day & night
