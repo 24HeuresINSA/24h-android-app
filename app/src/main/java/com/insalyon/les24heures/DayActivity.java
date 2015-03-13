@@ -77,7 +77,7 @@ public class DayActivity extends BaseDynamicDataActivity {
     public void onEvent(ResourceSelectedEvent resourceSelected) {
         //Output state
         detailSlidingUpPanelLayoutLayout.collapsePanel();
-        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
+        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == OutputMapsFragment.class) {
             //just focus on resource and highlith it
         } else {
             //open maps on resource
@@ -127,7 +127,7 @@ public class DayActivity extends BaseDynamicDataActivity {
         //TODO a adapter en fonction de la maniere dont on switch de list a maps
 
         //Output state
-        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
+        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == OutputMapsFragment.class) {
             outState.putString("outputType", OutputType.MAPS.toString());
         } else {
             outState.putString("outputType", OutputType.LIST.toString());
@@ -144,6 +144,9 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     //day
     private void selectCategory(int position) {
+        drawerLayout.closeDrawer();
+
+
         List<Category> catSelected = new ArrayList<>();
 
 
@@ -166,14 +169,13 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         eventBus.post(categoriesSelectedEvent);
 
+//
+//        Class<? extends Fragment> currentFragment = fragmentManager.findFragmentById(R.id.day_output_holder).getClass();
+//
+//        if (!(currentFragment == OutputListFragment.class || currentFragment == OutputMapsFragment.class)) {
+//            selectMaps();
+//        }
 
-        Class<? extends Fragment> currentFragment = fragmentManager.findFragmentById(R.id.content_frame).getClass();
-
-        if (!(currentFragment == OutputListFragment.class || currentFragment == OutputMapsFragment.class)) {
-            selectMaps();
-        }
-
-        drawerLayout.closeDrawer();
     }
 
 

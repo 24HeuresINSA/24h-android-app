@@ -10,7 +10,6 @@ import android.widget.AdapterView;
 
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.NightResourceAdapter;
-import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
@@ -42,6 +41,8 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
         super.onCreate(savedInstanceState);
         displayName = getActivity().getResources().getString(R.string.artist_fragment_name);
     }
+
+
 
 
     @Nullable
@@ -76,6 +77,12 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
         return view;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        setCategoryFilter();
+    }
+
     /**
      * Fragment is alive      *
      */
@@ -83,21 +90,24 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
     /**
      * Fragment is alive       *
      */
-    public void onEvent(CategoriesSelectedEvent event) {
-        super.onEvent(event);
-    }
+
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getNightResourceList().toString());
         resourcesList.clear();
         resourcesList.addAll(event.getNightResourceList());
+//        nightResourceAdapter.getFilter().filter("");
+        //nightResourceAdapter.notifyDataSetChanged();
+
     }
 
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
         Log.d("onEvent(SearchEvent)", event.getQuery().toString());
     }
+
+
 
 
 

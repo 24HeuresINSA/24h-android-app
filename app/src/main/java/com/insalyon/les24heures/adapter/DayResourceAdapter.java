@@ -98,7 +98,7 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
         originalList.clear();
         originalList.addAll(event.getDayResourceList());
-        notifyDataSetChanged();
+        //notifyDataSetChanged();
     }
 
 

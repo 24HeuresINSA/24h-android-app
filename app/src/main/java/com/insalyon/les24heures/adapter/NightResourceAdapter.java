@@ -41,6 +41,7 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
         eventBus.register(this);
     }
 
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 

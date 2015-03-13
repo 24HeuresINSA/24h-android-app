@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 
-import com.insalyon.les24heures.DayActivity;
+import com.insalyon.les24heures.BaseDynamicDataActivity;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
@@ -46,6 +46,8 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
             //get from restore state (when it's Android which create the fragment)
             if (savedInstanceState.getParcelableArrayList("categoriesSelected") != null) {
                 categoriesSelected = savedInstanceState.getParcelableArrayList("categoriesSelected");
+                categoriesSelected = new ArrayList<>(categoriesSelected);
+
             }
             if (savedInstanceState.getParcelableArrayList("resourcesList") != null) {
                 resourcesList = savedInstanceState.getParcelableArrayList("resourcesList");
@@ -55,6 +57,8 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
             //get from arguments (when it's fragmentManager which create the fragment)
             if (getArguments().getParcelableArrayList("categoriesSelected") != null) {
                 categoriesSelected = getArguments().getParcelableArrayList("categoriesSelected");
+                categoriesSelected = new ArrayList<>(categoriesSelected);
+
             }
             //get from arguments (when it's fragmentManager which create the fragment)
             if (getArguments().getParcelableArrayList("resourcesList") != null) {
@@ -63,7 +67,6 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
             searchQuery = getArguments().getString("searchQuery"); //we want null if there is no searchQuery
         }
 
-        categoriesSelected = new ArrayList<>(categoriesSelected);
 
 
     }
@@ -79,7 +82,7 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((DayActivity) getActivity()).setTitle(displayName);
+        ((BaseDynamicDataActivity) getActivity()).setTitle(displayName);
     }
 
     @Override

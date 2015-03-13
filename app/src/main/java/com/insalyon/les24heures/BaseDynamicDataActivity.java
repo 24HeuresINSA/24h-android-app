@@ -100,7 +100,6 @@ public abstract class BaseDynamicDataActivity extends Activity {
         /*** init services ***/
         super.onCreate(savedInstanceState);
         eventBus = EventBus.getDefault();
-        eventBus.register(this);
         restAdapter = new RestAdapter.Builder()
                 .setEndpoint(getResources().getString(R.string.backend_url))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
@@ -207,6 +206,28 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        eventBus.register(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Log.e("multi activities onpause",this.toString());
+        EventBus.getDefault().unregister(this);
+
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        Log.e("multi activities ondestroy", this.toString());
+
+    }
+
     //day
     public void onEvent(ResourcesUpdatedEvent event) {
         // super.onEvent(event);
@@ -215,6 +236,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
         dayResourceArrayList.addAll(event.getDayResourceList());
         nightResourceArrayList.clear();
         nightResourceArrayList.addAll(event.getNightResourceList());
+        Log.e("multi activities event",this.toString());
     }
 
     public void onEvent(CategoriesUpdatedEvent event) {
@@ -538,9 +560,10 @@ public abstract class BaseDynamicDataActivity extends Activity {
             super.onDrawerClosed(drawerView);
             drawerLayout.setIsDrawerOpen(false);
 
-            if( getFragmentManager().findFragmentById(R.id.content_frame) != null)
+            //TODO ceci appartient à la journée, il faudrait surcharger que le onDrawerClose
+            if( getFragmentManager().findFragmentById(R.id.day_output_holder) != null)
                 getActionBar().setTitle(
-                        ((ContentFrameFragment) getFragmentManager().findFragmentById(R.id.content_frame))
+                        ((ContentFrameFragment) getFragmentManager().findFragmentById(R.id.day_output_holder))
                                 .getDisplayName());
 
             //TODO switch activity if needed
