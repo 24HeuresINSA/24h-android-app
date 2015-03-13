@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
+import com.insalyon.les24heures.BaseDynamicDataActivity;
 import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
@@ -44,7 +45,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
 
     private Integer wideHeight;
-    private MainActivity activity;
+    private BaseDynamicDataActivity activity;
     private boolean isSetup = false;
 
 
@@ -277,7 +278,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     }
 
 
-    public void setActivity(MainActivity activity) {
+    public void setActivity(BaseDynamicDataActivity activity) {
         this.activity = activity;
     }
 

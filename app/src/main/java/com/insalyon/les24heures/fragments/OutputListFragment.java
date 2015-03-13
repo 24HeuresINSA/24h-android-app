@@ -18,7 +18,7 @@ import com.felipecsl.quickreturn.library.AbsListViewQuickReturnAttacher;
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
 import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
-import com.insalyon.les24heures.MainActivity;
+import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.DayResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
@@ -162,7 +162,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
     @OnClick(R.id.fab_goto_maps)
     public void onClickFabGotoMaps(View v) {
-        ((MainActivity) getActivity()).selectMaps();
+        ((DayActivity) getActivity()).selectMaps();
     }
 
     @Override

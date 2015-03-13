@@ -69,6 +69,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
+            <!--<FrameLayout-->
+                <!--android:layout_width="fill_parent"-->
+                <!--android:layout_height="fill_parent"-->
+                <!--android:id="@+id/sliding_layout_content_fragment"-->
+                <!--></FrameLayout>-->
+
+
+
             <!--</RelativeLayout>-->
 
         </com.insalyon.les24heures.view.DetailSlidingUpPanelLayout>
@@ -81,6 +89,8 @@
             android:layout_gravity="start">
 
             <include layout="@layout/navigation_drawer" />
+
+
 
         </FrameLayout>
 

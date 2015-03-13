@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.insalyon.les24heures.MainActivity;
+import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
@@ -211,7 +211,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
 
     @OnClick(R.id.fab_goto_list)
     public void onClickFabGotoList(View v) {
-        ((MainActivity) getActivity()).selectList();
+        ((DayActivity) getActivity()).selectList();
     }
 
 
