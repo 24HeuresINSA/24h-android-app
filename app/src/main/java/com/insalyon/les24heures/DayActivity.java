@@ -38,7 +38,10 @@ public class DayActivity extends BaseDynamicDataActivity {
     View tabButtonMaps;
     @InjectView(R.id.day_menu_tabs_indicator)
     View indicator;
+
     private Integer position;
+    Boolean animateSwitching = false;
+
 
 
     /**
@@ -81,6 +84,8 @@ public class DayActivity extends BaseDynamicDataActivity {
 
 
         startPreferredOutput(savedInstanceState);
+
+        animateSwitching = true;
     }
 
 
@@ -126,12 +131,18 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     @OnClick(R.id.day_menu_tabs_list)
     public void onClickListTab(View v) {
-        selectList();
+        if(!v.isSelected()) {
+            v.setSelected(true);
+            selectList();
+        }
     }
 
     @OnClick(R.id.day_menu_tabs_maps)
     public void onClickMapsTab(View v) {
-        selectMaps();
+        if(!v.isSelected()) {
+            v.setSelected(true);
+            selectMaps();
+        }
     }
 
     /**
@@ -167,6 +178,8 @@ public class DayActivity extends BaseDynamicDataActivity {
             setTitle(str);
         }
     }
+
+
 
     public void selectMaps() {
         Fragment mapsFragment = new DayMapsFragment();
@@ -205,8 +218,10 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         ft.replace(R.id.day_output_holder, fragment).commit();
 
-        set.setTarget(indicator);
-        set.start();
+        if(animateSwitching) {
+            set.setTarget(indicator);
+            set.start();
+        }
 
 
     }
