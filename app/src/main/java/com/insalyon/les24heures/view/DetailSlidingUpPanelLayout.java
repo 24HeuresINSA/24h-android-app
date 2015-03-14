@@ -24,7 +24,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by remi on 04/02/15.
  */
-//TODO pull an interface to get a SlidingUpPanelLayout with fragment inside and parallax header manage
+//TODO minor pull an interface to get a SlidingUpPanelLayout with fragment inside and parallax header manage
 public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     private static final String TAG = DetailSlidingUpPanelLayout.class.getCanonicalName();
 

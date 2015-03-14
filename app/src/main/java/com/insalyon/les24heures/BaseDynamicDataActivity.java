@@ -31,15 +31,14 @@ import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.fragments.ArtistFragment;
-import com.insalyon.les24heures.fragments.ContentFrameFragment;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.service.CategoryService;
 import com.insalyon.les24heures.service.DataBackendService;
-import com.insalyon.les24heures.service.RetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
+import com.insalyon.les24heures.service.RetrofitService;
 import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.DataBackendServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
@@ -634,11 +633,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
             super.onDrawerClosed(drawerView);
             drawerLayout.setIsDrawerOpen(false);
 
-            //TODO ceci appartient à la journée, il faudrait surcharger que le onDrawerClose
-            if (getFragmentManager().findFragmentById(R.id.day_output_holder) != null)
-                getActionBar().setTitle(
-                        ((ContentFrameFragment) getFragmentManager().findFragmentById(R.id.day_output_holder))
-                                .getDisplayName());
+            restoreTitle();
 
             //switch activity if needed
             if (nextActivity != null) {
