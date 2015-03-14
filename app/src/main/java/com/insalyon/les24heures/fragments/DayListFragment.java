@@ -38,9 +38,9 @@ import butterknife.OnClick;
 /**
  * Created by remi on 26/12/14.
  */
-public class OutputListFragment extends OutputTypeFragment implements AbsListView.OnScrollListener,
+public class DayListFragment extends DayTypeFragment implements AbsListView.OnScrollListener,
         AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
-    private static final String TAG = OutputListFragment.class.getCanonicalName();
+    private static final String TAG = DayListFragment.class.getCanonicalName();
 
     View view;
     @InjectView(R.id.list_sort_alphabetical)
@@ -104,7 +104,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        view = inflater.inflate(R.layout.output_list_fragment, container, false);
+        view = inflater.inflate(R.layout.day_list_fragment, container, false);
         ButterKnife.inject(this, view);
         lastKnownPosition = new Location("lastKnownPosition");
 
@@ -112,7 +112,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
         //create an ArrayAdaptar from the String Array
         dayResourceAdapter = new DayResourceAdapter(this.getActivity().getApplicationContext(),
-                R.layout.output_list_item, new ArrayList<>(resourcesList), lastKnownPosition); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
+                R.layout.day_list_item, new ArrayList<>(resourcesList), lastKnownPosition); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
 
         //get filters than are managed by ContentFrameFragment
         searchFilter = dayResourceAdapter.getFilter();

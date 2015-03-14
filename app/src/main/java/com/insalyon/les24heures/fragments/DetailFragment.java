@@ -48,7 +48,7 @@ import de.greenrobot.event.EventBus;
  * Created by remi on 09/02/15.
  */
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
-    private static final String TAG = OutputMapsFragment.class.getCanonicalName();
+    private static final String TAG = DayMapsFragment.class.getCanonicalName();
     private static ResourceServiceImpl resourceService = ResourceServiceImpl.getInstance();
     View view;
     @InjectView(R.id.detail_scrollView)
@@ -113,7 +113,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        view = inflater.inflate(R.layout.sliding_layout_content, container, false);
+        view = inflater.inflate(R.layout.detail_fragment, container, false);
         ButterKnife.inject(this, view);
 
         scheduleAdapter = new ScheduleAdapter(getActivity().getApplicationContext(),

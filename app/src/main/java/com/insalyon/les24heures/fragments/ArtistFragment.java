@@ -26,7 +26,7 @@ import butterknife.InjectView;
  * Created by remi on 11/02/15.
  */
 public class ArtistFragment extends ContentFrameFragment<NightResource> {
-    private static final String TAG = OutputMapsFragment.class.getCanonicalName();
+    private static final String TAG = DayMapsFragment.class.getCanonicalName();
     View view;
 
     @InjectView(R.id.artiste_fragment_grid_layout)

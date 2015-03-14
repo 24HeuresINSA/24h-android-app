@@ -5,7 +5,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
@@ -187,7 +187,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         final int parallaxHeight = (int) ((wideHeight - scrollingHeaderHeight) * (1 - anchored));//407; //paralax height
 
         //set parallaxHeader
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) parallaxHeader.getLayoutParams();
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) parallaxHeader.getLayoutParams();
         params.height = parallaxHeight;
         parallaxHeader.setLayoutParams(params);
         parallaxHeader.setTranslationY(wideHeight);

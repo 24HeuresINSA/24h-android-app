@@ -12,8 +12,8 @@ import android.widget.ListView;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
-import com.insalyon.les24heures.fragments.OutputListFragment;
-import com.insalyon.les24heures.fragments.OutputMapsFragment;
+import com.insalyon.les24heures.fragments.DayListFragment;
+import com.insalyon.les24heures.fragments.DayMapsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.utils.OutputType;
 
@@ -80,7 +80,7 @@ public class DayActivity extends BaseDynamicDataActivity {
     public void onEvent(ResourceSelectedEvent resourceSelected) {
         //Output state
         detailSlidingUpPanelLayoutLayout.collapsePanel();
-        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == OutputMapsFragment.class) {
+        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
             //just focus on resource and highlith it
         } else {
             //open maps on resource
@@ -97,7 +97,7 @@ public class DayActivity extends BaseDynamicDataActivity {
         super.onSaveInstanceState(outState);
 
         //Output state
-        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == OutputMapsFragment.class) {
+        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
             outState.putString("outputType", OutputType.MAPS.toString());
         } else {
             outState.putString("outputType", OutputType.LIST.toString());
@@ -117,12 +117,12 @@ public class DayActivity extends BaseDynamicDataActivity {
      */
 
     public void selectMaps() {
-        Fragment mapsFragment = new OutputMapsFragment();
+        Fragment mapsFragment = new DayMapsFragment();
         replaceContentFragment(mapsFragment);
     }
 
     public void selectList() {
-        Fragment listFragment = new OutputListFragment();
+        Fragment listFragment = new DayListFragment();
         replaceContentFragment(listFragment);
     }
 
@@ -138,7 +138,7 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         bundleArgs.putParcelableArrayList("resourcesList", dayResourceArrayList);
 
-        if (fragment.getClass() == OutputListFragment.class)
+        if (fragment.getClass() == DayListFragment.class)
             ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
         else
             ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
