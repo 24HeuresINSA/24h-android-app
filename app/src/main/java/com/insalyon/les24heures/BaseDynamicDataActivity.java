@@ -328,12 +328,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
         super.onPostCreate(savedInstanceState);
         ButterKnife.inject(this);
 
-        if (detailSlidingUpPanelLayoutLayout != null) {
-            detailSlidingUpPanelLayoutLayout.setAlpha(0);
-            detailSlidingUpPanelLayoutLayout.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
-        } else {
-            Log.d(TAG, "No view with ID sliding_layout to fade in.");
-        }
+
 
         retrieveData(savedInstanceState);
 
@@ -345,6 +340,13 @@ public abstract class BaseDynamicDataActivity extends Activity {
     protected void onResume() {
         super.onResume();
         eventBus.register(this);
+
+        if (detailSlidingUpPanelLayoutLayout != null) {
+            detailSlidingUpPanelLayoutLayout.setAlpha(0);
+            detailSlidingUpPanelLayoutLayout.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
+        } else {
+            Log.d(TAG, "No view with ID sliding_layout to fade in.");
+        }
     }
 
     /**
