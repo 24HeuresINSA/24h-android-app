@@ -66,7 +66,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        displayName = getActivity().getResources().getString(R.string.drawer_outputtype_maps);
+        displayName = getActivity().getResources().getString(R.string.day_maps_appname);
 
         EventBus.getDefault().getStickyEvent(ResourceSelectedEvent.class);
 

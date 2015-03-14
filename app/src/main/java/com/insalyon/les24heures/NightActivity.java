@@ -38,4 +38,13 @@ public class NightActivity extends BaseDynamicDataActivity {
         FragmentTransaction ft = fragmentManager.beginTransaction();
         ft.replace(R.id.content_frame, fragment).commit();
     }
+
+    @Override
+    public void restoreTitle() {
+        String str = (getResources().getString(R.string.artist_fragment_appname));
+
+        if (str != getActionBar().getTitle()) {
+            setTitle(str);
+        }
+    }
 }

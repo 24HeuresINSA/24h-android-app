@@ -154,6 +154,20 @@ public class DayActivity extends BaseDynamicDataActivity {
      * Activity's methods
      */
 
+    @Override
+    public void restoreTitle() {
+        String str;
+        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
+            str = (getResources().getString(R.string.day_maps_appname));
+        } else {
+            str = (getResources().getString(R.string.day_list_appname));
+        }
+
+        if (str != getActionBar().getTitle()) {
+            setTitle(str);
+        }
+    }
+
     public void selectMaps() {
         Fragment mapsFragment = new DayMapsFragment();
         replaceContentFragment(mapsFragment);

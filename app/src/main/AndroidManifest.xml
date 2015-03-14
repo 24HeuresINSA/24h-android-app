@@ -19,7 +19,7 @@
         <!--Default outputType to start-->
         <meta-data
             android:name="outputType"
-            android:value="list" />
+            android:value="maps" />
 
         <activity
             android:name="com.insalyon.les24heures.MainActivity"

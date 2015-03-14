@@ -50,7 +50,6 @@ public class Category implements Parcelable {
         out.writeString(iconName);
     }
 
-    //TODO faire le equals sur autre chose que 'name'
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

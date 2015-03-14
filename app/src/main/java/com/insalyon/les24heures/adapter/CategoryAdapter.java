@@ -34,10 +34,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
         super(context, resource, categories);
         this.viewId = resource;
         this.categories = categories;
-//        this.categories = new ArrayList<>();
-//        this.categories.addAll(categories);
-//        this.categories.add(new Category("allConstructor","pouet"));//TODO all category....
-        selectedCategoryInit = -1;//categories.size()-1;
+        selectedCategoryInit = -1;
 
         this.vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 

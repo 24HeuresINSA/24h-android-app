@@ -138,7 +138,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
     private void retrieveData(Bundle savedInstanceState) {
         /*** recover data either from (by priority)
          *           savedInstanceState (rotate, restore from background)
-         *           getIntent (start from another activity, another apps) TODO
+         *           getIntent (start from another activity, another apps) => maybe it's more efficient to retrieve from intent than from localPref
          *           localStorage (start)
          *           backend (if needed)
          */
@@ -546,20 +546,12 @@ public abstract class BaseDynamicDataActivity extends Activity {
         eventBus.post(event);
     }
 
-    //TODO
     public void restoreTitle() {
-        //TODO faire comme pour les menu item
-        Log.e(TAG, "restoreTitle TODO");
-//        String str;
-//        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
-//            str = (getResources().getString(R.string.drawer_outputtype_maps));
-//        } else {
-//            str = (getResources().getString(R.string.drawer_outputtype_list));
-//        }
-//
-//        if (str != getActionBar().getTitle()) {
-//            setTitle(str);
-//        }
+        String str = (getResources().getString(R.string.app_name));
+
+        if (str != getActionBar().getTitle()) {
+            setTitle(str);
+        }
     }
 
     @Override

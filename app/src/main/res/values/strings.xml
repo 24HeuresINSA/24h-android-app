@@ -20,8 +20,8 @@
 
 
     <!--Output-->
-    <string name="drawer_outputtype_maps">Maps</string>
-    <string name="drawer_outputtype_list">Listes</string>
+    <string name="day_maps_appname">Maps</string>
+    <string name="day_list_appname">Listes</string>
     <string name="noResourcesFound">No resources were found, please check your internet connectivity and wait</string>
     <string name="noResourcesMatchSelectedCategories">No resources match your selected categories, please select at least one other</string>
     <string name="resources_found">Resources were found !</string>
@@ -72,7 +72,7 @@
 
 
     <!--Artists-->
-    <string name="artist_fragment_name">Artists</string>
+    <string name="artist_fragment_appname">Artists</string>
     <string name="INSTALL_DATA_VERSION">0.0</string>
     <string name="INSTALL_APPLICATION_VERSION">0.0</string>
 
