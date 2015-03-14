@@ -33,4 +33,6 @@ dependencies {
     compile 'com.sothree.slidinguppanel:library:2.0.4'
     compile 'com.nispok:snackbar:2.10.0'
     compile 'com.hannesdorfmann.smoothprogressbar:library:1.0.0'
+    compile 'com.google.code.gson:gson:2.2.4'
+
 }

@@ -12,10 +12,18 @@ import java.util.List;
 public class ResourcesUpdatedEvent {
     List<DayResource> dayResourceList;
     List<NightResource> nightResourceList;
+    String dataVersion;
+
 
     @Deprecated
     public ResourcesUpdatedEvent(List<DayResource> dayResourceList) {
         this.dayResourceList = dayResourceList;
+    }
+
+    public ResourcesUpdatedEvent(List<DayResource> dayResourceList, List<NightResource> nightResourceList, String dataVersion) {
+        this.dayResourceList = dayResourceList;
+        this.nightResourceList = nightResourceList;
+        this.dataVersion = dataVersion;
     }
 
     public ResourcesUpdatedEvent(List<DayResource> dayResourceList, List<NightResource> nightResourceList) {
@@ -34,5 +42,9 @@ public class ResourcesUpdatedEvent {
 
     public List<DayResource> getDayResourceList() {
         return dayResourceList;
+    }
+
+    public String getDataVersion() {
+        return dataVersion;
     }
 }

@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +22,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
@@ -45,6 +48,7 @@ import com.insalyon.les24heures.view.DrawerArrowDrawable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -79,6 +83,8 @@ public abstract class BaseDynamicDataActivity extends Activity {
     ArrayList<Category> selectedCategories = new ArrayList<>();
     ArrayList<DayResource> dayResourceArrayList;
     ArrayList<NightResource> nightResourceArrayList;
+    String dataVersion;
+    String applicationVersion;
 
     DrawerArrowDrawable drawerArrowDrawable;
     DrawerLayout.SimpleDrawerListener drawerListener;
@@ -93,6 +99,8 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
     Class nextActivity;
     private BaseDynamicDataActivity self = this;
+    public static final String PREFS_NAME = "dataFile";
+
 
 
     /**
@@ -150,17 +158,35 @@ public abstract class BaseDynamicDataActivity extends Activity {
             if (savedInstanceState.getString("slidingUpState") != null) {
                 slidingUpState = savedInstanceState.getString("slidingUpState");
             }
-
-
         }
+
+        //get from shared pref
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        Gson gson = new Gson();
+
+
+        String categoriesListStr = settings.getString("categoriesList","");
+        String dayResourceArrayListStr = settings.getString("dayResourceList","");
+        String nightResourceArrayListStr = settings.getString("nightResourcesList","");
+        String dataVersionString = settings.getString("dataVersion","");
+        String applicationVersionString = settings.getString("applicationVersion","");
+
+        categories = gson.fromJson(categoriesListStr, new TypeToken<List<Category>>(){}.getType());
+        dayResourceArrayList = gson.fromJson(dayResourceArrayListStr, new TypeToken<List<DayResource>>(){}.getType());
+        nightResourceArrayList = gson.fromJson(nightResourceArrayListStr, new TypeToken<List<NightResource>>(){}.getType());
+        dataVersion = gson.fromJson(dataVersionString,String.class);
+        applicationVersion = gson.fromJson(applicationVersionString,String.class);
+
 
         if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null) {
             dayResourceArrayList = new ArrayList<>();
             nightResourceArrayList = new ArrayList<>();
             categories = new ArrayList<>();
-            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
-//            resourceService.getResourcesAsyncMock();
         }
+
+        resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
+//      resourceService.getResourcesAsyncMock();
+
 
         if (selectedCategories == null) {
             selectedCategories = new ArrayList<>();
@@ -297,11 +323,35 @@ public abstract class BaseDynamicDataActivity extends Activity {
         dayResourceArrayList.addAll(event.getDayResourceList());
         nightResourceArrayList.clear();
         nightResourceArrayList.addAll(event.getNightResourceList());
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+
+        Gson gson = new Gson();
+        String dayResourcesList = gson.toJson(dayResourceArrayList);
+        String nightResourcesList = gson.toJson(nightResourceArrayList);
+
+
+        editor.putString("dayResourceList",dayResourcesList);
+        editor.putString("nightResourcesList",nightResourcesList);
+        editor.putString("dataVersion",event.getDataVersion());
+        editor.commit();
     }
 
     public void onEvent(CategoriesUpdatedEvent event) {
         categories.clear();
         categories.addAll(event.getCategories());
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+
+        Gson gson = new Gson();
+        String categoriesList = gson.toJson(categories);
+
+
+        editor.putString("categoriesList",categoriesList);
+        editor.putString("dataVersion",event.getDataVersion());
+        editor.commit();
     }
 
     @Override
