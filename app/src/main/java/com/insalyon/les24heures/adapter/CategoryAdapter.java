@@ -25,6 +25,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
     private final int viewId;
     private final EventBus eventBus;
     private Boolean init = false;
+    private int selectedCategoryInit;
 
     LayoutInflater vi;
     private List<Category> categories;
@@ -36,6 +37,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 //        this.categories = new ArrayList<>();
 //        this.categories.addAll(categories);
 //        this.categories.add(new Category("allConstructor","pouet"));//TODO all category....
+        selectedCategoryInit = -1;//categories.size()-1;
 
         this.vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -65,8 +67,8 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
         holder.title.setText(category.getName());
 
-        if(!init && position == categories.size()-1){
-            ((ListView)parent).setItemChecked(position,position == categories.size()-1);
+        if(!init && position == selectedCategoryInit){
+            ((ListView)parent).setItemChecked(position,position == selectedCategoryInit);
             init = true;
         }
 
@@ -84,6 +86,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
         ImageView icon;
     }
 
-
-
+    public void setSelectedCategoryInit(int selectedCategoryInit) {
+        this.selectedCategoryInit = selectedCategoryInit;
+    }
 }

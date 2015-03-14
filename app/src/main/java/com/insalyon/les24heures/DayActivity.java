@@ -4,6 +4,7 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.insalyon.les24heures.adapter.CategoryAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.fragments.DayListFragment;
@@ -36,6 +38,7 @@ public class DayActivity extends BaseDynamicDataActivity {
     View tabButtonMaps;
     @InjectView(R.id.day_menu_tabs_indicator)
     View indicator;
+    private Integer position;
 
 
     /**
@@ -48,6 +51,16 @@ public class DayActivity extends BaseDynamicDataActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.day_activity);
 
+        //get selectedCateogires
+        Intent intent = getIntent();
+        if(intent != null) {
+            //TODO potentiellement inutile
+            if (intent.getParcelableArrayListExtra("selectedCategories") != null)
+                selectedCategories = intent.getParcelableArrayListExtra("selectedCategories");
+
+            position = intent.getIntExtra("categoryPosition",categories.size()-1);
+        }
+
     }
 
     //here we do all the stuff requiring the view
@@ -57,10 +70,21 @@ public class DayActivity extends BaseDynamicDataActivity {
         //override Base's DrawerCategoriesClickListener
         categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
 
+        ((CategoryAdapter)categoriesList.getAdapter()).setSelectedCategoryInit(position);
+
+        //TODO revoir ca en fonction de la maniere dont on recupere les categories
+        Category temp = selectedCategories.get(0);
+        selectedCategories.clear();
+        if (!temp.getIconeName().equals("ic_ALLCATEGORY")) {
+            selectedCategories.add(temp);
+        }
+
+
         startPreferredOutput(savedInstanceState);
     }
 
-    //TODO is it still up ?
+
+
     private void startPreferredOutput(Bundle savedInstanceState) {
         /*** start the right ouptut : Maps or List ***/
         if (savedInstanceState == null) {
@@ -143,6 +167,7 @@ public class DayActivity extends BaseDynamicDataActivity {
     private void replaceContentFragment(Fragment fragment) {
 
         Bundle bundleArgs = new Bundle();
+
         bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
         searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
         bundleArgs.putString("searchQuery", searchQuery);
@@ -172,7 +197,7 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     }
 
-    private void selectCategory(int position) {
+    private List<Category> selectCategory(int position) {
         drawerLayout.closeDrawer();
 
         List<Category> catSelected = new ArrayList<>();
@@ -195,6 +220,7 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         eventBus.post(categoriesSelectedEvent);
 
+        return categoriesSelectedEvent.getCategories();
     }
 
     private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {

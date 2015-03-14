@@ -44,6 +44,7 @@ import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
 import com.insalyon.les24heures.view.DrawerArrowDrawable;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -601,6 +602,11 @@ public abstract class BaseDynamicDataActivity extends Activity {
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             Intent intent = new Intent(self, DayActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+
+            //TODO selectedCategories pourrait devenir inutile en fonction de comment on recuperer les categories coté DAyActivity
+            intent.putParcelableArrayListExtra("selectedCategories",new ArrayList<Category>(Arrays.asList(categories.get(position))));
+
+            intent.putExtra("categoryPosition",position);
             startActivity(intent);
             overridePendingTransition(0, 0);
             finish();
