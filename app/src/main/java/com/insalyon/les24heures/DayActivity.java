@@ -83,7 +83,7 @@ public class DayActivity extends BaseDynamicDataActivity {
         }
 
 
-        startPreferredOutput(savedInstanceState);
+       startPreferredOutput(savedInstanceState);
 
         animateSwitching = true;
     }
@@ -133,6 +133,7 @@ public class DayActivity extends BaseDynamicDataActivity {
     public void onClickListTab(View v) {
         if(!v.isSelected()) {
             v.setSelected(true);
+            tabButtonMaps.setSelected(false);
             selectList();
         }
     }
@@ -141,6 +142,7 @@ public class DayActivity extends BaseDynamicDataActivity {
     public void onClickMapsTab(View v) {
         if(!v.isSelected()) {
             v.setSelected(true);
+            tabButtonList.setSelected(false);
             selectMaps();
         }
     }
