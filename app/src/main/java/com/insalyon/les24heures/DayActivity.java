@@ -75,7 +75,7 @@ public class DayActivity extends BaseDynamicDataActivity {
         //TODO revoir ca en fonction de la maniere dont on recupere les categories
         Category temp = selectedCategories.get(0);
         selectedCategories.clear();
-        if (!temp.getIconeName().equals("ic_ALLCATEGORY")) {
+        if (!temp.getIconName().equals("ic_ALLCATEGORY")) {
             selectedCategories.add(temp);
         }
 
@@ -208,7 +208,7 @@ public class DayActivity extends BaseDynamicDataActivity {
         if (categoriesList.isItemChecked(position)) {
             catSelected.clear();
             selectedCategories.clear();
-            if (categories.get(position).getIconeName() != "ic_ALLCATEGORY") {
+            if (categories.get(position).getIconName() != "ic_ALLCATEGORY") {
                 catSelected.add(categories.get(position));
                 selectedCategories.add(categories.get(position));
             }

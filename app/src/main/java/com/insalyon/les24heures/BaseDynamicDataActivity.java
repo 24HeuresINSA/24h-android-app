@@ -37,9 +37,11 @@ import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.service.CategoryService;
-import com.insalyon.les24heures.service.ResourceRetrofitService;
+import com.insalyon.les24heures.service.DataBackendService;
+import com.insalyon.les24heures.service.RetrofitService;
 import com.insalyon.les24heures.service.ResourceService;
 import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
+import com.insalyon.les24heures.service.impl.DataBackendServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.view.CustomDrawerLayout;
@@ -66,7 +68,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
     FragmentManager fragmentManager;
     EventBus eventBus;
     RestAdapter restAdapter;
-    ResourceRetrofitService resourceRetrofitService;
+    RetrofitService retrofitService;
     @InjectView(R.id.drawer_layout)
     CustomDrawerLayout drawerLayout;
     @InjectView(R.id.left_drawer)
@@ -76,6 +78,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
     @InjectView(R.id.sliding_layout)
     DetailSlidingUpPanelLayout detailSlidingUpPanelLayoutLayout;
     DetailFragment detailFragment;
+    DataBackendService dataBackendService;
     ResourceService resourceService;
     CategoryService categoryService;
     ArrayList<Category> categories;
@@ -120,18 +123,24 @@ public abstract class BaseDynamicDataActivity extends Activity {
                 .setEndpoint(getResources().getString(R.string.backend_url_local))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-        resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
+        retrofitService = restAdapter.create(RetrofitService.class);
 //        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);
         fragmentManager = getFragmentManager();
+        dataBackendService = DataBackendServiceImpl.getInstance();
         resourceService = ResourceServiceImpl.getInstance();
         categoryService = CategoryServiceImpl.getInstance();
 
 
+        retrieveData(savedInstanceState);
+
+    }
+
+    private void retrieveData(Bundle savedInstanceState) {
         /*** recover data either from (by priority)
          *           savedInstanceState (rotate, restore from background)
          *           getIntent (start from another activity, another apps) TODO
-         *           localStorage (start) TODO
-         *           backend (if needed TODO)
+         *           localStorage (start)
+         *           backend (if needed)
          */
         if (savedInstanceState != null) {
             if (savedInstanceState.getParcelableArrayList("categories") != null) {
@@ -184,14 +193,18 @@ public abstract class BaseDynamicDataActivity extends Activity {
             categories = new ArrayList<>();
         }
 
-        resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
-//      resourceService.getResourcesAsyncMock();
+        if(dataVersion == null || applicationVersion == null){
+            dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
+            applicationVersion = getResources().getString(R.string.INSTALL_APPLICATION_VERSION);
+        }
+
+        dataBackendService.getResourcesAsyncFromBackend(retrofitService);
+//      dataBackendService.getResourcesAsyncMock();
 
 
         if (selectedCategories == null) {
             selectedCategories = new ArrayList<>();
         }
-
     }
 
     private void setupDetailFragment() {

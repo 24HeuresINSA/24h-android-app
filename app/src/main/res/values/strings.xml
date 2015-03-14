@@ -73,6 +73,8 @@
 
     <!--Artists-->
     <string name="artist_fragment_name">Artists</string>
+    <string name="INSTALL_DATA_VERSION">0.0</string>
+    <string name="INSTALL_APPLICATION_VERSION">0.0</string>
 
 
 </resources>

@@ -21,7 +21,7 @@
   "_id": "idMysql",
   "name" : "string [A-Z][0-9]"
   "display_name": "name without special char as \n",
-  "icone_name": "icone's name present onto the APK"
+  "icon_name": "icon's name present onto the APK"
 }
 
 //resource
