@@ -18,19 +18,25 @@ public class Category implements Parcelable {
         }
     };
 
+    String _id;
     String name;
-    String iconeName;
+    String iconName;
 
-
-
-    public Category(String name, String iconeName) {
+    public Category(String _id, String name, String iconName) {
+        this._id = _id;
         this.name = name;
-        this.iconeName = iconeName;
+        this.iconName = iconName;
+    }
+
+    @Deprecated
+    public Category(String name, String iconName) {
+        this.name = name;
+        this.iconName = iconName;
     }
 
     private Category(Parcel in) {
         name = in.readString();
-        iconeName = in.readString();
+        iconName = in.readString();
     }
 
     @Override
@@ -41,10 +47,9 @@ public class Category implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(name);
-        out.writeString(iconeName);
+        out.writeString(iconName);
     }
 
-    //TODO faire le equals sur autre chose que 'name'
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -52,7 +57,7 @@ public class Category implements Parcelable {
 
         Category category = (Category) o;
 
-        if (!iconeName.equals(category.iconeName)) return false;
+        if (!iconName.equals(category.iconName) || !_id.equals(category._id)) return false;
 
         return true;
     }
@@ -64,7 +69,7 @@ public class Category implements Parcelable {
 
     @Override
     public String toString() {
-        return iconeName;
+        return iconName;
     }
 
     public String getName() {
@@ -75,13 +80,15 @@ public class Category implements Parcelable {
         this.name = name;
     }
 
-    public String getIconeName() {
-        return iconeName;
+    public String getIconName() {
+        return iconName;
     }
 
-    public void setIconeName(String iconeName) {
-        this.iconeName = iconeName;
+    public void setIconName(String iconName) {
+        this.iconName = iconName;
     }
 
-
+    public String get_id() {
+        return _id;
+    }
 }

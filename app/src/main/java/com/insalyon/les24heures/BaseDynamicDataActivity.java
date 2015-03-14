@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
@@ -21,6 +22,8 @@ import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
@@ -28,15 +31,16 @@ import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.fragments.ArtistFragment;
-import com.insalyon.les24heures.fragments.ContentFrameFragment;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.service.CategoryService;
-import com.insalyon.les24heures.service.ResourceRetrofitService;
+import com.insalyon.les24heures.service.DataBackendService;
 import com.insalyon.les24heures.service.ResourceService;
+import com.insalyon.les24heures.service.RetrofitService;
 import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
+import com.insalyon.les24heures.service.impl.DataBackendServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.view.CustomDrawerLayout;
@@ -45,6 +49,7 @@ import com.insalyon.les24heures.view.DrawerArrowDrawable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -56,13 +61,13 @@ import retrofit.RestAdapter;
  * Created by remi on 12/03/15.
  */
 public abstract class BaseDynamicDataActivity extends Activity {
+    public static final String PREFS_NAME = "dataFile";
     private static final String TAG = BaseDynamicDataActivity.class.getCanonicalName();
-
-
+    private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
     FragmentManager fragmentManager;
     EventBus eventBus;
     RestAdapter restAdapter;
-    ResourceRetrofitService resourceRetrofitService;
+    RetrofitService retrofitService;
     @InjectView(R.id.drawer_layout)
     CustomDrawerLayout drawerLayout;
     @InjectView(R.id.left_drawer)
@@ -72,6 +77,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
     @InjectView(R.id.sliding_layout)
     DetailSlidingUpPanelLayout detailSlidingUpPanelLayoutLayout;
     DetailFragment detailFragment;
+    DataBackendService dataBackendService;
     ResourceService resourceService;
     CategoryService categoryService;
     ArrayList<Category> categories;
@@ -79,21 +85,19 @@ public abstract class BaseDynamicDataActivity extends Activity {
     ArrayList<Category> selectedCategories = new ArrayList<>();
     ArrayList<DayResource> dayResourceArrayList;
     ArrayList<NightResource> nightResourceArrayList;
-
+    String dataVersion;
+    String applicationVersion;
     DrawerArrowDrawable drawerArrowDrawable;
     DrawerLayout.SimpleDrawerListener drawerListener;
     Menu globalMenu;
-
-
     Boolean isFavoritesChecked = false;
     String searchQuery;
     Menu mMenu;
     String slidingUpState;
     RestAdapter restAdapterLocal;
-
     Class nextActivity;
     private BaseDynamicDataActivity self = this;
-
+    private int positionCategorySelected;
 
     /**
      * Activity is being created
@@ -112,18 +116,40 @@ public abstract class BaseDynamicDataActivity extends Activity {
                 .setEndpoint(getResources().getString(R.string.backend_url_local))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
-        resourceRetrofitService = restAdapter.create(ResourceRetrofitService.class);
+        retrofitService = restAdapter.create(RetrofitService.class);
 //        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);
         fragmentManager = getFragmentManager();
+        dataBackendService = DataBackendServiceImpl.getInstance();
         resourceService = ResourceServiceImpl.getInstance();
         categoryService = CategoryServiceImpl.getInstance();
 
 
+        if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null) {
+            dayResourceArrayList = new ArrayList<>();
+            nightResourceArrayList = new ArrayList<>();
+            categories = new ArrayList<>();
+        }
+
+        if (dataVersion == null || applicationVersion == null) {
+            dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
+            applicationVersion = getResources().getString(R.string.INSTALL_APPLICATION_VERSION);
+        }
+
+
+        if (selectedCategories == null) {
+            selectedCategories = new ArrayList<>();
+        }
+
+        //retrieveData(savedInstanceState);
+
+    }
+
+    private void retrieveData(Bundle savedInstanceState) {
         /*** recover data either from (by priority)
          *           savedInstanceState (rotate, restore from background)
-         *           getIntent (start from another activity, another apps) TODO
-         *           localStorage (start) TODO
-         *           backend (if needed TODO)
+         *           getIntent (start from another activity, another apps) => maybe it's more efficient to retrieve from intent than from localPref
+         *           localStorage (start)
+         *           backend (if needed)
          */
         if (savedInstanceState != null) {
             if (savedInstanceState.getParcelableArrayList("categories") != null) {
@@ -150,22 +176,47 @@ public abstract class BaseDynamicDataActivity extends Activity {
             if (savedInstanceState.getString("slidingUpState") != null) {
                 slidingUpState = savedInstanceState.getString("slidingUpState");
             }
-
-
         }
+
+        //get from shared pref
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        Gson gson = new Gson();
+
+
+        String categoriesListStr = settings.getString("categoriesList", "");
+        String dayResourceArrayListStr = settings.getString("dayResourceList", "");
+        String nightResourceArrayListStr = settings.getString("nightResourcesList", "");
+        String dataVersionString = settings.getString("dataVersion", "");
+        String applicationVersionString = settings.getString("applicationVersion", "");
+
+        categories = gson.fromJson(categoriesListStr, new TypeToken<List<Category>>() {
+        }.getType());
+        dayResourceArrayList = gson.fromJson(dayResourceArrayListStr, new TypeToken<List<DayResource>>() {
+        }.getType());
+        nightResourceArrayList = gson.fromJson(nightResourceArrayListStr, new TypeToken<List<NightResource>>() {
+        }.getType());
+        dataVersion = gson.fromJson(dataVersionString, String.class);
+        applicationVersion = gson.fromJson(applicationVersionString, String.class);
+
 
         if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null) {
             dayResourceArrayList = new ArrayList<>();
             nightResourceArrayList = new ArrayList<>();
             categories = new ArrayList<>();
-            resourceService.getResourcesAsyncFromBackend(resourceRetrofitService);
-//            resourceService.getResourcesAsyncMock();
         }
+
+        if (dataVersion == null || applicationVersion == null) {
+            dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
+            applicationVersion = getResources().getString(R.string.INSTALL_APPLICATION_VERSION);
+        }
+
+        dataBackendService.getResourcesAsyncFromBackend(retrofitService);
+//      dataBackendService.getResourcesAsyncMock();
+
 
         if (selectedCategories == null) {
             selectedCategories = new ArrayList<>();
         }
-
     }
 
     private void setupDetailFragment() {
@@ -275,17 +326,27 @@ public abstract class BaseDynamicDataActivity extends Activity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
         ButterKnife.inject(this);
+
+
+
+        retrieveData(savedInstanceState);
+
         setupNavigationDrawer();
         setupDetailFragment();
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         eventBus.register(this);
+
+        if (detailSlidingUpPanelLayoutLayout != null) {
+            detailSlidingUpPanelLayoutLayout.setAlpha(0);
+            detailSlidingUpPanelLayoutLayout.animate().alpha(1).setDuration(MAIN_CONTENT_FADEIN_DURATION);
+        } else {
+            Log.d(TAG, "No view with ID sliding_layout to fade in.");
+        }
     }
 
     /**
@@ -297,11 +358,35 @@ public abstract class BaseDynamicDataActivity extends Activity {
         dayResourceArrayList.addAll(event.getDayResourceList());
         nightResourceArrayList.clear();
         nightResourceArrayList.addAll(event.getNightResourceList());
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+
+        Gson gson = new Gson();
+        String dayResourcesList = gson.toJson(dayResourceArrayList);
+        String nightResourcesList = gson.toJson(nightResourceArrayList);
+
+
+        editor.putString("dayResourceList", dayResourcesList);
+        editor.putString("nightResourcesList", nightResourcesList);
+        editor.putString("dataVersion", event.getDataVersion());
+        editor.commit();
     }
 
     public void onEvent(CategoriesUpdatedEvent event) {
         categories.clear();
         categories.addAll(event.getCategories());
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+
+        Gson gson = new Gson();
+        String categoriesList = gson.toJson(categories);
+
+
+        editor.putString("categoriesList", categoriesList);
+        editor.putString("dataVersion", event.getDataVersion());
+        editor.commit();
     }
 
     @Override
@@ -483,20 +568,12 @@ public abstract class BaseDynamicDataActivity extends Activity {
         eventBus.post(event);
     }
 
-    //TODO
     public void restoreTitle() {
-        //TODO faire comme pour les menu item
-        Log.e(TAG, "restoreTitle TODO");
-//        String str;
-//        if (fragmentManager.findFragmentById(R.id.content_frame).getClass() == OutputMapsFragment.class) {
-//            str = (getResources().getString(R.string.drawer_outputtype_maps));
-//        } else {
-//            str = (getResources().getString(R.string.drawer_outputtype_list));
-//        }
-//
-//        if (str != getActionBar().getTitle()) {
-//            setTitle(str);
-//        }
+        String str = (getResources().getString(R.string.app_name));
+
+        if (str != getActionBar().getTitle()) {
+            setTitle(str);
+        }
     }
 
     @Override
@@ -542,6 +619,11 @@ public abstract class BaseDynamicDataActivity extends Activity {
         }
     }
 
+    protected void animateContentOut(float slideOffset) {
+        detailSlidingUpPanelLayoutLayout.setAlpha(slideOffset);
+
+    }
+
     private class DrawerListener extends DrawerLayout.SimpleDrawerListener {
         private MenuItem itemFav;
         private MenuItem itemSearch;
@@ -572,6 +654,10 @@ public abstract class BaseDynamicDataActivity extends Activity {
                 return;
             itemFav.getIcon().setAlpha((int) (255 - slideOffset * 255));
             itemSearch.getActionView().setAlpha(1 - slideOffset);
+
+            if (nextActivity != null) {
+                animateContentOut(slideOffset);
+            }
         }
 
         @Override
@@ -579,37 +665,35 @@ public abstract class BaseDynamicDataActivity extends Activity {
             super.onDrawerClosed(drawerView);
             drawerLayout.setIsDrawerOpen(false);
 
-            //TODO ceci appartient à la journée, il faudrait surcharger que le onDrawerClose
-            if (getFragmentManager().findFragmentById(R.id.day_output_holder) != null)
-                getActionBar().setTitle(
-                        ((ContentFrameFragment) getFragmentManager().findFragmentById(R.id.day_output_holder))
-                                .getDisplayName());
 
             //switch activity if needed
             if (nextActivity != null) {
                 Intent intent = new Intent(self, nextActivity);
                 intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
+                if (nextActivity.equals(DayActivity.class)) {
+                    //TODO selectedCategories pourrait devenir inutile en fonction de comment on recuperer les categories coté DAyActivity
+                    intent.putParcelableArrayListExtra("selectedCategories", new ArrayList<Category>(Arrays.asList(categories.get(positionCategorySelected))));
+                    intent.putExtra("categoryPosition", positionCategorySelected);
+
+                }
+
                 startActivity(intent);
                 overridePendingTransition(0, 0);
                 finish();
-            }
+            } else
+                restoreTitle();
+
 
         }
     }
 
     private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
+
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Intent intent = new Intent(self, DayActivity.class);
-            intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-
-            //TODO selectedCategories pourrait devenir inutile en fonction de comment on recuperer les categories coté DAyActivity
-            intent.putParcelableArrayListExtra("selectedCategories",new ArrayList<Category>(Arrays.asList(categories.get(position))));
-
-            intent.putExtra("categoryPosition",position);
-            startActivity(intent);
-            overridePendingTransition(0, 0);
-            finish();
+            nextActivity = DayActivity.class;
+            positionCategorySelected = position;
+            drawerLayout.closeDrawer();
         }
     }
 

@@ -39,7 +39,7 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        displayName = getActivity().getResources().getString(R.string.artist_fragment_name);
+        displayName = getActivity().getResources().getString(R.string.artist_fragment_appname);
     }
 
 

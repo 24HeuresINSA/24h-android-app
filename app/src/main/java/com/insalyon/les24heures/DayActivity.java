@@ -38,7 +38,10 @@ public class DayActivity extends BaseDynamicDataActivity {
     View tabButtonMaps;
     @InjectView(R.id.day_menu_tabs_indicator)
     View indicator;
+
     private Integer position;
+    Boolean animateSwitching = false;
+
 
 
     /**
@@ -75,12 +78,14 @@ public class DayActivity extends BaseDynamicDataActivity {
         //TODO revoir ca en fonction de la maniere dont on recupere les categories
         Category temp = selectedCategories.get(0);
         selectedCategories.clear();
-        if (!temp.getIconeName().equals("ic_ALLCATEGORY")) {
+        if (!temp.getIconName().equals("ic_ALLCATEGORY")) {
             selectedCategories.add(temp);
         }
 
 
-        startPreferredOutput(savedInstanceState);
+       startPreferredOutput(savedInstanceState);
+
+        animateSwitching = true;
     }
 
 
@@ -126,12 +131,20 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     @OnClick(R.id.day_menu_tabs_list)
     public void onClickListTab(View v) {
-        selectList();
+        if(!v.isSelected()) {
+            v.setSelected(true);
+            tabButtonMaps.setSelected(false);
+            selectList();
+        }
     }
 
     @OnClick(R.id.day_menu_tabs_maps)
     public void onClickMapsTab(View v) {
-        selectMaps();
+        if(!v.isSelected()) {
+            v.setSelected(true);
+            tabButtonList.setSelected(false);
+            selectMaps();
+        }
     }
 
     /**
@@ -153,6 +166,22 @@ public class DayActivity extends BaseDynamicDataActivity {
     /**
      * Activity's methods
      */
+
+    @Override
+    public void restoreTitle() {
+        String str;
+        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
+            str = (getResources().getString(R.string.day_maps_appname));
+        } else {
+            str = (getResources().getString(R.string.day_list_appname));
+        }
+
+        if (str != getActionBar().getTitle()) {
+            setTitle(str);
+        }
+    }
+
+
 
     public void selectMaps() {
         Fragment mapsFragment = new DayMapsFragment();
@@ -191,8 +220,10 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         ft.replace(R.id.day_output_holder, fragment).commit();
 
-        set.setTarget(indicator);
-        set.start();
+        if(animateSwitching) {
+            set.setTarget(indicator);
+            set.start();
+        }
 
 
     }
@@ -208,7 +239,7 @@ public class DayActivity extends BaseDynamicDataActivity {
         if (categoriesList.isItemChecked(position)) {
             catSelected.clear();
             selectedCategories.clear();
-            if (categories.get(position).getIconeName() != "ic_ALLCATEGORY") {
+            if (categories.get(position).getIconName() != "ic_ALLCATEGORY") {
                 catSelected.add(categories.get(position));
                 selectedCategories.add(categories.get(position));
             }

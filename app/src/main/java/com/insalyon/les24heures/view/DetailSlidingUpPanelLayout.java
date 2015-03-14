@@ -15,7 +15,6 @@ import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
-import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.DetailSlidingUpPanelLayoutNullActivity;
 import com.insalyon.les24heures.utils.SlidingUpPannelState;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
@@ -25,11 +24,10 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by remi on 04/02/15.
  */
-//TODO faire une jolie interface du SlidingUpPanelLayout avec fragment inside et gestion du parallax header
+//TODO minor pull an interface to get a SlidingUpPanelLayout with fragment inside and parallax header manage
 public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     private static final String TAG = DetailSlidingUpPanelLayout.class.getCanonicalName();
 
-    private static ResourceServiceImpl resourceService = ResourceServiceImpl.getInstance();
     EventBus eventBus;
 
 
@@ -53,22 +51,20 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     private PanelSlideListener panelSlideListener = new PanelSlideListener() {
         @Override
         public void onPanelSlide(View panel, float slideOffset) {
-            Log.i(TAG, "onPanelSlide, offset " + slideOffset);
-
             float newParallaxHeaderPos;
             float parallaxContentFrame = -self.getCurrentParalaxOffset();
 
             if (slideOffset <= 0) {//from visible to hidden and vice versa
                 //parallax
-                newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
-                newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
-                parallaxHeader.setTranslationY(newParallaxHeaderPos);
-                //TODO on peut juste se contenter de cacher la main pic a cette etape au lieu de la bouger
+                if(parallaxHeader.getVisibility() != INVISIBLE)
+                    parallaxHeader.setVisibility(INVISIBLE);
 
             } else if (slideOffset < anchored) { //from visible to anchored and vice versa
                 //parallax
                 newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
                 newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
+                if(parallaxHeader.getVisibility() == INVISIBLE)
+                    parallaxHeader.setVisibility(VISIBLE);
                 parallaxHeader.setTranslationY(newParallaxHeaderPos);
 
                 //arrowDrawable
@@ -78,14 +74,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
                 drawerArrowDrawable.setParameter(param);
 
-//                    activity.getActionBar().setTitle("");
             } else {      //from anchored to expand and vice versa
                 drawerArrowDrawable.setParameter(1);
-//                // TODO ou pas ?
-//                    newParallaxHeaderPos = parallaxHeight*slideOffset/(1-anchored);
-//                  newParallaxHeaderPos = (height * (1 - slideOffset));
-//                    newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
-//                    parallaxHeader.setTranslationY(newParallaxHeaderPos);
             }
 
             if (slideOffset == 0) {
@@ -100,11 +90,12 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
             detailScrollView.setIsScrollEnable(true);
             nextSchedule.setVisibility(View.GONE);
             favoriteImageButton.setVisibility(View.VISIBLE);
+            activity.getActionBar().setTitle("");   //=> hide title in detail
+
 //                this.setDragView(slidingDetailHeader);
 
 //            activity.invalidateOptionsMenu();
             activity.customOnOptionsMenu();
-//                activity.getActionBar().setTitle(resource.getTitle());   => hide title in detail
 
         }
 
@@ -131,11 +122,14 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
             favoriteImageButton.setVisibility(View.VISIBLE);
             detailScrollView.setIsScrollEnable(false);
 
+            activity.getActionBar().setTitle("");   //=> hide title in detail
+
             activity.customOnOptionsMenu();
 //            activity.invalidateOptionsMenu();
 
             //if anchored without touching header, need update
             detailFragment.updateHeavyData();
+
         }
 
         @Override

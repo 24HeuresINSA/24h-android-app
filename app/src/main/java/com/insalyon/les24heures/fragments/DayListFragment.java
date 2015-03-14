@@ -18,7 +18,6 @@ import com.felipecsl.quickreturn.library.AbsListViewQuickReturnAttacher;
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
 import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
-import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.DayResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
@@ -82,7 +81,7 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        displayName = getActivity().getResources().getString(R.string.drawer_outputtype_list);
+        displayName = getActivity().getResources().getString(R.string.day_list_appname);
 
         if(savedInstanceState != null){
             listPosition = savedInstanceState.getInt("position");

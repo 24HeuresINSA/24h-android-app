@@ -18,11 +18,10 @@ public class TranslationLinearLayout extends FrameLayout {
     }
 
     public float getXFraction() {
-        return getX() / getWidth(); // TODO: guard divide-by-zero
+        return getX() / getWidth();
     }
 
     public void setXFraction(float xFraction) {
-        // TODO: cache width
         final int width = getWidth();
         setX((width > 0) ? (xFraction * width) : -9999);
     }

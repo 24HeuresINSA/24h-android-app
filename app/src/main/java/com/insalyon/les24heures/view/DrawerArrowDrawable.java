@@ -239,7 +239,6 @@ public class DrawerArrowDrawable extends Drawable {
 
     public void animateToSandwich() {
         final DrawerArrowDrawable self = this;
-        //tODO verifier l'etat du drawable
         ValueAnimator animation = ValueAnimator.ofFloat(1f, 0f);
         animation.setDuration(500);
         animation.start();
@@ -254,7 +253,6 @@ public class DrawerArrowDrawable extends Drawable {
 
     public void animateToArrow() {
         final DrawerArrowDrawable self = this;
-        //tODO verifier l'etat du drawable
         ValueAnimator animation = ValueAnimator.ofFloat(0f, 1f);
         animation.setDuration(500);
         animation.start();

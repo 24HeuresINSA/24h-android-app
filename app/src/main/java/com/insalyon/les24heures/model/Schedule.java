@@ -50,7 +50,7 @@ public class Schedule implements Parcelable {
     }
 
     public String getPrintableDay() {
-        //TODO avoir ca dans un fichier de conf
+        //TODO minor avoir ca dans un fichier de conf
 
         switch (day) {
             case FRIDAY:

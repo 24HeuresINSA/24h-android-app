@@ -8,7 +8,11 @@ import java.util.Map;
  */
 public class AssomakerDTO {
     Map<Integer, ArrayList<DayResourceDTO>> animations;
+    ArrayList<DayResourceDTO> resources;
     ArrayList<NightResourceDTO> artists;
+    ArrayList<CategoryDTO> categories;
+    String version;
+
 
 
     public Map<Integer, ArrayList<DayResourceDTO>> getAnimations() {
@@ -17,5 +21,17 @@ public class AssomakerDTO {
 
     public ArrayList<NightResourceDTO> getArtists() {
         return artists;
+    }
+
+    public ArrayList<CategoryDTO> getCategories() {
+        return categories;
+    }
+
+    public String getVersion() {
+        return version;
+    }
+
+    public ArrayList<DayResourceDTO> getResources() {
+        return resources;
     }
 }

@@ -9,6 +9,17 @@ import java.util.List;
  */
 public class CategoriesUpdatedEvent {
     List<Category> categories;
+    String dataVersion;
+
+    public String getDataVersion() {
+        return dataVersion;
+    }
+
+
+    public CategoriesUpdatedEvent(List<Category> categories, String dataVersion) {
+        this.categories = categories;
+        this.dataVersion = dataVersion;
+    }
 
     public CategoriesUpdatedEvent(List<Category> categories) {
         this.categories = categories;
