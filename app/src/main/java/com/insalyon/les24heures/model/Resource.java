@@ -115,4 +115,11 @@ public class Resource implements Parcelable {
     public void setCategory(Category category) {
         this.category = category;
     }
+
+    @Override
+    public String toString() {
+        return "Resource{" +
+                "title='" + title + '\'' +
+                '}';
+    }
 }

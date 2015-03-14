@@ -9,7 +9,7 @@ import com.insalyon.les24heures.model.DayResource;
 /**
  * Created by remi on 26/12/14.
  */
-public abstract class OutputTypeFragment extends ContentFrameFragment<DayResource> {
+public abstract class DayTypeFragment extends ContentFrameFragment<DayResource> {
     private static final String TAG = ContentFrameFragment.class.getCanonicalName();
 
     @Override

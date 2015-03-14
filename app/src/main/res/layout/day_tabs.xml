@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/day_menu_tabs_height"
+        android:id="@+id/day_menu_tabs"
+        android:weightSum="2"
+        android:layout_gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Maps"
+            android:id="@+id/day_menu_tabs_maps"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="List"
+            android:id="@+id/day_menu_tabs_list"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:gravity="center_horizontal" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:weightSum="1">
+
+        <com.insalyon.les24heures.view.TranslationLinearLayout
+            android:orientation="vertical"
+            android:layout_width="0dp"
+            android:layout_height="5dp"
+            android:background="#ff1f57ff"
+            android:layout_weight="0.5"
+            android:id="@+id/day_menu_tabs_indicator"
+            android:focusable="false"></com.insalyon.les24heures.view.TranslationLinearLayout>
+    </LinearLayout>
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/day_output_holder"></FrameLayout>
+
+</LinearLayout>

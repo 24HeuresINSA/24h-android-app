@@ -20,7 +20,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.insalyon.les24heures.MainActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
@@ -38,14 +37,13 @@ import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
  * Created by remi on 26/12/14.
  */
-public class OutputMapsFragment extends OutputTypeFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
-    private static final String TAG = OutputMapsFragment.class.getCanonicalName();
+public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallback, GoogleMap.OnMarkerClickListener {
+    private static final String TAG = DayMapsFragment.class.getCanonicalName();
     View view;
 
 
@@ -110,7 +108,7 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        view = inflater.inflate(R.layout.output_maps_fragment, container, false);
+        view = inflater.inflate(R.layout.day_maps_fragment, container, false);
         ButterKnife.inject(this, view);
 
         MapsInitializer.initialize(getActivity());
@@ -207,11 +205,6 @@ public class OutputMapsFragment extends OutputTypeFragment implements OnMapReady
         if (event.getState().equals(SlidingUpPannelState.HIDE)) {
             resourceMarkerMap.get(selectedDayResource).setIcon(BitmapDescriptorFactory.defaultMarker());
         }
-    }
-
-    @OnClick(R.id.fab_goto_list)
-    public void onClickFabGotoList(View v) {
-        ((MainActivity) getActivity()).selectList();
     }
 
 

@@ -12,8 +12,11 @@ import com.insalyon.les24heures.filter.ResourceSearchFilter;
 import com.insalyon.les24heures.filter.ResourceSimpleAdapterCategoryFilter;
 import com.insalyon.les24heures.filter.ResourceSimpleAdapterSearchFilter;
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.utils.AlphabeticalReverseSortComparator;
+import com.insalyon.les24heures.utils.AlphabeticalSortComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 /**
  * Created by remi on 13/02/15.
@@ -55,6 +58,18 @@ public abstract class ResourceAdapter<T extends Resource> extends ArrayAdapter<T
         return resourceCategoryFilter;
     }
 
+    public void sortAZ(){
+        Collections.sort(resourceList, new AlphabeticalSortComparator());
+        Collections.sort(originalList, new AlphabeticalSortComparator());
+        this.notifyDataSetChanged();
+    }
+
+    public void sortZA(){
+        Collections.sort(resourceList, new AlphabeticalReverseSortComparator());
+        Collections.sort(originalList, new AlphabeticalReverseSortComparator());
+        this.notifyDataSetChanged();
+    }
+
     @Deprecated
     //il ne faut pas l'utiliser comme avec un arrayAdapter habituel, les filter s'occupe de notify if needed
     @Override
@@ -66,5 +81,7 @@ public abstract class ResourceAdapter<T extends Resource> extends ArrayAdapter<T
     public abstract void onEvent(ResourcesUpdatedEvent event);
 
     public abstract View getView(final int position, View convertView, ViewGroup parent);
+
+
 
 }

@@ -49,6 +49,7 @@
                         android:layout_gravity="center_vertical"
                         android:gravity="center_horizontal"
                         android:text="A-Z"
+                        android:id="@+id/sort_AZ_text"
                         android:textAppearance="?android:attr/textAppearanceLarge" />
                 </LinearLayout>
 
@@ -99,17 +100,6 @@
             android:layout_marginTop="@dimen/output_list_sticky_item_height"
             android:visibility="gone" />
 
-
-        <com.melnykov.fab.FloatingActionButton
-            android:id="@+id/fab_goto_maps"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_action_goto_maps"
-            fab:fab_colorNormal="@color/primary"
-            fab:fab_colorPressed="@color/primary_pressed"
-            fab:fab_colorRipple="@color/ripple" />
 
     </FrameLayout>
 

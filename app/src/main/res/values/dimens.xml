@@ -12,6 +12,7 @@
     <!--DETAIL SLIDING UP-->
     <dimen name="detail_header_height">70dp</dimen>
     <dimen name="whole_detail_padding">10dp</dimen>
+    <dimen name="day_menu_tabs_height">50dp</dimen>
 
 
 </resources>

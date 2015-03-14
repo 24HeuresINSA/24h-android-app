@@ -12,23 +12,21 @@ import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.felipecsl.quickreturn.library.AbsListViewQuickReturnAttacher;
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
 import com.felipecsl.quickreturn.library.widget.QuickReturnAdapter;
 import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
-import com.insalyon.les24heures.MainActivity;
+import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.DayResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
-import com.insalyon.les24heures.eventbus.ResourceUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.utils.SlidingUpPannelState;
-import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -39,9 +37,9 @@ import butterknife.OnClick;
 /**
  * Created by remi on 26/12/14.
  */
-public class OutputListFragment extends OutputTypeFragment implements AbsListView.OnScrollListener,
+public class DayListFragment extends DayTypeFragment implements AbsListView.OnScrollListener,
         AdapterView.OnItemClickListener, AdapterView.OnItemLongClickListener {
-    private static final String TAG = OutputListFragment.class.getCanonicalName();
+    private static final String TAG = DayListFragment.class.getCanonicalName();
 
     View view;
     @InjectView(R.id.list_sort_alphabetical)
@@ -65,10 +63,11 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
             quickReturnAttacher.addTargetView(quickReturnListHeader, QuickReturnTargetView.POSITION_TOP, quickReturnListHeader.getHeight());
         }
     };
-    @InjectView(R.id.fab_goto_maps)
-    FloatingActionButton fabGotoMaps;
     @InjectView(R.id.progress_wheel)
     View progressBar;
+
+    @InjectView(R.id.sort_AZ_text)
+    TextView sortAZText;
 
     DayResourceAdapter dayResourceAdapter = null;
     private QuickReturnAttacher quickReturnAttacher;
@@ -102,7 +101,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        view = inflater.inflate(R.layout.output_list_fragment, container, false);
+        view = inflater.inflate(R.layout.day_list_fragment, container, false);
         ButterKnife.inject(this, view);
         lastKnownPosition = new Location("lastKnownPosition");
 
@@ -110,7 +109,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
 
         //create an ArrayAdaptar from the String Array
         dayResourceAdapter = new DayResourceAdapter(this.getActivity().getApplicationContext(),
-                R.layout.output_list_item, new ArrayList<>(resourcesList), lastKnownPosition); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
+                R.layout.day_list_item, new ArrayList<>(resourcesList), lastKnownPosition); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
 
         //get filters than are managed by ContentFrameFragment
         searchFilter = dayResourceAdapter.getFilter();
@@ -157,15 +156,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         super.onEvent(event);
     }
 
-    public void onEvent(ResourceUpdatedEvent event){
-        dayResourceAdapter.notifyDataSetInvalidated();
-    }
-
-    @OnClick(R.id.fab_goto_maps)
-    public void onClickFabGotoMaps(View v) {
-        ((MainActivity) getActivity()).selectMaps();
-    }
-
     @Override
     public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
         DayResource dayResource = (DayResource) parent.getItemAtPosition(position);
@@ -184,14 +174,12 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
    public void onSortAlphabeticalClick(View v){
        if(!v.isSelected()){
            v.setSelected(true);
-           //TODO
-           Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort A-Z clicked", Toast.LENGTH_SHORT);
-           toast.show();
+           sortAZText.setText(R.string.za_sorted_label);
+           dayResourceAdapter.sortAZ();
        }else{
            v.setSelected(false);
-           //TODO
-           Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort Z-A clicked", Toast.LENGTH_SHORT);
-           toast.show();
+           sortAZText.setText(R.string.az_sorted_label);
+           dayResourceAdapter.sortZA();
        }
 
    }
@@ -200,9 +188,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     public void onSortLocClick(View v){
         if(!v.isSelected()){
             v.setSelected(true);
-            //TODO
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort loc clicked", Toast.LENGTH_SHORT);
-            toast.show();
+            dayResourceAdapter.sortLoc();
         }else{
             //nothing to do
             v.setSelected(false);
@@ -214,9 +200,7 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
     public void onSortTimeLocClick(View v){
         if(!v.isSelected()){
             v.setSelected(true);
-            //TODO
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), "sort time loc clicked", Toast.LENGTH_SHORT);
-            toast.show();
+            dayResourceAdapter.sortTimeLoc();
         }else{
             //nothing to do
             v.setSelected(false);
@@ -240,7 +224,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         if (firstVisibleItem > lastVisibleItem) {
             //scroll down
             if (!isScrollingDown) {
-                fabGotoMaps.hide();
                 eventBus.post(slidingUpEvent);
 
             }
@@ -249,7 +232,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         } else if (firstVisibleItem < lastVisibleItem) {
             //scroll up
             if (!isScrollingUp) {
-                fabGotoMaps.show();
             }
             isScrollingUp = true;
             isScrollingDown = false;
@@ -257,7 +239,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
             if (top < lastY) {
                 //scroll down
                 if (!isScrollingDown) {
-                    fabGotoMaps.hide();
                     eventBus.post(slidingUpEvent);
                 }
                 isScrollingDown = true;
@@ -265,7 +246,6 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
             } else if (top > lastY) {
                 //scroll up
                 if (!isScrollingUp) {
-                    fabGotoMaps.show();
                 }
                 isScrollingUp = true;
                 isScrollingDown = false;
@@ -312,6 +292,9 @@ public class OutputListFragment extends OutputTypeFragment implements AbsListVie
         int top = (v == null) ? 0 : (v.getTop() - resourceListView.getPaddingTop());
         outState.putInt("position", top);
         outState.putInt("indexPosition", index);
+
+        //sorted resources
+        outState.putParcelableArrayList("resourcesList", dayResourceAdapter.getResources());
 
     }
 

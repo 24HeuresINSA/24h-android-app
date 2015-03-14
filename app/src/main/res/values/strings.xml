@@ -32,6 +32,8 @@
 
 
     <!--List Output-->
+    <string name="az_sorted_label">A-Z</string>
+    <string name="za_sorted_label">Z-A</string>
 
 
     <!--TODO should be displayed by MainActivity ??-->

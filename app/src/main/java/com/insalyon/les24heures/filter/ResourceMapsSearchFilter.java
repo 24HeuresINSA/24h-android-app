@@ -1,7 +1,7 @@
 package com.insalyon.les24heures.filter;
 
 import com.google.android.gms.maps.model.Marker;
-import com.insalyon.les24heures.fragments.OutputMapsFragment;
+import com.insalyon.les24heures.fragments.DayMapsFragment;
 import com.insalyon.les24heures.model.DayResource;
 
 import java.util.ArrayList;
@@ -13,13 +13,13 @@ import java.util.Map;
  */
 public class ResourceMapsSearchFilter extends ResourceSearchFilter<DayResource> {
 
-    OutputMapsFragment outputMapsFragment;
+    DayMapsFragment dayMapsFragment;
     Map<DayResource,Marker> resourceMarkerMap;
 
 
-    public ResourceMapsSearchFilter(ArrayList<DayResource> originalList, ArrayList<DayResource> dayResourceList, OutputMapsFragment outputMapsFragment, HashMap<DayResource, Marker> resourceMarkerMap) {
+    public ResourceMapsSearchFilter(ArrayList<DayResource> originalList, ArrayList<DayResource> dayResourceList, DayMapsFragment dayMapsFragment, HashMap<DayResource, Marker> resourceMarkerMap) {
         super(originalList, dayResourceList);
-        this.outputMapsFragment = outputMapsFragment;
+        this.dayMapsFragment = dayMapsFragment;
         this.resourceMarkerMap = resourceMarkerMap;
 
     }
@@ -38,6 +38,6 @@ public class ResourceMapsSearchFilter extends ResourceSearchFilter<DayResource> 
         }
 
 
-        outputMapsFragment.moveCamera();
+        dayMapsFragment.moveCamera();
     }
 }

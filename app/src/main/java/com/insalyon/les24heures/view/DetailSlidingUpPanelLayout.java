@@ -9,7 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 
-import com.insalyon.les24heures.MainActivity;
+import com.insalyon.les24heures.BaseDynamicDataActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.fragments.DetailFragment;
@@ -44,7 +44,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
 
     private Integer wideHeight;
-    private MainActivity activity;
+    private BaseDynamicDataActivity activity;
     private boolean isSetup = false;
 
 
@@ -161,6 +161,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     }
 
 
+
     /**
      * if return false it's because the height of the view isn't yet ready, the setup will be done once the view is rendered and
      * the view height is processed
@@ -204,7 +205,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         isSetup = true;
 
         //setup previous sliding state
-        String previousState = ((MainActivity) activity).getSlidingUpState();
+        String previousState =  activity.getSlidingUpState();
         Log.d(TAG, "previous state " + previousState);
         if (previousState != null) {
             switch (previousState) {
@@ -277,7 +278,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     }
 
 
-    public void setActivity(MainActivity activity) {
+    public void setActivity(BaseDynamicDataActivity activity) {
         this.activity = activity;
     }
 

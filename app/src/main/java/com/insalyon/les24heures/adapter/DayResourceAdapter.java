@@ -98,7 +98,24 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
         Log.d("onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
         originalList.clear();
         originalList.addAll(event.getDayResourceList());
+        //notifyDataSetChanged();
     }
+
+
+
+    public void sortLoc(){
+        //TODO sort loc
+    }
+
+    public void sortTimeLoc(){
+        //TODO sort time loc
+    }
+
+    public ArrayList<DayResource> getResources(){
+        return originalList;
+    }
+
+
 
     private class ViewHolder {
         TextView title;

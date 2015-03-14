@@ -1,10 +1,13 @@
 package com.insalyon.les24heures.fragments;
 
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -45,7 +48,7 @@ import de.greenrobot.event.EventBus;
  * Created by remi on 09/02/15.
  */
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
-    private static final String TAG = OutputMapsFragment.class.getCanonicalName();
+    private static final String TAG = DayMapsFragment.class.getCanonicalName();
     private static ResourceServiceImpl resourceService = ResourceServiceImpl.getInstance();
     View view;
     @InjectView(R.id.detail_scrollView)
@@ -110,14 +113,22 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
 
-        view = inflater.inflate(R.layout.sliding_layout_content, container, false);
+        view = inflater.inflate(R.layout.detail_fragment, container, false);
         ButterKnife.inject(this, view);
 
         scheduleAdapter = new ScheduleAdapter(getActivity().getApplicationContext(),
                 R.layout.schedule_grid_item, schedules);
         schedulesGrid.setAdapter(scheduleAdapter);
 
-        MapFragment mapFragment = (MapFragment) getFragmentManager()
+        FragmentManager fm;
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Log.d(TAG, "using getFragmentManager");
+            fm = getFragmentManager();
+        } else {
+            Log.d(TAG, "using getChildFragmentManager");
+            fm = getChildFragmentManager();
+        }
+        MapFragment mapFragment = (MapFragment) fm
                 .findFragmentById(R.id.detail_mini_maps);
         mapFragment.getMapAsync(this);
         googleMap = mapFragment.getMap();
