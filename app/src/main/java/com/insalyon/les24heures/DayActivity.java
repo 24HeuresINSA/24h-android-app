@@ -20,10 +20,18 @@ import com.insalyon.les24heures.utils.OutputType;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.InjectView;
+import butterknife.OnClick;
+
 
 public class DayActivity extends BaseDynamicDataActivity {
     private static final String TAG = DayActivity.class.getCanonicalName();
 
+
+    @InjectView(R.id.day_menu_tabs_list)
+    View tabButtonList;
+    @InjectView(R.id.day_menu_tabs_maps)
+    View tabButtonMaps;
 
 
     /**
@@ -88,6 +96,15 @@ public class DayActivity extends BaseDynamicDataActivity {
         }
     }
 
+    @OnClick(R.id.day_menu_tabs_list)
+    public void onClickListTab(View v){
+        selectList();
+    }
+    @OnClick(R.id.day_menu_tabs_maps)
+    public void onClickMapsTab(View v){
+        selectMaps();
+    }
+
     /**
      * Activity is no more alive
      */
@@ -138,7 +155,7 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         bundleArgs.putParcelableArrayList("resourcesList", dayResourceArrayList);
 
-        if (fragment.getClass() == DayListFragment.class)
+        if (fragment.getClass() == DayMapsFragment.class)
             ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
         else
             ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);

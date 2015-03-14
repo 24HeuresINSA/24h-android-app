@@ -20,7 +20,6 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
@@ -38,7 +37,6 @@ import java.util.Map;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
-import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -207,11 +205,6 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         if (event.getState().equals(SlidingUpPannelState.HIDE)) {
             resourceMarkerMap.get(selectedDayResource).setIcon(BitmapDescriptorFactory.defaultMarker());
         }
-    }
-
-    @OnClick(R.id.fab_goto_list)
-    public void onClickFabGotoList(View v) {
-        ((DayActivity) getActivity()).selectList();
     }
 
 

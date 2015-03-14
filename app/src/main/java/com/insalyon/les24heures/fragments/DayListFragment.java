@@ -27,7 +27,6 @@ import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.utils.SlidingUpPannelState;
-import com.melnykov.fab.FloatingActionButton;
 
 import java.util.ArrayList;
 
@@ -64,8 +63,6 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
             quickReturnAttacher.addTargetView(quickReturnListHeader, QuickReturnTargetView.POSITION_TOP, quickReturnListHeader.getHeight());
         }
     };
-    @InjectView(R.id.fab_goto_maps)
-    FloatingActionButton fabGotoMaps;
     @InjectView(R.id.progress_wheel)
     View progressBar;
 
@@ -159,12 +156,6 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
         super.onEvent(event);
     }
 
-
-    @OnClick(R.id.fab_goto_maps)
-    public void onClickFabGotoMaps(View v) {
-        ((DayActivity) getActivity()).selectMaps();
-    }
-
     @Override
     public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
         DayResource dayResource = (DayResource) parent.getItemAtPosition(position);
@@ -233,7 +224,6 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
         if (firstVisibleItem > lastVisibleItem) {
             //scroll down
             if (!isScrollingDown) {
-                fabGotoMaps.hide();
                 eventBus.post(slidingUpEvent);
 
             }
@@ -242,7 +232,6 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
         } else if (firstVisibleItem < lastVisibleItem) {
             //scroll up
             if (!isScrollingUp) {
-                fabGotoMaps.show();
             }
             isScrollingUp = true;
             isScrollingDown = false;
@@ -250,7 +239,6 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
             if (top < lastY) {
                 //scroll down
                 if (!isScrollingDown) {
-                    fabGotoMaps.hide();
                     eventBus.post(slidingUpEvent);
                 }
                 isScrollingDown = true;
@@ -258,7 +246,6 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
             } else if (top > lastY) {
                 //scroll up
                 if (!isScrollingUp) {
-                    fabGotoMaps.show();
                 }
                 isScrollingUp = true;
                 isScrollingDown = false;
