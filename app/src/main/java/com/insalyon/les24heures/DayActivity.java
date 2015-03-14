@@ -1,5 +1,7 @@
 package com.insalyon.les24heures;
 
+import android.animation.AnimatorInflater;
+import android.animation.AnimatorSet;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.pm.ApplicationInfo;
@@ -32,6 +34,8 @@ public class DayActivity extends BaseDynamicDataActivity {
     View tabButtonList;
     @InjectView(R.id.day_menu_tabs_maps)
     View tabButtonMaps;
+    @InjectView(R.id.day_menu_tabs_indicator)
+    View indicator;
 
 
     /**
@@ -97,11 +101,12 @@ public class DayActivity extends BaseDynamicDataActivity {
     }
 
     @OnClick(R.id.day_menu_tabs_list)
-    public void onClickListTab(View v){
+    public void onClickListTab(View v) {
         selectList();
     }
+
     @OnClick(R.id.day_menu_tabs_maps)
-    public void onClickMapsTab(View v){
+    public void onClickMapsTab(View v) {
         selectMaps();
     }
 
@@ -120,14 +125,6 @@ public class DayActivity extends BaseDynamicDataActivity {
             outState.putString("outputType", OutputType.LIST.toString());
         }
     }
-
-    private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
-        @Override
-        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            selectCategory(position);
-        }
-    }
-
 
     /**
      * Activity's methods
@@ -155,13 +152,23 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         bundleArgs.putParcelableArrayList("resourcesList", dayResourceArrayList);
 
-        if (fragment.getClass() == DayMapsFragment.class)
-            ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
-        else
-            ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
+        AnimatorSet set;
 
+        if (fragment.getClass() == DayMapsFragment.class) {
+            ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
+            set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+                    R.animator.slide_in_from_right);
+        } else {
+            ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
+            set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+                    R.animator.slide_out_to_the_right);
+        }
 
         ft.replace(R.id.day_output_holder, fragment).commit();
+
+        set.setTarget(indicator);
+        set.start();
+
 
     }
 
@@ -176,18 +183,25 @@ public class DayActivity extends BaseDynamicDataActivity {
         if (categoriesList.isItemChecked(position)) {
             catSelected.clear();
             selectedCategories.clear();
-            if(categories.get(position).getIconeName() != "ic_ALLCATEGORY" ){
+            if (categories.get(position).getIconeName() != "ic_ALLCATEGORY") {
                 catSelected.add(categories.get(position));
                 selectedCategories.add(categories.get(position));
             }
         }
 
         if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
-            catSelected.add(new Category("FAVORITES","ic_FAVORITES"));
+            catSelected.add(new Category("FAVORITES", "ic_FAVORITES"));
         }
 
         eventBus.post(categoriesSelectedEvent);
 
+    }
+
+    private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            selectCategory(position);
+        }
     }
 
 }
