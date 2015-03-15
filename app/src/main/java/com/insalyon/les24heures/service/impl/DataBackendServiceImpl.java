@@ -59,69 +59,6 @@ public class DataBackendServiceImpl implements DataBackendService {
         eventBus = EventBus.getDefault();
     }
 
-    @Deprecated
-    public void getResourcesAsyncFromBackend(RetrofitService retrofitService) {
-        retrofitService.getResources(new Callback<AssomakerDTO>() {
-            @Override
-            public void success(AssomakerDTO assomakerDTO, Response response) {
-
-                Log.d(TAG,"getResources success");
-
-                //bricolage temporaire pour les category qui ne sont pas encore dans le backend
-                ArrayList<Category> categories = new ArrayList<Category>();
-                categories.add(new Category("CAT1","ic_CAT1"));
-                categories.add(new Category("CAT2","ic_CAT2"));
-                categories.add(new Category("CAT3","ic_CAT3"));
-                categories.add(new Category("ALL","ic_ALLCATEGORY"));//WARNING ic-ALLCATEGORY is mandatory for the filter
-                CategoriesUpdatedEvent categoriesUpdatedEvent = new CategoriesUpdatedEvent(categories);
-                eventBus.post(categoriesUpdatedEvent);
-
-
-                ArrayList<DayResourceDTO> dayResourceDTOs = new ArrayList<DayResourceDTO>();
-
-                Map<Integer, ArrayList<DayResourceDTO>> animations = assomakerDTO.getAnimations();
-                for (ArrayList<DayResourceDTO> dtos : animations.values()) {
-                    dayResourceDTOs.addAll(dtos);
-                }
-                Log.d(TAG, "getResources "+ dayResourceDTOs.toString());
-
-                ArrayList<NightResourceDTO> nightResourceDTOs = assomakerDTO.getArtists();
-
-                //TODO bricolage temporaire pour le double backend
-                ResourcesUpdatedEvent resourcesUpdatedEvent;
-                if (nightResourceDTOs != null) {
-                    resourcesUpdatedEvent = new ResourcesUpdatedEvent(resourceService.fromDTO(dayResourceDTOs,categories),
-                            resourceService.fromDTO(nightResourceDTOs));
-                    Collections.sort(resourcesUpdatedEvent.getDayResourceList(), new AlphabeticalSortComparator());
-                    Collections.sort(resourcesUpdatedEvent.getNightResourceList(),new AlphabeticalSortComparator());
-                } else {
-                    resourcesUpdatedEvent = new ResourcesUpdatedEvent(resourceService.fromDTO(dayResourceDTOs,categories));
-                    Collections.sort(resourcesUpdatedEvent.getDayResourceList(),new AlphabeticalSortComparator());
-                    ArrayList<NightResource> mockArtist = new ArrayList<NightResource>();
-
-                    List<Schedule> schedules = new ArrayList<Schedule>();
-                    schedules.add(new Schedule(Day.MONDAY, new Date(), new Date()));
-
-                    mockArtist.add(new NightResource("untitle", "blabla", schedules, new Category("pouet", "ic"), "fb", "tweet", "site", "BIG"));
-                    mockArtist.add(new NightResource("deuxtitle", "blabla", schedules, new Category("pouet", "ic"), "fb", "tweet", "site", "BIG"));
-
-                    resourcesUpdatedEvent.setNightResourceList(mockArtist);
-                }
-
-
-                eventBus.post(resourcesUpdatedEvent);
-            }
-
-
-            @Override
-            public void failure(RetrofitError error) {
-
-                Log.d("getResources", "failure " + error);
-
-            }
-        });
-
-    }
 
     public void getResourcesAsyncFromBackend(RetrofitService retrofitService, final String dataVersion) {
         retrofitService.getResources(dataVersion,new Callback<AssomakerDTO>() {

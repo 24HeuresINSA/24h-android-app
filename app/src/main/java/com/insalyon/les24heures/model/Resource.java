@@ -64,7 +64,8 @@ public class Resource implements Parcelable {
         in.readList(this.schedules, ClassLoader.getSystemClassLoader());
         this.category = in.readParcelable(ClassLoader.getSystemClassLoader());
         this.isFavorites = in.readByte() != 0;
-        //TODO
+        this.mainPictureUrl = in.readString();
+        this.pictures = in.readArrayList(ClassLoader.getSystemClassLoader());
 
     }
 
@@ -100,6 +101,8 @@ public class Resource implements Parcelable {
         out.writeList(schedules);
         out.writeParcelable(category, flags);
         out.writeByte((byte) (isFavorites ? 1 : 0));
+        out.writeString(mainPictureUrl);
+        out.writeList(pictures);
     }
 
     public String getTitle() {

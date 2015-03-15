@@ -2,6 +2,7 @@ package com.insalyon.les24heures.model;
 
 import android.os.Parcel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,15 +25,13 @@ public class NightResource extends Resource {
         this.stage = stage;
     }
 
-
-    public NightResource(String title, String description, List<Schedule> schedules, Category category, String facebookUrl, String twitterUrl, String siteUrl, String stage) {
-        super(title, description, schedules, false, category);
+    public NightResource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures, String facebookUrl, String twitterUrl, String siteUrl, String stage) {
+        super(title, description, schedules, category, mainPictureUrl, pictures);
         this.facebookUrl = facebookUrl;
         this.twitterUrl = twitterUrl;
         this.siteUrl = siteUrl;
         this.stage = stage;
     }
-
 
     public NightResource(Parcel in) {
         super(in);

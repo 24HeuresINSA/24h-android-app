@@ -42,6 +42,7 @@ import com.insalyon.les24heures.view.DetailScrollView;
 
 import java.io.InputStream;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -266,7 +267,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             @Override
             protected Void doInBackground(Void... params) {
                 try {
-                    InputStream in = new URL("http://crackberry.com/sites/crackberry.com/files/styles/large/public/topic_images/2013/ANDROID.png?itok=xhm7jaxS").openStream();
+                    InputStream in = new URL(URLDecoder.decode(res.getMainPictureUrl())).openStream();
                     bmp = BitmapFactory.decodeStream(in);
                 } catch (Exception e) {
                     // log error

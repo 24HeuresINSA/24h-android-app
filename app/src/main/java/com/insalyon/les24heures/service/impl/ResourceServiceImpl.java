@@ -46,11 +46,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public DayResource fromDTO(DayResourceDTO dayResourceDTO,ArrayList<Category> categories) {
-        Random rand = new Random();
         Category category = categoryService.findById(categories,dayResourceDTO.getCategory());
-
-        //just pour le test
-        Boolean isFavorites = (rand.nextInt(2) == 0 ? true : false);
 
         return new DayResource(dayResourceDTO.getName(),
                 dayResourceDTO.getDescription(),
@@ -64,16 +60,13 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public NightResource fromDTO(NightResourceDTO nightResourceDTO) {
-        Random rand = new Random();
-        //just pour le test
-        Boolean isFavorites = (rand.nextInt(2) == 0 ? true : false);
-
 
         return new NightResource(nightResourceDTO.getName(),
                 nightResourceDTO.getDescription(),
                 scheduleService.fromDTO(nightResourceDTO.getSchedule()),
-                null,//nightResourceDTO.getCategory(),
-                isFavorites,
+                null,
+                nightResourceDTO.getMain_picture_url(),
+                nightResourceDTO.getPictures(),
                 nightResourceDTO.getFacebook_url(),
                 nightResourceDTO.getTwitter_url(),
                 nightResourceDTO.getSite_url(),
