@@ -21,11 +21,20 @@ public class Category implements Parcelable {
     String _id;
     String name;
     String iconName;
+    String displayName;
 
+    @Deprecated
     public Category(String _id, String name, String iconName) {
         this._id = _id;
         this.name = name;
         this.iconName = iconName;
+    }
+
+    public Category(String _id, String name, String iconName, String displayName) {
+        this._id = _id;
+        this.name = name;
+        this.iconName = iconName;
+        this.displayName = displayName;
     }
 
     @Deprecated
@@ -37,6 +46,7 @@ public class Category implements Parcelable {
     private Category(Parcel in) {
         name = in.readString();
         iconName = in.readString();
+        //TODO
     }
 
     @Override
@@ -48,6 +58,7 @@ public class Category implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(name);
         out.writeString(iconName);
+        //TODO
     }
 
     @Override
@@ -57,6 +68,7 @@ public class Category implements Parcelable {
 
         Category category = (Category) o;
 
+        //TODO use _id or name
         if (!iconName.equals(category.iconName) || !_id.equals(category._id)) return false;
 
         return true;
@@ -90,5 +102,17 @@ public class Category implements Parcelable {
 
     public String get_id() {
         return _id;
+    }
+
+    public String getDisplayName() {
+        return displayName;
+    }
+
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
+    public void set_id(String _id) {
+        this._id = _id;
     }
 }

@@ -29,7 +29,7 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category fromDTO(CategoryDTO categoryDTO) {
-        return new Category(categoryDTO.get_id(),categoryDTO.getName(),categoryDTO.getIcon_name());
+        return new Category(categoryDTO.get_id(),categoryDTO.getName(),categoryDTO.getIcon_name(),categoryDTO.getDisplay_name());
     }
 
     @Override
@@ -44,9 +44,9 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category findById(ArrayList<Category> categories, Integer category) {
+    public Category findById(ArrayList<Category> categories, Integer id) {
         for (Category cat : categories) {
-            if(cat.get_id().equals(category))
+            if(cat.get_id().equals(id))
                 return cat;
         }
         return null;

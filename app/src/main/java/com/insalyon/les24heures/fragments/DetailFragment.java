@@ -2,7 +2,10 @@ package com.insalyon.les24heures.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -36,6 +40,8 @@ import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.view.DetailScrollView;
 
+import java.io.InputStream;
+import java.net.URL;
 import java.util.ArrayList;
 
 import butterknife.ButterKnife;
@@ -74,6 +80,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     TextView urlWeb;
     @InjectView(R.id.detail_mini_maps_holder)
     View miniMapsHolder;
+    @InjectView(R.id.detail_main_pic)
+    ImageView mainPic;
 
     Resource resource;
     private ScheduleAdapter scheduleAdapter;
@@ -86,6 +94,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private JazzyViewPager mJazzy;
     private android.content.Context appContext;
     private MainAdapter picturePagerAdapter;
+    private Bitmap bmp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -225,13 +234,14 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             scheduleAdapter.notifyDataSetChanged();
 
             //optionals  pictures
+            //TODO
 
             heavyDataUpdated = true;
 
         }
     }
 
-    public void notifyDataChanged(Resource res) {
+    public void notifyDataChanged(final Resource res) {
         if (res != null)
             resource = res;
         if(resource == null)
@@ -249,6 +259,28 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_checked);
         else
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
+
+        //update main pic
+        //TODO
+        new AsyncTask<Void, Void, Void>() {
+            @Override
+            protected Void doInBackground(Void... params) {
+                try {
+                    InputStream in = new URL("http://crackberry.com/sites/crackberry.com/files/styles/large/public/topic_images/2013/ANDROID.png?itok=xhm7jaxS").openStream();
+                    bmp = BitmapFactory.decodeStream(in);
+                } catch (Exception e) {
+                    // log error
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Void result) {
+                if (bmp != null)
+                    mainPic.setImageBitmap(bmp);
+            }
+
+        }.execute();
 
     }
 

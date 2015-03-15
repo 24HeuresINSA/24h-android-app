@@ -4,6 +4,7 @@ import android.os.Parcel;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,11 +14,16 @@ public class DayResource extends Resource {
 
     LatLng loc;
 
+    @Deprecated
     public DayResource(String title, String description, List<Schedule> schedules, LatLng loc, Category category) {
         super(title, description, schedules, false, category);
         this.loc = loc;
     }
 
+    public DayResource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures, LatLng loc) {
+        super(title, description, schedules, category, mainPictureUrl, pictures);
+        this.loc = loc;
+    }
 
     @Deprecated
     public DayResource(String title, String description, List<Schedule> schedules, LatLng loc, Category category, Boolean isFavorites) {

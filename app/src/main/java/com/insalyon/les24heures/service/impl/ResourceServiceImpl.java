@@ -55,10 +55,11 @@ public class ResourceServiceImpl implements ResourceService {
         return new DayResource(dayResourceDTO.getName(),
                 dayResourceDTO.getDescription(),
                 scheduleService.fromDTO(dayResourceDTO.getSchedule()),
-                new LatLng(Double.valueOf(dayResourceDTO.getLocalisation().get(0)),
-                        Double.valueOf(dayResourceDTO.getLocalisation().get(1))),
                 category,
-                isFavorites);
+                dayResourceDTO.getMain_picture_url(),
+                dayResourceDTO.getPictures(),
+                new LatLng(Double.valueOf(dayResourceDTO.getLocalisation().get(0)),
+                        Double.valueOf(dayResourceDTO.getLocalisation().get(1))));
     }
 
     @Override
@@ -70,7 +71,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         return new NightResource(nightResourceDTO.getName(),
                 nightResourceDTO.getDescription(),
-                scheduleService.fromDTO(nightResourceDTO.getHoraires()),
+                scheduleService.fromDTO(nightResourceDTO.getSchedule()),
                 null,//nightResourceDTO.getCategory(),
                 isFavorites,
                 nightResourceDTO.getFacebook_url(),

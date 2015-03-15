@@ -3,6 +3,7 @@ package com.insalyon.les24heures.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -24,7 +25,10 @@ public class Resource implements Parcelable {
     List<Schedule> schedules;
     Boolean isFavorites;
     Category category;
+    String mainPictureUrl;
+    ArrayList<String> pictures;
 
+    @Deprecated
     public Resource(String title, String description, List<Schedule> schedules, Boolean isFavorites, Category category) {
         this.title = title;
         this.description = description;
@@ -33,12 +37,34 @@ public class Resource implements Parcelable {
         this.category = category;
     }
 
+    @Deprecated
+    public Resource(String title, String description, List<Schedule> schedules, Boolean isFavorites, Category category, String mainPictureUrl, ArrayList<String> pictures) {
+        this.title = title;
+        this.description = description;
+        this.schedules = schedules;
+        this.isFavorites = isFavorites;
+        this.category = category;
+        this.mainPictureUrl = mainPictureUrl;
+        this.pictures = pictures;
+    }
+
+    public Resource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures) {
+        this.title = title;
+        this.description = description;
+        this.schedules = schedules;
+        this.category = category;
+        this.mainPictureUrl = mainPictureUrl;
+        this.pictures = pictures;
+        this.isFavorites = false;
+    }
+
     public Resource(Parcel in) {
         this.title = in.readString();
         this.description = in.readString();
         in.readList(this.schedules, ClassLoader.getSystemClassLoader());
         this.category = in.readParcelable(ClassLoader.getSystemClassLoader());
         this.isFavorites = in.readByte() != 0;
+        //TODO
 
     }
 
@@ -121,5 +147,22 @@ public class Resource implements Parcelable {
         return "Resource{" +
                 "title='" + title + '\'' +
                 '}';
+    }
+
+
+    public String getMainPictureUrl() {
+        return mainPictureUrl;
+    }
+
+    public void setMainPictureUrl(String mainPictureUrl) {
+        this.mainPictureUrl = mainPictureUrl;
+    }
+
+    public ArrayList<String> getPictures() {
+        return pictures;
+    }
+
+    public void setPictures(ArrayList<String> pictures) {
+        this.pictures = pictures;
     }
 }
