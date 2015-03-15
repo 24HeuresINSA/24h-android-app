@@ -99,7 +99,6 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
      * Fragment is alive      *
      */
     public void onEvent(CategoriesSelectedEvent event) {
-        Log.d("onevent", event.getCategories().toString());
         categoriesSelected.clear();
         categoriesSelected.addAll((ArrayList<Category>) event.getCategories());
 
@@ -108,7 +107,6 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
-        Log.d("onEvent(ResourcesUpdatedEvent)", event.getDayResourceList().toString());
 
         hideProgress();
 
@@ -116,7 +114,6 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     }
 
     public void onEvent(SearchEvent event) {
-        Log.d("onEvent(SearchEvent)", event.getQuery().toString());
         if (searchFilter != null) {
             searchFilter.filter(event.getQuery().toString());
         } else

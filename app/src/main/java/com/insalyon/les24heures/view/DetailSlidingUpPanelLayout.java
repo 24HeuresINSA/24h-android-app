@@ -2,7 +2,6 @@ package com.insalyon.les24heures.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -86,7 +85,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         @Override
         public void onPanelExpanded(View panel) {
-            Log.i(TAG, "onPanelExpanded");
             detailScrollView.setIsScrollEnable(true);
             nextSchedule.setVisibility(View.GONE);
             favoriteImageButton.setVisibility(View.VISIBLE);
@@ -101,7 +99,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         @Override
         public void onPanelCollapsed(View panel) {
-            Log.i(TAG, "onPanelCollapsed");
             nextSchedule.setVisibility(View.VISIBLE);
             favoriteImageButton.setVisibility(View.GONE);
 //                this.setDragView(wholeSlidingLayout);
@@ -117,7 +114,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         @Override
         public void onPanelAnchored(View panel) {
-            Log.i(TAG, "onPanelAnchored");
             nextSchedule.setVisibility(View.GONE);
             favoriteImageButton.setVisibility(View.VISIBLE);
             detailScrollView.setIsScrollEnable(false);
@@ -134,7 +130,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         @Override
         public void onPanelHidden(View panel) {
-            Log.i(TAG, "onPanelHidden");
             eventBus.post(new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE,(NightResource)null));
         }
     };
@@ -200,7 +195,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         //setup previous sliding state
         String previousState =  activity.getSlidingUpState();
-        Log.d(TAG, "previous state " + previousState);
         if (previousState != null) {
             switch (previousState) {
                 case "hidden":

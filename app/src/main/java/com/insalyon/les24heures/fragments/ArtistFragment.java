@@ -94,7 +94,6 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-        Log.d("onEvent(ResourcesUpdatedEvent)", event.getNightResourceList().toString());
         resourcesList.clear();
         resourcesList.addAll(event.getNightResourceList());
 //        nightResourceAdapter.getFilter().filter("");
@@ -104,7 +103,6 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
 
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
-        Log.d("onEvent(SearchEvent)", event.getQuery().toString());
     }
 
 

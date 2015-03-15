@@ -86,7 +86,6 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
-        Log.d("onEvent(ResourcesUpdatedEvent)", event.getNightResourceList().toString());
         originalList.clear();
         originalList.addAll(event.getNightResourceList());
     }

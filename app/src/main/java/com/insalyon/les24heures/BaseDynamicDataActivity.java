@@ -110,11 +110,11 @@ public abstract class BaseDynamicDataActivity extends Activity {
         eventBus = EventBus.getDefault();
         restAdapter = new RestAdapter.Builder()
                 .setEndpoint(getResources().getString(R.string.backend_url))
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLogLevel(RestAdapter.LogLevel.NONE)
                 .build();
         restAdapterLocal = new RestAdapter.Builder()
                 .setEndpoint(getResources().getString(R.string.backend_url_local))
-                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setLogLevel(RestAdapter.LogLevel.NONE)
                 .build();
         retrofitService = restAdapter.create(RetrofitService.class);
 //        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);

@@ -137,6 +137,8 @@ public class DataBackendServiceImpl implements DataBackendService {
                 ArrayList<DayResourceDTO> dayResourceDTOs = assomakerDTO.getResources();
                 ArrayList<NightResourceDTO> nightResourceDTOs = assomakerDTO.getArtists();
 
+                Log.d(TAG,"getResources : "+categoryDTOs.size()+" categories, "+dayResourceDTOs.size()+" dayResources, "+nightResourceDTOs.size()+" nightResources");
+
 
                 ArrayList<Category> categories = categoryService.fromDTO(categoryDTOs);
                 CategoriesUpdatedEvent categoriesUpdatedEvent = new CategoriesUpdatedEvent(categories,dataVersion);
