@@ -128,9 +128,11 @@ public class DataBackendServiceImpl implements DataBackendService {
             @Override
             public void success(AssomakerDTO assomakerDTO, Response response) {
 
-                Log.d(TAG,"getResources : success");
-                //TODO analyse response to know if we have to parse JSON to retrieve updated data
 
+                if(response.getStatus() == 204){
+                    Log.d(TAG,"getResources : success : data already up to date");
+                    return;
+                }
 
                 String dataVersion = assomakerDTO.getVersion();
                 ArrayList<CategoryDTO> categoryDTOs = assomakerDTO.getCategories();

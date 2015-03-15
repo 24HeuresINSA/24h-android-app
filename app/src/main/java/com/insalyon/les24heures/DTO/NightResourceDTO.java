@@ -7,6 +7,8 @@ import java.util.ArrayList;
 /**
  * Created by remi on 11/02/15.
  */
+
+//TODO mapper comme il faut
 public class NightResourceDTO {
     String name;
     String mainPictureUrl;

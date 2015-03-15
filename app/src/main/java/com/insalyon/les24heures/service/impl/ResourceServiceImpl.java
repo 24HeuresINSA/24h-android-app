@@ -47,16 +47,16 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     public DayResource fromDTO(DayResourceDTO dayResourceDTO,ArrayList<Category> categories) {
         Random rand = new Random();
-        Category category = categories.get(rand.nextInt(categories.size()-1));
+        Category category = categoryService.findById(categories,dayResourceDTO.getCategory());
 
         //just pour le test
         Boolean isFavorites = (rand.nextInt(2) == 0 ? true : false);
 
-        return new DayResource(dayResourceDTO.getNom(),
+        return new DayResource(dayResourceDTO.getName(),
                 dayResourceDTO.getDescription(),
-                scheduleService.fromDTO(dayResourceDTO.getHoraires()),
-                new LatLng(Double.valueOf(dayResourceDTO.getLocX()),
-                        Double.valueOf(dayResourceDTO.getLocY())),
+                scheduleService.fromDTO(dayResourceDTO.getSchedule()),
+                new LatLng(Double.valueOf(dayResourceDTO.getLocalisation().get(0)),
+                        Double.valueOf(dayResourceDTO.getLocalisation().get(1))),
                 category,
                 isFavorites);
     }
