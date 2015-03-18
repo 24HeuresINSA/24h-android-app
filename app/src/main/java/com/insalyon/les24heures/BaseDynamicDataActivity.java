@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -109,12 +110,12 @@ public abstract class BaseDynamicDataActivity extends Activity {
         super.onCreate(savedInstanceState);
         eventBus = EventBus.getDefault();
         restAdapter = new RestAdapter.Builder()
-                .setEndpoint(getResources().getString(R.string.backend_url))
-                .setLogLevel(RestAdapter.LogLevel.NONE)
+                .setEndpoint(getResources().getString(R.string.backend_url_mobile_test))
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         restAdapterLocal = new RestAdapter.Builder()
                 .setEndpoint(getResources().getString(R.string.backend_url_local))
-                .setLogLevel(RestAdapter.LogLevel.NONE)
+                .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         retrofitService = restAdapter.create(RetrofitService.class);
 //        resourceRetrofitService = restAdapterLocal.create(ResourceRetrofitService.class);
@@ -186,8 +187,8 @@ public abstract class BaseDynamicDataActivity extends Activity {
         String categoriesListStr = settings.getString("categoriesList", "");
         String dayResourceArrayListStr = settings.getString("dayResourceList", "");
         String nightResourceArrayListStr = settings.getString("nightResourcesList", "");
-        String dataVersionString = settings.getString("dataVersion", "");
-        String applicationVersionString = settings.getString("applicationVersion", "");
+        dataVersion = settings.getString("dataVersion", "");
+        applicationVersion = settings.getString("applicationVersion", "");
 
         categories = gson.fromJson(categoriesListStr, new TypeToken<List<Category>>() {
         }.getType());
@@ -195,8 +196,6 @@ public abstract class BaseDynamicDataActivity extends Activity {
         }.getType());
         nightResourceArrayList = gson.fromJson(nightResourceArrayListStr, new TypeToken<List<NightResource>>() {
         }.getType());
-        dataVersion = gson.fromJson(dataVersionString, String.class);
-        applicationVersion = gson.fromJson(applicationVersionString, String.class);
 
 
         if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null) {
@@ -210,7 +209,9 @@ public abstract class BaseDynamicDataActivity extends Activity {
             applicationVersion = getResources().getString(R.string.INSTALL_APPLICATION_VERSION);
         }
 
-        dataBackendService.getResourcesAsyncFromBackend(retrofitService);
+        //TODO debug purpose only
+        dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
+        dataBackendService.getResourcesAsyncFromBackend(retrofitService,dataVersion);
 //      dataBackendService.getResourcesAsyncMock();
 
 
@@ -224,6 +225,8 @@ public abstract class BaseDynamicDataActivity extends Activity {
         detailSlidingUpPanelLayoutLayout.setParallaxHeader(findViewById(R.id.detail_paralax_header));
 
         detailFragment = (DetailFragment) fragmentManager.findFragmentById(R.id.sliding_layout_content_fragment);
+        detailFragment.setParallaxImageHeader((ImageView) findViewById(R.id.detail_paralax_header_imageview));
+        detailFragment.setParallaxHeader(findViewById(R.id.detail_paralax_header));
         detailSlidingUpPanelLayoutLayout.setDetailFragment(detailFragment);
     }
 

@@ -1,23 +1,22 @@
 package com.insalyon.les24heures.DTO;
 
-import com.insalyon.les24heures.model.Category;
-
 import java.util.ArrayList;
 
 /**
  * Created by remi on 11/02/15.
  */
+
 public class NightResourceDTO {
     String name;
-    String mainPictureUrl;
-    ArrayList<ScheduleDTO> horaires;
+    String main_picture_url;
+    ArrayList<String> pictures;
+    ArrayList<ScheduleDTO> schedule;
     String description;
     String stage;
-    Category category;
-    String display_name;
     String facebook_url;
     String twitter_url;
     String site_url;
+    Integer _id;
 
     public String getFacebook_url() {
         return facebook_url;
@@ -51,22 +50,6 @@ public class NightResourceDTO {
         this.name = name;
     }
 
-    public String getMainPictureUrl() {
-        return mainPictureUrl;
-    }
-
-    public void setMainPictureUrl(String mainPictureUrl) {
-        this.mainPictureUrl = mainPictureUrl;
-    }
-
-    public ArrayList<ScheduleDTO> getHoraires() {
-        return horaires;
-    }
-
-    public void setHoraires(ArrayList<ScheduleDTO> horaires) {
-        this.horaires = horaires;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -83,19 +66,35 @@ public class NightResourceDTO {
         this.stage = stage;
     }
 
-    public Category getCategory() {
-        return category;
+    public String getMain_picture_url() {
+        return main_picture_url;
     }
 
-    public void setCategory(Category category) {
-        this.category = category;
+    public void setMain_picture_url(String main_picture_url) {
+        this.main_picture_url = main_picture_url;
     }
 
-    public String getDisplay_name() {
-        return display_name;
+    public ArrayList<String> getPictures() {
+        return pictures;
     }
 
-    public void setDisplay_name(String display_name) {
-        this.display_name = display_name;
+    public void setPictures(ArrayList<String> pictures) {
+        this.pictures = pictures;
+    }
+
+    public ArrayList<ScheduleDTO> getSchedule() {
+        return schedule;
+    }
+
+    public void setSchedule(ArrayList<ScheduleDTO> schedule) {
+        this.schedule = schedule;
+    }
+
+    public Integer get_id() {
+        return _id;
+    }
+
+    public void set_id(Integer _id) {
+        this._id = _id;
     }
 }

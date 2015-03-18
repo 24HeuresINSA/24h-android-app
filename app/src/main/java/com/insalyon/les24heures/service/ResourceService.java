@@ -9,7 +9,6 @@ import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by remi on 27/12/14.

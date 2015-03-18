@@ -29,11 +29,28 @@ public class CategoryServiceImpl implements CategoryService {
 
     @Override
     public Category fromDTO(CategoryDTO categoryDTO) {
-        return null;
+        return new Category(categoryDTO.get_id(),categoryDTO.getName(),categoryDTO.getIcon_name(),categoryDTO.getDisplay_name());
     }
 
     @Override
     public ArrayList<Category> fromDTO(ArrayList<CategoryDTO> categoryDTOs) {
+        ArrayList<Category> categories = new ArrayList<>();
+
+        for (CategoryDTO categoryDTO : categoryDTOs) {
+            categories.add(this.fromDTO(categoryDTO));
+        }
+
+        return categories;
+    }
+
+    @Override
+    public Category findById(ArrayList<Category> categories, String id) {
+        for (Category cat : categories) {
+            if(cat.get_id().equals(id))
+                return cat;
+        }
         return null;
     }
+
+
 }

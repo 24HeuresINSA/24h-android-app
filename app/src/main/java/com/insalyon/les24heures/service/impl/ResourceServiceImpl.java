@@ -11,7 +11,6 @@ import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceService;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import de.greenrobot.event.EventBus;
 
@@ -46,33 +45,27 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public DayResource fromDTO(DayResourceDTO dayResourceDTO,ArrayList<Category> categories) {
-        Random rand = new Random();
-        Category category = categories.get(rand.nextInt(categories.size()-1));
+        Category category = categoryService.findById(categories,Integer.toString(dayResourceDTO.getCategory()));
 
-        //just pour le test
-        Boolean isFavorites = (rand.nextInt(2) == 0 ? true : false);
-
-        return new DayResource(dayResourceDTO.getNom(),
+        return new DayResource(dayResourceDTO.getName(),
                 dayResourceDTO.getDescription(),
-                scheduleService.fromDTO(dayResourceDTO.getHoraires()),
-                new LatLng(Double.valueOf(dayResourceDTO.getLocX()),
-                        Double.valueOf(dayResourceDTO.getLocY())),
+                scheduleService.fromDTO(dayResourceDTO.getSchedule()),
                 category,
-                isFavorites);
+                dayResourceDTO.getMain_picture_url(),
+                dayResourceDTO.getPictures(),
+                new LatLng(Double.valueOf(dayResourceDTO.getLocalisation().get(0)),
+                        Double.valueOf(dayResourceDTO.getLocalisation().get(1))));
     }
 
     @Override
     public NightResource fromDTO(NightResourceDTO nightResourceDTO) {
-        Random rand = new Random();
-        //just pour le test
-        Boolean isFavorites = (rand.nextInt(2) == 0 ? true : false);
-
 
         return new NightResource(nightResourceDTO.getName(),
                 nightResourceDTO.getDescription(),
-                scheduleService.fromDTO(nightResourceDTO.getHoraires()),
-                null,//nightResourceDTO.getCategory(),
-                isFavorites,
+                scheduleService.fromDTO(nightResourceDTO.getSchedule()),
+                null,
+                nightResourceDTO.getMain_picture_url(),
+                nightResourceDTO.getPictures(),
                 nightResourceDTO.getFacebook_url(),
                 nightResourceDTO.getTwitter_url(),
                 nightResourceDTO.getSite_url(),

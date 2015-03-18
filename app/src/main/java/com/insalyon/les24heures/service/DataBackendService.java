@@ -7,9 +7,6 @@ public interface DataBackendService {
 
     public void getResourcesAsyncFromBackend(RetrofitService retrofitService, String dataVersion);
 
-    @Deprecated
-    public void getResourcesAsyncFromBackend(RetrofitService retrofitService);
-
     public void getResourcesAsyncMock();
 
 

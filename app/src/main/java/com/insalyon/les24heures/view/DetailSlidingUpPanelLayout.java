@@ -62,7 +62,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
                 //parallax
                 newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
                 newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
-                if(parallaxHeader.getVisibility() == INVISIBLE)
+                if(parallaxHeader.getVisibility() == INVISIBLE && !parallaxHeader.isSelected()) //parallaxHeader.selected is set to true by DetailFragment when no pictures are to be displayed
                     parallaxHeader.setVisibility(VISIBLE);
                 parallaxHeader.setTranslationY(newParallaxHeaderPos);
 

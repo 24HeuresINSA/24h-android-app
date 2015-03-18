@@ -62,7 +62,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
         final Category category = categories.get(position);
 
-        holder.title.setText(category.getName());
+        holder.title.setText(category.getDisplayName());
 
         if(!init && position == selectedCategoryInit){
             ((ListView)parent).setItemChecked(position,position == selectedCategoryInit);
