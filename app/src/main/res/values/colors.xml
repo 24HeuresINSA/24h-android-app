@@ -2,7 +2,7 @@
 <resources>
     <!--<color name="output_list_sort_background">@color/background_material_dark</color>-->
     <color name="output_list_sort_background">#FF000000</color>
-    <color name="navigation_drawer_background">#FF000000</color>
+    <color name="navigation_drawer_background">#FFFFFFFF</color>
 
     <!--FAB-->
     <color name="primary">#3f51b5</color>

@@ -3,13 +3,41 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/navigation_drawer_background"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:layout_gravity="start">
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:background="#ffffffff"
+        android:orientation="horizontal"
+        android:padding="0px">
+
+        <ImageView
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="fitCenter"
+            android:adjustViewBounds="true"
+            android:src="@drawable/nav_drawer_picture" />
+    </LinearLayout>
 
     <LinearLayout
         android:id="@+id/layout_categories"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="En journée"
+            android:textColor="#ff00a9be"
+            android:textSize="@dimen/drawer_title_fontsize"
+            android:gravity="right"
+            android:paddingTop="15px"
+            android:paddingBottom="15px"
+            android:paddingRight="50px"
+            android:textAllCaps="true"/>
 
         <ListView
             android:id="@+id/left_drawer_categories_list"
@@ -21,11 +49,103 @@
             android:dividerHeight="0dp" />
 
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="En soirée"
+            android:textColor="#ff00a9be"
+            android:textSize="@dimen/drawer_title_fontsize"
+            android:gravity="right"
+            android:paddingTop="15px"
+            android:paddingBottom="15px"
+            android:paddingRight="50px"
+            android:textAllCaps="true"/>
+
+        <TextView
             android:id="@+id/navigation_drawer_artists"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="artists"
-            android:textColor="#ffffffff"
-            android:textSize="40dp" />
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="artists"
+            android:textColor="#ff4D4D4D"
+            android:textSize="15dp" />
+
     </LinearLayout>
 </LinearLayout>
