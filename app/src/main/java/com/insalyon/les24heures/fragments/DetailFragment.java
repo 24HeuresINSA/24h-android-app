@@ -2,15 +2,11 @@ package com.insalyon.les24heures.fragments;
 
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
-import android.os.AsyncTask;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -39,9 +35,8 @@ import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.view.DetailScrollView;
+import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 
@@ -81,8 +76,6 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     TextView urlWeb;
     @InjectView(R.id.detail_mini_maps_holder)
     View miniMapsHolder;
-    @InjectView(R.id.detail_main_pic)
-    ImageView mainPic;
 
     Resource resource;
     private ScheduleAdapter scheduleAdapter;
@@ -95,7 +88,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private JazzyViewPager mJazzy;
     private android.content.Context appContext;
     private MainAdapter picturePagerAdapter;
-    private Bitmap bmp;
+    private Picasso picasso;
+    private ImageView parallaxImageHeader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -113,6 +107,16 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 schedules.addAll(resource.getSchedules());
             }
         }
+
+        picasso = new Picasso.Builder(getActivity().getApplicationContext()).listener(new Picasso.Listener() {
+            @Override
+            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                exception.printStackTrace();
+            }
+        }).build();
+
+        picasso.setLoggingEnabled(true);
+        picasso.setIndicatorsEnabled(true);
 
     }
 
@@ -235,7 +239,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             scheduleAdapter.notifyDataSetChanged();
 
             //optionals  pictures
-            //TODO
+            mJazzy.setAdapter(picturePagerAdapter);
 
             heavyDataUpdated = true;
 
@@ -261,27 +265,11 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         else
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
 
-        //update main pic
-        //TODO
-        new AsyncTask<Void, Void, Void>() {
-            @Override
-            protected Void doInBackground(Void... params) {
-                try {
-                    InputStream in = new URL(URLDecoder.decode(res.getMainPictureUrl())).openStream();
-                    bmp = BitmapFactory.decodeStream(in);
-                } catch (Exception e) {
-                    // log error
-                }
-                return null;
-            }
+        picasso.load(URLDecoder.decode(resource.getMainPictureUrl()))
+                .placeholder(R.drawable.ic_waiting)
+                .error(R.drawable.ic_error)
+                .into(parallaxImageHeader);
 
-            @Override
-            protected void onPostExecute(Void result) {
-                if (bmp != null)
-                    mainPic.setImageBitmap(bmp);
-            }
-
-        }.execute();
 
     }
 
@@ -295,22 +283,30 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         outState.putParcelable("resource", resource);
     }
 
+    public void setParallaxImageHeader(ImageView parallaxImageHeader) {
+        this.parallaxImageHeader = parallaxImageHeader;
+    }
+
+    public ImageView getParallaxImageHeader() {
+        return parallaxImageHeader;
+    }
+
     private class MainAdapter extends PagerAdapter {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
-            TextView text = new TextView(appContext);
-            text.setGravity(Gravity.CENTER);
-            text.setTextSize(30);
-            text.setTextColor(Color.WHITE);
-            text.setText("Page " + position);
-            text.setPadding(30, 30, 30, 30);
-            int bg = Color.rgb((int) Math.floor(Math.random() * 128) + 64,
-                    (int) Math.floor(Math.random() * 128) + 64,
-                    (int) Math.floor(Math.random() * 128) + 64);
-            text.setBackgroundColor(bg);
-            container.addView(text, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-            mJazzy.setObjectForPosition(text, position);
-            return text;
+            ImageView image = new ImageView(appContext);
+
+            picasso.load(URLDecoder.decode(resource.getPictures().get(position)))
+                    .placeholder(R.drawable.ic_waiting)
+                    .error(R.drawable.ic_error)
+                    .into(image);
+
+            container.addView(image, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+
+
+
+            mJazzy.setObjectForPosition(image, position);
+            return image;
         }
 
 
@@ -321,7 +317,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
         @Override
         public int getCount() {
-            return 10;
+            if(resource == null) return 0;
+            return resource.getPictures().size();
         }
 
         @Override

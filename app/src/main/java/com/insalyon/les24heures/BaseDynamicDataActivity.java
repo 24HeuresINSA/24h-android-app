@@ -18,6 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
 import android.widget.Toast;
@@ -224,6 +225,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
         detailSlidingUpPanelLayoutLayout.setParallaxHeader(findViewById(R.id.detail_paralax_header));
 
         detailFragment = (DetailFragment) fragmentManager.findFragmentById(R.id.sliding_layout_content_fragment);
+        detailFragment.setParallaxImageHeader((ImageView) findViewById(R.id.detail_paralax_header_imageview));
         detailSlidingUpPanelLayoutLayout.setDetailFragment(detailFragment);
     }
 
