@@ -13,5 +13,5 @@ public interface CategoryService {
 
     public ArrayList<Category> fromDTO(ArrayList<CategoryDTO> categoryDTOs);
 
-    Category findById(ArrayList<Category> categories, Integer category);
+    Category findById(ArrayList<Category> categories, String category);
 }

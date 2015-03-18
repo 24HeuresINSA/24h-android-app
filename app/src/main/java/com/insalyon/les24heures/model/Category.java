@@ -81,7 +81,7 @@ public class Category implements Parcelable {
 
     @Override
     public String toString() {
-        return iconName;
+        return name;
     }
 
     public String getName() {

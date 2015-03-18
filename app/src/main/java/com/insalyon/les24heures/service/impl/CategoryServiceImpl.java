@@ -44,7 +44,7 @@ public class CategoryServiceImpl implements CategoryService {
     }
 
     @Override
-    public Category findById(ArrayList<Category> categories, Integer id) {
+    public Category findById(ArrayList<Category> categories, String id) {
         for (Category cat : categories) {
             if(cat.get_id().equals(id))
                 return cat;

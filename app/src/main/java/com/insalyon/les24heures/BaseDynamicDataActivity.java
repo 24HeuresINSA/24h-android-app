@@ -226,6 +226,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
         detailFragment = (DetailFragment) fragmentManager.findFragmentById(R.id.sliding_layout_content_fragment);
         detailFragment.setParallaxImageHeader((ImageView) findViewById(R.id.detail_paralax_header_imageview));
+        detailFragment.setParallaxHeader(findViewById(R.id.detail_paralax_header));
         detailSlidingUpPanelLayoutLayout.setDetailFragment(detailFragment);
     }
 

@@ -76,6 +76,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     TextView urlWeb;
     @InjectView(R.id.detail_mini_maps_holder)
     View miniMapsHolder;
+    @InjectView(R.id.detail_carousel_layout)
+    View carouselLayout;
 
     Resource resource;
     private ScheduleAdapter scheduleAdapter;
@@ -90,6 +92,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private MainAdapter picturePagerAdapter;
     private Picasso picasso;
     private ImageView parallaxImageHeader;
+    private View parallaxHeader;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -239,7 +242,12 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             scheduleAdapter.notifyDataSetChanged();
 
             //optionals  pictures
-            mJazzy.setAdapter(picturePagerAdapter);
+            if(resource.getPictures().size() == 0){
+                carouselLayout.setVisibility(View.INVISIBLE);
+            } else {
+                mJazzy.setAdapter(picturePagerAdapter);
+                carouselLayout.setVisibility(View.VISIBLE);
+            }
 
             heavyDataUpdated = true;
 
@@ -265,10 +273,18 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         else
             favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
 
-        picasso.load(URLDecoder.decode(resource.getMainPictureUrl()))
-                .placeholder(R.drawable.ic_waiting)
-                .error(R.drawable.ic_error)
-                .into(parallaxImageHeader);
+
+        if(resource.getMainPictureUrl() == null || resource.getMainPictureUrl() == ""){
+            parallaxHeader.setVisibility(View.GONE);
+            parallaxHeader.setSelected(true); //to prevent the slidingUp to display it
+        }else {
+            parallaxHeader.setVisibility(View.VISIBLE);
+            parallaxHeader.setSelected(false); //to allow slidingUp to do its job
+            picasso.load(URLDecoder.decode(resource.getMainPictureUrl()))
+                    .placeholder(R.drawable.ic_waiting)
+                    .error(R.drawable.ic_error)
+                    .into(parallaxImageHeader);
+        }
 
 
     }
@@ -287,9 +303,12 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         this.parallaxImageHeader = parallaxImageHeader;
     }
 
-    public ImageView getParallaxImageHeader() {
-        return parallaxImageHeader;
+
+    public void setParallaxHeader(View parallaxHeader) {
+        this.parallaxHeader = parallaxHeader;
     }
+
+
 
     private class MainAdapter extends PagerAdapter {
         @Override
