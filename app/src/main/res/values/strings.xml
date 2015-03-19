@@ -77,6 +77,14 @@
     <string name="artist_fragment_appname">Artists</string>
     <string name="INSTALL_DATA_VERSION">0.0</string>
     <string name="INSTALL_APPLICATION_VERSION">0.0</string>
+    <string name="navigationdrawer_sectionname_day">En journée</string>
+    <string name="navigationdrawer_sectionname_night">En soirée</string>
+    <string name="navigationdrawer_sectionname_everytime">Tout le temps</string>
+    <string name="navigationdrawer_label_artist">Concerts</string>
+    <string name="navigationdrawer_label_tickets">Billeterie</string>
+    <string name="navigationdrawer_label_tcl">TCL</string>
+    <string name="navigationdrawer_label_facilities">Lieux utiles</string>
+    <string name="navigationdrawer_label_params">Paramètres</string>
 
 
 </resources>

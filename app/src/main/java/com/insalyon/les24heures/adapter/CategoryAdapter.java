@@ -26,7 +26,6 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
     private final EventBus eventBus;
     private Boolean init = false;
     private int selectedCategoryInit;
-    private Context context;
 
     LayoutInflater vi;
     private List<Category> categories;
@@ -35,7 +34,6 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
         super(context, resource, categories);
         this.viewId = resource;
         this.categories = categories;
-        this.context = context;
         selectedCategoryInit = -1;
 
         this.vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);

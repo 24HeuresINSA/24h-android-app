@@ -1,31 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:orientation="horizontal"
-    android:weightSum="5">
+    android:layout_height="fill_parent">
 
-    <ImageView
-        android:layout_width="0dp"
-        android:layout_height="48dp"
-        android:id="@+id/drawer_item_icon"
-        android:background="#FFFFFFFF"
-        android:layout_weight="1" />
+    <LinearLayout
+        android:orientation="horizontal"
+    style="@style/NavigationDrawer.SectionItem">
 
-    <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/drawer_item_title"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:background="#FFFFFF"
-        android:gravity="center_vertical"
-        android:minHeight="?android:attr/listPreferredItemHeightSmall"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
-        android:textAppearance="?android:attr/textAppearanceListItemSmall"
-        android:textColor="#FF4D4D4D"
-        android:textIsSelectable="false"
-        android:textSize="@dimen/drawer_category_fontsize"
-        android:layout_weight="4" />
+   >
 
+        <ImageView
+            android:id="@+id/drawer_item_icon"
+            style="@style/NavigationDrawer.SectionItem.Icon" />
+
+        <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/drawer_item_title"
+            style="@style/NavigationDrawer.SectionItem.Label" />
+    </LinearLayout>
 
 </LinearLayout>
