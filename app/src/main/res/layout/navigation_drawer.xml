@@ -7,120 +7,134 @@
     android:background="@color/navigation_drawer_background"
     android:orientation="vertical">
 
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/scrollView" >
 
-    <LinearLayout
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:background="#ffffffff"
-        android:orientation="horizontal"
-        android:padding="0px">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            >
 
-        <ImageView
+        <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:adjustViewBounds="true"
-            android:scaleType="fitCenter"
-            android:src="@drawable/navigationdrawer_header" />
-    </LinearLayout>
+            android:background="#ffffffff"
+            android:orientation="horizontal"
+            android:padding="0px">
 
-    <LinearLayout
-        android:id="@+id/layout_categories"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
-
-        <!--DAY-->
-
-        <TextView
-            style="@style/NavigationDrawer.HeaderSection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/navigationdrawer_sectionname_day"
-            android:layout_marginTop="0dp"/>
-
-        <ListView
-            android:id="@+id/left_drawer_categories_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:choiceMode="singleChoice"
-            android:visibility="visible"
-            tools:listitem="@android:layout/drawer_list_item_category"
-            android:divider="@null" />
-
-        <!--NIGHT-->
-
-        <TextView
-            style="@style/NavigationDrawer.HeaderSection"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/navigationdrawer_sectionname_night" />
-
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/navigation_drawer_artists"
-            style="@style/NavigationDrawer.SectionItem"
-            android:gravity="center_vertical|top">
-            <ImageView style="@style/NavigationDrawer.SectionItem.Icon"
-                android:src="@drawable/ic_divertissement"
-                android:layout_height="wrap_content" />
-            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/NavigationDrawer.SectionItem.Label"
-                android:text="@string/navigationdrawer_label_artist"/>
-        </LinearLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            style="@style/NavigationDrawer.SectionItem">
             <ImageView
-                style="@style/NavigationDrawer.SectionItem.Icon"
-                android:src="@drawable/ic_divertissement" />
-            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/NavigationDrawer.SectionItem.Label"
-                android:text="@string/navigationdrawer_label_tickets"/>
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                android:src="@drawable/navigationdrawer_header" />
         </LinearLayout>
 
-        <!--ANYTIME-->
-
-        <TextView
-            style="@style/NavigationDrawer.HeaderSection"
-            android:layout_width="match_parent"
+        <LinearLayout
+            android:id="@+id/layout_categories"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="@string/navigationdrawer_sectionname_everytime" />
+            android:orientation="vertical">
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/navigation_drawer_tcl"
-            style="@style/NavigationDrawer.SectionItem">
-            <ImageView
-                style="@style/NavigationDrawer.SectionItem.Icon"
-                android:src="@drawable/ic_divertissement" />
-            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/NavigationDrawer.SectionItem.Label"
-                android:text="@string/navigationdrawer_label_tcl"/>
+            <!--DAY-->
+
+            <TextView
+                style="@style/NavigationDrawer.HeaderSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/navigationdrawer_sectionname_day"
+                android:layout_marginTop="0dp"/>
+
+            <com.insalyon.les24heures.view.NonScrollListView
+                android:id="@+id/left_drawer_categories_list"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:choiceMode="singleChoice"
+                android:visibility="visible"
+                tools:listitem="@android:layout/drawer_list_item_category"
+                android:divider="@null" />
+
+            <!--NIGHT-->
+
+            <TextView
+                style="@style/NavigationDrawer.HeaderSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/navigationdrawer_sectionname_night" />
+
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/navigation_drawer_artists"
+                style="@style/NavigationDrawer.SectionItem"
+                android:gravity="center_vertical|top">
+                <ImageView style="@style/NavigationDrawer.SectionItem.Icon"
+                    android:src="@drawable/ic_divertissement"
+                    android:layout_height="wrap_content" />
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    style="@style/NavigationDrawer.SectionItem.Label"
+                    android:text="@string/navigationdrawer_label_artist"/>
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                style="@style/NavigationDrawer.SectionItem">
+                <ImageView
+                    style="@style/NavigationDrawer.SectionItem.Icon"
+                    android:src="@drawable/ic_divertissement" />
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    style="@style/NavigationDrawer.SectionItem.Label"
+                    android:text="@string/navigationdrawer_label_tickets"/>
+            </LinearLayout>
+
+            <!--ANYTIME-->
+
+            <TextView
+                style="@style/NavigationDrawer.HeaderSection"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/navigationdrawer_sectionname_everytime" />
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/navigation_drawer_tcl"
+                style="@style/NavigationDrawer.SectionItem">
+                <ImageView
+                    style="@style/NavigationDrawer.SectionItem.Icon"
+                    android:src="@drawable/ic_divertissement" />
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    style="@style/NavigationDrawer.SectionItem.Label"
+                    android:text="@string/navigationdrawer_label_tcl"/>
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/navigation_drawer_facilities"
+                style="@style/NavigationDrawer.SectionItem">
+                <ImageView
+                    style="@style/NavigationDrawer.SectionItem.Icon"
+                    android:src="@drawable/ic_divertissement" />
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    style="@style/NavigationDrawer.SectionItem.Label"
+                    android:text="@string/navigationdrawer_label_facilities"/>
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/navigation_drawer_params"
+                style="@style/NavigationDrawer.SectionItem">
+                <ImageView
+                    style="@style/NavigationDrawer.SectionItem.Icon"
+                    android:src="@drawable/ic_divertissement" />
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    style="@style/NavigationDrawer.SectionItem.Label"
+                    android:text="@string/navigationdrawer_label_params"/>
+            </LinearLayout>
+
+
+
+
         </LinearLayout>
 
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/navigation_drawer_facilities"
-            style="@style/NavigationDrawer.SectionItem">
-            <ImageView
-                style="@style/NavigationDrawer.SectionItem.Icon"
-                android:src="@drawable/ic_divertissement" />
-            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/NavigationDrawer.SectionItem.Label"
-                android:text="@string/navigationdrawer_label_facilities"/>
         </LinearLayout>
-
-        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/navigation_drawer_params"
-            style="@style/NavigationDrawer.SectionItem">
-            <ImageView
-                style="@style/NavigationDrawer.SectionItem.Icon"
-                android:src="@drawable/ic_divertissement" />
-            <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                style="@style/NavigationDrawer.SectionItem.Label"
-                android:text="@string/navigationdrawer_label_params"/>
-        </LinearLayout>
-
-
-
-
-    </LinearLayout>
+    </ScrollView>
 </LinearLayout>
