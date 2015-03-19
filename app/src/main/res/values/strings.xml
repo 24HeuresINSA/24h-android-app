@@ -85,6 +85,7 @@
     <string name="navigationdrawer_label_tcl">TCL</string>
     <string name="navigationdrawer_label_facilities">Lieux utiles</string>
     <string name="navigationdrawer_label_params">Paramètres</string>
+    <string name="category_all_label">Tout</string>
 
 
 </resources>

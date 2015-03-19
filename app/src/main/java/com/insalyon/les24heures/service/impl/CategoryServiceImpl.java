@@ -39,6 +39,9 @@ public class CategoryServiceImpl implements CategoryService {
         for (CategoryDTO categoryDTO : categoryDTOs) {
             categories.add(this.fromDTO(categoryDTO));
         }
+        //ALL_LABEL will be replaced by R.string.category_all_label by CategoryAdapter (sorry...)
+        categories.add(new Category("id_all","ALL","ic_ALLCATEGORY","ALL_LABEL"));//WARNING ic-ALLCATEGORY is mandatory for the filter
+
 
         return categories;
     }
