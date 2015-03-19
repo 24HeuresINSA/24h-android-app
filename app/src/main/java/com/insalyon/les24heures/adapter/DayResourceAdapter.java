@@ -12,8 +12,10 @@ import android.widget.TextView;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.utils.LocationDistanceSortComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import de.greenrobot.event.EventBus;
 
@@ -102,7 +104,10 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
 
 
     public void sortLoc(){
-        //TODO sort loc
+        //TODO sort loc : Use real position instead of constant lastKnownPosition
+        Collections.sort(resourceList, new LocationDistanceSortComparator());
+        Collections.sort(originalList, new LocationDistanceSortComparator());
+        this.notifyDataSetChanged();
     }
 
     public void sortTimeLoc(){
