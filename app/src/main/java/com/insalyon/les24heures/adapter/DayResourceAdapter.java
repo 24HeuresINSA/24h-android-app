@@ -13,6 +13,7 @@ import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.utils.LocationDistanceSortComparator;
+import com.insalyon.les24heures.utils.TimeLocationSortComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,7 +112,10 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
     }
 
     public void sortTimeLoc(){
-        //TODO sort time loc
+        //TODO sort time loc : Use real position instead of constant lastKnownPosition
+        Collections.sort(resourceList, new TimeLocationSortComparator());
+        Collections.sort(originalList, new TimeLocationSortComparator());
+        this.notifyDataSetChanged();
     }
 
     public ArrayList<DayResource> getResources(){
