@@ -560,7 +560,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
             item.setIcon(R.drawable.ic_favorites_unchecked);
             isFavoritesChecked = false;
         } else {
-            list.add((new Category("FAVORITES", "ic_FAVORITES")));
+            list.add(categoryService.getFavoriteCategory());
             item.setChecked(true);
             item.setIcon(R.drawable.ic_favorites_checked);
             isFavoritesChecked = true;

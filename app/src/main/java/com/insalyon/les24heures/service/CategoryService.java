@@ -13,5 +13,9 @@ public interface CategoryService {
 
     public ArrayList<Category> fromDTO(ArrayList<CategoryDTO> categoryDTOs);
 
-    Category findById(ArrayList<Category> categories, Integer category);
+    public Category findById(ArrayList<Category> categories, Integer category);
+
+    //specific category for filter
+    public Category getFavoriteCategory();
+    public Category getAllCategory();
 }

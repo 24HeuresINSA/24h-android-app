@@ -3,6 +3,7 @@ package com.insalyon.les24heures.service.impl;
 import com.insalyon.les24heures.DTO.CategoryDTO;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.service.CategoryService;
+import com.insalyon.les24heures.utils.SpecificCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +40,7 @@ public class CategoryServiceImpl implements CategoryService {
         for (CategoryDTO categoryDTO : categoryDTOs) {
             categories.add(this.fromDTO(categoryDTO));
         }
-        //ALL_LABEL will be replaced by R.string.category_all_label by CategoryAdapter (sorry...)
-        categories.add(new Category("id_all","ALL","ic_ALLCATEGORY","ALL_LABEL"));//WARNING ic-ALLCATEGORY is mandatory for the filter
+        categories.add(this.getAllCategory());
 
 
         return categories;
@@ -53,6 +53,17 @@ public class CategoryServiceImpl implements CategoryService {
                 return cat;
         }
         return null;
+    }
+
+    @Override
+    public Category getFavoriteCategory() {
+        return new Category(SpecificCategory.FAVORITES.toString(),SpecificCategory.FAVORITES.toString(),SpecificCategory.FAVORITES.toString(),SpecificCategory.FAVORITES.toString());
+    }
+
+    @Override
+    public Category getAllCategory() {
+        //ALL_LABEL will be replaced by R.string.category_all_label by CategoryAdapter (sorry...)
+        return new Category(SpecificCategory.ALL.toString(),SpecificCategory.FAVORITES.toString(),"ic_all_categories","ALL_LABEL");
     }
 
 

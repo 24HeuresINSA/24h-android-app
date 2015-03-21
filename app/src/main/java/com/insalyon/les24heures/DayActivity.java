@@ -20,6 +20,7 @@ import com.insalyon.les24heures.fragments.DayListFragment;
 import com.insalyon.les24heures.fragments.DayMapsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.utils.OutputType;
+import com.insalyon.les24heures.utils.SpecificCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,7 +80,7 @@ public class DayActivity extends BaseDynamicDataActivity {
         if(selectedCategories.size() < 0) {
             Category temp = selectedCategories.get(0);
             selectedCategories.clear();
-            if (!temp.getIconName().equals("ic_ALLCATEGORY")) {
+            if (!temp.get_id().equals(SpecificCategory.ALL)) {
                 selectedCategories.add(temp);
             }
         }else
@@ -243,14 +244,14 @@ public class DayActivity extends BaseDynamicDataActivity {
         if (categoriesList.isItemChecked(position)) {
             catSelected.clear();
             selectedCategories.clear();
-            if (categories.get(position).getIconName() != "ic_ALLCATEGORY") {
+            if (categories.get(position).get_id() != SpecificCategory.ALL.toString()) {
                 catSelected.add(categories.get(position));
                 selectedCategories.add(categories.get(position));
             }
         }
 
         if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
-            catSelected.add(new Category("FAVORITES", "ic_FAVORITES"));
+            catSelected.add(categoryService.getFavoriteCategory());
         }
 
         eventBus.post(categoriesSelectedEvent);
