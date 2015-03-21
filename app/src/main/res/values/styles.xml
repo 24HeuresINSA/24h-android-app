@@ -53,6 +53,7 @@
         <item name="android:layout_height">35dp</item>
         <item name="android:orientation">horizontal</item>
         <item name="android:weightSum">5</item>
+        <item name="android:background">?android:attr/activatedBackgroundIndicator</item>
     </style>
 
     <style name="NavigationDrawer.SectionItem.Icon">
@@ -66,7 +67,6 @@
     <style name="NavigationDrawer.SectionItem.Label">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:background">#FFFFFF</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:minHeight">?android:attr/listPreferredItemHeightSmall</item>
         <item name="android:paddingLeft">16dp</item>
