@@ -349,8 +349,6 @@ public abstract class BaseDynamicDataActivity extends Activity {
         } else {
             Log.d(TAG, "No view with ID sliding_layout to fade in.");
         }
-
-        drawerLayout.openDrawer();
     }
 
     /**
