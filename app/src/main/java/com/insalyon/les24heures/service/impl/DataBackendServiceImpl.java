@@ -11,7 +11,6 @@ import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
-import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.DataBackendService;
 import com.insalyon.les24heures.service.RetrofitService;
@@ -22,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;

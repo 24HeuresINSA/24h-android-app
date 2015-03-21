@@ -13,7 +13,7 @@ public interface CategoryService {
 
     public ArrayList<Category> fromDTO(ArrayList<CategoryDTO> categoryDTOs);
 
-    public Category findById(ArrayList<Category> categories, Integer category);
+    Category findById(ArrayList<Category> categories, String category);
 
     //specific category for filter
     public Category getFavoriteCategory();

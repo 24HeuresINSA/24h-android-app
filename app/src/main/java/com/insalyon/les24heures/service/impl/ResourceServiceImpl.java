@@ -11,7 +11,6 @@ import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceService;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import de.greenrobot.event.EventBus;
 
@@ -46,7 +45,7 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     public DayResource fromDTO(DayResourceDTO dayResourceDTO,ArrayList<Category> categories) {
-        Category category = categoryService.findById(categories,dayResourceDTO.getCategory());
+        Category category = categoryService.findById(categories,Integer.toString(dayResourceDTO.getCategory()));
 
         return new DayResource(dayResourceDTO.getName(),
                 dayResourceDTO.getDescription(),

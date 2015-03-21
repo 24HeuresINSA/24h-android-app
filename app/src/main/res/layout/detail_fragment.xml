@@ -7,11 +7,7 @@
     android:paddingLeft="@dimen/whole_detail_padding"
     android:paddingRight="@dimen/whole_detail_padding">
 
-    <ImageView
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:id="@+id/detail_main_pic"
-        android:focusable="false" />
+
 
     <LinearLayout
         android:id="@+id/detail_sliding_layout_header"
