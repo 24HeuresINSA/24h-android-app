@@ -20,6 +20,7 @@ import com.insalyon.les24heures.fragments.DayListFragment;
 import com.insalyon.les24heures.fragments.DayMapsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.utils.OutputType;
+import com.insalyon.les24heures.utils.SpecificCategory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,11 +39,8 @@ public class DayActivity extends BaseDynamicDataActivity {
     View tabButtonMaps;
     @InjectView(R.id.day_menu_tabs_indicator)
     View indicator;
-
-    private Integer position;
     Boolean animateSwitching = false;
-
-
+    private Integer position;
 
     /**
      * Activity is being created       *
@@ -56,12 +54,12 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         //get selectedCateogires
         Intent intent = getIntent();
-        if(intent != null) {
+        if (intent != null) {
             //TODO potentiellement inutile
             if (intent.getParcelableArrayListExtra("selectedCategories") != null)
                 selectedCategories = intent.getParcelableArrayListExtra("selectedCategories");
 
-            position = intent.getIntExtra("categoryPosition",categories.size()-1);
+            position = intent.getIntExtra("categoryPosition", categories.size() - 1);
         }
 
     }
@@ -73,25 +71,31 @@ public class DayActivity extends BaseDynamicDataActivity {
         //override Base's DrawerCategoriesClickListener
         categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
 
-        ((CategoryAdapter)categoriesList.getAdapter()).setSelectedCategoryInit(position);
+        ((CategoryAdapter) categoriesList.getAdapter()).setSelectedCategoryInit(position);
 
         //TODO revoir ca en fonction de la maniere dont on recupere les categories
-        if(selectedCategories.size() < 0) {
+        if (selectedCategories.size() < 0) {
             Category temp = selectedCategories.get(0);
             selectedCategories.clear();
-            if (!temp.getIconName().equals("ic_ALLCATEGORY")) {
+            if (!temp.get_id().equals(SpecificCategory.ALL)) {
                 selectedCategories.add(temp);
             }
-        }else
+        } else
             selectedCategories.clear();
 
 
+        if (getFragmentManager().findFragmentById(R.id.day_output_holder) != null &&
+                getFragmentManager().findFragmentById(R.id.day_output_holder).getClass().equals(DayListFragment.class)) {
+            AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+                    R.animator.slide_out_to_the_right);
+            set.setTarget(indicator);
+            set.start();
+        }
 
         startPreferredOutput(savedInstanceState);
 
         animateSwitching = true;
     }
-
 
 
     private void startPreferredOutput(Bundle savedInstanceState) {
@@ -135,7 +139,7 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     @OnClick(R.id.day_menu_tabs_list)
     public void onClickListTab(View v) {
-        if(!v.isSelected()) {
+        if (!v.isSelected()) {
             v.setSelected(true);
             tabButtonMaps.setSelected(false);
             selectList();
@@ -144,7 +148,7 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     @OnClick(R.id.day_menu_tabs_maps)
     public void onClickMapsTab(View v) {
-        if(!v.isSelected()) {
+        if (!v.isSelected()) {
             v.setSelected(true);
             tabButtonList.setSelected(false);
             selectMaps();
@@ -186,7 +190,6 @@ public class DayActivity extends BaseDynamicDataActivity {
     }
 
 
-
     public void selectMaps() {
         Fragment mapsFragment = new DayMapsFragment();
         replaceContentFragment(mapsFragment);
@@ -224,7 +227,7 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         ft.replace(R.id.day_output_holder, fragment).commit();
 
-        if(animateSwitching) {
+        if (animateSwitching) {
             set.setTarget(indicator);
             set.start();
         }
@@ -243,14 +246,14 @@ public class DayActivity extends BaseDynamicDataActivity {
         if (categoriesList.isItemChecked(position)) {
             catSelected.clear();
             selectedCategories.clear();
-            if (categories.get(position).getIconName() != "ic_ALLCATEGORY") {
+            if (categories.get(position).get_id() != SpecificCategory.ALL.toString()) {
                 catSelected.add(categories.get(position));
                 selectedCategories.add(categories.get(position));
             }
         }
 
         if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
-            catSelected.add(new Category("FAVORITES", "ic_FAVORITES"));
+            catSelected.add(categoryService.getFavoriteCategory());
         }
 
         eventBus.post(categoriesSelectedEvent);

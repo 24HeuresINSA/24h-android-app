@@ -3,6 +3,7 @@ package com.insalyon.les24heures.filter;
 import android.widget.Filter;
 
 import com.insalyon.les24heures.model.Resource;
+import com.insalyon.les24heures.utils.SpecificCategory;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -62,7 +63,7 @@ public abstract class ResourceCategoryFilter<T extends Resource> extends Filter 
 
 
     private Boolean isDisplayable(Resource dayResource) {
-        if (selectedCategories.contains("ic_FAVORITES")) {
+        if (selectedCategories.contains(SpecificCategory.FAVORITES.toString())) {
             if (selectedCategories.size() == 1)
                 return dayResource.isFavorites();
             return dayResource.isFavorites() &&

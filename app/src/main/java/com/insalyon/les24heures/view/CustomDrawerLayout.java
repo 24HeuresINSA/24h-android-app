@@ -26,7 +26,7 @@ public class CustomDrawerLayout extends DrawerLayout {
         super(context, attrs);
     }
 
-    public CustomDrawerLayout(Context context, AttributeSet attrs, int defStyle) {
+     public CustomDrawerLayout(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
     }
 

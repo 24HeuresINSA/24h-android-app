@@ -1,7 +1,6 @@
 package com.insalyon.les24heures;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
@@ -31,7 +30,6 @@ import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
-import com.insalyon.les24heures.fragments.ArtistFragment;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
@@ -77,6 +75,8 @@ public abstract class BaseDynamicDataActivity extends Activity {
     ListView categoriesList;
     @InjectView(R.id.sliding_layout)
     DetailSlidingUpPanelLayout detailSlidingUpPanelLayoutLayout;
+    @InjectView(R.id.navigation_drawer_artists)
+    View artistButton;
     DetailFragment detailFragment;
     DataBackendService dataBackendService;
     ResourceService resourceService;
@@ -211,7 +211,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
         //TODO debug purpose only
         dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
-        dataBackendService.getResourcesAsyncFromBackend(retrofitService,dataVersion);
+        dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion);
 //      dataBackendService.getResourcesAsyncMock();
 
 
@@ -332,7 +332,6 @@ public abstract class BaseDynamicDataActivity extends Activity {
         ButterKnife.inject(this);
 
 
-
         retrieveData(savedInstanceState);
 
         setupNavigationDrawer();
@@ -350,6 +349,8 @@ public abstract class BaseDynamicDataActivity extends Activity {
         } else {
             Log.d(TAG, "No view with ID sliding_layout to fade in.");
         }
+
+        drawerLayout.openDrawer();
     }
 
     /**
@@ -420,11 +421,23 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
     @OnClick(R.id.navigation_drawer_artists)
     public void onClickArtist(View v) {
-        Fragment artistFragment = new ArtistFragment();
-//        replaceContentFragment(artistFragment);
+        clearDrawerChoices();
+        v.setActivated(true);
         drawerLayout.closeDrawer();
         nextActivity = NightActivity.class;
 
+    }
+
+    private void clearDrawerChoices() {
+        clearDrawerChoices(true);
+    }
+
+    private void clearDrawerChoices(boolean clearList) {
+        if (clearList) {
+            categoriesList.clearChoices();
+            categoriesList.requestLayout();
+        }
+        artistButton.setActivated(false);
     }
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -561,7 +574,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
             item.setIcon(R.drawable.ic_favorites_unchecked);
             isFavoritesChecked = false;
         } else {
-            list.add((new Category("FAVORITES", "ic_FAVORITES")));
+            list.add(categoryService.getFavoriteCategory());
             item.setChecked(true);
             item.setIcon(R.drawable.ic_favorites_checked);
             isFavoritesChecked = true;
@@ -694,6 +707,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            clearDrawerChoices(false);
             nextActivity = DayActivity.class;
             positionCategorySelected = position;
             drawerLayout.closeDrawer();
