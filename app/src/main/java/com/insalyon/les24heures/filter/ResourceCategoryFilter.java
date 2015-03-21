@@ -63,7 +63,7 @@ public abstract class ResourceCategoryFilter<T extends Resource> extends Filter 
 
 
     private Boolean isDisplayable(Resource dayResource) {
-        if (selectedCategories.contains(SpecificCategory.FAVORITES)) {
+        if (selectedCategories.contains(SpecificCategory.FAVORITES.toString())) {
             if (selectedCategories.size() == 1)
                 return dayResource.isFavorites();
             return dayResource.isFavorites() &&
