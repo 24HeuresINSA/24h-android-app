@@ -105,10 +105,7 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
 
 
     public void sortLoc(){
-        //TODO sort loc : Use real position instead of constant lastKnownPosition
-        Collections.sort(resourceList, new LocationDistanceSortComparator());
-        Collections.sort(originalList, new LocationDistanceSortComparator());
-        this.notifyDataSetChanged();
+        //TODO sort loc
     }
 
     public void sortTimeLoc(){
