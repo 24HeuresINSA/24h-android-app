@@ -189,8 +189,10 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
             v.setSelected(true);
             dayResourceAdapter.sortLoc();
         }else{
-            //nothing to do
+            //we need to sort also in this case to avoid bugs
+            // (for ex, if you click on sort loc and then sort time+loc, you would have to click 2 times to redo sort loc)
             v.setSelected(false);
+            dayResourceAdapter.sortLoc();
         }
 
     }
@@ -201,8 +203,9 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
             v.setSelected(true);
             dayResourceAdapter.sortTimeLoc();
         }else{
-            //nothing to do
+            //same reason as sort loc
             v.setSelected(false);
+            dayResourceAdapter.sortTimeLoc();
         }
 
     }
