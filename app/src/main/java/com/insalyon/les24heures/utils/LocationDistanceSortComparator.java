@@ -15,9 +15,8 @@ public class LocationDistanceSortComparator implements Comparator<DayResource> {
     private final Location lastKnownPosition;
 
 
-    public LocationDistanceSortComparator(Location lastKnownPosition)
-    {
-        this.lastKnownPosition=lastKnownPosition;
+    public LocationDistanceSortComparator(Location lastKnownPosition) {
+        this.lastKnownPosition = lastKnownPosition;
 
     }
 
@@ -35,6 +34,6 @@ public class LocationDistanceSortComparator implements Comparator<DayResource> {
         Integer distance1 = Math.round(lastKnownPosition.distanceTo(loc1));
         Integer distance2 = Math.round(lastKnownPosition.distanceTo(loc2));
 
-        return  distance1.compareTo(distance2);
+        return distance1.compareTo(distance2);
     }
 }
