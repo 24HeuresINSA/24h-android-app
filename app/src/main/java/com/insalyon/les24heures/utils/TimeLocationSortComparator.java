@@ -17,9 +17,8 @@ public class TimeLocationSortComparator implements Comparator<DayResource> {
 
     private final Location lastKnownPosition;
 
-    public TimeLocationSortComparator(Location lastKnownPosition)
-    {
-        this.lastKnownPosition=lastKnownPosition;
+    public TimeLocationSortComparator(Location lastKnownPosition) {
+        this.lastKnownPosition = lastKnownPosition;
     }
 
 
@@ -29,14 +28,13 @@ public class TimeLocationSortComparator implements Comparator<DayResource> {
         Date start1 = res1.getSchedules().get(0).getStart();
         Date start2 = res2.getSchedules().get(0).getStart();
 
-        if (start1.after(start2)){
+        if (start1.after(start2)) {
             return 1;
-        }
-        else if (start1.before(start2)){
+        } else if (start1.before(start2)) {
             return -1;
         }
         //If Schedules begin at the same time, we use distance to compare
-        else if(start1.equals(start2)) {
+        else if (start1.equals(start2)) {
             Location loc1 = new Location("loc");
             loc1.setLongitude(res1.getLoc().longitude);
             loc1.setLatitude(res1.getLoc().latitude);
