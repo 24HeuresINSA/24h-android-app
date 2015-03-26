@@ -66,18 +66,18 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
             public void onClick(View v) {
                 dayResource.setIsFavorites(!dayResource.isFavorites());
                 if (dayResource.isFavorites())
-                    ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
+                    ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite);
                 else
-                    ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
+                    ((ImageButton) v).setImageResource(R.drawable.ic_action_important);
             }
         });
 
         holder.title.setText(dayResource.getTitle()+dayResource.getCategory());
         holder.title.setSelected(true);
         if (dayResource.isFavorites())
-            holder.favorites.setImageResource(R.drawable.ic_favorites_checked);
+            holder.favorites.setImageResource(R.drawable.ic_action_favorite);
         else
-            holder.favorites.setImageResource(R.drawable.ic_favorites_unchecked);
+            holder.favorites.setImageResource(R.drawable.ic_action_important);
         holder.schedule.setText(dayResource.printSchedules());
         Location loc = new Location("loc");
         loc.setLongitude(dayResource.getLoc().longitude);

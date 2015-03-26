@@ -1,10 +1,30 @@
 <resources>
 
-    <style name="AppTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <!-- Themes -->
+    <style name="DayActionBarTheme"
+        parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/DayActionBar</item>
         <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
         <item name="spbStyle">@style/GNowProgressBar</item>
     </style>
 
+    <style name="NightActionBarTheme"
+        parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/NightActionBar</item>
+        <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
+        <item name="spbStyle">@style/GNowProgressBar</item>
+    </style>
+
+    <!-- ActionBar styles -->
+    <style name="DayActionBar"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/primary_day</item>
+    </style>
+
+    <style name="NightActionBar"
+        parent="@style/DayActionBar">
+        <item name="android:background">@color/primary_night</item>
+    </style>
 
     <style name="ProgressBar.Horizontal" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
     </style>
@@ -78,5 +98,22 @@
         <item name="android:layout_weight">4</item>
     </style>
 
+    <style name="detail_title">
+    <item name="android:textColor">@color/navigation_drawer_background</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textSize">35sp</item>
+    </style>
+
+    <style name="card_title">
+        <item name="android:textColor">@color/navigation_drawer_background</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">30sp</item>
+    </style>
+
+    <style name="detail_next_schedule">
+        <item name="android:textColor">@color/primary_sub</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textSize">25sp</item>
+    </style>
 
 </resources>

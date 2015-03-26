@@ -24,7 +24,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/output_list_sticky_item_height"
             android:layout_weight="2"
-            android:background="#ffa6ff47"
+            android:background="@color/third_day"
             android:orientation="vertical"
             android:weightSum="3">
 

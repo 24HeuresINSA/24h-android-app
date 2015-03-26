@@ -9,79 +9,81 @@
 
 
 
-    <LinearLayout
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:fab="http://schemas.android.com/apk/res-auto"
         android:id="@+id/detail_sliding_layout_header"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/detail_header_height"
-        android:background="#d10e2037"
-        android:orientation="horizontal"
-        android:weightSum="5">
+        android:layout_height="wrap_content"
+        android:background="@color/primary_day">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="4"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/text_block_padding"
+            android:baselineAligned="false">
 
-            <TextView
-                android:id="@+id/detail_sliding_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:text="Title...."
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/detail_sliding_title"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                   android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="Title,..."
+                    android:textAppearance="@style/detail_title"
+                    android:clickable="false" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            <!--  <RelativeLayout
+                    android:layout_width="@dimen/diameter"
+                    android:layout_height="@dimen/diameter"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
 
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:text="fav"-->
-            <!--android:id="@+id/detail_favorites"-->
-            <!--android:visibility="gone" />-->
+                    <ImageButton
+                        android:id="@+id/detail_favorites"
+                        android:layout_width="@dimen/diameter"
+                        android:layout_height="@dimen/diameter"
+                        android:background="@drawable/floating_btn"
+                        android:scaleType="center"
+                        android:layout_marginBottom="@dimen/add_button_margin"
+                        android:layout_marginEnd="@dimen/add_button_margin"
+                        android:layout_marginRight="@dimen/add_button_margin"
+                        android:src="@drawable/ic_action_important"
+                        android:tint="@android:color/white"
+                        android:animateLayoutChanges="true"
+                        android:contentDescription="@string/favorite_desc" />
 
-            <!---->
-            <!--blocksDescendants to prevent ImageButton to keep click event -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <ImageButton
-                    android:id="@+id/detail_favorites"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_favorites_unchecked"
-                    android:visibility="gone" />
-
-            </LinearLayout>
+                </RelativeLayout>-->
 
             <TextView
                 android:id="@+id/detail_next_schedule"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|right"
-                android:text="sam\n10h-18h"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="15dp" />
+                android:gravity="center_vertical|left"
+                android:text="@string/detail_header_schedule"
+                android:textAppearance="@style/detail_next_schedule"
+                android:textSize="15sp" />
+
         </LinearLayout>
 
-    </LinearLayout>
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/detail_favorites"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|end"
+            android:layout_margin="16dp"
+            android:src="@drawable/ic_action_favorite"
+            fab:fab_colorNormal="@color/pink_24"
+            fab:fab_colorPressed="@color/navigation_drawer_background"
+            fab:fab_colorRipple="@color/ripple"
+            fab:fab_type="normal"
+            fab:fab_shadow="false"/>
+
+    </FrameLayout>
 
     <com.insalyon.les24heures.view.DetailScrollView
         android:id="@+id/detail_scrollView"
@@ -115,7 +117,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:id="@+id/detail_desciption_text"
+                    android:id="@+id/detail_description_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/fake_description_light"

@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
-    android:background="#ff000100"
+    android:background="#ffffff"
     android:orientation="vertical"
     android:padding="@dimen/ouput_list_item_padding"
     android:paddingBottom="@dimen/ouput_list_item_padding"
@@ -17,14 +17,14 @@
         <LinearLayout
             android:id="@+id/list_item_title"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:weightSum="5">
+            android:weightSum="6">
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="4"
+                android:layout_height="wrap_content"
+                android:layout_weight="5"
                 android:gravity="center_vertical"
                 android:orientation="vertical">
 
@@ -38,16 +38,20 @@
                     android:singleLine="true"
                     android:text="Title Title Title Title Title Title Title Title "
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="#fffffffb" />
+                    android:textColor="#333333" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="0dp"
-                android:layout_height="fill_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical"
-                android:padding="10dp">
+                android:gravity="center_vertical|right"
+                android:paddingTop="0dp"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:paddingBottom="5dp">
 
                 <!--blocksDescendants to prevent ImageButton to keep click event -->
                 <LinearLayout
@@ -62,7 +66,7 @@
                         android:layout_height="fill_parent"
                         android:background="@null"
                         android:scaleType="centerInside"
-                        android:src="@drawable/ic_favorites_unchecked" />
+                        android:src="@drawable/ic_action_important" />
                 </LinearLayout>
 
             </LinearLayout>
@@ -74,13 +78,13 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:orientation="horizontal"
-        android:weightSum="5">
+        android:weightSum="6">
 
         <LinearLayout
             android:id="@+id/list_item_schedule"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="4"
+            android:layout_height="wrap_content"
+            android:layout_weight="5"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -90,16 +94,16 @@
                 android:layout_height="wrap_content"
                 android:text="sam : 10h-18h    |    dim: 10h-18h"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#fffffffb"
+                android:textColor="#333333"
                 android:textSize="15dp" />
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/list_item_distance"
             android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
+            android:gravity="center_vertical|center_horizontal|right"
             android:orientation="horizontal"
             android:weightSum="3">
 
@@ -109,8 +113,9 @@
                 android:layout_height="wrap_content"
                 android:text="200m"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#fffffffb"
-                android:textSize="15dp" />
+                android:textColor="#333333"
+                android:textSize="15dp"
+                android:gravity="right" />
 
         </LinearLayout>
 
