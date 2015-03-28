@@ -72,7 +72,7 @@
                 style="@style/NavigationDrawer.SectionItem"
                 android:gravity="center_vertical|top">
                 <ImageView style="@style/NavigationDrawer.SectionItem.Icon"
-                    android:src="@drawable/ic_divertissement"
+                    android:src="@drawable/concert_gris"
                     android:layout_height="wrap_content" />
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     style="@style/NavigationDrawer.SectionItem.Label"
@@ -83,7 +83,7 @@
                 style="@style/NavigationDrawer.SectionItem">
                 <ImageView
                     style="@style/NavigationDrawer.SectionItem.Icon"
-                    android:src="@drawable/ic_divertissement" />
+                    android:src="@drawable/billeterie_gris" />
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     style="@style/NavigationDrawer.SectionItem.Label"
                     android:text="@string/navigationdrawer_label_tickets"/>
@@ -102,7 +102,7 @@
                 style="@style/NavigationDrawer.SectionItem">
                 <ImageView
                     style="@style/NavigationDrawer.SectionItem.Icon"
-                    android:src="@drawable/ic_divertissement" />
+                    android:src="@drawable/tcl_gris" />
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     style="@style/NavigationDrawer.SectionItem.Label"
                     android:text="@string/navigationdrawer_label_tcl"/>
@@ -113,7 +113,7 @@
                 style="@style/NavigationDrawer.SectionItem">
                 <ImageView
                     style="@style/NavigationDrawer.SectionItem.Icon"
-                    android:src="@drawable/ic_divertissement" />
+                    android:src="@drawable/drapeau_gris" />
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     style="@style/NavigationDrawer.SectionItem.Label"
                     android:text="@string/navigationdrawer_label_facilities"/>
@@ -124,7 +124,7 @@
                 style="@style/NavigationDrawer.SectionItem">
                 <ImageView
                     style="@style/NavigationDrawer.SectionItem.Icon"
-                    android:src="@drawable/ic_divertissement" />
+                    android:src="@drawable/ic_action_settings" />
                 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
                     style="@style/NavigationDrawer.SectionItem.Label"
                     android:text="@string/navigationdrawer_label_params"/>

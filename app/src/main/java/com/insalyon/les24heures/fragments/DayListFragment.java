@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -66,7 +67,7 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
     View progressBar;
 
     @InjectView(R.id.sort_AZ_text)
-    TextView sortAZText;
+    ImageView sortAZText;
 
     DayResourceAdapter dayResourceAdapter = null;
     private QuickReturnAttacher quickReturnAttacher;
@@ -173,11 +174,11 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
    public void onSortAlphabeticalClick(View v){
        if(!v.isSelected()){
            v.setSelected(true);
-           sortAZText.setText(R.string.za_sorted_label);
+           sortAZText.setImageResource(R.drawable.az_sort);
            dayResourceAdapter.sortAZ();
        }else{
            v.setSelected(false);
-           sortAZText.setText(R.string.az_sorted_label);
+           sortAZText.setImageResource(R.drawable.za_sort);
            dayResourceAdapter.sortZA();
        }
 

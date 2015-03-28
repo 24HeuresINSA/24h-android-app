@@ -4,15 +4,15 @@
     <string name="maps_api_key">AIzaSyA4dlZvjFmFs3ZLFC7t9V3LJCgzewGPCZo</string>
 
     <!--General-->
-    <string name="app_name">Les 24heures</string>
+    <string name="app_name">24h de l\'INSA</string>
     <string name="action_settings">Settings</string>
 
     <!--Navigation Drawer-->
 
 
     <string-array name="navigation_drawer_ouputtypes">
-        <item>Maps</item>
-        <item>Listes</item>
+        <item>Carte des animations</item>
+        <item>Liste des animations</item>
     </string-array>
 
 
@@ -20,8 +20,8 @@
 
 
     <!--Output-->
-    <string name="day_maps_appname">Maps</string>
-    <string name="day_list_appname">Listes</string>
+    <string name="day_maps_appname">Carte des animations</string>
+    <string name="day_list_appname">Liste des animations</string>
     <string name="noResourcesFound">No resources were found, please check your internet connectivity and wait</string>
     <string name="noResourcesMatchSelectedCategories">No resources match your selected categories, please select at least one other</string>
     <string name="resources_found">Resources were found !</string>
@@ -29,11 +29,6 @@
 
     <!--Maps Output-->
     <string name="unexpected_move_camera_error">No resources are displayed, unexpected. Please retry</string>
-
-
-    <!--List Output-->
-    <string name="az_sorted_label">A-Z</string>
-    <string name="za_sorted_label">Z-A</string>
 
 
     <!--TODO should be displayed by MainActivity ??-->
@@ -74,7 +69,7 @@
 
 
     <!--Artists-->
-    <string name="artist_fragment_appname">Artists</string>
+    <string name="artist_fragment_appname">Artistes</string>
     <string name="INSTALL_DATA_VERSION">0.0</string>
     <string name="INSTALL_APPLICATION_VERSION">0.0</string>
     <string name="navigationdrawer_sectionname_day">En journée</string>
@@ -86,6 +81,10 @@
     <string name="navigationdrawer_label_facilities">Lieux utiles</string>
     <string name="navigationdrawer_label_params">Paramètres</string>
     <string name="category_all_label">Tout</string>
+    <string name="favorite_desc">favorite</string>
+    <string name="detail_header_schedule">samedi 23 Mai - 10h-21h</string>
+    <string name="card_artist_name">The Subways</string>
+    <string name="detail_title_text">Detail_title_text</string>
 
 
 </resources>

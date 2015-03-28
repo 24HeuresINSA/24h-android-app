@@ -60,7 +60,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     ImageButton favoriteImageButton;
     @InjectView(R.id.detail_sliding_title)
     TextView detailSlidingTitle;
-    @InjectView(R.id.detail_desciption_text)
+    @InjectView(R.id.detail_description_text)
     TextView detailSlidingDescription;
     @InjectView(R.id.detail_schedule_grid_layout)
     GridView schedulesGrid;
@@ -207,10 +207,12 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     @OnClick(R.id.detail_favorites)
     public void onClickFav(View v) {
         resource.setIsFavorites(!resource.isFavorites());
-        if (resource.isFavorites())
-            ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
-        else
-            ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
+        if (resource.isFavorites()) {
+            ((ImageButton) v).setImageResource(R.drawable.ic_favorite_unchecked);
+        }
+        else {
+            ((ImageButton) v).setImageResource(R.drawable.ic_favorite_checked);
+        }
 
         eventBus.post(new ResourceUpdatedEvent());
 
@@ -225,11 +227,13 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
                 miniMapsHolder.setVisibility(View.VISIBLE);
                 detailUrlContainer.setVisibility(View.GONE);
+                slidingHeader.setBackground(this.getResources().getDrawable(R.color.primary_day));
 
             } else if (resource.getClass() == NightResource.class) {
                 urlFacebook.setText(((NightResource) resource).getFacebookUrl());
                 urlWeb.setText(((NightResource) resource).getSiteUrl());
                 urlTwitter.setText(((NightResource) resource).getTwitterUrl());
+                slidingHeader.setBackground(this.getResources().getDrawable(R.color.primary_night));
 
                 miniMapsHolder.setVisibility(View.GONE);
                 detailUrlContainer.setVisibility(View.VISIBLE);
@@ -265,13 +269,15 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         detailSlidingDescription.setText(resource.getDescription());
 
         Schedule schedule = resourceService.getNextSchedule(resource);
-        nextSchedule.setText(schedule.getPrintableDay() + "\n" +
-                schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h");
+        nextSchedule.setText((schedule.getPrintableDay() + "\n" +
+                schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
 
-        if (resource.isFavorites())
-            favoriteImageButton.setImageResource(R.drawable.ic_favorites_checked);
-        else
-            favoriteImageButton.setImageResource(R.drawable.ic_favorites_unchecked);
+        if (resource.isFavorites()) {
+            favoriteImageButton.setImageResource(R.drawable.ic_favorite_checked);
+        }
+        else {
+            favoriteImageButton.setImageResource(R.drawable.ic_favorite_unchecked);
+        }
 
 
         if(resource.getMainPictureUrl() == null || resource.getMainPictureUrl() == ""){

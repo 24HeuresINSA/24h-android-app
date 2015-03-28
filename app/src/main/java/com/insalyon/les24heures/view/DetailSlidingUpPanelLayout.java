@@ -86,7 +86,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         @Override
         public void onPanelExpanded(View panel) {
             detailScrollView.setIsScrollEnable(true);
-            nextSchedule.setVisibility(View.GONE);
+            nextSchedule.setVisibility(View.VISIBLE);
             favoriteImageButton.setVisibility(View.VISIBLE);
             activity.getActionBar().setTitle("");   //=> hide title in detail
 
@@ -114,7 +114,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         @Override
         public void onPanelAnchored(View panel) {
-            nextSchedule.setVisibility(View.GONE);
+            nextSchedule.setVisibility(View.VISIBLE);
             favoriteImageButton.setVisibility(View.VISIBLE);
             detailScrollView.setIsScrollEnable(false);
 
@@ -172,7 +172,9 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         //get params
         anchored = Float.parseFloat(getResources().getString(R.string.detail_anchored));
-        scrollingHeaderHeight = (int) getResources().getDimension(R.dimen.detail_header_height);
+
+        // tu aimes ca ??
+        scrollingHeaderHeight = findViewById(R.id.detail_sliding_layout_header).getHeight();
         final int parallaxHeight = (int) ((wideHeight - scrollingHeaderHeight) * (1 - anchored));//407; //paralax height
 
         //set parallaxHeader
@@ -232,7 +234,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         nextSchedule = (TextView) detailFragment.getView().findViewById(R.id.detail_next_schedule);
         favoriteImageButton = (ImageButton) detailFragment.getView().findViewById(R.id.detail_favorites);
         detailSlidingTitle = (TextView) detailFragment.getView().findViewById(R.id.detail_sliding_title);
-        detailSlidingDescription = (TextView) detailFragment.getView().findViewById(R.id.detail_desciption_text);
+        detailSlidingDescription = (TextView) detailFragment.getView().findViewById(R.id.detail_description_text);
     }
 
 

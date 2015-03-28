@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="match_parent"
-    android:background="#ff000100"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
     android:orientation="vertical"
     android:padding="@dimen/ouput_list_item_padding"
     android:paddingBottom="@dimen/ouput_list_item_padding"
@@ -10,107 +10,152 @@
 
 
     <LinearLayout
+        android:orientation="horizontal"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:layout_height="fill_parent"
+        android:weightSum="6">
 
         <LinearLayout
-            android:id="@+id/list_item_title"
-            android:layout_width="match_parent"
-            android:layout_height="50dp"
-            android:orientation="horizontal"
-            android:weightSum="5">
+            android:orientation="vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:paddingRight="5dp">
+
+            <ImageView
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:id="@+id/category_icon"
+                android:src="@drawable/category_culture"
+                android:background="@null"
+                android:scaleType="centerInside"
+                android:layout_margin="10dp"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="5">
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="4"
-                android:gravity="center_vertical"
-                android:orientation="vertical">
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/list_item_title_text"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:id="@+id/list_item_title"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-                    android:text="Title Title Title Title Title Title Title Title "
-                    android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:textColor="#fffffffb" />
+                    android:orientation="horizontal"
+                    android:weightSum="6">
 
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="5"
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/list_item_title_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ellipsize="marquee"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:scrollHorizontally="true"
+                            android:singleLine="true"
+                            android:text="Title Title Title Title Title Title Title Title "
+                            android:textAppearance="?android:attr/textAppearanceLarge"
+                            android:textColor="#333333"
+                            android:textSize="18sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:gravity="center_vertical|right"
+                        android:paddingTop="0dp"
+                        android:paddingLeft="5dp"
+                        android:paddingRight="5dp"
+                        android:paddingBottom="5dp">
+
+                        <!--blocksDescendants to prevent ImageButton to keep click event -->
+                        <!-- je l'aime pas cette icone pour le moment : redondant avec le detail qui s'affiche-->
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:descendantFocusability="blocksDescendants"
+                            android:orientation="horizontal">
+
+                            <ImageButton
+                                android:id="@+id/list_item_favorite"
+                                android:layout_width="@dimen/favorite_icon"
+                                android:layout_height="@dimen/favorite_icon"
+                                android:background="@null"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/ic_favorite_unchecked_gris"
+                                android:layout_marginLeft="@dimen/list_icon_padding"
+                                android:layout_marginTop="@dimen/list_icon_padding"
+                                android:layout_marginBottom="@dimen/list_icon_padding" />
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </LinearLayout>
             </LinearLayout>
 
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:padding="10dp">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="6">
 
-                <!--blocksDescendants to prevent ImageButton to keep click event -->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:id="@+id/list_item_schedule"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:descendantFocusability="blocksDescendants"
+                    android:layout_weight="5"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
-                    <ImageButton
-                        android:id="@+id/list_item_favorite"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:background="@null"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_favorites_unchecked" />
+                    <TextView
+                        android:id="@+id/list_item_schedule_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="sam : 10h-18h    |    dim: 10h-18h"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#333333"
+                        android:textSize="15dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/list_item_distance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_vertical|center_horizontal|right"
+                    android:orientation="horizontal"
+                    android:weightSum="3">
+
+                    <TextView
+                        android:id="@+id/list_item_distance_text"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="200m"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:textColor="#333333"
+                        android:textSize="15dp"
+                        android:gravity="right" />
+
                 </LinearLayout>
 
             </LinearLayout>
-
-        </LinearLayout>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="30dp"
-        android:orientation="horizontal"
-        android:weightSum="5">
-
-        <LinearLayout
-            android:id="@+id/list_item_schedule"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="4"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/list_item_schedule_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="sam : 10h-18h    |    dim: 10h-18h"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#fffffffb"
-                android:textSize="15dp" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/list_item_distance"
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:gravity="center_vertical|center_horizontal"
-            android:orientation="horizontal"
-            android:weightSum="3">
-
-            <TextView
-                android:id="@+id/list_item_distance_text"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="200m"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textColor="#fffffffb"
-                android:textSize="15dp" />
 
         </LinearLayout>
 

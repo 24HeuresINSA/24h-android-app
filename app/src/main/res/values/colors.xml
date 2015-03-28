@@ -5,6 +5,16 @@
     <color name="navigation_drawer_background">#FFFFFFFF</color>
     <color name="navigation_drawer_sectionheader_background">#B3AFAF</color>
 
+    <!--BASE COLORS-->
+    <color name="primary_night">#222256</color>
+    <color name="second_night">#1b417a</color>
+    <color name="third_night">#307aa2</color>
+    <color name="primary_day">#11878e</color>
+    <color name="second_day">#10a6ca</color>
+    <color name="third_day">#1fbfd5</color>
+    <color name="pink_24">#ed148d</color>
+    <color name="primary_sub">#69c7ba</color>
+
     <!--FAB-->
     <color name="primary">#3f51b5</color>
     <color name="primary_pressed">#303f9f</color>
