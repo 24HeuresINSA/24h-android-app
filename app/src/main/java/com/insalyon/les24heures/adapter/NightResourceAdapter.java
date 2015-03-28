@@ -66,18 +66,18 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
             public void onClick(View v) {
                 nightResource.setIsFavorites(!nightResource.isFavorites());
                 if (nightResource.isFavorites())
-                    ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite);
+                    ((ImageButton) v).setImageResource(R.drawable.ic_favorite_unchecked);
                 else
-                    ((ImageButton) v).setImageResource(R.drawable.ic_action_important);
+                    ((ImageButton) v).setImageResource(R.drawable.ic_favorite_checked);
             }
         });
 
         holder.title.setText(nightResource.getTitle());
         holder.title.setSelected(true);
         if (nightResource.isFavorites())
-            holder.favorites.setImageResource(R.drawable.ic_action_favorite);
+            holder.favorites.setImageResource(R.drawable.ic_favorite_unchecked);
         else
-            holder.favorites.setImageResource(R.drawable.ic_action_important);
+            holder.favorites.setImageResource(R.drawable.ic_favorite_checked);
        // holder.schedule.setText(nightResource.printSchedules());
 
 

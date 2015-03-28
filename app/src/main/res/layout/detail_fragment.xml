@@ -26,13 +26,13 @@
 
                 <TextView
                     android:id="@+id/detail_sliding_title"
-                    android:layout_width="300dp"
+                    android:layout_width="@dimen/detail_title_width"
                     android:layout_height="wrap_content"
                    android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
                     android:scrollHorizontally="true"
                     android:singleLine="true"
-                    android:text="Title,..."
+                    android:text="@string/detail_title_text"
                     android:textAppearance="@style/detail_title"
                     android:clickable="false" />
 
@@ -66,22 +66,23 @@
                 android:gravity="center_vertical|left"
                 android:text="@string/detail_header_schedule"
                 android:textAppearance="@style/detail_next_schedule"
-                android:textSize="15sp" />
+                android:textSize="@dimen/sub_title_detail" />
 
         </LinearLayout>
 
         <com.melnykov.fab.FloatingActionButton
             android:id="@+id/detail_favorites"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/favorite_icon"
+            android:layout_height="@dimen/favorite_icon"
             android:layout_gravity="top|end"
-            android:layout_margin="16dp"
-            android:src="@drawable/ic_action_favorite"
+            android:layout_margin="@dimen/icon_margin"
+            android:src="@drawable/ic_favorite_unchecked"
             fab:fab_colorNormal="@color/pink_24"
             fab:fab_colorPressed="@color/navigation_drawer_background"
             fab:fab_colorRipple="@color/ripple"
             fab:fab_type="normal"
-            fab:fab_shadow="false"/>
+            fab:fab_shadow="false"
+            android:scaleType="centerInside" />
 
     </FrameLayout>
 
@@ -114,16 +115,55 @@
                 android:id="@+id/detail_description_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/text_block_padding">
 
                 <TextView
                     android:id="@+id/detail_description_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/fake_description_light"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:longClickable="false" />
 
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/detail_url"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|right|end"
+                android:padding="@dimen/text_block_padding">
+
+                <TextView
+                    android:id="@+id/detail_url_web"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="u"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:layout_marginLeft="@dimen/icon_margin"
+                    android:layout_marginRight="@dimen/icon_margin" />
+
+                <TextView
+                    android:id="@+id/detail_url_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="f"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                    android:layout_marginLeft="@dimen/icon_margin"
+                    android:layout_marginRight="@dimen/icon_margin" />
+
+                <TextView
+                    android:id="@+id/detail_url_twitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="t"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:layout_marginLeft="@dimen/icon_margin"
+                    android:layout_marginRight="@dimen/icon_margin"
+                    android:singleLine="false" />
             </LinearLayout>
 
             <LinearLayout
@@ -151,35 +191,6 @@
                     android:name="com.google.android.gms.maps.MapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="200dp" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/detail_url"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/detail_url_web"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Large Text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <TextView
-                    android:id="@+id/detail_url_facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Large Text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <TextView
-                    android:id="@+id/detail_url_twitter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Large Text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
             </LinearLayout>
 
         </LinearLayout>

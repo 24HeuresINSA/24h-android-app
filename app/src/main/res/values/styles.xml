@@ -55,7 +55,7 @@
 
 
     <style name="NavigationDrawer.HeaderSection">
-        <item name="android:textColor">@color/holo_blue</item>
+        <item name="android:textColor">@color/primary_day</item>
         <item name="android:textSize">15sp</item>
         <item name="android:gravity">right</item>
         <item name="android:layout_marginTop">15dp</item>
@@ -101,7 +101,7 @@
     <style name="detail_title">
     <item name="android:textColor">@color/navigation_drawer_background</item>
     <item name="android:textStyle">bold</item>
-    <item name="android:textSize">35sp</item>
+    <item name="android:textSize">30sp</item>
     </style>
 
     <style name="card_title">

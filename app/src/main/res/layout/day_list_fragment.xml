@@ -41,16 +41,21 @@
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
                     android:focusable="false"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:layout_gravity="center_vertical"
+                    android:gravity="center_vertical|center_horizontal"
+                    android:padding="6dp">
 
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
                         android:gravity="center_horizontal"
-                        android:text="A-Z"
+                        android:background="@null"
                         android:id="@+id/sort_AZ_text"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        android:scaleType="centerInside"
+                        android:layout_gravity="center_horizontal"
+                        android:nestedScrollingEnabled="false"
+                        android:src="@drawable/az_sort" />
                 </LinearLayout>
 
                 <LinearLayout
@@ -58,15 +63,19 @@
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="6dp"
+                    android:gravity="center_horizontal">
 
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_horizontal"
                         android:gravity="center_horizontal"
-                        android:text="Loc"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        android:background="@null"
+                        android:id="@+id/sort_loc"
+                        android:src="@drawable/ic_action_place" />
+
                 </LinearLayout>
 
                 <LinearLayout
@@ -74,15 +83,37 @@
                     android:layout_width="0dp"
                     android:layout_height="fill_parent"
                     android:layout_weight="1"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:padding="6dp"
+                    android:gravity="center_horizontal">
 
-                    <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_horizontal"
                         android:gravity="center_horizontal"
-                        android:text="Time+Loc"
-                        android:textAppearance="?android:attr/textAppearanceLarge" />
+                        android:background="@null"
+                        android:id="@+id/sort_time_loc_time_ic"
+                        android:src="@drawable/ic_action_time" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:background="@null"
+                        android:id="@+id/sort_time_loc_plus_ic"
+                        android:src="@drawable/ic_action_new" />
+
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="fill_parent"
+                        android:layout_gravity="center_horizontal"
+                        android:gravity="center_horizontal"
+                        android:background="@null"
+                        android:id="@+id/sort_loc_place"
+                        android:src="@drawable/ic_action_place" />
+
                 </LinearLayout>
 
             </LinearLayout>

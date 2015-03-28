@@ -50,7 +50,7 @@
             android:orientation="vertical"
             android:layout_width="0dp"
             android:layout_height="6dp"
-            android:background="@color/third_day"
+            android:background="@color/primary_day"
             android:layout_weight="0.5"
             android:id="@+id/day_menu_tabs_indicator"
             android:focusable="false"></com.insalyon.les24heures.view.TranslationLinearLayout>

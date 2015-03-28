@@ -111,7 +111,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
         super.onCreate(savedInstanceState);
         eventBus = EventBus.getDefault();
         restAdapter = new RestAdapter.Builder()
-                .setEndpoint(getResources().getString(R.string.backend_url_mobile_test))
+                .setEndpoint(getResources().getString(R.string.backend_url_mobile))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         restAdapterLocal = new RestAdapter.Builder()
@@ -412,10 +412,12 @@ public abstract class BaseDynamicDataActivity extends Activity {
     public void customOnOptionsMenu() {
         boolean drawerOpen = drawerLayout.isDrawerVisible();//drawerLayout.isDrawerVisible(drawerView);
         Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
+      // boolean listVisible = is ???
+      // boolean displaySortItem = displayGlobalItem && listVisible
         mMenu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
         mMenu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
-        mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
-        mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+     //   mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+       // mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
     }
 
     @OnClick(R.id.navigation_drawer_artists)
@@ -478,14 +480,14 @@ public abstract class BaseDynamicDataActivity extends Activity {
                 toggleFavorites(item);
 
                 return true;
-            case R.id.menu_twitter:
-                Toast toast = Toast.makeText(getApplicationContext(), "twitter clicked", Toast.LENGTH_SHORT);
-                toast.show();
-                return true;
-            case R.id.menu_facebook:
-                Toast toast2 = Toast.makeText(getApplicationContext(), "facebook clicked", Toast.LENGTH_SHORT);
-                toast2.show();
-                return true;
+         //   case R.id.menu_twitter:
+           //     Toast toast = Toast.makeText(getApplicationContext(), "twitter clicked", Toast.LENGTH_SHORT);
+             //   toast.show();
+      //          return true;
+        //    case R.id.menu_facebook:
+          //      Toast toast2 = Toast.makeText(getApplicationContext(), "facebook clicked", Toast.LENGTH_SHORT);
+            //    toast2.show();
+              //  return true;
         }
 
 
@@ -570,13 +572,13 @@ public abstract class BaseDynamicDataActivity extends Activity {
         list.addAll(selectedCategories);
         if (item.isChecked()) {
             item.setChecked(false);
-            item.setIcon(R.drawable.ic_action_favorite);
+            item.setIcon(R.drawable.ic_favorite_unchecked);
 
             isFavoritesChecked = false;
         } else {
             list.add(categoryService.getFavoriteCategory());
             item.setChecked(true);
-            item.setIcon(R.drawable.ic_action_important);
+            item.setIcon(R.drawable.ic_favorite_checked);
             isFavoritesChecked = true;
         }
         CategoriesSelectedEvent event = new CategoriesSelectedEvent(list);

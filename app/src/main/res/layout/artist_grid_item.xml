@@ -28,7 +28,7 @@
 
             <ImageView
                 android:layout_width="fill_parent"
-                android:layout_height="200dp"
+                android:layout_height="@dimen/card_img_height"
                 android:id="@+id/artist_img"
                 android:background="@drawable/fish"
                 android:adjustViewBounds="false"
@@ -45,10 +45,14 @@
                     android:id="@+id/artist_grid_item_title_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Les BeeGees"
+                    android:text="@string/detail_title_text"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
                     android:singleLine="true"
+
                     android:textAppearance="@style/card_title"
-                    android:padding="10dp"
+                    android:padding="@dimen/card_title_padding"
                     android:textIsSelectable="true"
                     android:layout_gravity="left" />
                     />
@@ -62,12 +66,12 @@
 
                     <ImageButton
                         android:id="@+id/artist_grid_item_favorite"
-                        android:layout_width="wrap_content"
-                        android:layout_height="fill_parent"
+                        android:layout_width="@dimen/favorite_icon"
+                        android:layout_height="@dimen/favorite_icon"
                         android:background="@null"
-                        android:scaleType="center"
-                        android:src="@drawable/ic_action_favorite"
-                        android:padding="16dp" />
+                        android:scaleType="centerInside"
+                        android:src="@drawable/ic_favorite_unchecked"
+                        android:layout_margin="@dimen/icon_margin" />
 
                 </LinearLayout>
 

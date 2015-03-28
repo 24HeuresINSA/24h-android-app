@@ -208,10 +208,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     public void onClickFav(View v) {
         resource.setIsFavorites(!resource.isFavorites());
         if (resource.isFavorites()) {
-            ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite);
+            ((ImageButton) v).setImageResource(R.drawable.ic_favorite_unchecked);
         }
         else {
-            ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite);
+            ((ImageButton) v).setImageResource(R.drawable.ic_favorite_checked);
         }
 
         eventBus.post(new ResourceUpdatedEvent());
@@ -273,10 +273,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
 
         if (resource.isFavorites()) {
-            favoriteImageButton.setImageResource(R.drawable.ic_action_favorite);
+            favoriteImageButton.setImageResource(R.drawable.ic_favorite_checked);
         }
         else {
-            favoriteImageButton.setImageResource(R.drawable.ic_action_favorite);
+            favoriteImageButton.setImageResource(R.drawable.ic_favorite_unchecked);
         }
 
 

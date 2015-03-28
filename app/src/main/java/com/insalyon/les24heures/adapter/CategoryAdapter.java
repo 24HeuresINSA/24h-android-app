@@ -66,7 +66,27 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
             category.setDisplayName(getContext().getResources().getString(R.string.category_all_label));
 
         holder.title.setText(category.getDisplayName());
-        holder.icon.setImageResource(R.drawable.ic_divertissement);
+
+        switch(category.getDisplayName()){
+            case "Se divertir":
+                holder.icon.setImageResource(R.drawable.animation_gris);
+                break;
+            case "Se cultiver":
+                holder.icon.setImageResource(R.drawable.culture_gris);
+                break;
+            case "Du sport":
+                holder.icon.setImageResource(R.drawable.sport_gris);
+                break;
+            case "Tout":
+                holder.icon.setImageResource(R.drawable.ic_action_select_all);
+                break;
+            case "Prévention":
+                holder.icon.setImageResource(R.drawable.prevention_gris);
+                break;
+            default:
+                holder.icon.setImageResource(R.drawable.ic_divertissement);
+                break;
+        }
 
         if(!init && position == selectedCategoryInit){
             ((ListView)parent).setItemChecked(position,position == selectedCategoryInit);
