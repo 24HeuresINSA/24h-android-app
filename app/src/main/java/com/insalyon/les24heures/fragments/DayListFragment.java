@@ -174,11 +174,11 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
    public void onSortAlphabeticalClick(View v){
        if(!v.isSelected()){
            v.setSelected(true);
-           sortAZText.setImageResource(R.drawable.az_sort);
+           sortAZText.setImageResource(R.drawable.za_sort);
            dayResourceAdapter.sortAZ();
        }else{
            v.setSelected(false);
-           sortAZText.setImageResource(R.drawable.za_sort);
+           sortAZText.setImageResource(R.drawable.az_sort);
            dayResourceAdapter.sortZA();
        }
 

@@ -2,9 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/detail_paralax_header"
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
+        android:layout_height="@dimen/parallax_height"
+        android:background="@color/primary_sub"
     android:orientation="vertical"
-    android:visibility="visible"
     android:gravity="center_vertical|center_horizontal">
 
 
@@ -12,6 +12,7 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/detail_paralax_header_imageview"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        android:layout_marginTop="-2dp" />
 
 </LinearLayout>

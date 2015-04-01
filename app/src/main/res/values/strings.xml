@@ -85,6 +85,8 @@
     <string name="detail_header_schedule">samedi 23 Mai - 10h-21h</string>
     <string name="card_artist_name">The Subways</string>
     <string name="detail_title_text">Detail_title_text</string>
+    <string name="dayTabmap">CARTE</string>
+    <string name="dayTablist">LISTE</string>
     <string name="apologize_dialog_title">Désolé - version beta</string>
     <string name="apologize_dialog_message">Cette application est en cours de développement. Certaines fonctionnalités ne sont pas encore présente, d\'autres seront améliorées incessamment sous peu. De plus, les données affichées ne sont pas définitives. \nNous t\'invitons à accepter les mises à jour lorsqu\'elles te seront proposées. \n\nMerci d\'avance pour ta compréhension et à bientot pour une nouvelle version qui déchire !</string>
     <string name="apologize_dialog_message_to_update">Je te prie de mettre à jour l\'application en te rendant sur le PlayStore. \n\nLa prochaine mise à jour sera plus agréable avec les mises à jour, promis.  (ca va apparaitre toutes les 10 secondes)</string>

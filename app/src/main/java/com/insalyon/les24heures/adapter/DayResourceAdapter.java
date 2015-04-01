@@ -76,7 +76,7 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
 
         holder.title.setText(dayResource.getTitle());
 
-        switch(dayResource.getCategory().toString()){
+        switch(dayResource.getCategory().getName()){
             case "divertissement":
                 holder.categories.setImageResource(R.drawable.category_divert);
                 break;
