@@ -32,6 +32,7 @@
     <dimen name="detail_title_width">300dp</dimen>
     <dimen name="sub_title_detail">15sp</dimen>
     <dimen name="list_icon_padding">6dp</dimen>
+    <dimen name="parallax_height">110dp</dimen>
 
 
 </resources>

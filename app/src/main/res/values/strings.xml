@@ -85,6 +85,8 @@
     <string name="detail_header_schedule">samedi 23 Mai - 10h-21h</string>
     <string name="card_artist_name">The Subways</string>
     <string name="detail_title_text">Detail_title_text</string>
+    <string name="dayTabmap">CARTE</string>
+    <string name="dayTablist">LISTE</string>
 
 
 </resources>

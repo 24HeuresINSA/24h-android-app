@@ -273,10 +273,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
 
         if (resource.isFavorites()) {
-            favoriteImageButton.setImageResource(R.drawable.ic_favorite_checked);
+            favoriteImageButton.setImageResource(R.drawable.ic_favorite_unchecked);
         }
         else {
-            favoriteImageButton.setImageResource(R.drawable.ic_favorite_unchecked);
+            favoriteImageButton.setImageResource(R.drawable.ic_favorite_checked);
         }
 
 

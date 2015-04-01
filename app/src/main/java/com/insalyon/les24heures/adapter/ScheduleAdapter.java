@@ -50,7 +50,7 @@ public class ScheduleAdapter extends ArrayAdapter<Schedule> {
 
         Schedule schedule = schedules.get(position);
 
-        holder.day.setText(schedule.toString());
+        holder.day.setText(schedule.toString().toUpperCase());
 
         return convertView;
     }
