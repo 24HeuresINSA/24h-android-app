@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="#fcaca5a5"
+    android:background="@null"
     android:orientation="vertical">
 
     <TextView
@@ -10,14 +10,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="#ffffaa2b" />
+        android:textColor="@color/primary_day"
+        android:layout_margin="@dimen/text_block_padding"
+        android:textSize="@dimen/sub_title_detail" />
 
     <TextView
         android:id="@+id/schedule_item_hours"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Large Text"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:visibility="gone" />
+        android:visibility="gone"
+        android:textColor="@color/primary_day"
+        android:textSize="@dimen/sub_title_detail" />
 </LinearLayout>

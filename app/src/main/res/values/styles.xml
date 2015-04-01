@@ -101,7 +101,7 @@
     <style name="detail_title">
     <item name="android:textColor">@color/navigation_drawer_background</item>
     <item name="android:textStyle">bold</item>
-    <item name="android:textSize">30sp</item>
+    <item name="android:textSize">28sp</item>
     </style>
 
     <style name="card_title">
