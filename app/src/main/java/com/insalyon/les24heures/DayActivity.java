@@ -62,6 +62,8 @@ public class DayActivity extends BaseDynamicDataActivity {
             position = intent.getIntExtra("categoryPosition", categories.size() - 1);
         }
 
+
+
     }
 
     //here we do all the stuff requiring the view

@@ -75,16 +75,19 @@
     <string name="navigationdrawer_sectionname_day">En journée</string>
     <string name="navigationdrawer_sectionname_night">En soirée</string>
     <string name="navigationdrawer_sectionname_everytime">Tout le temps</string>
-    <string name="navigationdrawer_label_artist">Concerts</string>
-    <string name="navigationdrawer_label_tickets">Billeterie</string>
-    <string name="navigationdrawer_label_tcl">TCL</string>
-    <string name="navigationdrawer_label_facilities">Lieux utiles</string>
+    <string name="navigationdrawer_label_artist">Concerts (à venir)</string>
+    <string name="navigationdrawer_label_tickets">Billeterie (à venir)</string>
+    <string name="navigationdrawer_label_tcl">TCL (à venir)</string>
+    <string name="navigationdrawer_label_facilities">Lieux utiles (à venir)</string>
     <string name="navigationdrawer_label_params">Paramètres</string>
     <string name="category_all_label">Tout</string>
     <string name="favorite_desc">favorite</string>
     <string name="detail_header_schedule">samedi 23 Mai - 10h-21h</string>
     <string name="card_artist_name">The Subways</string>
     <string name="detail_title_text">Detail_title_text</string>
+    <string name="apologize_dialog_title">Désolé - version beta</string>
+    <string name="apologize_dialog_message">Cette application est en cours de développement. Certaines fonctionnalités ne sont pas encore présente, d\'autres seront améliorées incessamment sous peu. De plus, les données affichées ne sont pas définitives. \nNous t\'invitons à accepter les mises à jour lorsqu\'elles te seront proposées. \n\nMerci d\'avance pour ta compréhension et à bientot pour une nouvelle version qui déchire !</string>
+    <string name="apologize_dialog_message_to_update">Je te prie de mettre à jour l\'application en te rendant sur le PlayStore. \n\nLa prochaine mise à jour sera plus agréable avec les mises à jour, promis.  (ca va apparaitre toutes les 10 secondes)</string>
 
 
 </resources>

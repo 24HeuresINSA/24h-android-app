@@ -118,8 +118,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             }
         }).build();
 
-        picasso.setLoggingEnabled(true);
-        picasso.setIndicatorsEnabled(true);
+//        picasso.setLoggingEnabled(true);
+//        picasso.setIndicatorsEnabled(true);
 
     }
 

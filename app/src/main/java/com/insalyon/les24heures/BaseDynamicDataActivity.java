@@ -1,6 +1,7 @@
 package com.insalyon.les24heures;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
@@ -17,11 +18,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -49,7 +48,10 @@ import com.insalyon.les24heures.view.DrawerArrowDrawable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -140,6 +142,47 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
         if (selectedCategories == null) {
             selectedCategories = new ArrayList<>();
+        }
+
+
+        AlertDialog dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//
+        builder.setMessage(R.string.apologize_dialog_message)
+                .setTitle(R.string.apologize_dialog_title);
+
+         dialog = builder.create();
+        dialog.show();
+
+
+        Date now = new Date();
+        Date limit = new Date(115,3,13);
+
+       if(now.after(limit)){
+
+        self = this;
+            builder.setMessage(R.string.apologize_dialog_message_to_update)
+                    .setTitle(R.string.apologize_dialog_title);
+            dialog = builder.create();
+            final AlertDialog finalDialog = dialog;
+           TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    self.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            finalDialog.show();
+
+                        }
+                    });
+                }
+            };
+
+        Timer timer = new Timer();
+        timer.schedule(task, 10000,10000);
+
+
+
         }
 
         //retrieveData(savedInstanceState);
