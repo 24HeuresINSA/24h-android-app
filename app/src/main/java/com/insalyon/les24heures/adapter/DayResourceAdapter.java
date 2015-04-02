@@ -12,8 +12,11 @@ import android.widget.TextView;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.utils.LocationDistanceSortComparator;
+import com.insalyon.les24heures.utils.TimeLocationSortComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import de.greenrobot.event.EventBus;
 
@@ -72,7 +75,7 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
             }
         });
 
-        holder.title.setText(dayResource.getTitle()+dayResource.getCategory());
+        holder.title.setText(dayResource.getTitle() + dayResource.getCategory());
         holder.title.setSelected(true);
         if (dayResource.isFavorites())
             holder.favorites.setImageResource(R.drawable.ic_favorites_checked);
@@ -100,19 +103,21 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
     }
 
 
-
-    public void sortLoc(){
-        //TODO sort loc
+    public void sortLoc() {
+        Collections.sort(resourceList, new LocationDistanceSortComparator(lastKnownPosition));
+        Collections.sort(originalList, new LocationDistanceSortComparator(lastKnownPosition));
+        this.notifyDataSetChanged();
     }
 
-    public void sortTimeLoc(){
-        //TODO sort time loc
+    public void sortTimeLoc() {
+        Collections.sort(resourceList, new TimeLocationSortComparator(lastKnownPosition));
+        Collections.sort(originalList, new TimeLocationSortComparator(lastKnownPosition));
+        this.notifyDataSetChanged();
     }
 
-    public ArrayList<DayResource> getResources(){
+    public ArrayList<DayResource> getResources() {
         return originalList;
     }
-
 
 
     private class ViewHolder {
