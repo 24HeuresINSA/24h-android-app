@@ -1,19 +1,5 @@
 apply plugin: 'com.android.application'
 
-allprojects {
-    afterEvaluate { project ->
-        def propsFile = rootProject.file('keystore.properties')
-        def configName = 'release'
-
-        if (propsFile.exists() && android.signingConfigs.hasProperty(configName)) {
-            def props = new Properties()
-            props.load(new FileInputStream(propsFile))
-            android.signingConfigs[configName].storePassword = props['storePassword']
-            android.signingConfigs[configName].keyPassword = props['keyPassword']
-        }
-    }
-}
-
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
@@ -38,7 +24,6 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             signingConfig signingConfigs.release
-
 
         }
     }
