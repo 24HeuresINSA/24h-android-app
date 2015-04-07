@@ -52,7 +52,7 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
 
             holder = new ViewHolder();
             holder.title = (TextView) convertView.findViewById(R.id.artist_grid_item_title_text);
-            holder.schedule = (TextView) convertView.findViewById(R.id.artist_grid_item_schedule_text);
+            //holder.schedule = (TextView) convertView.findViewById(R.id.artist_grid_item_schedule_text);
             holder.favorites = (ImageButton) convertView.findViewById(R.id.artist_grid_item_favorite);
             convertView.setTag(holder);
         } else {
@@ -66,19 +66,19 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
             public void onClick(View v) {
                 nightResource.setIsFavorites(!nightResource.isFavorites());
                 if (nightResource.isFavorites())
-                    ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
+                    ((ImageButton) v).setImageResource(R.drawable.ic_favorite_checked);
                 else
-                    ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
+                    ((ImageButton) v).setImageResource(R.drawable.ic_favorite_unchecked);
             }
         });
 
         holder.title.setText(nightResource.getTitle());
         holder.title.setSelected(true);
         if (nightResource.isFavorites())
-            holder.favorites.setImageResource(R.drawable.ic_favorites_checked);
+            holder.favorites.setImageResource(R.drawable.ic_favorite_checked);
         else
-            holder.favorites.setImageResource(R.drawable.ic_favorites_unchecked);
-        holder.schedule.setText(nightResource.printSchedules());
+            holder.favorites.setImageResource(R.drawable.ic_favorite_unchecked);
+       // holder.schedule.setText(nightResource.printSchedules());
 
 
         return convertView;

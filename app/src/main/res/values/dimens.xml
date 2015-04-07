@@ -6,14 +6,33 @@
     <dimen name="drawer_outputtype_fontsize">30dp</dimen>
     <dimen name="drawer_category_fontsize">15dp</dimen>
     <dimen name="drawer_title_fontsize">15dp</dimen>
-    <dimen name="ouput_list_item_padding">10dp</dimen>
+    <dimen name="ouput_list_item_padding">7dp</dimen>
     <dimen name="output_list_sticky_item_height">50dp</dimen>
     <dimen name="output_list_header_height">0dp</dimen>
 
     <!--DETAIL SLIDING UP-->
-    <dimen name="detail_header_height">70dp</dimen>
-    <dimen name="whole_detail_padding">10dp</dimen>
-    <dimen name="day_menu_tabs_height">50dp</dimen>
+    <dimen name="detail_header_height">90dp</dimen>
+    <dimen name="whole_detail_padding">0dp</dimen>
+    <dimen name="text_block_padding">10dp</dimen>
+    <dimen name="day_menu_tabs_height">40dp</dimen>
+
+    <!--FLOATING BTN-->
+    <dimen name="diameter">56dp</dimen>
+    <dimen name="elevation_low">1dp</dimen>
+    <dimen name="elevation_high">4dp</dimen>
+    <dimen name="add_button_margin">16dp</dimen>
+
+    <!--favorite icon-->
+    <dimen name="favorite_icon">23dp</dimen>
+    <dimen name="icon_margin">16dp</dimen>
+
+    <!--artiste card img-->
+    <dimen name="card_img_height">200dp</dimen>
+    <dimen name="card_title_padding">10dp</dimen>
+    <dimen name="detail_title_width">300dp</dimen>
+    <dimen name="sub_title_detail">15sp</dimen>
+    <dimen name="list_icon_padding">6dp</dimen>
+    <dimen name="parallax_height">110dp</dimen>
 
 
 </resources>

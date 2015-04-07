@@ -62,6 +62,8 @@ public class DayActivity extends BaseDynamicDataActivity {
             position = intent.getIntExtra("categoryPosition", categories.size() - 1);
         }
 
+
+
     }
 
     //here we do all the stuff requiring the view
@@ -74,7 +76,7 @@ public class DayActivity extends BaseDynamicDataActivity {
         ((CategoryAdapter) categoriesList.getAdapter()).setSelectedCategoryInit(position);
 
         //TODO revoir ca en fonction de la maniere dont on recupere les categories
-        if (selectedCategories.size() < 0) {
+        if (!selectedCategories.isEmpty()) {
             Category temp = selectedCategories.get(0);
             selectedCategories.clear();
             if (!temp.get_id().equals(SpecificCategory.ALL)) {

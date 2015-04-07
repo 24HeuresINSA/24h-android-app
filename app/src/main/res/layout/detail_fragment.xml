@@ -9,79 +9,82 @@
 
 
 
-    <LinearLayout
+    <FrameLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:fab="http://schemas.android.com/apk/res-auto"
         android:id="@+id/detail_sliding_layout_header"
         android:layout_width="fill_parent"
-        android:layout_height="@dimen/detail_header_height"
-        android:background="#d10e2037"
-        android:orientation="horizontal"
-        android:weightSum="5">
+        android:layout_height="wrap_content"
+        android:background="@color/primary_day">
 
         <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="4"
-            android:gravity="center_vertical"
-            android:orientation="vertical">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/text_block_padding"
+            android:baselineAligned="false">
 
-            <TextView
-                android:id="@+id/detail_sliding_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:ellipsize="marquee"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:scrollHorizontally="true"
-                android:singleLine="true"
-                android:text="Title...."
-                android:textAppearance="?android:attr/textAppearanceLarge" />
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/detail_sliding_title"
+                    android:layout_width="@dimen/detail_title_width"
+                    android:layout_height="wrap_content"
+                   android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="@string/detail_title_text"
+                    android:textAppearance="@style/detail_title"
+                    android:clickable="false" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="vertical">
+            <!--  <RelativeLayout
+                    android:layout_width="@dimen/diameter"
+                    android:layout_height="@dimen/diameter"
+                    android:orientation="horizontal"
+                    android:layout_weight="1">
 
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:textAppearance="?android:attr/textAppearanceLarge"-->
-            <!--android:text="fav"-->
-            <!--android:id="@+id/detail_favorites"-->
-            <!--android:visibility="gone" />-->
+                    <ImageButton
+                        android:id="@+id/detail_favorites"
+                        android:layout_width="@dimen/diameter"
+                        android:layout_height="@dimen/diameter"
+                        android:background="@drawable/floating_btn"
+                        android:scaleType="center"
+                        android:layout_marginBottom="@dimen/add_button_margin"
+                        android:layout_marginEnd="@dimen/add_button_margin"
+                        android:layout_marginRight="@dimen/add_button_margin"
+                        android:src="@drawable/ic_action_important"
+                        android:tint="@android:color/white"
+                        android:animateLayoutChanges="true"
+                        android:contentDescription="@string/favorite_desc" />
 
-            <!---->
-            <!--blocksDescendants to prevent ImageButton to keep click event -->
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                android:orientation="horizontal"
-                android:padding="10dp">
-
-                <ImageButton
-                    android:id="@+id/detail_favorites"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:background="@null"
-                    android:scaleType="centerInside"
-                    android:src="@drawable/ic_favorites_unchecked"
-                    android:visibility="gone" />
-
-            </LinearLayout>
+                </RelativeLayout>-->
 
             <TextView
                 android:id="@+id/detail_next_schedule"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
-                android:gravity="center_vertical|right"
-                android:text="sam\n10h-18h"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:textSize="15dp" />
+                android:gravity="center_vertical|left"
+                android:text="@string/detail_header_schedule"
+                android:textAppearance="@style/detail_next_schedule"
+                android:textSize="@dimen/sub_title_detail" />
+
         </LinearLayout>
 
-    </LinearLayout>
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/detail_favorites"
+            android:layout_width="@dimen/favorite_icon"
+            android:layout_height="@dimen/favorite_icon"
+            android:layout_gravity="top|end"
+            android:layout_margin="@dimen/icon_margin"
+            android:src="@drawable/ic_favorite_unchecked"
+            fab:fab_colorNormal="@color/pink_24"
+            fab:fab_colorPressed="@color/navigation_drawer_background"
+            fab:fab_colorRipple="@color/ripple"
+            fab:fab_type="normal"
+            fab:fab_shadow="false"
+            android:scaleType="centerInside" />
+
+    </FrameLayout>
 
     <com.insalyon.les24heures.view.DetailScrollView
         android:id="@+id/detail_scrollView"
@@ -98,7 +101,8 @@
                 android:id="@+id/detail_schedules_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="@dimen/text_block_padding">
 
                 <com.insalyon.les24heures.view.AutoExpandGridView
                     android:id="@+id/detail_schedule_grid_layout"
@@ -112,16 +116,55 @@
                 android:id="@+id/detail_description_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:padding="@dimen/text_block_padding">
 
                 <TextView
-                    android:id="@+id/detail_desciption_text"
+                    android:id="@+id/detail_description_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@string/fake_description_light"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:longClickable="false" />
 
 
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/detail_url"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|right|end"
+                android:padding="@dimen/text_block_padding">
+
+                <TextView
+                    android:id="@+id/detail_url_web"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="u"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:layout_marginLeft="@dimen/icon_margin"
+                    android:layout_marginRight="@dimen/icon_margin" />
+
+                <TextView
+                    android:id="@+id/detail_url_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="f"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                    android:layout_marginLeft="@dimen/icon_margin"
+                    android:layout_marginRight="@dimen/icon_margin" />
+
+                <TextView
+                    android:id="@+id/detail_url_twitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="t"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:layout_marginLeft="@dimen/icon_margin"
+                    android:layout_marginRight="@dimen/icon_margin"
+                    android:singleLine="false" />
             </LinearLayout>
 
             <LinearLayout
@@ -142,42 +185,15 @@
                 android:id="@+id/detail_mini_maps_holder"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:paddingTop="10dp"
+                android:paddingBottom="20dp">
 
                 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/detail_mini_maps"
                     android:name="com.google.android.gms.maps.MapFragment"
                     android:layout_width="match_parent"
                     android:layout_height="200dp" />
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:id="@+id/detail_url"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/detail_url_web"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Large Text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <TextView
-                    android:id="@+id/detail_url_facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Large Text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
-
-                <TextView
-                    android:id="@+id/detail_url_twitter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Large Text"
-                    android:textAppearance="?android:attr/textAppearanceLarge" />
             </LinearLayout>
 
         </LinearLayout>

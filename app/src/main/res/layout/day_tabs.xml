@@ -10,40 +10,47 @@
         android:layout_height="@dimen/day_menu_tabs_height"
         android:id="@+id/day_menu_tabs"
         android:weightSum="2"
-        android:layout_gravity="center">
+        android:layout_gravity="center"
+        android:background="@color/second_day">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Maps"
+            android:text="@string/dayTabmap"
             android:id="@+id/day_menu_tabs_maps"
             android:layout_weight="1"
             android:layout_gravity="center"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:textColor="@color/navigation_drawer_background"
+            android:textSize="15sp" />
+        />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="List"
+            android:text="@string/dayTablist"
             android:id="@+id/day_menu_tabs_list"
             android:layout_weight="1"
             android:layout_gravity="center"
-            android:gravity="center_horizontal" />
+            android:gravity="center_horizontal"
+            android:textColor="@color/navigation_drawer_background"
+            android:textSize="15sp" />
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:weightSum="1">
+        android:weightSum="1"
+        android:background="@color/second_day">
 
         <com.insalyon.les24heures.view.TranslationLinearLayout
             android:orientation="vertical"
             android:layout_width="0dp"
-            android:layout_height="5dp"
-            android:background="#ff1f57ff"
+            android:layout_height="6dp"
+            android:background="@color/primary_day"
             android:layout_weight="0.5"
             android:id="@+id/day_menu_tabs_indicator"
             android:focusable="false"></com.insalyon.les24heures.view.TranslationLinearLayout>

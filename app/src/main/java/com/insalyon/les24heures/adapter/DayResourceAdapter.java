@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
@@ -57,6 +58,7 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
             holder.distance = (TextView) convertView.findViewById(R.id.list_item_distance_text);
             holder.schedule = (TextView) convertView.findViewById(R.id.list_item_schedule_text);
             holder.favorites = (ImageButton) convertView.findViewById(R.id.list_item_favorite);
+            holder.categories = (ImageView) convertView.findViewById(R.id.category_icon);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -69,18 +71,36 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
             public void onClick(View v) {
                 dayResource.setIsFavorites(!dayResource.isFavorites());
                 if (dayResource.isFavorites())
-                    ((ImageButton) v).setImageResource(R.drawable.ic_favorites_checked);
+                    ((ImageButton) v).setImageResource(R.drawable.ic_favorite_checked_gris);
                 else
-                    ((ImageButton) v).setImageResource(R.drawable.ic_favorites_unchecked);
+                    ((ImageButton) v).setImageResource(R.drawable.ic_favorite_unchecked_gris);
             }
         });
 
-        holder.title.setText(dayResource.getTitle() + dayResource.getCategory());
+        holder.title.setText(dayResource.getTitle());
+
+        switch(dayResource.getCategory().getName()){
+            case "divertissement":
+                holder.categories.setImageResource(R.drawable.category_divert);
+                break;
+            case "sportiver":
+                holder.categories.setImageResource(R.drawable.category_sport);
+                break;
+            case "prevention":
+                holder.categories.setImageResource(R.drawable.category_prevention);
+                break;
+            case "culturer":
+                holder.categories.setImageResource(R.drawable.category_culture);
+                break;
+            default:
+                holder.categories.setImageResource(R.drawable.category_divert);
+                break;
+        }
         holder.title.setSelected(true);
         if (dayResource.isFavorites())
-            holder.favorites.setImageResource(R.drawable.ic_favorites_checked);
+            holder.favorites.setImageResource(R.drawable.ic_favorite_checked_gris);
         else
-            holder.favorites.setImageResource(R.drawable.ic_favorites_unchecked);
+            holder.favorites.setImageResource(R.drawable.ic_favorite_unchecked_gris);
         holder.schedule.setText(dayResource.printSchedules());
         Location loc = new Location("loc");
         loc.setLongitude(dayResource.getLoc().longitude);
@@ -125,6 +145,7 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
         TextView distance;
         TextView schedule;
         ImageButton favorites;
+        ImageView categories;
     }
 
 

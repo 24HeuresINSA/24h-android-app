@@ -1,6 +1,7 @@
 package com.insalyon.les24heures;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.SearchManager;
 import android.content.Context;
@@ -20,7 +21,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -48,7 +48,10 @@ import com.insalyon.les24heures.view.DrawerArrowDrawable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -110,7 +113,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
         super.onCreate(savedInstanceState);
         eventBus = EventBus.getDefault();
         restAdapter = new RestAdapter.Builder()
-                .setEndpoint(getResources().getString(R.string.backend_url_mobile_test))
+                .setEndpoint(getResources().getString(R.string.backend_url_mobile))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .build();
         restAdapterLocal = new RestAdapter.Builder()
@@ -139,6 +142,47 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
         if (selectedCategories == null) {
             selectedCategories = new ArrayList<>();
+        }
+
+
+        AlertDialog dialog;
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+//
+        builder.setMessage(R.string.apologize_dialog_message)
+                .setTitle(R.string.apologize_dialog_title);
+
+         dialog = builder.create();
+        dialog.show();
+
+
+        Date now = new Date();
+        Date limit = new Date(115,3,13);
+
+       if(now.after(limit)){
+
+        self = this;
+            builder.setMessage(R.string.apologize_dialog_message_to_update)
+                    .setTitle(R.string.apologize_dialog_title);
+            dialog = builder.create();
+            final AlertDialog finalDialog = dialog;
+           TimerTask task = new TimerTask() {
+                @Override
+                public void run() {
+                    self.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            finalDialog.show();
+
+                        }
+                    });
+                }
+            };
+
+        Timer timer = new Timer();
+        timer.schedule(task, 10000,10000);
+
+
+
         }
 
         //retrieveData(savedInstanceState);
@@ -411,10 +455,12 @@ public abstract class BaseDynamicDataActivity extends Activity {
     public void customOnOptionsMenu() {
         boolean drawerOpen = drawerLayout.isDrawerVisible();//drawerLayout.isDrawerVisible(drawerView);
         Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
+      // boolean listVisible = is ???
+      // boolean displaySortItem = displayGlobalItem && listVisible
         mMenu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
         mMenu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
-        mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
-        mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+     //   mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+       // mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
     }
 
     @OnClick(R.id.navigation_drawer_artists)
@@ -477,14 +523,14 @@ public abstract class BaseDynamicDataActivity extends Activity {
                 toggleFavorites(item);
 
                 return true;
-            case R.id.menu_twitter:
-                Toast toast = Toast.makeText(getApplicationContext(), "twitter clicked", Toast.LENGTH_SHORT);
-                toast.show();
-                return true;
-            case R.id.menu_facebook:
-                Toast toast2 = Toast.makeText(getApplicationContext(), "facebook clicked", Toast.LENGTH_SHORT);
-                toast2.show();
-                return true;
+         //   case R.id.menu_twitter:
+           //     Toast toast = Toast.makeText(getApplicationContext(), "twitter clicked", Toast.LENGTH_SHORT);
+             //   toast.show();
+      //          return true;
+        //    case R.id.menu_facebook:
+          //      Toast toast2 = Toast.makeText(getApplicationContext(), "facebook clicked", Toast.LENGTH_SHORT);
+            //    toast2.show();
+              //  return true;
         }
 
 
@@ -569,12 +615,13 @@ public abstract class BaseDynamicDataActivity extends Activity {
         list.addAll(selectedCategories);
         if (item.isChecked()) {
             item.setChecked(false);
-            item.setIcon(R.drawable.ic_favorites_unchecked);
+            item.setIcon(R.drawable.menu_favorite_unchecked);
+
             isFavoritesChecked = false;
         } else {
             list.add(categoryService.getFavoriteCategory());
             item.setChecked(true);
-            item.setIcon(R.drawable.ic_favorites_checked);
+            item.setIcon(R.drawable.menu_favorite_checked);
             isFavoritesChecked = true;
         }
         CategoriesSelectedEvent event = new CategoriesSelectedEvent(list);

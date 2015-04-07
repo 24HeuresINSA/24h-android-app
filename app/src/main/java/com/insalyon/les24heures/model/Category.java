@@ -46,7 +46,8 @@ public class Category implements Parcelable {
     private Category(Parcel in) {
         name = in.readString();
         iconName = in.readString();
-        //TODO
+        displayName = in.readString();
+        _id = in.readString();
     }
 
     @Override
@@ -58,7 +59,8 @@ public class Category implements Parcelable {
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(name);
         out.writeString(iconName);
-        //TODO
+        out.writeString(displayName);
+        out.writeString(_id);
     }
 
     @Override
@@ -68,8 +70,7 @@ public class Category implements Parcelable {
 
         Category category = (Category) o;
 
-        //TODO use _id or name
-        if (!iconName.equals(category.iconName) || !_id.equals(category._id)) return false;
+        if (! !name.equals(category.name)) return false;
 
         return true;
     }

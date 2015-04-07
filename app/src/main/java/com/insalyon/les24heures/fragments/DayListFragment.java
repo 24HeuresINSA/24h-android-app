@@ -11,8 +11,8 @@ import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.TextView;
 
 import com.felipecsl.quickreturn.library.AbsListViewQuickReturnAttacher;
 import com.felipecsl.quickreturn.library.QuickReturnAttacher;
@@ -66,7 +66,7 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
     View progressBar;
 
     @InjectView(R.id.sort_AZ_text)
-    TextView sortAZText;
+    ImageView sortAZText;
 
     DayResourceAdapter dayResourceAdapter = null;
     private QuickReturnAttacher quickReturnAttacher;
@@ -138,6 +138,7 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
         lastKnownPosition.setLongitude(4.8754406);
 
         restoreListPosition();
+        alphabeticalSort.setSelected(true);
     }
 
     /**
@@ -157,7 +158,7 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
 
     @Override
     public void onItemClick(final AdapterView<?> parent, View view, int position, long id) {
-        DayResource dayResource = (DayResource) parent.getItemAtPosition(position);
+        DayResource dayResource = dayResourceAdapter.getResources().get(position);
 
         ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.ANCHORED,
                 dayResource);
@@ -173,11 +174,11 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
    public void onSortAlphabeticalClick(View v){
        if(!v.isSelected()){
            v.setSelected(true);
-           sortAZText.setText(R.string.za_sorted_label);
+           sortAZText.setImageResource(R.drawable.za_sort);
            dayResourceAdapter.sortAZ();
        }else{
            v.setSelected(false);
-           sortAZText.setText(R.string.az_sorted_label);
+           sortAZText.setImageResource(R.drawable.az_sort);
            dayResourceAdapter.sortZA();
        }
 

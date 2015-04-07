@@ -2,16 +2,17 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/detail_paralax_header"
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
-        android:background="#ffffbc53"
-        android:orientation="vertical"
-        android:padding="50px"
-    android:visibility="visible">
+        android:layout_height="@dimen/parallax_height"
+        android:background="@color/primary_sub"
+    android:orientation="vertical"
+    android:gravity="center_vertical|center_horizontal">
 
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/detail_paralax_header_imageview" />
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:id="@+id/detail_paralax_header_imageview"
+        android:scaleType="centerCrop"
+        android:layout_marginTop="-2dp" />
 
 </LinearLayout>

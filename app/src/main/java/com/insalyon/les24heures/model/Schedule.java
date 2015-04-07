@@ -54,11 +54,11 @@ public class Schedule implements Parcelable {
 
         switch (day) {
             case FRIDAY:
-                return "Vend";
+                return "Vendredi";
             case SATURDAY:
-                return "Sam";
+                return "Samedi";
             case SUNDAY:
-                return "Dim";
+                return "Dimanche";
             default:
                 return "";
         }

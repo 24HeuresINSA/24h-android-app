@@ -1,5 +1,6 @@
 package com.insalyon.les24heures;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 
 
@@ -11,6 +12,8 @@ public class MainActivity extends BaseDynamicDataActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_activity);
+
+
     }
 
 }
