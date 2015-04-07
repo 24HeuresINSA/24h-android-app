@@ -151,7 +151,8 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="#333333"
                         android:textSize="15dp"
-                        android:gravity="right" />
+                        android:gravity="right"
+                        android:visibility="invisible" />
 
                 </LinearLayout>
 
