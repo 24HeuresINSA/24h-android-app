@@ -4,8 +4,10 @@ import com.insalyon.les24heures.DTO.ScheduleDTO;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ScheduleService;
 import com.insalyon.les24heures.utils.Day;
+import com.insalyon.les24heures.utils.ScheduleComparator;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -69,6 +71,8 @@ public class ScheduleServiceImpl implements ScheduleService {
         for (ScheduleDTO scheduleDTO : scheduleDTOs) {
             schedules.add(this.fromDTO(scheduleDTO));
         }
+
+        Collections.sort(schedules, new ScheduleComparator());
 
         return schedules;
     }
