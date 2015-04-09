@@ -2,7 +2,6 @@ package com.insalyon.les24heures.adapter;
 
 import android.content.Context;
 import android.location.Location;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -135,9 +134,14 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
         this.notifyDataSetChanged();
     }
 
-    public ArrayList<DayResource> getResources() {
+    public ArrayList<DayResource> getOriginalResources() {
         return originalList;
     }
+    public ArrayList<DayResource> getResources() {
+        return resourceList;
+    }
+
+
 
 
     private class ViewHolder {
