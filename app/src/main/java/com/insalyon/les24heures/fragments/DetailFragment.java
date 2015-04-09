@@ -35,6 +35,7 @@ import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.view.DetailScrollView;
+import com.insalyon.les24heures.view.viewpagerindicator.CirclePageIndicator;
 import com.squareup.picasso.Picasso;
 
 import java.net.URLDecoder;
@@ -93,6 +94,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private Picasso picasso;
     private ImageView parallaxImageHeader;
     private View parallaxHeader;
+    private CirclePageIndicator mIndicator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -168,6 +170,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         picturePagerAdapter = new MainAdapter();
         mJazzy.setAdapter(picturePagerAdapter);
         mJazzy.setPageMargin(30);
+        mIndicator = (CirclePageIndicator)view.findViewById(R.id.indicator);
+        mIndicator.setViewPager(mJazzy);
 
     }
 
