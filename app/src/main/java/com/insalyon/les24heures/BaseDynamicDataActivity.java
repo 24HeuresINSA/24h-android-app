@@ -152,7 +152,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
                 .setTitle(R.string.apologize_dialog_title);
 
          dialog = builder.create();
-        dialog.show();
+        //dialog.show();
 
 
         Date now = new Date();
