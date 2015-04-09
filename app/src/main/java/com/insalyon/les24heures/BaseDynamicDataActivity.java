@@ -497,18 +497,18 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
         //click on the appName or the appIcone
         if (item.getTitle().equals(getActionBar().getTitle())) {
+            //detail is visible
+            if (detailSlidingUpPanelLayoutLayout.isPanelAnchored() || detailSlidingUpPanelLayoutLayout.isPanelExpanded()) {
+                detailSlidingUpPanelLayoutLayout.collapsePanel();
+            }
             //search widget is active
-            if (!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()) {
+            else if (!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()) {
                 drawerArrowDrawable.animateToSandwich();
                 drawerLayout.enabledDrawerSwipe();
                 SearchView searchView =
                         (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
                 searchView.onActionViewCollapsed();
                 searchQuery = null;
-            }
-            //detail is visible
-            else if (detailSlidingUpPanelLayoutLayout.isPanelAnchored() || detailSlidingUpPanelLayoutLayout.isPanelExpanded()) {
-                detailSlidingUpPanelLayoutLayout.collapsePanel();
             }
             //default
             else {
