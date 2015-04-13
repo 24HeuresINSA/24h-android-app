@@ -118,9 +118,11 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         mapView.getMapAsync(this);
 
         googleMap = mapView.getMap();
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.setOnMarkerClickListener(this);
-        addMarkers();
+        if(googleMap != null) {
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            googleMap.setOnMarkerClickListener(this);
+            addMarkers();
+        }
 
 
         return view;
@@ -131,7 +133,8 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     public void onResume() {
         mapView.onResume();
         super.onResume();
-        googleMap.setMyLocationEnabled(true);
+        if(googleMap != null)
+            googleMap.setMyLocationEnabled(true);
 
     }
 
@@ -196,6 +199,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
 
 
     public void onEvent(ResourceSelectedEvent selectedEvent) {
+        if(googleMap == null) return;
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedEvent.getDayResource().getLoc(), 17));
 //        EventBus.getDefault().removeStickyEvent(selectedEvent);
         selectedDayResource = selectedEvent.getDayResource();
@@ -236,6 +240,8 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     @Override
     public void onPause() {
         super.onPause();
+        if(googleMap == null) return;
+
         googleMap.setMyLocationEnabled(false);
 
         // We need an Editor object to make preference changes.
@@ -254,7 +260,8 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putParcelable("cameraPosition", googleMap.getCameraPosition());
+        if(googleMap != null)
+            outState.putParcelable("cameraPosition", googleMap.getCameraPosition());
     }
 
     @Override
@@ -294,6 +301,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     }
 
     public void moveCamera() {
+        if(googleMap == null) return;
         try {
             // Move camera
             googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilder().build(), 70));

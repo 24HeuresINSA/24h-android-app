@@ -148,8 +148,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 .findFragmentById(R.id.detail_mini_maps);
         mapFragment.getMapAsync(this);
         googleMap = mapFragment.getMap();
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.getUiSettings().setAllGesturesEnabled(false);
+        if(googleMap != null) {
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            googleMap.getUiSettings().setAllGesturesEnabled(false);
+        }
 
         slidingHeader.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -192,6 +194,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void addMarkerAndMoveCam() {
+        if(googleMap == null) return;
         googleMap.clear();
         googleMap.addMarker(new MarkerOptions()
 //                                .title(resource.getTitle() + " " + resource.getCategory().getName())
