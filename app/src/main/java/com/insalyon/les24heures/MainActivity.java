@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import com.insalyon.les24heures.service.impl.ApplicationVersionServiceImpl;
+
 
 public class MainActivity extends Activity {
     private static final String TAG = MainActivity.class.getCanonicalName();
@@ -17,7 +19,7 @@ public class MainActivity extends Activity {
 
         new BackgroundSplashTask().execute();
 
-        //TODO faire la requete pour le app-version ici
+        ApplicationVersionServiceImpl.getInstance().checkApplicationVersion(getApplicationContext());
 
 
     }

@@ -1,5 +1,6 @@
 package com.insalyon.les24heures.service;
 
+import com.insalyon.les24heures.DTO.ApplicationVersionDTO;
 import com.insalyon.les24heures.DTO.AssomakerDTO;
 
 import retrofit.Callback;
@@ -18,6 +19,9 @@ public interface RetrofitService {
 
     @GET("/")
     void getResources(@Query("version") String dataVersion, Callback<AssomakerDTO> cb);
+
+    @GET("/version")
+    void getApplicationVersion(Callback<ApplicationVersionDTO> cb);
 
 
 
