@@ -64,6 +64,8 @@ public class Schedule implements Parcelable {
         }
     }
 
+
+
     public Day getDay() {
         return day;
     }
@@ -87,4 +89,6 @@ public class Schedule implements Parcelable {
     public void setEnd(Date end) {
         this.end = end;
     }
+
+
 }

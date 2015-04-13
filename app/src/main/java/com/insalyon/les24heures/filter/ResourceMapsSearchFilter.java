@@ -30,11 +30,13 @@ public class ResourceMapsSearchFilter extends ResourceSearchFilter<DayResource> 
         resourceList.addAll((ArrayList<DayResource>) results.values);
 
         for (DayResource dayResource : originalList) {
-            resourceMarkerMap.get(dayResource).setVisible(false);
+            if(resourceMarkerMap.get(dayResource) != null)
+                resourceMarkerMap.get(dayResource).setVisible(false);
         }
 
         for (DayResource dayResource : resourceList) {
-            resourceMarkerMap.get(dayResource).setVisible(true);
+            if(resourceMarkerMap.get(dayResource) != null)
+                resourceMarkerMap.get(dayResource).setVisible(true);
         }
 
 

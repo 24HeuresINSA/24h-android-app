@@ -19,7 +19,7 @@
         <!--Default outputType to start-->
         <meta-data
             android:name="outputType"
-            android:value="maps" />
+            android:value="list" />
 
         <activity
             android:name="com.insalyon.les24heures.MainActivity"
@@ -27,7 +27,11 @@
             android:windowSoftInputMode="stateHidden|adjustPan">
 
 
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
         </activity>
 
@@ -37,11 +41,7 @@
             android:launchMode="singleTop">
 
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
             </activity>
 
         <activity

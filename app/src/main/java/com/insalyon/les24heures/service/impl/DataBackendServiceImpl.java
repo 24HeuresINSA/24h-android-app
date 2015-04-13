@@ -65,7 +65,7 @@ public class DataBackendServiceImpl implements DataBackendService {
 
 
                 if(response.getStatus() == 204){
-                    Log.d(TAG,"getResources : success : data already up to date");
+                    Log.d(TAG,"getOriginalResources : success : data already up to date");
                     return;
                 }
 
@@ -74,7 +74,7 @@ public class DataBackendServiceImpl implements DataBackendService {
                 ArrayList<DayResourceDTO> dayResourceDTOs = assomakerDTO.getResources();
                 ArrayList<NightResourceDTO> nightResourceDTOs = assomakerDTO.getArtists();
 
-                Log.d(TAG,"getResources : "+categoryDTOs.size()+" categories, "+dayResourceDTOs.size()+" dayResources, "+nightResourceDTOs.size()+" nightResources");
+                Log.d(TAG,"getOriginalResources : "+categoryDTOs.size()+" categories, "+dayResourceDTOs.size()+" dayResources, "+nightResourceDTOs.size()+" nightResources");
 
 
                 ArrayList<Category> categories = categoryService.fromDTO(categoryDTOs);
@@ -93,7 +93,7 @@ public class DataBackendServiceImpl implements DataBackendService {
             @Override
             public void failure(RetrofitError error) {
 
-                Log.d("getResources", "failure " + error);
+                Log.d("getOriginalResources", "failure " + error);
 
             }
         });

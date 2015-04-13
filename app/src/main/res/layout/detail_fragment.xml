@@ -167,7 +167,7 @@
                     android:singleLine="false" />
             </LinearLayout>
 
-            <LinearLayout
+            <RelativeLayout
                 android:id="@+id/detail_carousel_layout"
                 android:layout_width="fill_parent"
                 android:layout_height="200dp"
@@ -177,9 +177,20 @@
                 <com.insalyon.les24heures.JazzyViewPager.JazzyViewPager xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/jazzy_pager"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="200dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true" />
 
-            </LinearLayout>
+                <com.insalyon.les24heures.view.viewpagerindicator.CirclePageIndicator
+                    android:id="@+id/indicator"
+                    android:padding="10dip"
+                    android:layout_height="20dp"
+                    android:layout_width="fill_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+            </RelativeLayout>
 
             <LinearLayout
                 android:id="@+id/detail_mini_maps_holder"
@@ -198,6 +209,10 @@
 
         </LinearLayout>
 
+
+
     </com.insalyon.les24heures.view.DetailScrollView>
+
+
 
 </LinearLayout>

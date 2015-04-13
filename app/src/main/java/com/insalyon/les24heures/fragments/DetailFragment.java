@@ -35,6 +35,7 @@ import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.view.DetailScrollView;
+import com.insalyon.les24heures.view.viewpagerindicator.CirclePageIndicator;
 import com.squareup.picasso.Picasso;
 
 import java.net.URLDecoder;
@@ -93,6 +94,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private Picasso picasso;
     private ImageView parallaxImageHeader;
     private View parallaxHeader;
+    private CirclePageIndicator mIndicator;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -146,8 +148,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
                 .findFragmentById(R.id.detail_mini_maps);
         mapFragment.getMapAsync(this);
         googleMap = mapFragment.getMap();
-        googleMap.getUiSettings().setZoomControlsEnabled(true);
-        googleMap.getUiSettings().setAllGesturesEnabled(false);
+        if(googleMap != null) {
+            googleMap.getUiSettings().setZoomControlsEnabled(true);
+            googleMap.getUiSettings().setAllGesturesEnabled(false);
+        }
 
         slidingHeader.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -168,6 +172,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         picturePagerAdapter = new MainAdapter();
         mJazzy.setAdapter(picturePagerAdapter);
         mJazzy.setPageMargin(30);
+        mIndicator = (CirclePageIndicator)view.findViewById(R.id.indicator);
+        mIndicator.setViewPager(mJazzy);
 
     }
 
@@ -188,6 +194,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void addMarkerAndMoveCam() {
+        if(googleMap == null) return;
         googleMap.clear();
         googleMap.addMarker(new MarkerOptions()
 //                                .title(resource.getTitle() + " " + resource.getCategory().getName())

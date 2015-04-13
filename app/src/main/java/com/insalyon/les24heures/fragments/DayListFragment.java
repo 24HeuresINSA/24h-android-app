@@ -294,7 +294,7 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
         outState.putInt("indexPosition", index);
 
         //sorted resources
-        outState.putParcelableArrayList("resourcesList", dayResourceAdapter.getResources());
+        outState.putParcelableArrayList("resourcesList", dayResourceAdapter.getOriginalResources());
 
     }
 

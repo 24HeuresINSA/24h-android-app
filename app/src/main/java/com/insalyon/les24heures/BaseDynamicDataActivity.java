@@ -25,6 +25,7 @@ import android.widget.SearchView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
+import com.insalyon.les24heures.eventbus.ApplicationVersionEvent;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
@@ -41,6 +42,7 @@ import com.insalyon.les24heures.service.RetrofitService;
 import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.DataBackendServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
+import com.insalyon.les24heures.utils.ApplicationVersionState;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.view.CustomDrawerLayout;
 import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
@@ -48,7 +50,6 @@ import com.insalyon.les24heures.view.DrawerArrowDrawable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -145,46 +146,6 @@ public abstract class BaseDynamicDataActivity extends Activity {
         }
 
 
-        AlertDialog dialog;
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//
-        builder.setMessage(R.string.apologize_dialog_message)
-                .setTitle(R.string.apologize_dialog_title);
-
-         dialog = builder.create();
-        dialog.show();
-
-
-        Date now = new Date();
-        Date limit = new Date(115,3,13);
-
-       if(now.after(limit)){
-
-        self = this;
-            builder.setMessage(R.string.apologize_dialog_message_to_update)
-                    .setTitle(R.string.apologize_dialog_title);
-            dialog = builder.create();
-            final AlertDialog finalDialog = dialog;
-           TimerTask task = new TimerTask() {
-                @Override
-                public void run() {
-                    self.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            finalDialog.show();
-
-                        }
-                    });
-                }
-            };
-
-        Timer timer = new Timer();
-        timer.schedule(task, 10000,10000);
-
-
-
-        }
-
         //retrieveData(savedInstanceState);
 
     }
@@ -255,8 +216,17 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
         //TODO debug purpose only
         dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
-        dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion);
+        //dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion);
 //      dataBackendService.getResourcesAsyncMock();
+
+        //TODO check if the app can download data
+        settings = getSharedPreferences(getResources().getString(R.string.SHARED_PREF_APP_VERSION), 0);
+        if (settings.getString("applicationVersionState", null) != null)
+            manageApplicationVersionState(ApplicationVersionState.valueOf(
+                            settings.getString("applicationVersionState", ApplicationVersionState.TODATE.toString()))
+            );
+        else
+            Log.d(TAG, " retrieveData wait for authorization to download data");
 
 
         if (selectedCategories == null) {
@@ -455,12 +425,12 @@ public abstract class BaseDynamicDataActivity extends Activity {
     public void customOnOptionsMenu() {
         boolean drawerOpen = drawerLayout.isDrawerVisible();//drawerLayout.isDrawerVisible(drawerView);
         Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
-      // boolean listVisible = is ???
-      // boolean displaySortItem = displayGlobalItem && listVisible
+        // boolean listVisible = is ???
+        // boolean displaySortItem = displayGlobalItem && listVisible
         mMenu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
         mMenu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
-     //   mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
-       // mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+        //   mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+        // mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
     }
 
     @OnClick(R.id.navigation_drawer_artists)
@@ -497,18 +467,18 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
         //click on the appName or the appIcone
         if (item.getTitle().equals(getActionBar().getTitle())) {
+            //detail is visible
+            if (detailSlidingUpPanelLayoutLayout.isPanelAnchored() || detailSlidingUpPanelLayoutLayout.isPanelExpanded()) {
+                detailSlidingUpPanelLayoutLayout.collapsePanel();
+            }
             //search widget is active
-            if (!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()) {
+            else if (!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()) {
                 drawerArrowDrawable.animateToSandwich();
                 drawerLayout.enabledDrawerSwipe();
                 SearchView searchView =
                         (SearchView) globalMenu.findItem(R.id.menu_search).getActionView();
                 searchView.onActionViewCollapsed();
                 searchQuery = null;
-            }
-            //detail is visible
-            else if (detailSlidingUpPanelLayoutLayout.isPanelAnchored() || detailSlidingUpPanelLayoutLayout.isPanelExpanded()) {
-                detailSlidingUpPanelLayoutLayout.collapsePanel();
             }
             //default
             else {
@@ -523,14 +493,14 @@ public abstract class BaseDynamicDataActivity extends Activity {
                 toggleFavorites(item);
 
                 return true;
-         //   case R.id.menu_twitter:
-           //     Toast toast = Toast.makeText(getApplicationContext(), "twitter clicked", Toast.LENGTH_SHORT);
-             //   toast.show();
-      //          return true;
-        //    case R.id.menu_facebook:
-          //      Toast toast2 = Toast.makeText(getApplicationContext(), "facebook clicked", Toast.LENGTH_SHORT);
+            //   case R.id.menu_twitter:
+            //     Toast toast = Toast.makeText(getApplicationContext(), "twitter clicked", Toast.LENGTH_SHORT);
+            //   toast.show();
+            //          return true;
+            //    case R.id.menu_facebook:
+            //      Toast toast2 = Toast.makeText(getApplicationContext(), "facebook clicked", Toast.LENGTH_SHORT);
             //    toast2.show();
-              //  return true;
+            //  return true;
         }
 
 
@@ -678,6 +648,62 @@ public abstract class BaseDynamicDataActivity extends Activity {
                 detailSlidingUpPanelLayoutLayout.anchorPanel();
                 break;
         }
+    }
+
+    public void onEvent(ApplicationVersionEvent event) {
+        manageApplicationVersionState(event.getState());
+    }
+
+    private void manageApplicationVersionState(ApplicationVersionState state) {
+        switch (state) {
+            case MAJOR:
+                Log.d(TAG, "manageApplicationVersionState MAJOR");
+
+                AlertDialog dialog;
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+
+                self = this;
+                builder.setMessage(R.string.apologize_dialog_message_to_update)
+                        .setTitle(R.string.apologize_dialog_title);
+                dialog = builder.create();
+                final AlertDialog finalDialog = dialog;
+                TimerTask task = new TimerTask() {
+                    @Override
+                    public void run() {
+                        self.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                finalDialog.show();
+
+                            }
+                        });
+                    }
+                };
+
+                Timer timer = new Timer();
+                timer.schedule(task, 0, 10000);
+
+                break;
+            case MINOR:
+                dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion);
+                Log.d(TAG, "manageApplicationVersionState MINOR");
+                builder = new AlertDialog.Builder(this);
+                builder.setMessage(R.string.apologize_dialog_message)
+                        .setTitle(R.string.apologize_dialog_title);
+
+                dialog = builder.create();
+                dialog.show();
+
+                break;
+            case TODATE:
+                dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion);
+                Log.d(TAG, "manageApplicationVersionState TODATE");
+                break;
+        }
+
+
+        //si popup sharedPref == major, (2.1) lance le timerTask pour la popup major changes
+        //sinon si popup sharedPref == minor ou == toDate effectue le download des donnees et si popup sharedPref == minor affiche popup minor
     }
 
     protected void animateContentOut(float slideOffset) {
