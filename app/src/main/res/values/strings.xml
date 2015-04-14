@@ -87,9 +87,9 @@
     <string name="detail_title_text">Detail_title_text</string>
     <string name="dayTabmap">CARTE</string>
     <string name="dayTablist">LISTE</string>
-    <string name="apologize_dialog_title">Désolé - version</string>
-    <string name="apologize_dialog_message">Cette application est en cours de développement. Certaines fonctionnalités ne sont pas encore présentes, d\'autres seront améliorées incessamment sous peu. De plus, les données affichées ne sont pas définitives. \nNous t\'invitons à accepter les mises à jour lorsqu\'elles te seront proposées. \n\nMerci d\'avance pour ta compréhension et à bientot pour une nouvelle version qui déchire !</string>
-    <string name="apologize_dialog_message_to_update">Je te prie de mettre à jour l\'application en te rendant sur le PlayStore. \n\nLa prochaine mise à jour sera plus agréable avec les mises à jour, promis.  (ca va apparaitre toutes les 10 secondes)</string>
+    <string name="apologize_dialog_title">Mise à jour disponible</string>
+    <string name="apologize_dialog_messag_minor">Une mise à jour est disponible, je t\'invite à te rendre sur le PlayStore afin de bénéficier des dernières fonctionnalités disponibles. \nMerci d\'avance pour ta compréhension et à bientot pour une nouvelle version qui déchire !</string>
+    <string name="apologize_dialog_messag_major">Une mise à jour importante est disponible, je t\'invite à te rendre sur le PlayStore afin de bénéficier des dernières fonctionnalités disponibles. \n\nCe message va s\'afficher toutes les 10 secondes et les nouvelles données ne sont plus téléchargées.\nMerci d\'avance pour ta compréhension et à bientot pour une nouvelle version qui déchire !</string>
     <string name="SHARED_PREF_APP_VERSION">SHARED_PREF_APP_VERSION</string>
 
 

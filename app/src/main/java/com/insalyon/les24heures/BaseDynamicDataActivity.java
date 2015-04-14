@@ -663,7 +663,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
                 self = this;
-                builder.setMessage(R.string.apologize_dialog_message_to_update)
+                builder.setMessage(R.string.apologize_dialog_messag_major)
                         .setTitle(R.string.apologize_dialog_title);
                 dialog = builder.create();
                 final AlertDialog finalDialog = dialog;
@@ -688,7 +688,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
                 dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion);
                 Log.d(TAG, "manageApplicationVersionState MINOR");
                 builder = new AlertDialog.Builder(this);
-                builder.setMessage(R.string.apologize_dialog_message)
+                builder.setMessage(R.string.apologize_dialog_messag_minor)
                         .setTitle(R.string.apologize_dialog_title);
 
                 dialog = builder.create();
