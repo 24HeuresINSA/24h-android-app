@@ -661,16 +661,16 @@ public abstract class BaseDynamicDataActivity extends Activity {
         String content = null;
         switch (event.getRetrofitError().getKind()){
             case NETWORK:
-                content = "Network error";
+                content = getResources().getString(R.string.retrofit_network_error);
                 break;
             case CONVERSION:
-                //TODO piwik
+                content = getResources().getString(R.string.retrofit_internal_error);
                 break;
-            case HTTP:
-                content = "Http error";
+            case HTTP:                 //TODO piwik
+                content = getResources().getString(R.string.retrofit_server_error);
                 break;
             case UNEXPECTED:
-                content = "Unexected";
+                content = getResources().getString(R.string.retrofit_unexpected_error);
                 break;
         }
 
