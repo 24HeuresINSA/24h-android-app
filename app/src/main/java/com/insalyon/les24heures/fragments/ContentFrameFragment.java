@@ -12,6 +12,7 @@ import android.widget.Filter;
 import com.insalyon.les24heures.BaseDynamicDataActivity;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
+import com.insalyon.les24heures.eventbus.RetrofitErrorEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.Resource;
@@ -89,10 +90,15 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     public void onResume() {
         super.onResume();
         eventBus.registerSticky(this);
+        //TODO quick fix
         if(resourcesList.size() == 0){
             displayProgress();
         }
+    }
 
+    //TODO quick fix
+    public void onEvent(RetrofitErrorEvent event){
+        hideProgress();
     }
 
     /**

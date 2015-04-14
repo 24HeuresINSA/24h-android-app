@@ -21,6 +21,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
@@ -30,6 +31,7 @@ import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
+import com.insalyon.les24heures.eventbus.RetrofitErrorEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.Category;
@@ -355,7 +357,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        eventBus.register(this);
+        eventBus.registerSticky(this);
 
         if (detailSlidingUpPanelLayoutLayout != null) {
             detailSlidingUpPanelLayoutLayout.setAlpha(0);
@@ -652,6 +654,31 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
     public void onEvent(ApplicationVersionEvent event) {
         manageApplicationVersionState(event.getState());
+    }
+
+    public void onEvent(RetrofitErrorEvent event){
+
+        String content = null;
+        switch (event.getRetrofitError().getKind()){
+            case NETWORK:
+                content = "Network error";
+                break;
+            case CONVERSION:
+                //TODO piwik
+                break;
+            case HTTP:
+                content = "Http error";
+                break;
+            case UNEXPECTED:
+                content = "Unexected";
+                break;
+        }
+
+        if(content != null) {
+            Toast toast = Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT);
+            toast.show();
+        }
+
     }
 
     private void manageApplicationVersionState(ApplicationVersionState state) {

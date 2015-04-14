@@ -11,6 +11,7 @@ import com.insalyon.les24heures.eventbus.ApplicationVersionEvent;
 import com.insalyon.les24heures.service.ApplicationVersionService;
 import com.insalyon.les24heures.service.RetrofitService;
 import com.insalyon.les24heures.utils.ApplicationVersionState;
+import com.insalyon.les24heures.utils.RetrofitErrorHandler;
 
 import de.greenrobot.event.EventBus;
 import retrofit.Callback;
@@ -51,9 +52,10 @@ public class ApplicationVersionServiceImpl implements ApplicationVersionService 
         new RestAdapter.Builder()
                 .setEndpoint(context.getResources().getString(R.string.backend_url_mobile))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setErrorHandler(new RetrofitErrorHandler())
                 .build().create(RetrofitService.class).getApplicationVersion(new Callback<ApplicationVersionDTO>() {
             @Override
-            public void success(ApplicationVersionDTO applicationVersionDTO, Response response) {
+            public void success(ApplicationVersionDTO applicationVersionDTO, Response response)  {
                 String appVersion = applicationVersionDTO.getAndroid();
 
 
@@ -95,7 +97,6 @@ public class ApplicationVersionServiceImpl implements ApplicationVersionService 
 
             @Override
             public void failure(RetrofitError error) {
-                //TODO
             }
         });
 
