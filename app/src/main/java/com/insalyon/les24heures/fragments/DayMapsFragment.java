@@ -221,13 +221,13 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         if (selectedDayResource != null) {
             for (Map.Entry<Marker, DayResource> entry : markerResourceMap.entrySet()) {
                 if (entry.getValue() == selectedDayResource) {
-                    entry.getKey().setIcon(BitmapDescriptorFactory.defaultMarker());
+                    entry.getKey().setIcon(BitmapDescriptorFactory.defaultMarker(getCategoryHueColor(selectedDayResource,BitmapDescriptorFactory.HUE_RED)));
                     break;
                 }
             }
         }
 
-        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_BLUE));
+        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
         selectedDayResource = markerResourceMap.get(marker);
 
         return false;
@@ -281,14 +281,35 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         }
         for (DayResource dayResource : resourcesList) {
             if (resourceMarkerMap.get(dayResource) == null) {
+                Float color = BitmapDescriptorFactory.HUE_RED;
+                color = getCategoryHueColor(dayResource, color);
+
                 Marker marker = googleMap.addMarker(
-                        new MarkerOptions()
+                        new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(color))
                                 .position(dayResource.getLoc()));
 
                 markerResourceMap.put(marker, dayResource);
                 resourceMarkerMap.put(dayResource, marker);
             }
         }
+    }
+
+    private Float getCategoryHueColor(DayResource dayResource, Float color) {
+        switch( dayResource.getCategory().getName()){
+            case "divertissement" :
+                color = BitmapDescriptorFactory.HUE_ORANGE;
+                break;
+            case "culturer":
+                color = BitmapDescriptorFactory.HUE_BLUE;
+                break;
+            case "sportiver" :
+                color = BitmapDescriptorFactory.HUE_YELLOW;
+                break;
+            case "prevention" :
+                color = BitmapDescriptorFactory.HUE_GREEN;
+                break;
+        }
+        return color;
     }
 
     private LatLngBounds.Builder getBuilder() {
