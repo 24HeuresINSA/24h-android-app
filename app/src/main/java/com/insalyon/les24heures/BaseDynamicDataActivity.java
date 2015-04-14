@@ -218,10 +218,8 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
         //TODO debug purpose only
         dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
-        //dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion);
-//      dataBackendService.getResourcesAsyncMock();
 
-        //TODO check if the app can download data
+        //check if the app can download data
         settings = getSharedPreferences(getResources().getString(R.string.SHARED_PREF_APP_VERSION), 0);
         if (settings.getString("applicationVersionState", null) != null)
             manageApplicationVersionState(ApplicationVersionState.valueOf(

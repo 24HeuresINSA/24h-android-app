@@ -7,6 +7,5 @@ import android.content.Context;
  */
 public interface ApplicationVersionService {
 
-    //TODO virer ce parametre degueu
     public void checkApplicationVersion(Context context);
 }
