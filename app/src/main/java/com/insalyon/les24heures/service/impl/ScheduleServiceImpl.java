@@ -1,12 +1,16 @@
 package com.insalyon.les24heures.service.impl;
 
 import com.insalyon.les24heures.DTO.ScheduleDTO;
+import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ScheduleService;
 import com.insalyon.les24heures.utils.Day;
 import com.insalyon.les24heures.utils.ScheduleComparator;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 
@@ -62,6 +66,58 @@ public class ScheduleServiceImpl implements ScheduleService {
                 (int) Integer.valueOf(debut.substring(0, 2 - i)),
                 (int) Integer.valueOf(debut.substring(3 - i, 5 - i)));
     }
+
+    @Override
+    public Schedule getNextSchedule(Resource dayResource) {
+        return getNextSchedules(dayResource).get(0);
+    }
+
+    public ArrayList<Schedule> getNextSchedulesMocked(Resource dayResource, String dateFormat) {
+        Date nowDate = null;
+        try {
+            nowDate = new SimpleDateFormat("hh:mm/dd/M/yyyy").parse("11:10/23/5/2015");
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar now = Calendar.getInstance();
+        now.setTime(nowDate);
+        Day nowDay = Day.values()[(now.get(Calendar.DAY_OF_WEEK))-2]; //TODO pourquoi -2 ?!
+        int nowHours = now.get(Calendar.HOUR_OF_DAY);
+
+        ArrayList<Schedule> result = new ArrayList<>();
+        for (Schedule schedule : dayResource.getSchedules()) {
+            if(schedule.getDay().equals(nowDay)
+                    && (schedule.getEnd().getHours() >= nowHours
+                    || schedule.getEnd().getHours() == 0)) //traitement de faveur pour le minuit des 24h de cinema
+                result.add(schedule);
+        }
+
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<Schedule> getNextSchedules(Resource dayResource) {
+        Date nowDate = new Date();
+
+        Calendar now = Calendar.getInstance();
+        now.setTime(nowDate);
+        Day nowDay = Day.values()[(now.get(Calendar.DAY_OF_WEEK))-2]; //TODO pourquoi -2 ?!
+        int nowHours = now.get(Calendar.HOUR_OF_DAY);
+
+        ArrayList<Schedule> result = new ArrayList<>();
+        for (Schedule schedule : dayResource.getSchedules()) {
+            if(schedule.getDay().equals(nowDay)
+                    && (schedule.getEnd().getHours() >= nowHours
+                        || schedule.getEnd().getHours() == 0)) //traitement de faveur pour le minuit des 24h de cinema
+                result.add(schedule);
+        }
+
+
+        return result;
+    }
+
 
 
     @Override
