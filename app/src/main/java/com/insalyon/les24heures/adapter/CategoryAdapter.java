@@ -64,16 +64,16 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
         switch(category.getName()){
             case "divertissement":
-                holder.icon.setImageResource(R.drawable.animation_gris);
+                holder.icon.setImageResource(R.drawable.category_divert);
                 break;
             case "culturer":
-                holder.icon.setImageResource(R.drawable.culture_gris);
+                holder.icon.setImageResource(R.drawable.category_culture);
                 break;
             case "sportiver":
-                holder.icon.setImageResource(R.drawable.sport_gris);
+                holder.icon.setImageResource(R.drawable.category_sport);
                 break;
             case "prevention":
-                holder.icon.setImageResource(R.drawable.prevention_gris);
+                holder.icon.setImageResource(R.drawable.category_prevention);
                 break;
             default:
                 holder.icon.setImageResource(R.drawable.ic_action_select_all);

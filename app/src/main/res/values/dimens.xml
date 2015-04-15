@@ -23,7 +23,7 @@
     <dimen name="add_button_margin">16dp</dimen>
 
     <!--favorite icon-->
-    <dimen name="favorite_icon">23dp</dimen>
+    <dimen name="favorite_icon">25dp</dimen>
     <dimen name="icon_margin">16dp</dimen>
 
     <!--artiste card img-->

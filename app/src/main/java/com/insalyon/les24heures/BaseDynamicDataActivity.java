@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -585,13 +586,13 @@ public abstract class BaseDynamicDataActivity extends Activity {
         list.addAll(selectedCategories);
         if (item.isChecked()) {
             item.setChecked(false);
-            item.setIcon(R.drawable.menu_favorite_unchecked);
+            item.setIcon(R.drawable.ic_action_favorite_uncheck);
 
             isFavoritesChecked = false;
         } else {
             list.add(categoryService.getFavoriteCategory());
             item.setChecked(true);
-            item.setIcon(R.drawable.menu_favorite_checked);
+            item.setIcon(R.drawable.ic_action_favorite);
             isFavoritesChecked = true;
         }
         CategoriesSelectedEvent event = new CategoriesSelectedEvent(list);

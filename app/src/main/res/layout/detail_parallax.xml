@@ -12,7 +12,6 @@
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:id="@+id/detail_paralax_header_imageview"
-        android:scaleType="centerCrop"
-        android:layout_marginTop="-2dp" />
+        android:scaleType="centerCrop"/>
 
 </LinearLayout>

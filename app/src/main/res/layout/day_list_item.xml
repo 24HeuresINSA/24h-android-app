@@ -99,10 +99,8 @@
                                 android:layout_height="@dimen/favorite_icon"
                                 android:background="@null"
                                 android:scaleType="centerInside"
-                                android:src="@drawable/ic_favorite_unchecked_gris"
-                                android:layout_marginLeft="@dimen/list_icon_padding"
-                                android:layout_marginTop="@dimen/list_icon_padding"
-                                android:layout_marginBottom="@dimen/list_icon_padding" />
+                                android:src="@drawable/ic_action_favorite_uncheck"
+                                android:tint="@color/abc_input_method_navigation_guard" />
                         </LinearLayout>
 
                     </LinearLayout>

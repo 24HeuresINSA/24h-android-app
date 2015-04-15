@@ -60,7 +60,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
             } else if (slideOffset < anchored) { //from visible to anchored and vice versa
                 //parallax
-                newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored));
+                newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored)) -2;
                 newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
                 if(parallaxHeader.getVisibility() == INVISIBLE && !parallaxHeader.isSelected()) //parallaxHeader.selected is set to true by DetailFragment when no pictures are to be displayed
                     parallaxHeader.setVisibility(VISIBLE);
@@ -178,7 +178,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         //set parallaxHeader
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) parallaxHeader.getLayoutParams();
-        params.height = parallaxHeight;
+        params.height = parallaxHeight + 2;
         parallaxHeader.setLayoutParams(params);
         parallaxHeader.setTranslationY(wideHeight);
 
