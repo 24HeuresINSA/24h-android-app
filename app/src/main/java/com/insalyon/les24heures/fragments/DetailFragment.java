@@ -276,8 +276,11 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         detailSlidingDescription.setText(resource.getDescription());
 
         Schedule schedule = scheduleService.getNextSchedule(resource);
+        if(schedule != null)
         nextSchedule.setText((schedule.getPrintableDay() + "\n" +
                 schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
+        else
+            nextSchedule.setText(getResources().getString(R.string.no_more_schedule));
 
         if (resource.isFavorites()) {
             favoriteImageButton.setImageResource(R.drawable.ic_favorite_checked);

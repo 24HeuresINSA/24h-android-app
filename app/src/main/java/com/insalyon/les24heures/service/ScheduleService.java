@@ -18,5 +18,7 @@ public interface ScheduleService {
 
     public Schedule getNextSchedule(Resource dayResource);
 
-    public ArrayList<Schedule> getNextSchedules(Resource dayResource);
+    ArrayList<Schedule> getNextSchedules(Resource dayResource);
+
+    public ArrayList<Schedule> getTodayNextSchedules(Resource dayResource);
 }

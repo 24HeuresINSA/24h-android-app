@@ -78,8 +78,7 @@ public abstract class ResourceCategoryFilter<T extends Resource> extends Filter 
 
     private boolean isCategoryzedDisplayable(Resource dayResource) {
         if (selectedCategories.contains(SpecificCategory.REMAINING.toString())) {
-//            return !scheduleService.getNextSchedules(dayResource).isEmpty();
-            return !((ScheduleServiceImpl)scheduleService).getNextSchedulesMocked(dayResource).isEmpty();
+            return !scheduleService.getTodayNextSchedules(dayResource).isEmpty();
         }
         return (selectedCategories.contains(dayResource.getCategory().toString()));
     }

@@ -69,11 +69,43 @@ public class ScheduleServiceImpl implements ScheduleService {
 
     @Override
     public Schedule getNextSchedule(Resource dayResource) {
-        return getNextSchedules(dayResource).get(0);
+        return (getNextSchedules(dayResource).isEmpty())?  null : getNextSchedules(dayResource).get(0);
     }
 
-    public ArrayList<Schedule> getNextSchedulesMocked(Resource dayResource) {
-        Date nowDate = null;
+    @Override
+    public ArrayList<Schedule> getNextSchedules(Resource dayResource) {
+        Date nowDate = new Date();
+        //TODO democker
+        try {
+            nowDate = new SimpleDateFormat("hh:mm/dd/M/yyyy").parse("19:00/23/5/2015");  
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
+        Calendar now = Calendar.getInstance();
+        now.setTime(nowDate);
+        Day nowDay = Day.values()[(now.get(Calendar.DAY_OF_WEEK))-1];
+        int nowHours = now.get(Calendar.HOUR_OF_DAY);
+
+        ArrayList<Schedule> result = new ArrayList<>();
+        for (Schedule schedule : dayResource.getSchedules()) {
+            if((schedule.getDay().equals(nowDay))
+                    && (schedule.getEnd().getHours() >= nowHours
+                    || schedule.getEnd().getHours() == 0)) //traitement de faveur pour le minuit des 24h de cinema
+                result.add(schedule);
+            else if (schedule.getDay().getRank() > nowDay.getRank()) //only works if the last anim is on sunday
+                result.add(schedule);
+        }
+
+        return result;
+    }
+
+
+
+    @Override
+    public ArrayList<Schedule> getTodayNextSchedules(Resource dayResource) {
+        Date nowDate = new Date();
+        //TODO democker
         try {
             nowDate = new SimpleDateFormat("hh:mm/dd/M/yyyy").parse("19:00/23/5/2015");  //ensemble vocal de 15-16 devrai pas etre affiché
         } catch (ParseException e) {
@@ -89,31 +121,9 @@ public class ScheduleServiceImpl implements ScheduleService {
         for (Schedule schedule : dayResource.getSchedules()) {
             if(schedule.getDay().equals(nowDay)
                     && (schedule.getEnd().getHours() >= nowHours
-                    || schedule.getEnd().getHours() == 0)) //traitement de faveur pour le minuit des 24h de cinema
-                result.add(schedule);
-        }
-
-
-        return result;
-    }
-
-    @Override
-    public ArrayList<Schedule> getNextSchedules(Resource dayResource) {
-        Date nowDate = new Date();
-
-        Calendar now = Calendar.getInstance();
-        now.setTime(nowDate);
-        Day nowDay = Day.values()[(now.get(Calendar.DAY_OF_WEEK))-1]; //TODO pourquoi -2 ?!
-        int nowHours = now.get(Calendar.HOUR_OF_DAY);
-
-        ArrayList<Schedule> result = new ArrayList<>();
-        for (Schedule schedule : dayResource.getSchedules()) {
-            if(schedule.getDay().equals(nowDay)
-                    && (schedule.getEnd().getHours() >= nowHours
                         || schedule.getEnd().getHours() == 0)) //traitement de faveur pour le minuit des 24h de cinema
                 result.add(schedule);
         }
-
 
         return result;
     }

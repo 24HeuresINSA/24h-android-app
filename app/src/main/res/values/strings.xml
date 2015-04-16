@@ -96,6 +96,7 @@
     <string name="retrofit_server_error">Une erreur s\'est produite avec nos servers, veuillez essayer de nouveau plus tard</string>
     <string name="retrofit_unexpected_error">Une erreur inconnue s\'est produite, les données n\'ont pus être mise à jour</string>
     <string name="category_remaining_label">A venir</string>
+    <string name="no_more_schedule">Plus d\'horaire planifié</string>
 
 
 </resources>
