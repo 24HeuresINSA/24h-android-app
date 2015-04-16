@@ -72,17 +72,17 @@ public class ScheduleServiceImpl implements ScheduleService {
         return getNextSchedules(dayResource).get(0);
     }
 
-    public ArrayList<Schedule> getNextSchedulesMocked(Resource dayResource, String dateFormat) {
+    public ArrayList<Schedule> getNextSchedulesMocked(Resource dayResource) {
         Date nowDate = null;
         try {
-            nowDate = new SimpleDateFormat("hh:mm/dd/M/yyyy").parse("11:10/23/5/2015");
+            nowDate = new SimpleDateFormat("hh:mm/dd/M/yyyy").parse("19:00/23/5/2015");  //ensemble vocal de 15-16 devrai pas etre affiché
         } catch (ParseException e) {
             e.printStackTrace();
         }
 
         Calendar now = Calendar.getInstance();
         now.setTime(nowDate);
-        Day nowDay = Day.values()[(now.get(Calendar.DAY_OF_WEEK))-2]; //TODO pourquoi -2 ?!
+        Day nowDay = Day.values()[(now.get(Calendar.DAY_OF_WEEK))-1];
         int nowHours = now.get(Calendar.HOUR_OF_DAY);
 
         ArrayList<Schedule> result = new ArrayList<>();
@@ -103,7 +103,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
         Calendar now = Calendar.getInstance();
         now.setTime(nowDate);
-        Day nowDay = Day.values()[(now.get(Calendar.DAY_OF_WEEK))-2]; //TODO pourquoi -2 ?!
+        Day nowDay = Day.values()[(now.get(Calendar.DAY_OF_WEEK))-1]; //TODO pourquoi -2 ?!
         int nowHours = now.get(Calendar.HOUR_OF_DAY);
 
         ArrayList<Schedule> result = new ArrayList<>();
