@@ -41,6 +41,7 @@ public class CategoryServiceImpl implements CategoryService {
             categories.add(this.fromDTO(categoryDTO));
         }
         categories.add(this.getAllCategory());
+        categories.add(this.getRemainingCategory());
 
 
         return categories;
@@ -63,7 +64,13 @@ public class CategoryServiceImpl implements CategoryService {
     @Override
     public Category getAllCategory() {
         //ALL_LABEL will be replaced by R.string.category_all_label by CategoryAdapter (sorry...)
-        return new Category(SpecificCategory.ALL.toString(),SpecificCategory.FAVORITES.toString(),"ic_all_categories","ALL_LABEL");
+        return new Category(SpecificCategory.ALL.toString(),SpecificCategory.ALL.toString(),"ic_all_categories","ALL_LABEL");
+    }
+
+    @Override
+    public Category getRemainingCategory(){
+        //REMAINING_LABEL will be replaced by R.string.category_all_label by CategoryAdapter (sorry...)
+        return new Category(SpecificCategory.REMAINING.toString(),SpecificCategory.REMAINING.toString(),"ic_remaining_categories","REMAINING_LABEL");
     }
 
 
