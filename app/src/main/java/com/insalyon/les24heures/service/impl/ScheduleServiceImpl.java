@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by remi on 29/01/15.
@@ -77,7 +78,7 @@ public class ScheduleServiceImpl implements ScheduleService {
         Date nowDate = new Date();
         //TODO democker
         try {
-            nowDate = new SimpleDateFormat("hh:mm/dd/M/yyyy").parse("19:00/23/5/2015");  
+            nowDate = new SimpleDateFormat("hh:mm/dd/M/yyyy").parse("19:00/23/5/2015");
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -126,6 +127,23 @@ public class ScheduleServiceImpl implements ScheduleService {
         }
 
         return result;
+    }
+
+    @Override
+    public String printSchedules(List<Schedule> schedules) {
+        String str = "";
+        for (Schedule schedule : schedules) {
+            str += schedule.toString();
+            if (schedules.indexOf(schedule) != schedules.size() - 1) //if not the last
+                str += " | ";
+            if (schedules.indexOf(schedule) == 1) //only two items are displayed
+                break;
+        }
+
+        if (schedules.size() > 2)
+            str += "   ... ";
+
+        return str;
     }
 
 
