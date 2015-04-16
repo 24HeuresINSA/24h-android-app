@@ -91,12 +91,13 @@
     <string name="apologize_dialog_messag_minor">Une mise à jour est disponible, je t\'invite à te rendre sur le PlayStore afin de bénéficier des dernières fonctionnalités disponibles. \nMerci d\'avance pour ta compréhension et à bientot pour une nouvelle version qui déchire !</string>
     <string name="apologize_dialog_messag_major">Une mise à jour importante est disponible, je t\'invite à te rendre sur le PlayStore afin de bénéficier des dernières fonctionnalités disponibles. \n\nCe message va s\'afficher toutes les 10 secondes et les nouvelles données ne sont plus téléchargées.\nMerci d\'avance pour ta compréhension et à bientot pour une nouvelle version qui déchire !</string>
     <string name="SHARED_PREF_APP_VERSION">SHARED_PREF_APP_VERSION</string>
-    <string name="retrofit_network_error">Il semblerait qu\'aucune connection internet ne soit disponible. /nActive en une et patiente que les données se téléchargent</string>
+    <string name="retrofit_network_error">Il semblerait qu\'aucune connection internet ne soit disponible. Active en une et patiente que les données se téléchargent</string>
     <string name="retrofit_internal_error">Une erreur interne s\'est produite</string>
     <string name="retrofit_server_error">Une erreur s\'est produite avec nos servers, veuillez essayer de nouveau plus tard</string>
     <string name="retrofit_unexpected_error">Une erreur inconnue s\'est produite, les données n\'ont pus être mise à jour</string>
     <string name="category_remaining_label">A venir</string>
     <string name="no_more_schedule">Plus d\'horaire planifié</string>
+    <string name="retrofit_error_snackbar_action_label">Réessayer</string>
 
 
 </resources>

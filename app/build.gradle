@@ -45,6 +45,7 @@ dependencies {
     compile 'com.google.code.gson:gson:2.2.4'
     compile 'com.squareup.picasso:picasso:2.5.0'
     compile 'com.melnykov:floatingactionbutton:1.2.0'
+    compile 'com.github.mrengineer13:snackbar:1.1.0'
     //TODO use something else
     compile 'com.android.support:cardview-v7:21.0.+'
 }
