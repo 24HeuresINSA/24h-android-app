@@ -42,8 +42,6 @@ public class DayActivity extends BaseDynamicDataActivity {
     Boolean animateSwitching = false;
     private Integer position;
     private OurViewPagerAdapter mViewPagerAdapter;
-//    private DayMapsFragment dayMapsFragment;
-//    private DayListFragment dayListFragment;
 
     /**
      * Activity is being created       *
