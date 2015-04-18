@@ -21,6 +21,7 @@ import com.felipecsl.quickreturn.library.widget.QuickReturnTargetView;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.DayResourceAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.ListSetIsVisible;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
@@ -154,6 +155,10 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
 
     public void onEvent(SearchEvent event) {
         super.onEvent(event);
+    }
+
+    public void onEvent(ListSetIsVisible event){
+        this.isVisible = event.isVisible();
     }
 
     @Override

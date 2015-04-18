@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 
-import com.insalyon.les24heures.BaseDynamicDataActivity;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.RetrofitErrorEvent;
@@ -83,7 +82,6 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((BaseDynamicDataActivity) getActivity()).setTitle(displayName);
     }
 
     @Override

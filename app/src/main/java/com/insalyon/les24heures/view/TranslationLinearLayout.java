@@ -7,6 +7,8 @@ import android.widget.FrameLayout;
 /**
  * Created by remi on 15/01/15.
  */
+
+//TODO s'en affranchir
 public class TranslationLinearLayout extends FrameLayout {
 
     public TranslationLinearLayout(Context context, AttributeSet attrs, int defStyleAttr) {

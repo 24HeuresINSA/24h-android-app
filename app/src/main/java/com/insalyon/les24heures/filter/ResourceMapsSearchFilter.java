@@ -40,6 +40,6 @@ public class ResourceMapsSearchFilter extends ResourceSearchFilter<DayResource> 
         }
 
 
-        dayMapsFragment.moveCamera();
+        dayMapsFragment.moveCamera(this);
     }
 }
