@@ -252,13 +252,23 @@ public class DayActivity extends BaseDynamicDataActivity {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                DayMapsFragment dayMapsFragment = new DayMapsFragment();
-                dayMapsFragment.setIsVisible(true);
-                return dayMapsFragment;
+                DayMapsFragment fragment = new DayMapsFragment();
+
+                Bundle bundleArgs = new Bundle();
+                bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
+                fragment.setArguments(bundleArgs);
+
+                fragment.setIsVisible(true);
+                return fragment;
             }
-            DayListFragment dayListFragment = new DayListFragment();
-            dayListFragment.setIsVisible(false);
-            return dayListFragment;
+            DayListFragment fragment = new DayListFragment();
+
+            Bundle bundleArgs = new Bundle();
+            bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
+            fragment.setArguments(bundleArgs);
+
+            fragment.setIsVisible(false);
+            return fragment;
         }
 
         @Override

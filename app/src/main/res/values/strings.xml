@@ -28,7 +28,7 @@
 
 
     <!--Maps Output-->
-    <string name="unexpected_move_camera_error">No resources are displayed, unexpected. Please retry</string>
+    <string name="unexpected_move_camera_error">Rien à afficher pour le moment</string>
 
 
     <!--TODO should be displayed by MainActivity ??-->

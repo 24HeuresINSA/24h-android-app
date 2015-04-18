@@ -133,7 +133,7 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
 
         view.getViewTreeObserver().addOnGlobalLayoutListener(mGlobalLayoutListener);
 
-        setCategoryFilter();
+        //setCategoryFilter();
 
         lastKnownPosition.setLatitude(45.78401554);
         lastKnownPosition.setLongitude(4.8754406);

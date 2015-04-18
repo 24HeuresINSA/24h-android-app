@@ -28,11 +28,16 @@ public abstract class DayTypeFragment extends ContentFrameFragment<DayResource> 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (resourcesList == null || categoriesSelected == null) {
+        if (resourcesList == null) {
             Log.e("OutputTypeFragment", "resourcesList or categoriesSelected are null. Are you sur you create the fragment with these parameters ?");
             //TODO #31
             resourcesList = new ArrayList<>();
-            categoriesSelected = new ArrayList<>();
+        }
+
+        if ( categoriesSelected == null) {
+            Log.e("OutputTypeFragment", "resourcesList or categoriesSelected are null. Are you sur you create the fragment with these parameters ?");
+            //TODO #31
+            resourcesList = new ArrayList<>();
         }
     }
 
