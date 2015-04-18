@@ -40,6 +40,8 @@ public class DayActivity extends BaseDynamicDataActivity {
     Boolean animateSwitching = false;
     private Integer position;
     private OurViewPagerAdapter mViewPagerAdapter;
+    private DayMapsFragment dayMapsFragment;
+    private DayListFragment dayListFragment;
 
     /**
      * Activity is being created       *
@@ -105,7 +107,8 @@ public class DayActivity extends BaseDynamicDataActivity {
 
             @Override
             public void onPageSelected(int position) {
-                //TODO #31 des/activer le filtre
+                dayMapsFragment.setIsVisible(position == 0);
+                dayListFragment.setIsVisible(position != 0);
                 restoreTitle();
             }
 
@@ -240,13 +243,14 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         @Override
         public Fragment getItem(int position) {
-            Fragment frag;
             if (position == 0) {
-                frag = new DayMapsFragment();
-            } else {
-                frag = new DayListFragment();
+                 dayMapsFragment = new DayMapsFragment();
+                dayMapsFragment.setIsVisible(true);
+                return dayMapsFragment;
             }
-            return frag;
+            dayListFragment = new DayListFragment();
+            dayListFragment.setIsVisible(false);
+            return dayListFragment;
         }
 
         @Override

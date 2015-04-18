@@ -29,6 +29,6 @@ public class ResourceSimpleAdapterCategoryFilter<T extends Resource> extends Res
         for (int i = 0, l = resourceList.size(); i < l; i++) {
             resourceAdapter.add(resourceList.get(i)); //will populate resourceAdapter.resourceList
         }
-        resourceAdapter.notifyDataSetInvalidated();
+        resourceAdapter.notifyDataSetInvalidated(this);
     }
 }
