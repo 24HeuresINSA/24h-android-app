@@ -92,6 +92,8 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
         if(resourcesList.size() == 0){
             displayProgress();
         }
+
+        setCategoryFilter();
     }
 
     //TODO quick fix

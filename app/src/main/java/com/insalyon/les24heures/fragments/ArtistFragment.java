@@ -79,7 +79,7 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
     @Override
     public void onResume() {
         super.onResume();
-        setCategoryFilter();
+        //setCategoryFilter();
     }
 
     /**
