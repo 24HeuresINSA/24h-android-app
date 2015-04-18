@@ -1,10 +1,7 @@
 package com.insalyon.les24heures;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.app.Fragment;
 import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -65,7 +62,6 @@ public class DayActivity extends BaseDynamicDataActivity {
         }
 
 
-
     }
 
     //here we do all the stuff requiring the view
@@ -100,64 +96,30 @@ public class DayActivity extends BaseDynamicDataActivity {
         mSlidingTabLayout.setViewPager(mViewPager);
 
         //todo #31
-//        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset,
-//                                       int positionOffsetPixels) {
-//
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-//                    mSlidingTabLayout.announceForAccessibility(
-//                            getString(R.string.my_schedule_page_desc_a11y,
-//                                    getDayName(position)));
-//                }
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//                enableDisableSwipeRefresh(state == ViewPager.SCROLL_STATE_IDLE);
-//            }
-//        });
+        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
 
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                //TODO #31 des/activer le filtre
+                restoreTitle();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
 
 
         startPreferredOutput(savedInstanceState);
 
         animateSwitching = true;
+        restoreTitle();
     }
-
-    private class OurViewPagerAdapter extends FragmentPagerAdapter {
-
-        public OurViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            Fragment frag;
-            if(position == 0){
-                frag = new DayMapsFragment();
-            }else {
-                frag = new DayListFragment();
-            }
-            return frag;
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return position+"";
-        }
-    }
-
-
 
     private void startPreferredOutput(Bundle savedInstanceState) {
         /*** start the right ouptut : Maps or List ***/
@@ -182,24 +144,25 @@ public class DayActivity extends BaseDynamicDataActivity {
         }
     }
 
-
     /**
      * Activity is alive
      */
 
     public void onEvent(ResourceSelectedEvent resourceSelected) {
-        //tODO #31
         //Output state
-//        detailSlidingUpPanelLayoutLayout.collapsePanel();
-//        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
+        detailSlidingUpPanelLayoutLayout.collapsePanel();
+        if (isMapsSelected()) {
 //            just focus on resource and highlith it
-//        } else {
+        } else {
 //            open maps on resource
-//            selectMaps();
-//        }
+            selectMaps();
+
+        }
     }
 
-
+    private boolean isMapsSelected() {
+        return mViewPager.getCurrentItem() == 0;
+    }
 
     /**
      * Activity is no more alive
@@ -208,14 +171,13 @@ public class DayActivity extends BaseDynamicDataActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        //TODO #31
 
 //        Output state
-//        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
+        if (isMapsSelected()) {
             outState.putString("outputType", OutputType.MAPS.toString());
-//        } else {
-//            outState.putString("outputType", OutputType.LIST.toString());
-//        }
+        } else {
+            outState.putString("outputType", OutputType.LIST.toString());
+        }
     }
 
     /**
@@ -224,63 +186,24 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     @Override
     public void restoreTitle() {
-        //TODO #31
-//        String str;
-//        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
-//            str = (getResources().getString(R.string.day_maps_appname));
-//        } else {
-//            str = (getResources().getString(R.string.day_list_appname));
-//        }
-//
-//        if (str != getActionBar().getTitle()) {
-//            setTitle(str);
-//        }
+        String str;
+        if (isMapsSelected()) {
+            str = (getResources().getString(R.string.day_maps_appname));
+        } else {
+            str = (getResources().getString(R.string.day_list_appname));
+        }
+
+        if (str != getActionBar().getTitle()) {
+            setTitle(str);
+        }
     }
 
-
     public void selectMaps() {
-        Fragment mapsFragment = new DayMapsFragment();
-        replaceContentFragment(mapsFragment);
+        mViewPager.setCurrentItem(0, animateSwitching);
     }
 
     public void selectList() {
-        Fragment listFragment = new DayListFragment();
-        replaceContentFragment(listFragment);
-    }
-
-    private void replaceContentFragment(Fragment fragment) {
-
-        Bundle bundleArgs = new Bundle();
-
-        bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
-        searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
-        bundleArgs.putString("searchQuery", searchQuery);
-        fragment.setArguments(bundleArgs);
-
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-
-        bundleArgs.putParcelableArrayList("resourcesList", dayResourceArrayList);
-
-        AnimatorSet set;
-
-        if (fragment.getClass() == DayMapsFragment.class) {
-            ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
-            set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
-                    R.animator.slide_in_from_right);
-        } else {
-            ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
-            set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
-                    R.animator.slide_out_to_the_right);
-        }
-
-//        ft.replace(R.id.day_output_holder, fragment).commit();
-//
-//        if (animateSwitching) {
-//            set.setTarget(indicator);
-//            set.start();
-//        }
-
-
+        mViewPager.setCurrentItem(0, animateSwitching);
     }
 
     private List<Category> selectCategory(int position) {
@@ -307,6 +230,35 @@ public class DayActivity extends BaseDynamicDataActivity {
         eventBus.post(categoriesSelectedEvent);
 
         return categoriesSelectedEvent.getCategories();
+    }
+
+    private class OurViewPagerAdapter extends FragmentPagerAdapter {
+
+        public OurViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment frag;
+            if (position == 0) {
+                frag = new DayMapsFragment();
+            } else {
+                frag = new DayListFragment();
+            }
+            return frag;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            if (position == 0) return getResources().getString(R.string.dayTabmap);
+            return getResources().getString(R.string.dayTablist);
+        }
     }
 
     private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
