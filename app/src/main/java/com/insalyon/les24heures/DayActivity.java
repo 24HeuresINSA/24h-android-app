@@ -36,12 +36,6 @@ public class DayActivity extends BaseDynamicDataActivity {
     private static final String TAG = DayActivity.class.getCanonicalName();
 
 
-//    @InjectView(R.id.day_menu_tabs_list)
-//    View tabButtonList;
-//    @InjectView(R.id.day_menu_tabs_maps)
-//    View tabButtonMaps;
-//    @InjectView(R.id.day_menu_tabs_indicator)
-//    View indicator;
     @InjectView(R.id.sliding_tabs)
     SlidingTabLayout mSlidingTabLayout;
     @InjectView(R.id.view_pager)
@@ -105,7 +99,7 @@ public class DayActivity extends BaseDynamicDataActivity {
         mSlidingTabLayout.setDistributeEvenly(true);
         mSlidingTabLayout.setViewPager(mViewPager);
 
-        //todo
+        //todo #31
 //        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
 //            @Override
 //            public void onPageScrolled(int position, float positionOffset,
@@ -129,14 +123,6 @@ public class DayActivity extends BaseDynamicDataActivity {
 //        });
 
 
-
-//        if (getFragmentManager().findFragmentById(R.id.day_output_holder) != null &&
-//                getFragmentManager().findFragmentById(R.id.day_output_holder).getClass().equals(DayListFragment.class)) {
-//            AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
-//                    R.animator.slide_out_to_the_right);
-//            set.setTarget(indicator);
-//            set.start();
-//        }
 
         startPreferredOutput(savedInstanceState);
 
@@ -202,6 +188,7 @@ public class DayActivity extends BaseDynamicDataActivity {
      */
 
     public void onEvent(ResourceSelectedEvent resourceSelected) {
+        //tODO #31
         //Output state
 //        detailSlidingUpPanelLayoutLayout.collapsePanel();
 //        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
@@ -212,23 +199,7 @@ public class DayActivity extends BaseDynamicDataActivity {
 //        }
     }
 
-//    @OnClick(R.id.day_menu_tabs_list)
-//    public void onClickListTab(View v) {
-//        if (!v.isSelected()) {
-//            v.setSelected(true);
-//            tabButtonMaps.setSelected(false);
-//            selectList();
-//        }
-//    }
-//
-//    @OnClick(R.id.day_menu_tabs_maps)
-//    public void onClickMapsTab(View v) {
-//        if (!v.isSelected()) {
-//            v.setSelected(true);
-//            tabButtonList.setSelected(false);
-//            selectMaps();
-//        }
-//    }
+
 
     /**
      * Activity is no more alive
@@ -237,6 +208,7 @@ public class DayActivity extends BaseDynamicDataActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
+        //TODO #31
 
 //        Output state
 //        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
@@ -252,6 +224,7 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     @Override
     public void restoreTitle() {
+        //TODO #31
 //        String str;
 //        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
 //            str = (getResources().getString(R.string.day_maps_appname));

@@ -14,7 +14,6 @@
     <dimen name="detail_header_height">90dp</dimen>
     <dimen name="whole_detail_padding">0dp</dimen>
     <dimen name="text_block_padding">10dp</dimen>
-    <dimen name="day_menu_tabs_height">40dp</dimen>
 
     <!--FLOATING BTN-->
     <dimen name="diameter">56dp</dimen>
