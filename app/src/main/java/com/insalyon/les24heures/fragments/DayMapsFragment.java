@@ -190,7 +190,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-       addMarkers();
+        if(googleMap != null) addMarkers();
     }
 
     public void onEvent(SearchEvent event) {
@@ -360,5 +360,10 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         progressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    protected Boolean setCategoryFilter() {
+        if(googleMap == null) return false;
 
+            return super.setCategoryFilter();
+    }
 }

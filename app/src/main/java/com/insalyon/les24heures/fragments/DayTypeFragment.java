@@ -6,6 +6,8 @@ import android.util.Log;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.DayResource;
 
+import java.util.ArrayList;
+
 /**
  * Created by remi on 26/12/14.
  */
@@ -18,6 +20,8 @@ public abstract class DayTypeFragment extends ContentFrameFragment<DayResource> 
 
         if (resourcesList == null || categoriesSelected == null) {
             Log.e("OutputTypeFragment", "resourcesList or categoriesSelected are null. Are you sur you create the fragment with these parameters ?");
+            resourcesList = new ArrayList<>();
+            categoriesSelected = new ArrayList<>();
         }
     }
 

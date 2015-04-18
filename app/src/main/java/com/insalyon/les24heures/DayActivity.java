@@ -3,11 +3,14 @@ package com.insalyon.les24heures;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.app.Fragment;
+import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,26 +24,31 @@ import com.insalyon.les24heures.fragments.DayMapsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.utils.OutputType;
 import com.insalyon.les24heures.utils.SpecificCategory;
+import com.insalyon.les24heures.view.SlidingTabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.InjectView;
-import butterknife.OnClick;
 
 
 public class DayActivity extends BaseDynamicDataActivity {
     private static final String TAG = DayActivity.class.getCanonicalName();
 
 
-    @InjectView(R.id.day_menu_tabs_list)
-    View tabButtonList;
-    @InjectView(R.id.day_menu_tabs_maps)
-    View tabButtonMaps;
-    @InjectView(R.id.day_menu_tabs_indicator)
-    View indicator;
+//    @InjectView(R.id.day_menu_tabs_list)
+//    View tabButtonList;
+//    @InjectView(R.id.day_menu_tabs_maps)
+//    View tabButtonMaps;
+//    @InjectView(R.id.day_menu_tabs_indicator)
+//    View indicator;
+    @InjectView(R.id.sliding_tabs)
+    SlidingTabLayout mSlidingTabLayout;
+    @InjectView(R.id.view_pager)
+    ViewPager mViewPager;
     Boolean animateSwitching = false;
     private Integer position;
+    private OurViewPagerAdapter mViewPagerAdapter;
 
     /**
      * Activity is being created       *
@@ -86,18 +94,60 @@ public class DayActivity extends BaseDynamicDataActivity {
             selectedCategories.clear();
 
 
-        if (getFragmentManager().findFragmentById(R.id.day_output_holder) != null &&
-                getFragmentManager().findFragmentById(R.id.day_output_holder).getClass().equals(DayListFragment.class)) {
-            AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
-                    R.animator.slide_out_to_the_right);
-            set.setTarget(indicator);
-            set.start();
-        }
+        mViewPagerAdapter = new OurViewPagerAdapter(getFragmentManager());
+        mViewPager.setAdapter(mViewPagerAdapter);
+
+
+        mSlidingTabLayout.setCustomTabView(R.layout.tab_indicator, android.R.id.text1);
+
+
+        mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.tab_selected_strip));
+        mSlidingTabLayout.setDistributeEvenly(true);
+        mSlidingTabLayout.setViewPager(mViewPager);
+
+
+
+//        if (getFragmentManager().findFragmentById(R.id.day_output_holder) != null &&
+//                getFragmentManager().findFragmentById(R.id.day_output_holder).getClass().equals(DayListFragment.class)) {
+//            AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
+//                    R.animator.slide_out_to_the_right);
+//            set.setTarget(indicator);
+//            set.start();
+//        }
 
         startPreferredOutput(savedInstanceState);
 
         animateSwitching = true;
     }
+
+    private class OurViewPagerAdapter extends FragmentPagerAdapter {
+
+        public OurViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            Fragment frag;
+            if(position == 0){
+                frag = new DayMapsFragment();
+            }else {
+                frag = new DayListFragment();
+            }
+            return frag;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            return position+"";
+        }
+    }
+
 
 
     private void startPreferredOutput(Bundle savedInstanceState) {
@@ -130,32 +180,32 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     public void onEvent(ResourceSelectedEvent resourceSelected) {
         //Output state
-        detailSlidingUpPanelLayoutLayout.collapsePanel();
-        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
-            //just focus on resource and highlith it
-        } else {
-            //open maps on resource
-            selectMaps();
-        }
+//        detailSlidingUpPanelLayoutLayout.collapsePanel();
+//        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
+//            just focus on resource and highlith it
+//        } else {
+//            open maps on resource
+//            selectMaps();
+//        }
     }
 
-    @OnClick(R.id.day_menu_tabs_list)
-    public void onClickListTab(View v) {
-        if (!v.isSelected()) {
-            v.setSelected(true);
-            tabButtonMaps.setSelected(false);
-            selectList();
-        }
-    }
-
-    @OnClick(R.id.day_menu_tabs_maps)
-    public void onClickMapsTab(View v) {
-        if (!v.isSelected()) {
-            v.setSelected(true);
-            tabButtonList.setSelected(false);
-            selectMaps();
-        }
-    }
+//    @OnClick(R.id.day_menu_tabs_list)
+//    public void onClickListTab(View v) {
+//        if (!v.isSelected()) {
+//            v.setSelected(true);
+//            tabButtonMaps.setSelected(false);
+//            selectList();
+//        }
+//    }
+//
+//    @OnClick(R.id.day_menu_tabs_maps)
+//    public void onClickMapsTab(View v) {
+//        if (!v.isSelected()) {
+//            v.setSelected(true);
+//            tabButtonList.setSelected(false);
+//            selectMaps();
+//        }
+//    }
 
     /**
      * Activity is no more alive
@@ -165,12 +215,12 @@ public class DayActivity extends BaseDynamicDataActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        //Output state
-        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
+//        Output state
+//        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
             outState.putString("outputType", OutputType.MAPS.toString());
-        } else {
-            outState.putString("outputType", OutputType.LIST.toString());
-        }
+//        } else {
+//            outState.putString("outputType", OutputType.LIST.toString());
+//        }
     }
 
     /**
@@ -179,16 +229,16 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     @Override
     public void restoreTitle() {
-        String str;
-        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
-            str = (getResources().getString(R.string.day_maps_appname));
-        } else {
-            str = (getResources().getString(R.string.day_list_appname));
-        }
-
-        if (str != getActionBar().getTitle()) {
-            setTitle(str);
-        }
+//        String str;
+//        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
+//            str = (getResources().getString(R.string.day_maps_appname));
+//        } else {
+//            str = (getResources().getString(R.string.day_list_appname));
+//        }
+//
+//        if (str != getActionBar().getTitle()) {
+//            setTitle(str);
+//        }
     }
 
 
@@ -227,12 +277,12 @@ public class DayActivity extends BaseDynamicDataActivity {
                     R.animator.slide_out_to_the_right);
         }
 
-        ft.replace(R.id.day_output_holder, fragment).commit();
-
-        if (animateSwitching) {
-            set.setTarget(indicator);
-            set.start();
-        }
+//        ft.replace(R.id.day_output_holder, fragment).commit();
+//
+//        if (animateSwitching) {
+//            set.setTarget(indicator);
+//            set.start();
+//        }
 
 
     }
