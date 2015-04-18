@@ -3,13 +3,13 @@ package com.insalyon.les24heures.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Filter;
 import android.widget.Toast;
 
+import com.github.mrengineer13.snackbar.SnackBar;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -338,15 +338,16 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
 
             eventBus.post(new FilterUpdateEnded(filter));
         } catch (IllegalStateException e) {
-            Log.d("OutputMapsFragment.moveCamera", "unexpected");
             e.printStackTrace();
             //no resources were added to the builder
             //default if no builder - Lyon
             //lg 4.852847680449486
             //la 45.74968239082803
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.unexpected_move_camera_error, Toast.LENGTH_SHORT);
-            toast.show();
+            String content = getResources().getString(R.string.unexpected_move_camera_error, Toast.LENGTH_SHORT);
+            SnackBar.Builder snackBar = new SnackBar.Builder(this.getActivity())
+                    .withMessage(content);
+            snackBar.show();
         }
     }
 
