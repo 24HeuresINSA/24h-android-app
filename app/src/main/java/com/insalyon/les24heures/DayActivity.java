@@ -105,6 +105,29 @@ public class DayActivity extends BaseDynamicDataActivity {
         mSlidingTabLayout.setDistributeEvenly(true);
         mSlidingTabLayout.setViewPager(mViewPager);
 
+        //todo
+//        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset,
+//                                       int positionOffsetPixels) {
+//
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+//                    mSlidingTabLayout.announceForAccessibility(
+//                            getString(R.string.my_schedule_page_desc_a11y,
+//                                    getDayName(position)));
+//                }
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//                enableDisableSwipeRefresh(state == ViewPager.SCROLL_STATE_IDLE);
+//            }
+//        });
+
 
 
 //        if (getFragmentManager().findFragmentById(R.id.day_output_holder) != null &&
