@@ -65,6 +65,7 @@ public abstract class DayTypeFragment extends ContentFrameFragment<DayResource> 
 
     }
 
+
     public void onEvent(FilterUpdateEnded event) {
         // if A.class extends B.class, and B.class extends C.class
 //        C.class.isAssignableFrom(A.class); // evaluates to true

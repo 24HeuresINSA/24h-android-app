@@ -25,6 +25,7 @@ import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.FilterUpdateEnded;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
+import com.insalyon.les24heures.eventbus.MapsSetIsVisible;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
@@ -200,6 +201,11 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     }
 
 
+    public void onEvent(MapsSetIsVisible event){
+        this.isVisible = event.isVisible();
+    }
+
+
     public void onEvent(ResourceSelectedEvent selectedEvent) {
         if(googleMap == null) return;
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedEvent.getDayResource().getLoc(), 17));
@@ -281,6 +287,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         if (resourcesList.isEmpty()) {
             return;
         }
+        resourceMarkerMap.clear();
         for (DayResource dayResource : resourcesList) {
             if (resourceMarkerMap.get(dayResource) == null) {
                 Float color = BitmapDescriptorFactory.HUE_RED;

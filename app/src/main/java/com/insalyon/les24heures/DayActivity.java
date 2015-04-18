@@ -15,6 +15,8 @@ import android.widget.ListView;
 
 import com.insalyon.les24heures.adapter.CategoryAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.ListSetIsVisible;
+import com.insalyon.les24heures.eventbus.MapsSetIsVisible;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.fragments.DayListFragment;
 import com.insalyon.les24heures.fragments.DayMapsFragment;
@@ -40,8 +42,8 @@ public class DayActivity extends BaseDynamicDataActivity {
     Boolean animateSwitching = false;
     private Integer position;
     private OurViewPagerAdapter mViewPagerAdapter;
-    private DayMapsFragment dayMapsFragment;
-    private DayListFragment dayListFragment;
+//    private DayMapsFragment dayMapsFragment;
+//    private DayListFragment dayListFragment;
 
     /**
      * Activity is being created       *
@@ -97,18 +99,15 @@ public class DayActivity extends BaseDynamicDataActivity {
         mSlidingTabLayout.setDistributeEvenly(true);
         mSlidingTabLayout.setViewPager(mViewPager);
 
-        //todo #31
         mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset,
                                        int positionOffsetPixels) {
-
             }
 
             @Override
             public void onPageSelected(int position) {
-                dayMapsFragment.setIsVisible(position == 0);
-                dayListFragment.setIsVisible(position != 0);
+                dayTypeFragmentSetIsVisible(position);
                 restoreTitle();
             }
 
@@ -124,6 +123,11 @@ public class DayActivity extends BaseDynamicDataActivity {
         restoreTitle();
     }
 
+    private void dayTypeFragmentSetIsVisible(int position) {
+        eventBus.postSticky(new ListSetIsVisible(position != 0));
+        eventBus.postSticky(new MapsSetIsVisible(position == 0));
+    }
+
     private void startPreferredOutput(Bundle savedInstanceState) {
         /*** start the right ouptut : Maps or List ***/
         if (savedInstanceState == null) {
@@ -134,8 +138,10 @@ public class DayActivity extends BaseDynamicDataActivity {
                 String defaultOutput = bundle.getString("outputType");
                 if (defaultOutput.toLowerCase().equals(OutputType.MAPS.toString().toLowerCase())) {
                     selectMaps();
+
                 } else if (defaultOutput.toLowerCase().equals(OutputType.LIST.toString().toLowerCase())) {
                     selectList();
+
                 }
             } catch (PackageManager.NameNotFoundException e) {
                 Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
@@ -203,10 +209,14 @@ public class DayActivity extends BaseDynamicDataActivity {
 
     public void selectMaps() {
         mViewPager.setCurrentItem(0, animateSwitching);
+        dayTypeFragmentSetIsVisible(0);
+
     }
 
     public void selectList() {
         mViewPager.setCurrentItem(0, animateSwitching);
+        dayTypeFragmentSetIsVisible(1);
+
     }
 
     private List<Category> selectCategory(int position) {
@@ -244,11 +254,11 @@ public class DayActivity extends BaseDynamicDataActivity {
         @Override
         public Fragment getItem(int position) {
             if (position == 0) {
-                 dayMapsFragment = new DayMapsFragment();
+                DayMapsFragment dayMapsFragment = new DayMapsFragment();
                 dayMapsFragment.setIsVisible(true);
                 return dayMapsFragment;
             }
-            dayListFragment = new DayListFragment();
+            DayListFragment dayListFragment = new DayListFragment();
             dayListFragment.setIsVisible(false);
             return dayListFragment;
         }
