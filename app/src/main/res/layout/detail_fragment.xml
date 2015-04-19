@@ -14,7 +14,7 @@
         xmlns:fab="http://schemas.android.com/apk/res-auto"
         android:id="@+id/detail_sliding_layout_header"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/detail_header_height"
         android:background="@color/primary_day">
 
         <LinearLayout

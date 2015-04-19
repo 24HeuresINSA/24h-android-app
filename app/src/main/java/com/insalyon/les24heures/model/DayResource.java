@@ -40,6 +40,11 @@ public class DayResource extends Resource {
 
 
     @Override
+    public int hashCode() {
+       return title.hashCode();
+    }
+
+    @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeParcelable(loc, flags);
     }

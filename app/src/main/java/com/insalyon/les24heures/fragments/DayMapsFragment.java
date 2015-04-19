@@ -3,12 +3,13 @@ package com.insalyon.les24heures.fragments;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Filter;
 import android.widget.Toast;
 
+import com.github.mrengineer13.snackbar.SnackBar;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
@@ -22,7 +23,9 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.FilterUpdateEnded;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
+import com.insalyon.les24heures.eventbus.MapsSetIsVisible;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
@@ -190,11 +193,16 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-       addMarkers();
+        if(googleMap != null) addMarkers();
     }
 
     public void onEvent(SearchEvent event) {
       super.onEvent(event);
+    }
+
+
+    public void onEvent(MapsSetIsVisible event){
+        this.isVisible = event.isVisible();
     }
 
 
@@ -279,6 +287,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         if (resourcesList.isEmpty()) {
             return;
         }
+        resourceMarkerMap.clear();
         for (DayResource dayResource : resourcesList) {
             if (resourceMarkerMap.get(dayResource) == null) {
                 Float color = BitmapDescriptorFactory.HUE_RED;
@@ -321,21 +330,24 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         return builder;
     }
 
-    public void moveCamera() {
+    public void moveCamera(Filter filter) {
         if(googleMap == null) return;
         try {
             // Move camera
             googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilder().build(), 70));
+
+            eventBus.post(new FilterUpdateEnded(filter));
         } catch (IllegalStateException e) {
-            Log.d("OutputMapsFragment.moveCamera", "unexpected");
             e.printStackTrace();
             //no resources were added to the builder
             //default if no builder - Lyon
             //lg 4.852847680449486
             //la 45.74968239082803
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
-            Toast toast = Toast.makeText(getActivity().getApplicationContext(), R.string.unexpected_move_camera_error, Toast.LENGTH_SHORT);
-            toast.show();
+            String content = getResources().getString(R.string.unexpected_move_camera_error, Toast.LENGTH_SHORT);
+            SnackBar.Builder snackBar = new SnackBar.Builder(this.getActivity())
+                    .withMessage(content);
+            snackBar.show();
         }
     }
 
@@ -360,5 +372,10 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         progressBar.setVisibility(View.GONE);
     }
 
+    @Override
+    protected Boolean setCategoryFilter() {
+        if(googleMap == null) return false;
 
+            return super.setCategoryFilter();
+    }
 }

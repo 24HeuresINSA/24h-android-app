@@ -6,8 +6,6 @@ import com.insalyon.les24heures.DTO.NightResourceDTO;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
-import com.insalyon.les24heures.model.Resource;
-import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceService;
 
 import java.util.ArrayList;
@@ -101,10 +99,6 @@ public class ResourceServiceImpl implements ResourceService {
 
 
 
-    @Override
-    public Schedule getNextSchedule(Resource dayResource) {
-        //TODO according to current time
-        return dayResource.getSchedules().get(0);
-    }
+
 
 }

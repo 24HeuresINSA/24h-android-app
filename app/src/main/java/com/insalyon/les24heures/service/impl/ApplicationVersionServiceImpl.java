@@ -74,14 +74,18 @@ public class ApplicationVersionServiceImpl implements ApplicationVersionService 
                     }
                     String currentVersion = pInfo.versionName;
 
-                    if (appVersion.split("\\.").length == 2 && currentVersion.split("\\.").length == 2)
-                        if (appVersion.split("\\.")[0].equals(currentVersion.split("\\.")[0]))
-                            if (appVersion.split("\\.")[1].equals(currentVersion.split("\\.")[1]))
+                    String[] app = appVersion.split("\\.");
+                    String[] current = currentVersion.split("\\.");
+                    if (app.length == 2 && current.length == 2)
+                        if (app[0].equals(current[0]))
+                            if (Integer.valueOf(app[1]) <= Integer.valueOf(current[1]))
                                 event.setState(ApplicationVersionState.TODATE);
                             else
                                 event.setState(ApplicationVersionState.MINOR);
-                        else
+                        else if(Integer.valueOf(app[0]) > Integer.valueOf(current[0]))
                             event.setState(ApplicationVersionState.MAJOR);
+                        else
+                            event.setState(ApplicationVersionState.TODATE);
                     else
                         event.setState(ApplicationVersionState.TODATE);                        //TODO piwik error
                 } else

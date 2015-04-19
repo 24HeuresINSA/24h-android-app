@@ -1,13 +1,13 @@
 package com.insalyon.les24heures;
 
-import android.animation.AnimatorInflater;
-import android.animation.AnimatorSet;
 import android.app.Fragment;
-import android.app.FragmentTransaction;
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v13.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -15,32 +15,33 @@ import android.widget.ListView;
 
 import com.insalyon.les24heures.adapter.CategoryAdapter;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
+import com.insalyon.les24heures.eventbus.ListSetIsVisible;
+import com.insalyon.les24heures.eventbus.MapsSetIsVisible;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.fragments.DayListFragment;
 import com.insalyon.les24heures.fragments.DayMapsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.utils.OutputType;
 import com.insalyon.les24heures.utils.SpecificCategory;
+import com.insalyon.les24heures.view.SlidingTabLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.InjectView;
-import butterknife.OnClick;
 
 
 public class DayActivity extends BaseDynamicDataActivity {
     private static final String TAG = DayActivity.class.getCanonicalName();
 
 
-    @InjectView(R.id.day_menu_tabs_list)
-    View tabButtonList;
-    @InjectView(R.id.day_menu_tabs_maps)
-    View tabButtonMaps;
-    @InjectView(R.id.day_menu_tabs_indicator)
-    View indicator;
+    @InjectView(R.id.sliding_tabs)
+    SlidingTabLayout mSlidingTabLayout;
+    @InjectView(R.id.view_pager)
+    ViewPager mViewPager;
     Boolean animateSwitching = false;
     private Integer position;
+    private OurViewPagerAdapter mViewPagerAdapter;
 
     /**
      * Activity is being created       *
@@ -61,7 +62,6 @@ public class DayActivity extends BaseDynamicDataActivity {
 
             position = intent.getIntExtra("categoryPosition", categories.size() - 1);
         }
-
 
 
     }
@@ -86,19 +86,45 @@ public class DayActivity extends BaseDynamicDataActivity {
             selectedCategories.clear();
 
 
-        if (getFragmentManager().findFragmentById(R.id.day_output_holder) != null &&
-                getFragmentManager().findFragmentById(R.id.day_output_holder).getClass().equals(DayListFragment.class)) {
-            AnimatorSet set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
-                    R.animator.slide_out_to_the_right);
-            set.setTarget(indicator);
-            set.start();
-        }
+        mViewPagerAdapter = new OurViewPagerAdapter(getFragmentManager());
+        mViewPager.setAdapter(mViewPagerAdapter);
+
+
+        mSlidingTabLayout.setCustomTabView(R.layout.tab_indicator, android.R.id.text1);
+
+
+        mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.tab_selected_strip));
+        mSlidingTabLayout.setDistributeEvenly(true);
+        mSlidingTabLayout.setViewPager(mViewPager);
+
+        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset,
+                                       int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                dayTypeFragmentSetIsVisible(position);
+                restoreTitle();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
+
 
         startPreferredOutput(savedInstanceState);
 
         animateSwitching = true;
+        restoreTitle();
     }
 
+    private void dayTypeFragmentSetIsVisible(int position) {
+        eventBus.postSticky(new ListSetIsVisible(position != 0));
+        eventBus.postSticky(new MapsSetIsVisible(position == 0));
+    }
 
     private void startPreferredOutput(Bundle savedInstanceState) {
         /*** start the right ouptut : Maps or List ***/
@@ -110,8 +136,10 @@ public class DayActivity extends BaseDynamicDataActivity {
                 String defaultOutput = bundle.getString("outputType");
                 if (defaultOutput.toLowerCase().equals(OutputType.MAPS.toString().toLowerCase())) {
                     selectMaps();
+
                 } else if (defaultOutput.toLowerCase().equals(OutputType.LIST.toString().toLowerCase())) {
                     selectList();
+
                 }
             } catch (PackageManager.NameNotFoundException e) {
                 Log.e(TAG, "Failed to load meta-data, NameNotFound: " + e.getMessage());
@@ -123,7 +151,6 @@ public class DayActivity extends BaseDynamicDataActivity {
         }
     }
 
-
     /**
      * Activity is alive
      */
@@ -131,30 +158,17 @@ public class DayActivity extends BaseDynamicDataActivity {
     public void onEvent(ResourceSelectedEvent resourceSelected) {
         //Output state
         detailSlidingUpPanelLayoutLayout.collapsePanel();
-        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
-            //just focus on resource and highlith it
+        if (isMapsSelected()) {
+//            just focus on resource and highlith it
         } else {
-            //open maps on resource
+//            open maps on resource
             selectMaps();
+
         }
     }
 
-    @OnClick(R.id.day_menu_tabs_list)
-    public void onClickListTab(View v) {
-        if (!v.isSelected()) {
-            v.setSelected(true);
-            tabButtonMaps.setSelected(false);
-            selectList();
-        }
-    }
-
-    @OnClick(R.id.day_menu_tabs_maps)
-    public void onClickMapsTab(View v) {
-        if (!v.isSelected()) {
-            v.setSelected(true);
-            tabButtonList.setSelected(false);
-            selectMaps();
-        }
+    private boolean isMapsSelected() {
+        return mViewPager.getCurrentItem() == 0;
     }
 
     /**
@@ -165,8 +179,8 @@ public class DayActivity extends BaseDynamicDataActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
 
-        //Output state
-        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
+//        Output state
+        if (isMapsSelected()) {
             outState.putString("outputType", OutputType.MAPS.toString());
         } else {
             outState.putString("outputType", OutputType.LIST.toString());
@@ -180,7 +194,7 @@ public class DayActivity extends BaseDynamicDataActivity {
     @Override
     public void restoreTitle() {
         String str;
-        if (fragmentManager.findFragmentById(R.id.day_output_holder).getClass() == DayMapsFragment.class) {
+        if (isMapsSelected()) {
             str = (getResources().getString(R.string.day_maps_appname));
         } else {
             str = (getResources().getString(R.string.day_list_appname));
@@ -191,49 +205,15 @@ public class DayActivity extends BaseDynamicDataActivity {
         }
     }
 
-
     public void selectMaps() {
-        Fragment mapsFragment = new DayMapsFragment();
-        replaceContentFragment(mapsFragment);
+        mViewPager.setCurrentItem(0, animateSwitching);
+        dayTypeFragmentSetIsVisible(0);
+
     }
 
     public void selectList() {
-        Fragment listFragment = new DayListFragment();
-        replaceContentFragment(listFragment);
-    }
-
-    private void replaceContentFragment(Fragment fragment) {
-
-        Bundle bundleArgs = new Bundle();
-
-        bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
-        searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
-        bundleArgs.putString("searchQuery", searchQuery);
-        fragment.setArguments(bundleArgs);
-
-        FragmentTransaction ft = fragmentManager.beginTransaction();
-
-        bundleArgs.putParcelableArrayList("resourcesList", dayResourceArrayList);
-
-        AnimatorSet set;
-
-        if (fragment.getClass() == DayMapsFragment.class) {
-            ft.setCustomAnimations(R.animator.slide_in_from_left, R.animator.slide_out_to_the_right);
-            set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
-                    R.animator.slide_in_from_right);
-        } else {
-            ft.setCustomAnimations(R.animator.slide_in_from_right, R.animator.slide_out_to_the_left);
-            set = (AnimatorSet) AnimatorInflater.loadAnimator(getApplicationContext(),
-                    R.animator.slide_out_to_the_right);
-        }
-
-        ft.replace(R.id.day_output_holder, fragment).commit();
-
-        if (animateSwitching) {
-            set.setTarget(indicator);
-            set.start();
-        }
-
+        mViewPager.setCurrentItem(0, animateSwitching);
+        dayTypeFragmentSetIsVisible(1);
 
     }
 
@@ -261,6 +241,46 @@ public class DayActivity extends BaseDynamicDataActivity {
         eventBus.post(categoriesSelectedEvent);
 
         return categoriesSelectedEvent.getCategories();
+    }
+
+    private class OurViewPagerAdapter extends FragmentPagerAdapter {
+
+        public OurViewPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            if (position == 0) {
+                DayMapsFragment fragment = new DayMapsFragment();
+
+                Bundle bundleArgs = new Bundle();
+                bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
+                fragment.setArguments(bundleArgs);
+
+                fragment.setIsVisible(true);
+                return fragment;
+            }
+            DayListFragment fragment = new DayListFragment();
+
+            Bundle bundleArgs = new Bundle();
+            bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
+            fragment.setArguments(bundleArgs);
+
+            fragment.setIsVisible(false);
+            return fragment;
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public CharSequence getPageTitle(int position) {
+            if (position == 0) return getResources().getString(R.string.dayTabmap);
+            return getResources().getString(R.string.dayTablist);
+        }
     }
 
     private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {

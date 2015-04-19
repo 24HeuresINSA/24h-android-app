@@ -18,4 +18,5 @@ public interface CategoryService {
     //specific category for filter
     public Category getFavoriteCategory();
     public Category getAllCategory();
+    public Category getRemainingCategory();
 }

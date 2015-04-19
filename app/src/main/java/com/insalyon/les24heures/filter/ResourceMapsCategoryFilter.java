@@ -34,6 +34,6 @@ public class ResourceMapsCategoryFilter extends ResourceCategoryFilter<DayResour
         for (DayResource dayResource : resourceList) {
             resourceMarkerMap.get(dayResource).setVisible(true);
         }
-        dayMapsFragment.moveCamera();
+        dayMapsFragment.moveCamera(this);
     }
 }

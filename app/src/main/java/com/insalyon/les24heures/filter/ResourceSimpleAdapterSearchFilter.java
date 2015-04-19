@@ -29,6 +29,6 @@ public class ResourceSimpleAdapterSearchFilter<T extends Resource> extends Resou
         for (int i = 0, l = resourceList.size(); i < l; i++) {
             resourceAdapter.add(resourceList.get(i)); //will populate resourceAdapter.resourceList
         }
-        resourceAdapter.notifyDataSetInvalidated();
+        resourceAdapter.notifyDataSetInvalidated(this);
     }
 }

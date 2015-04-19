@@ -9,6 +9,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -21,8 +22,8 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.SearchView;
-import android.widget.Toast;
 
+import com.github.mrengineer13.snackbar.SnackBar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
@@ -41,11 +42,13 @@ import com.insalyon.les24heures.service.CategoryService;
 import com.insalyon.les24heures.service.DataBackendService;
 import com.insalyon.les24heures.service.ResourceService;
 import com.insalyon.les24heures.service.RetrofitService;
+import com.insalyon.les24heures.service.impl.ApplicationVersionServiceImpl;
 import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.DataBackendServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.ApplicationVersionState;
 import com.insalyon.les24heures.utils.FilterAction;
+import com.insalyon.les24heures.utils.RetrofitErrorHandler;
 import com.insalyon.les24heures.view.CustomDrawerLayout;
 import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
 import com.insalyon.les24heures.view.DrawerArrowDrawable;
@@ -65,7 +68,7 @@ import retrofit.RestAdapter;
 /**
  * Created by remi on 12/03/15.
  */
-public abstract class BaseDynamicDataActivity extends Activity {
+public abstract class BaseDynamicDataActivity extends Activity implements SnackBar.OnMessageClickListener {
     public static final String PREFS_NAME = "dataFile";
     private static final String TAG = BaseDynamicDataActivity.class.getCanonicalName();
     private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
@@ -118,6 +121,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
         restAdapter = new RestAdapter.Builder()
                 .setEndpoint(getResources().getString(R.string.backend_url_mobile))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setErrorHandler(new RetrofitErrorHandler())
                 .build();
         restAdapterLocal = new RestAdapter.Builder()
                 .setEndpoint(getResources().getString(R.string.backend_url_local))
@@ -149,6 +153,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
 
 
         //retrieveData(savedInstanceState);
+
 
     }
 
@@ -316,7 +321,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
             @Override
             public boolean onQueryTextChange(String newText) {
                 SearchEvent searchEvent = new SearchEvent(newText);
-                eventBus.post(searchEvent);
+               // eventBus.post(searchEvent);
                 //TODO gros soucis, ce truc est fire quand sliding up s'ouvre et aussi au chandgement d'output...
                 searchQuery = newText;
                 return false;
@@ -525,6 +530,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
     protected void onPause() {
         super.onPause();
         EventBus.getDefault().unregister(this);
+
     }
 
     @Override
@@ -662,12 +668,14 @@ public abstract class BaseDynamicDataActivity extends Activity {
         manageApplicationVersionState(event.getState());
     }
 
-    public void onEvent(RetrofitErrorEvent event){
+    public void onEvent(RetrofitErrorEvent event) {
 
         String content = null;
-        switch (event.getRetrofitError().getKind()){
+        Boolean withAction = true;
+        switch (event.getRetrofitError().getKind()) {
             case NETWORK:
                 content = getResources().getString(R.string.retrofit_network_error);
+                withAction = false;
                 break;
             case CONVERSION:
                 content = getResources().getString(R.string.retrofit_internal_error);
@@ -680,11 +688,25 @@ public abstract class BaseDynamicDataActivity extends Activity {
                 break;
         }
 
-        if(content != null) {
-            Toast toast = Toast.makeText(getApplicationContext(), content, Toast.LENGTH_SHORT);
-            toast.show();
-        }
 
+        if (content != null) {
+            SnackBar.Builder snackBar = new SnackBar.Builder(this)
+                    .withOnClickListener(this)
+                    .withMessage(content)
+                    .withTextColorId(R.color.sb__button_text_color_green)
+                    .withDuration(SnackBar.LONG_SNACK);
+
+            if (withAction)
+                snackBar.withActionMessageId(R.string.retrofit_error_snackbar_action_label);
+
+            snackBar.show();
+
+        }
+    }
+
+    @Override
+    public void onMessageClick(Parcelable parcelable) {
+        ApplicationVersionServiceImpl.getInstance().checkApplicationVersion(getApplicationContext());
     }
 
     private void manageApplicationVersionState(ApplicationVersionState state) {
@@ -743,6 +765,7 @@ public abstract class BaseDynamicDataActivity extends Activity {
         detailSlidingUpPanelLayoutLayout.setAlpha(slideOffset);
 
     }
+
 
     private class DrawerListener extends DrawerLayout.SimpleDrawerListener {
         private MenuItem itemFav;

@@ -33,7 +33,7 @@ import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
-import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
+import com.insalyon.les24heures.service.impl.ScheduleServiceImpl;
 import com.insalyon.les24heures.view.DetailScrollView;
 import com.insalyon.les24heures.view.viewpagerindicator.CirclePageIndicator;
 import com.squareup.picasso.Picasso;
@@ -51,7 +51,7 @@ import de.greenrobot.event.EventBus;
  */
 public class DetailFragment extends Fragment implements OnMapReadyCallback {
     private static final String TAG = DayMapsFragment.class.getCanonicalName();
-    private static ResourceServiceImpl resourceService = ResourceServiceImpl.getInstance();
+    private static ScheduleServiceImpl scheduleService = ScheduleServiceImpl.getInstance();
     View view;
     @InjectView(R.id.detail_scrollView)
     DetailScrollView detailScrollView;
@@ -276,9 +276,12 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         detailSlidingTitle.setSelected(true);
         detailSlidingDescription.setText(resource.getDescription());
 
-        Schedule schedule = resourceService.getNextSchedule(resource);
+        Schedule schedule = scheduleService.getNextSchedule(resource);
+        if(schedule != null)
         nextSchedule.setText((schedule.getPrintableDay() + "\n" +
                 schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
+        else
+            nextSchedule.setText(getResources().getString(R.string.no_more_schedule));
 
         if (resource.isFavorites()) {
             favoriteImageButton.setImageResource(R.drawable.ic_action_favorite_uncheck);

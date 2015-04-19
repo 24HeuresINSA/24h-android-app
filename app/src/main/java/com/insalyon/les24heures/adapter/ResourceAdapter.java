@@ -6,6 +6,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Filter;
 
+import com.insalyon.les24heures.eventbus.FilterUpdateEnded;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.filter.ResourceCategoryFilter;
 import com.insalyon.les24heures.filter.ResourceSearchFilter;
@@ -18,6 +19,8 @@ import com.insalyon.les24heures.utils.AlphabeticalSortComparator;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import de.greenrobot.event.EventBus;
+
 /**
  * Created by remi on 13/02/15.
  */
@@ -26,6 +29,7 @@ public abstract class ResourceAdapter<T extends Resource> extends ArrayAdapter<T
     ArrayList<T> resourceList;
     private ResourceSearchFilter resourceSearchFilter;
     private ResourceCategoryFilter resourceCategoryFilter;
+    EventBus eventBus =EventBus.getDefault() ;
 
 
     public ResourceAdapter(Context context, int textViewResourceId,
@@ -81,6 +85,11 @@ public abstract class ResourceAdapter<T extends Resource> extends ArrayAdapter<T
     public abstract void onEvent(ResourcesUpdatedEvent event);
 
     public abstract View getView(final int position, View convertView, ViewGroup parent);
+
+    public void notifyDataSetInvalidated(Filter filter){
+        super.notifyDataSetInvalidated();
+        eventBus.post(new FilterUpdateEnded(filter));
+    }
 
 
 
