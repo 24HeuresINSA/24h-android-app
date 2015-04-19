@@ -100,7 +100,7 @@
                                 android:background="@null"
                                 android:scaleType="centerInside"
                                 android:src="@drawable/ic_action_favorite_uncheck"
-                                android:tint="@color/abc_input_method_navigation_guard" />
+                                android:tint="@color/light_black" />
                         </LinearLayout>
 
                     </LinearLayout>
