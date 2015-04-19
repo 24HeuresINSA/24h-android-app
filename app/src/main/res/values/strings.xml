@@ -75,10 +75,10 @@
     <string name="navigationdrawer_sectionname_day">En journée</string>
     <string name="navigationdrawer_sectionname_night">En soirée</string>
     <string name="navigationdrawer_sectionname_everytime">Tout le temps</string>
-    <string name="navigationdrawer_label_artist">Concerts (à venir)</string>
-    <string name="navigationdrawer_label_tickets">Billeterie (à venir)</string>
-    <string name="navigationdrawer_label_tcl">TCL (à venir)</string>
-    <string name="navigationdrawer_label_facilities">Lieux utiles (à venir)</string>
+    <string name="navigationdrawer_label_artist">Concerts</string>
+    <string name="navigationdrawer_label_tickets">Billeterie</string>
+    <string name="navigationdrawer_label_tcl">TCL</string>
+    <string name="navigationdrawer_label_facilities">Lieux utiles</string>
     <string name="navigationdrawer_label_params">Paramètres</string>
     <string name="category_all_label">Tout</string>
     <string name="favorite_desc">favorite</string>
@@ -99,5 +99,9 @@
     <string name="category_remaining_label">A venir</string>
     <string name="no_more_schedule">Plus d\'horaire planifié</string>
     <string name="retrofit_error_snackbar_action_label">Réessayer</string>
+    <string name="tcl_fragment_appname">TCL</string>
+    <string name="tickets_fragment_appname">Billeterie</string>
+    <string name="facilities_fragment_appname">Lieux utiles</string>
+    <string name="params_fragment_appname">Paramètres</string>
 
 </resources>

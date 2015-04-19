@@ -58,6 +58,15 @@
             android:theme="@style/NightActionBarTheme">
             </activity>
 
+
+        <activity
+            android:name="com.insalyon.les24heures.StaticDataActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/NightActionBarTheme">
+            <!--TODO faire un nouveau theme-->
+        </activity>
+
     </application>
 
     <!--Maps-->

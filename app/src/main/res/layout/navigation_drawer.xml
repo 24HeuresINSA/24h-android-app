@@ -80,6 +80,7 @@
             </LinearLayout>
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/navigation_drawer_tickets"
                 style="@style/NavigationDrawer.SectionItem">
                 <ImageView
                     style="@style/NavigationDrawer.SectionItem.Icon"
