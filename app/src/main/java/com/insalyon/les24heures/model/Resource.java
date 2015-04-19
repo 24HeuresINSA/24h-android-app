@@ -73,7 +73,27 @@ public class Resource implements Parcelable {
         return CREATOR;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        Resource resource = (Resource) o;
+
+        if (!category.equals(resource.category)) return false;
+        if (!schedules.equals(resource.schedules)) return false;
+        if (!title.equals(resource.title)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = title.hashCode();
+        result = 31 * result + schedules.hashCode();
+        result = 31 * result + category.hashCode();
+        return result;
+    }
 
     @Override
     public int describeContents() {
