@@ -105,13 +105,8 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
         if (dayResource.isFavorites())
             holder.favorites.setImageResource(R.drawable.ic_action_favorite);
         else
-<<<<<<< HEAD
-            holder.favorites.setImageResource(R.drawable.ic_action_favorite_uncheck);
-        holder.schedule.setText(dayResource.printSchedules());
-=======
-            holder.favorites.setImageResource(R.drawable.ic_favorite_unchecked_gris);
+        holder.favorites.setImageResource(R.drawable.ic_action_favorite_uncheck);
         holder.schedule.setText(scheduleService.printSchedules(dayResource.getSchedules()));
->>>>>>> 411c83183367875ac0e7a804c21626aeae9919c9
         Location loc = new Location("loc");
         loc.setLongitude(dayResource.getLoc().longitude);
         loc.setLatitude(dayResource.getLoc().latitude);
