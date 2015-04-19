@@ -73,10 +73,11 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
             @Override
             public void onClick(View v) {
                 dayResource.setIsFavorites(!dayResource.isFavorites());
+                ((ImageButton) v).setColorFilter(R.color.light_black);
                 if (dayResource.isFavorites())
-                    ((ImageButton) v).setImageResource(R.drawable.ic_favorite_checked_gris);
+                    ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite);
                 else
-                    ((ImageButton) v).setImageResource(R.drawable.ic_favorite_unchecked_gris);
+                    ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite_uncheck);
             }
         });
 
@@ -100,10 +101,11 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
                 break;
         }
         holder.title.setSelected(true);
+        holder.favorites.setColorFilter(R.color.light_black);
         if (dayResource.isFavorites())
-            holder.favorites.setImageResource(R.drawable.ic_favorite_checked_gris);
+            holder.favorites.setImageResource(R.drawable.ic_action_favorite);
         else
-            holder.favorites.setImageResource(R.drawable.ic_favorite_unchecked_gris);
+        holder.favorites.setImageResource(R.drawable.ic_action_favorite_uncheck);
         holder.schedule.setText(scheduleService.printSchedules(dayResource.getSchedules()));
         Location loc = new Location("loc");
         loc.setLongitude(dayResource.getLoc().longitude);

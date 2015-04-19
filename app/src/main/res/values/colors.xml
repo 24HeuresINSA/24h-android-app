@@ -14,6 +14,9 @@
     <color name="third_day">#1fbfd5</color>
     <color name="pink_24">#ff4081</color>
     <color name="primary_sub">#69c7ba</color>
+    <color name="white">#ffffff</color>
+    <color name="light_black">#333333</color>
+    <color name="cool_yellow">#F7DA64</color>
 
     <!--FAB-->
     <color name="primary">#3f51b5</color>
@@ -41,5 +44,8 @@
     <color name="gplus_color_2">#f4b400</color>
     <color name="gplus_color_3">#427fed</color>
     <color name="gplus_color_4">#b23424</color>
+
+    <!-- Nav drawer -->
+    <color name="drawer_label_default">#FF4D4D4D</color>
     <color name="tab_selected_strip">#00b0ff</color>
 </resources>

@@ -4,35 +4,13 @@
         android:id="@+id/menu_search"
         android:actionViewClass="android.widget.SearchView"
         android:showAsAction="ifRoom"
-        android:title="Search"
-        android:icon="@drawable/ic_action_search"/>
+        android:title="Search"/>
 
 
     <item
         android:id="@+id/menu_favorites"
-        android:icon="@drawable/menu_favorite_unchecked"
+        android:icon="@drawable/ic_action_favorite_uncheck"
         android:showAsAction="ifRoom"
         android:title="fav" />
 
- <!-- ca va pas etre ici
-
-    <item
-        android:id="@+id/menu_twitter"
-        android:icon="@drawable/ic_twitter"
-        android:showAsAction="always"
-        android:title="twitter" />
-
-    <item
-        android:id="@+id/menu_facebook"
-        android:icon="@drawable/ic_facebook"
-        android:showAsAction="always"
-        android:title="facebook" />
-
-pour le futur
-    <item
-        android:id="@+id/menu_sort"
-        android:icon="@drawable/ic_action_sort"
-        android:showAsAction="always"
-        android:title="sort" />
--->
 </menu>

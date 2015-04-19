@@ -215,10 +215,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     public void onClickFav(View v) {
         resource.setIsFavorites(!resource.isFavorites());
         if (resource.isFavorites()) {
-            ((ImageButton) v).setImageResource(R.drawable.ic_favorite_checked);
+            ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite);
         }
         else {
-            ((ImageButton) v).setImageResource(R.drawable.ic_favorite_unchecked);
+            ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite_uncheck);
         }
 
         eventBus.post(new ResourceUpdatedEvent());
@@ -273,6 +273,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         heavyDataUpdated = false;
 
         detailSlidingTitle.setText(resource.getTitle());
+        detailSlidingTitle.setSelected(true);
         detailSlidingDescription.setText(resource.getDescription());
 
         Schedule schedule = scheduleService.getNextSchedule(resource);
@@ -283,10 +284,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             nextSchedule.setText(getResources().getString(R.string.no_more_schedule));
 
         if (resource.isFavorites()) {
-            favoriteImageButton.setImageResource(R.drawable.ic_favorite_checked);
+            favoriteImageButton.setImageResource(R.drawable.ic_action_favorite_uncheck);
         }
         else {
-            favoriteImageButton.setImageResource(R.drawable.ic_favorite_unchecked);
+            favoriteImageButton.setImageResource(R.drawable.ic_action_favorite);
         }
 
 

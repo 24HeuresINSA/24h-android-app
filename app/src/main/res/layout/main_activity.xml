@@ -10,13 +10,28 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Loading"
-            android:id="@+id/textView"
-            android:layout_gravity="center" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:gravity="center">
+
+            <ImageView
+                android:layout_width="@dimen/parallax_height"
+                android:layout_height="@dimen/parallax_height"
+                android:id="@+id/imageView"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_launcher" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="@style/TextAppearance.AppCompat.Small"
+                android:text="@string/App_version"
+                android:id="@+id/textView"
+                android:layout_gravity="center" />
+        </LinearLayout>
     </FrameLayout>
 
 

@@ -95,7 +95,7 @@
                 style="@style/NavigationDrawer.HeaderSection"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/navigationdrawer_sectionname_everytime" />
+                android:text=" " />
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/navigation_drawer_tcl"

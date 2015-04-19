@@ -462,6 +462,14 @@ public abstract class BaseDynamicDataActivity extends Activity implements SnackB
     /* Called whenever we call invalidateOptionsMenu() */
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+
+        //trick to change the searchView icon, see if it works on every device
+        MenuItem searchViewMenuItem = menu.findItem(R.id.menu_search);
+        SearchView mSearchView = (SearchView) searchViewMenuItem.getActionView();
+        int searchImgId = getResources().getIdentifier("android:id/search_button", null, null);
+        ImageView v = (ImageView) mSearchView.findViewById(searchImgId);
+        v.setImageResource(R.drawable.ic_action_search);
+
         mMenu = menu;
         customOnOptionsMenu();
         return super.onPrepareOptionsMenu(menu);
@@ -591,13 +599,13 @@ public abstract class BaseDynamicDataActivity extends Activity implements SnackB
         list.addAll(selectedCategories);
         if (item.isChecked()) {
             item.setChecked(false);
-            item.setIcon(R.drawable.menu_favorite_unchecked);
+            item.setIcon(R.drawable.ic_action_favorite_uncheck);
 
             isFavoritesChecked = false;
         } else {
             list.add(categoryService.getFavoriteCategory());
             item.setChecked(true);
-            item.setIcon(R.drawable.menu_favorite_checked);
+            item.setIcon(R.drawable.ic_action_favorite);
             isFavoritesChecked = true;
         }
         CategoriesSelectedEvent event = new CategoriesSelectedEvent(list);

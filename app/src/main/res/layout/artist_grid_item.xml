@@ -70,8 +70,9 @@
                         android:layout_height="@dimen/favorite_icon"
                         android:background="@null"
                         android:scaleType="centerInside"
-                        android:src="@drawable/ic_favorite_unchecked"
-                        android:layout_margin="@dimen/icon_margin" />
+                        android:src="@drawable/ic_action_favorite_uncheck"
+                        android:layout_margin="@dimen/icon_margin"
+                        android:tint="@color/white" />
 
                 </LinearLayout>
 
