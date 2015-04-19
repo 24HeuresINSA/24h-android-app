@@ -44,4 +44,7 @@
     <color name="gplus_color_2">#f4b400</color>
     <color name="gplus_color_3">#427fed</color>
     <color name="gplus_color_4">#b23424</color>
+
+    <!-- Nav drawer -->
+    <color name="drawer_label_default">#FF4D4D4D</color>
 </resources>

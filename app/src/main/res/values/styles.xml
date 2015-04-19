@@ -6,6 +6,8 @@
         <item name="android:actionBarStyle">@style/DayActionBar</item>
         <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
         <item name="spbStyle">@style/GNowProgressBar</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/activated_background</item>
+
     </style>
 
     <style name="NightActionBarTheme"
@@ -13,6 +15,8 @@
         <item name="android:actionBarStyle">@style/NightActionBar</item>
         <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
         <item name="spbStyle">@style/GNowProgressBar</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/activated_background</item>
+
     </style>
 
     <!-- ActionBar styles -->
@@ -92,10 +96,11 @@
         <item name="android:paddingLeft">16dp</item>
         <item name="android:paddingRight">16dp</item>
         <item name="android:textAppearance">?android:attr/textAppearanceListItemSmall</item>
-        <item name="android:textColor">#FF4D4D4D</item>
+        <item name="android:textColor">@color/drawer_label_default</item>
         <item name="android:textIsSelectable">false</item>
         <item name="android:textSize">@dimen/drawer_category_fontsize</item>
         <item name="android:layout_weight">4</item>
+    <!--    <item name="android:activatedBackgroundIndicator">@drawable/selected_drawer_label</item>-->
     </style>
 
     <style name="detail_title">
