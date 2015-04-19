@@ -2,10 +2,7 @@ package com.insalyon.les24heures;
 
 import android.app.SearchManager;
 import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -15,12 +12,8 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.SearchView;
 
-import com.github.mrengineer13.snackbar.SnackBar;
-import com.google.gson.Gson;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
-import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
-import com.insalyon.les24heures.eventbus.RetrofitErrorEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.Category;
@@ -28,7 +21,6 @@ import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import butterknife.InjectView;
 import retrofit.RestAdapter;
@@ -195,14 +187,13 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-
         setupDetailFragment();
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        eventBus.registerSticky(this);
 
         if (detailSlidingUpPanelLayoutLayout != null) {
             detailSlidingUpPanelLayoutLayout.setAlpha(0);
@@ -216,25 +207,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
      * Activity is alive
      */
 
-    public void onEvent(ResourcesUpdatedEvent event) {
-        dayResourceArrayList.clear();
-        dayResourceArrayList.addAll(event.getDayResourceList());
-        nightResourceArrayList.clear();
-        nightResourceArrayList.addAll(event.getNightResourceList());
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        SharedPreferences.Editor editor = settings.edit();
-
-        Gson gson = new Gson();
-        String dayResourcesList = gson.toJson(dayResourceArrayList);
-        String nightResourcesList = gson.toJson(nightResourceArrayList);
-
-
-        editor.putString("dayResourceList", dayResourcesList);
-        editor.putString("nightResourcesList", nightResourcesList);
-        editor.putString("dataVersion", event.getDataVersion());
-        editor.commit();
-    }
 
 
     public void onEvent(ManageDetailSlidingUpDrawer m) {
@@ -439,64 +412,14 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
 
 
 
-
-    public void onEvent(RetrofitErrorEvent event) {
-
-        String content = null;
-        Boolean withAction = true;
-        switch (event.getRetrofitError().getKind()) {
-            case NETWORK:
-                content = getResources().getString(R.string.retrofit_network_error);
-                withAction = false;
-                break;
-            case CONVERSION:
-                content = getResources().getString(R.string.retrofit_internal_error);
-                break;
-            case HTTP:                 //TODO piwik
-                content = getResources().getString(R.string.retrofit_server_error);
-                break;
-            case UNEXPECTED:
-                content = getResources().getString(R.string.retrofit_unexpected_error);
-                break;
-        }
-
-
-        if (content != null) {
-            SnackBar.Builder snackBar = new SnackBar.Builder(this)
-                    .withOnClickListener(this)
-                    .withMessage(content)
-                    .withTextColorId(R.color.sb__button_text_color_green)
-                    .withDuration(SnackBar.LONG_SNACK);
-
-            if (withAction)
-                snackBar.withActionMessageId(R.string.retrofit_error_snackbar_action_label);
-
-            snackBar.show();
-
-        }
-    }
-
-
-    private class DrawerListener extends DrawerLayout.SimpleDrawerListener {
+    private class DrawerListener extends BaseActivity.DrawerListener {//DrawerLayout.SimpleDrawerListener {
         private MenuItem itemFav;
         private MenuItem itemSearch;
 
-        @Override
-        public void onDrawerOpened(View drawerView) {
-            super.onDrawerOpened(drawerView);
-            drawerLayout.setIsDrawerOpen(true);
-            getActionBar().setTitle(R.string.app_name);
-        }
 
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
-            // Sometimes slideOffset ends up so close to but not quite 1 or 0.
-            if (slideOffset >= .995) {
-                drawerArrowDrawable.setFlip(true);
-            } else if (slideOffset <= .005) {
-                drawerArrowDrawable.setFlip(false);
-            }
-            drawerArrowDrawable.setParameter(slideOffset);
+            super.onDrawerSlide(drawerView,slideOffset);
 
             if (globalMenu != null && itemFav == null) {
                 itemFav = globalMenu.findItem(R.id.menu_favorites);
@@ -515,31 +438,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
             }
         }
 
-        @Override
-        public void onDrawerClosed(View drawerView) {
-            super.onDrawerClosed(drawerView);
-            drawerLayout.setIsDrawerOpen(false);
 
-
-            //switch activity if needed
-            if (nextActivity != null) {
-                Intent intent = new Intent(self, nextActivity);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
-                if (nextActivity.equals(DayActivity.class)) {
-                    //TODO selectedCategories pourrait devenir inutile en fonction de comment on recuperer les categories coté DAyActivity
-                    intent.putParcelableArrayListExtra("selectedCategories", new ArrayList<Category>(Arrays.asList(categories.get(positionCategorySelected))));
-                    intent.putExtra("categoryPosition", positionCategorySelected);
-
-                }
-
-                startActivity(intent);
-                overridePendingTransition(0, 0);
-                finish();
-            } else
-                restoreTitle();
-
-
-        }
     }
 
     protected void animateContentOut(float slideOffset) {
@@ -548,6 +447,10 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
     }
 
 
+
+    public DrawerListener getDrawerListener() {
+        return new DrawerListener();
+    }
 
 
 

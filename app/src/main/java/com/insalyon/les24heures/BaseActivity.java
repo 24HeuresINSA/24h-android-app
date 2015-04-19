@@ -12,7 +12,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -23,6 +22,8 @@ import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
 import com.insalyon.les24heures.eventbus.ApplicationVersionEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
+import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
+import com.insalyon.les24heures.eventbus.RetrofitErrorEvent;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
@@ -223,10 +224,13 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         drawerArrowDrawable.setStrokeColor(resources.getColor(R.color.light_gray));
         getActionBar().setIcon(drawerArrowDrawable);
 
-        drawerListener = new DrawerListener();
+        drawerListener = getDrawerListener();
         drawerLayout.setDrawerListener(drawerListener);
     }
 
+    public DrawerListener getDrawerListener() {
+        return new DrawerListener();
+    }
 
 
     @Override
@@ -240,9 +244,36 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         setupNavigationDrawer();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        eventBus.registerSticky(this);
+
+    }
+
     /**
      * Activity is alive
      */
+
+    public void onEvent(ResourcesUpdatedEvent event) {
+        dayResourceArrayList.clear();
+        dayResourceArrayList.addAll(event.getDayResourceList());
+        nightResourceArrayList.clear();
+        nightResourceArrayList.addAll(event.getNightResourceList());
+
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences.Editor editor = settings.edit();
+
+        Gson gson = new Gson();
+        String dayResourcesList = gson.toJson(dayResourceArrayList);
+        String nightResourcesList = gson.toJson(nightResourceArrayList);
+
+
+        editor.putString("dayResourceList", dayResourcesList);
+        editor.putString("nightResourcesList", nightResourcesList);
+        editor.putString("dataVersion", event.getDataVersion());
+        editor.commit();
+    }
 
     public void onEvent(CategoriesUpdatedEvent event) {
         categories.clear();
@@ -259,6 +290,44 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         editor.putString("dataVersion", event.getDataVersion());
         editor.commit();
     }
+
+
+    public void onEvent(RetrofitErrorEvent event) {
+
+        String content = null;
+        Boolean withAction = true;
+        switch (event.getRetrofitError().getKind()) {
+            case NETWORK:
+                content = getResources().getString(R.string.retrofit_network_error);
+                withAction = false;
+                break;
+            case CONVERSION:
+                content = getResources().getString(R.string.retrofit_internal_error);
+                break;
+            case HTTP:                 //TODO piwik
+                content = getResources().getString(R.string.retrofit_server_error);
+                break;
+            case UNEXPECTED:
+                content = getResources().getString(R.string.retrofit_unexpected_error);
+                break;
+        }
+
+
+        if (content != null) {
+            SnackBar.Builder snackBar = new SnackBar.Builder(this)
+                    .withOnClickListener(this)
+                    .withMessage(content)
+                    .withTextColorId(R.color.sb__button_text_color_green)
+                    .withDuration(SnackBar.LONG_SNACK);
+
+            if (withAction)
+                snackBar.withActionMessageId(R.string.retrofit_error_snackbar_action_label);
+
+            snackBar.show();
+
+        }
+    }
+
 
 
     @OnClick(R.id.navigation_drawer_artists)
@@ -400,9 +469,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     }
 
 
-    private class DrawerListener extends DrawerLayout.SimpleDrawerListener {
-        private MenuItem itemFav;
-        private MenuItem itemSearch;
+    public class DrawerListener extends DrawerLayout.SimpleDrawerListener {
 
         @Override
         public void onDrawerOpened(View drawerView) {
