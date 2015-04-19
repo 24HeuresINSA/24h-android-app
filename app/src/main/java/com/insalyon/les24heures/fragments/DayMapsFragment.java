@@ -227,15 +227,20 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         eventBus.post(manageDetailSlidingUpDrawer);
 
         if (selectedDayResource != null) {
-            for (Map.Entry<Marker, DayResource> entry : markerResourceMap.entrySet()) {
-                if (entry.getValue() == selectedDayResource) {
-                    entry.getKey().setIcon(BitmapDescriptorFactory.defaultMarker(getCategoryHueColor(selectedDayResource,BitmapDescriptorFactory.HUE_RED)));
-                    break;
-                }
-            }
+            //unset previously selected marker
+            Marker previouslySelected = resourceMarkerMap.get(selectedDayResource);
+            previouslySelected.setIcon(BitmapDescriptorFactory.fromResource(getMarkerDrawable(selectedDayResource)));
+
+//            for (Map.Entry<Marker, DayResource> entry : markerResourceMap.entrySet()) {
+//                if (entry.getValue() == selectedDayResource) {
+//                    entry.getKey().setIcon(BitmapDescriptorFactory.defaultMarker(getCategoryHueColor(selectedDayResource,BitmapDescriptorFactory.HUE_RED)));
+//                    break;
+//                }
+//            }
         }
 
-        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE));
+        //set selected marker
+        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         selectedDayResource = markerResourceMap.get(marker);
 
         return false;
@@ -294,7 +299,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
                 color = getCategoryHueColor(dayResource, color);
 
 
-                int icon = getResources().getIdentifier("marker_"+dayResource.getCategory().getName(), "drawable", getActivity().getPackageName());
+                int icon = getMarkerDrawable(dayResource);
                 Marker marker = googleMap.addMarker(
                         new MarkerOptions()
                                 .icon(BitmapDescriptorFactory.fromResource(icon))
@@ -304,6 +309,10 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
                 resourceMarkerMap.put(dayResource, marker);
             }
         }
+    }
+
+    private int getMarkerDrawable(DayResource dayResource) {
+        return getResources().getIdentifier("marker_"+dayResource.getCategory().getName(), "drawable", getActivity().getPackageName());
     }
 
     private Float getCategoryHueColor(DayResource dayResource, Float color) {
