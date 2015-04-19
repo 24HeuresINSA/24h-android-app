@@ -12,6 +12,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
@@ -24,6 +25,10 @@ import com.insalyon.les24heures.eventbus.ApplicationVersionEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.RetrofitErrorEvent;
+import com.insalyon.les24heures.fragments.FacilitiesFragment;
+import com.insalyon.les24heures.fragments.ParamsFragment;
+import com.insalyon.les24heures.fragments.TclFragment;
+import com.insalyon.les24heures.fragments.TicketsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
@@ -73,7 +78,14 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     @InjectView(R.id.navigation_drawer_artists)
     View artistButton;
     @InjectView(R.id.navigation_drawer_tcl)
+    View ticketsButton;
+    @InjectView(R.id.navigation_drawer_tickets)
     View tclButton;
+    @InjectView(R.id.navigation_drawer_facilities)
+    View facilitiesButton;
+    @InjectView(R.id.navigation_drawer_params)
+    View paramsButton;
+
 
     DataBackendService dataBackendService;
     ResourceService resourceService;
@@ -92,12 +104,9 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
 
     Class nextActivity;
-    private BaseActivity self = this;
+    Class nextStaticFragment;
     int positionCategorySelected;
-
-
-
-
+    private BaseActivity self = this;
 
     /**
      * Activity is being created
@@ -331,7 +340,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     }
 
 
-
     @OnClick(R.id.navigation_drawer_artists)
     public void onClickArtist(View v) {
         clearDrawerChoices();
@@ -341,26 +349,57 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
     }
 
+    @OnClick(R.id.navigation_drawer_tickets)
+    public void onClickTickets(View v) {
+        clearDrawerChoices();
+        v.setActivated(true);
+        drawerLayout.closeDrawer();
+        nextActivity = StaticDataActivity.class;
+        nextStaticFragment = TicketsFragment.class;
+    }
+
     @OnClick(R.id.navigation_drawer_tcl)
     public void onClickTcl(View v) {
         clearDrawerChoices();
         v.setActivated(true);
         drawerLayout.closeDrawer();
         nextActivity = StaticDataActivity.class;
-
-
+        nextStaticFragment = TclFragment.class;
     }
 
-    private void clearDrawerChoices() {
+    @OnClick(R.id.navigation_drawer_facilities)
+    public void onClickFacilities(View v) {
+        clearDrawerChoices();
+        v.setActivated(true);
+        drawerLayout.closeDrawer();
+        nextActivity = StaticDataActivity.class;
+        nextStaticFragment = FacilitiesFragment.class;
+    }
+
+    @OnClick(R.id.navigation_drawer_params)
+    public void onClickParams(View v) {
+        clearDrawerChoices();
+        v.setActivated(true);
+        drawerLayout.closeDrawer();
+        nextActivity = StaticDataActivity.class;
+        nextStaticFragment = ParamsFragment.class;
+    }
+
+
+    void clearDrawerChoices() {
         clearDrawerChoices(true);
     }
 
-    private void clearDrawerChoices(boolean clearList) {
+    void clearDrawerChoices(boolean clearList) {
         if (clearList) {
             categoriesList.clearChoices();
             categoriesList.requestLayout();
         }
         artistButton.setActivated(false);
+        ticketsButton.setActivated(false);
+        tclButton.setActivated(false);
+        facilitiesButton.setActivated(false);
+        paramsButton.setActivated(false);
     }
 
     /**
@@ -374,7 +413,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         EventBus.getDefault().unregister(this);
 
     }
-
 
 
     @Override
@@ -396,7 +434,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     public void onMessageClick(Parcelable parcelable) {
         ApplicationVersionServiceImpl.getInstance().checkApplicationVersion(getApplicationContext());
     }
-
 
 
     /**
@@ -456,7 +493,17 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         //sinon si popup sharedPref == minor ou == toDate effectue le download des donnees et si popup sharedPref == minor affiche popup minor
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        //click on the appName or the appIcone
+        if (item.getTitle().equals(getActionBar().getTitle())) {
+            drawerLayout.toggleDrawer();
+            return true;
+        }
 
+        return false;
+
+    }
 
     public void restoreTitle() {
         String str = (getResources().getString(R.string.app_name));
@@ -480,6 +527,9 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         return drawerArrowDrawable;
     }
 
+    public void onEvent(ApplicationVersionEvent event) {
+        manageApplicationVersionState(event.getState());
+    }
 
     public class DrawerListener extends DrawerLayout.SimpleDrawerListener {
 
@@ -520,7 +570,13 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
                     //TODO selectedCategories pourrait devenir inutile en fonction de comment on recuperer les categories coté DAyActivity
                     intent.putParcelableArrayListExtra("selectedCategories", new ArrayList<Category>(Arrays.asList(categories.get(positionCategorySelected))));
                     intent.putExtra("categoryPosition", positionCategorySelected);
+                } else if (nextActivity.equals(StaticDataActivity.class)) {
 
+                    if (this.getClass().equals(StaticDataActivity.class)) {
+                        ((StaticDataActivity) self).startFragment(nextStaticFragment);
+                        return;
+                    } else
+                        intent.putExtra("nextStaticFragment", nextStaticFragment.getCanonicalName());
                 }
 
                 startActivity(intent);
@@ -533,10 +589,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         }
     }
 
-
-
-
-
     private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
 
         @Override
@@ -547,14 +599,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             drawerLayout.closeDrawer();
         }
     }
-
-
-    public void onEvent(ApplicationVersionEvent event) {
-        manageApplicationVersionState(event.getState());
-    }
-
-
-
 
 
 }
