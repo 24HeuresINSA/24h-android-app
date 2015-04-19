@@ -293,8 +293,11 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
                 Float color = BitmapDescriptorFactory.HUE_RED;
                 color = getCategoryHueColor(dayResource, color);
 
+
+                int icon = getResources().getIdentifier("marker_"+dayResource.getCategory().getName(), "drawable", getActivity().getPackageName());
                 Marker marker = googleMap.addMarker(
-                        new MarkerOptions().icon(BitmapDescriptorFactory.defaultMarker(color))
+                        new MarkerOptions()
+                                .icon(BitmapDescriptorFactory.fromResource(icon))
                                 .position(dayResource.getLoc()));
 
                 markerResourceMap.put(marker, dayResource);
