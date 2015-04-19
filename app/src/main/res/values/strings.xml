@@ -99,5 +99,6 @@
     <string name="category_remaining_label">A venir</string>
     <string name="no_more_schedule">Plus d\'horaire planifié</string>
     <string name="retrofit_error_snackbar_action_label">Réessayer</string>
+    <string name="tcl_fragment_appname">TCL</string>
 
 </resources>

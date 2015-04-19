@@ -72,6 +72,8 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     ListView categoriesList;
     @InjectView(R.id.navigation_drawer_artists)
     View artistButton;
+    @InjectView(R.id.navigation_drawer_tcl)
+    View tclButton;
 
     DataBackendService dataBackendService;
     ResourceService resourceService;
@@ -336,6 +338,16 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         v.setActivated(true);
         drawerLayout.closeDrawer();
         nextActivity = NightActivity.class;
+
+    }
+
+    @OnClick(R.id.navigation_drawer_tcl)
+    public void onClickTcl(View v) {
+        clearDrawerChoices();
+        v.setActivated(true);
+        drawerLayout.closeDrawer();
+        nextActivity = StaticDataActivity.class;
+
 
     }
 
