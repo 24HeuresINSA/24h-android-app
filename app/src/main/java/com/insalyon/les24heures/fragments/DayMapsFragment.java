@@ -214,7 +214,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
 
     public void onEvent(ManageDetailSlidingUpDrawer event) {
         if (event.getState().equals(SlidingUpPannelState.HIDE)) {
-            resourceMarkerMap.get(selectedDayResource).setIcon(BitmapDescriptorFactory.defaultMarker());
+            if(selectedDayResource != null)resourceMarkerMap.get(selectedDayResource).setIcon(BitmapDescriptorFactory.defaultMarker());
         }
     }
 
