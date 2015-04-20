@@ -46,8 +46,6 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
     View alphabeticalSort;
     @InjectView(R.id.list_sort_loc)
     View locSort;
-    @InjectView(R.id.list_sort_time_loc)
-    View timeLocSort;
     @InjectView(R.id.list_resource)
     ListView resourceListView;
     @InjectView(R.id.listView_header)
@@ -201,17 +199,6 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
 
     }
 
-    @OnClick(R.id.list_sort_time_loc)
-    public void onSortTimeLocClick(View v){
-        if(!v.isSelected()){
-            v.setSelected(true);
-            dayResourceAdapter.sortTimeLoc();
-        }else{
-            //nothing to do
-            v.setSelected(false);
-        }
-
-    }
 
     @Override
     public void onScrollStateChanged(AbsListView view, int scrollState) {
