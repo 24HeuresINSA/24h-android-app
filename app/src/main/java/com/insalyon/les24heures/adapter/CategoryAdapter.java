@@ -85,8 +85,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
             holder.icon.setImageResource(R.drawable.ic_action_select_all);
         } else  if(category.getDisplayName() != null && category.getDisplayName().equals("REMAINING_LABEL")) {
             category.setDisplayName(getContext().getResources().getString(R.string.category_remaining_label));
-//            holder.icon.setImageResource(R.drawable.ic_action_select_remaining);
-            //TODO icon remaining
+            holder.icon.setImageResource(R.drawable.ic_now);
         }
 
         holder.title.setText(category.getDisplayName());

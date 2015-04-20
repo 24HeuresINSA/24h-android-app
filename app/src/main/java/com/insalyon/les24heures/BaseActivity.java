@@ -44,6 +44,7 @@ import com.insalyon.les24heures.utils.ApplicationVersionState;
 import com.insalyon.les24heures.utils.RetrofitErrorHandler;
 import com.insalyon.les24heures.view.CustomDrawerLayout;
 import com.insalyon.les24heures.view.DrawerArrowDrawable;
+import com.insalyon.les24heures.fragments.ConsoFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,6 +86,8 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     View facilitiesButton;
     @InjectView(R.id.navigation_drawer_params)
     View paramsButton;
+    @InjectView(R.id.navigation_drawer_conso)
+    View consoButton;
 
 
     DataBackendService dataBackendService;
@@ -358,6 +361,14 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         nextStaticFragment = TicketsFragment.class;
     }
 
+    @OnClick(R.id.navigation_drawer_conso)
+    public void onClickConso(View v) {
+        clearDrawerChoices();
+        v.setActivated(true);
+        drawerLayout.closeDrawer();
+        nextActivity = StaticDataActivity.class;
+        nextStaticFragment = ConsoFragment.class;
+    }
     @OnClick(R.id.navigation_drawer_tcl)
     public void onClickTcl(View v) {
         clearDrawerChoices();
@@ -400,6 +411,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         tclButton.setActivated(false);
         facilitiesButton.setActivated(false);
         paramsButton.setActivated(false);
+        consoButton.setActivated(false);
     }
 
     /**

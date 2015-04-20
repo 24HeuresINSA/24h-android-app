@@ -98,6 +98,19 @@
                 android:layout_height="wrap_content"
                 android:text=" " />
 
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/navigation_drawer_conso"
+                style="@style/NavigationDrawer.SectionItem">
+                <ImageView
+                    style="@style/NavigationDrawer.SectionItem.Icon"
+                    android:src="@drawable/ic_beer" />
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    style="@style/NavigationDrawer.SectionItem.Label"
+                    android:text="@string/navigationdrawer_label_conso"/>
+            </LinearLayout>
+
+
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/navigation_drawer_tcl"
                 style="@style/NavigationDrawer.SectionItem">
@@ -130,9 +143,6 @@
                     style="@style/NavigationDrawer.SectionItem.Label"
                     android:text="@string/navigationdrawer_label_params"/>
             </LinearLayout>
-
-
-
 
         </LinearLayout>
 

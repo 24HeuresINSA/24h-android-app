@@ -33,6 +33,7 @@
     <dimen name="list_icon_padding">6dp</dimen>
     <dimen name="parallax_height">110dp</dimen>
     <dimen name="text_size_small">12sp</dimen>
-
+    <dimen name="conso_img_width">180dp</dimen>
+    <dimen name="conso_img_height">150dp</dimen>
 
 </resources>
