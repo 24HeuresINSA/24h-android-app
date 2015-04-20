@@ -28,8 +28,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="@style/TextAppearance.AppCompat.Small"
-                android:text="@string/App_version"
-                android:id="@+id/textView"
+                android:id="@+id/app_version"
                 android:layout_gravity="center" />
         </LinearLayout>
     </FrameLayout>

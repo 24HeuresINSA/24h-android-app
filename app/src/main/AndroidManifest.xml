@@ -29,7 +29,7 @@
             android:value="list" />
 
         <activity
-            android:name="com.insalyon.les24heures.MainActivity"
+            android:name=".SplashActivity"
             android:label="@string/app_name"
             android:windowSoftInputMode="stateHidden|adjustPan">
 
