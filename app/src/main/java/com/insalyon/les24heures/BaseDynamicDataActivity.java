@@ -158,10 +158,13 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                SearchEvent searchEvent = new SearchEvent(newText);
-               // eventBus.post(searchEvent);
-                //TODO gros soucis, ce truc est fire quand sliding up s'ouvre et aussi au chandgement d'output...
-                searchQuery = newText;
+
+                if(!searchView.isIconified()){
+                    SearchEvent searchEvent = new SearchEvent(newText);
+                    eventBus.post(searchEvent);
+                    searchQuery = newText;
+                }
+
                 return false;
             }
         });
