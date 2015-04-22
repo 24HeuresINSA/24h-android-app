@@ -1,75 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.insalyon.les24heures">
+    package="com.insalyon.les24heures" >
 
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:hardwareAccelerated="true"
-        android:theme="@style/DayActionBarTheme">
-
-        <receiver android:name=".utils.UpdateReceiver" >
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
-            </intent-filter>
-        </receiver>
-
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="@string/maps_api_key" />
-
-        <!--Default outputType to start-->
-        <meta-data
-            android:name="outputType"
-            android:value="list" />
-
-        <activity
-            android:name=".SplashActivity"
-            android:label="@string/app_name"
-            android:windowSoftInputMode="stateHidden|adjustPan">
-
-
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
-        </activity>
-
-        <activity
-            android:name="com.insalyon.les24heures.DayActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTop">
-
-
-
-            </activity>
-
-        <activity
-            android:name="com.insalyon.les24heures.NightActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:theme="@style/NightActionBarTheme">
-            </activity>
-
-
-        <activity
-            android:name="com.insalyon.les24heures.StaticDataActivity"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:theme="@style/NightActionBarTheme">
-            <!--TODO faire un nouveau theme-->
-        </activity>
-
-    </application>
-
-    <!--Maps-->
+    <!-- Maps -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -79,5 +12,65 @@
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true" />
+
+    <application
+        android:allowBackup="true"
+        android:hardwareAccelerated="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/DayActionBarTheme" >
+        <receiver android:name=".utils.UpdateReceiver" >
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="@string/maps_api_key" />
+
+        <!-- Default outputType to start -->
+        <meta-data
+            android:name="outputType"
+            android:value="list" />
+
+        <activity
+            android:name=".SplashActivity"
+            android:label="@string/app_name"
+            android:windowSoftInputMode="stateHidden|adjustPan" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".DayActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop" >
+        </activity>
+        <activity
+            android:name=".NightActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/NightActionBarTheme" >
+        </activity>
+        <activity
+            android:name=".StaticDataActivity"
+            android:label="@string/app_name"
+            android:launchMode="singleTop"
+            android:theme="@style/NightActionBarTheme" >
+
+            <!-- TODO faire un nouveau theme -->
+        </activity>
+
+        <service
+            android:name=".androidService.GCMNotificationService"
+            android:exported="false" >
+        </service>
+    </application>
 
 </manifest>

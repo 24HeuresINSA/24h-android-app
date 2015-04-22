@@ -8,7 +8,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TextView;
 
+import com.insalyon.les24heures.service.LiveUpdateService;
 import com.insalyon.les24heures.service.impl.ApplicationVersionServiceImpl;
+import com.insalyon.les24heures.service.impl.LiveUpdateServiceImpl;
 
 
 public class SplashActivity extends Activity {
@@ -29,6 +31,7 @@ public class SplashActivity extends Activity {
         ((TextView)findViewById(R.id.app_version)).setText(pInfo.versionName);
 
         new BackgroundSplashTask().execute();
+
 
         ApplicationVersionServiceImpl.getInstance().checkApplicationVersion(getApplicationContext());
 

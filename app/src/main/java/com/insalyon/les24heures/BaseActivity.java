@@ -34,11 +34,13 @@ import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.service.CategoryService;
 import com.insalyon.les24heures.service.DataBackendService;
+import com.insalyon.les24heures.service.LiveUpdateService;
 import com.insalyon.les24heures.service.ResourceService;
 import com.insalyon.les24heures.service.RetrofitService;
 import com.insalyon.les24heures.service.impl.ApplicationVersionServiceImpl;
 import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.DataBackendServiceImpl;
+import com.insalyon.les24heures.service.impl.LiveUpdateServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.ApplicationVersionState;
 import com.insalyon.les24heures.utils.RetrofitErrorHandler;
@@ -90,6 +92,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     DataBackendService dataBackendService;
     ResourceService resourceService;
     CategoryService categoryService;
+    LiveUpdateService liveUpdateService;
     ArrayList<Category> categories;
     //need a list to store a category and favorites or not (it's a bad code resulting from the old impl where it could be possible to select several categories)
     ArrayList<Category> selectedCategories = new ArrayList<>();
@@ -118,7 +121,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         super.onCreate(savedInstanceState);
         eventBus = EventBus.getDefault();
         restAdapter = new RestAdapter.Builder()
-                .setEndpoint(getResources().getString(R.string.backend_url_mobile))
+                .setEndpoint(getResources().getString(R.string.backend_url_mobile_test))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
                 .setErrorHandler(new RetrofitErrorHandler())
                 .build();
@@ -128,6 +131,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         dataBackendService = DataBackendServiceImpl.getInstance();
         resourceService = ResourceServiceImpl.getInstance();
         categoryService = CategoryServiceImpl.getInstance();
+        liveUpdateService = LiveUpdateServiceImpl.getInstance();
 
 
         if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null) {
