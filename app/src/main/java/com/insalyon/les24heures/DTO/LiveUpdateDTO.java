@@ -5,18 +5,18 @@ package com.insalyon.les24heures.DTO;
  */
 public class LiveUpdateDTO {
     private String title;
-    private String description;
+    private String message;
 
     public LiveUpdateDTO() {
 
     }
 
-    public String getDescription() {
-        return description;
+    public String getMessage() {
+        return message;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getTitle() {

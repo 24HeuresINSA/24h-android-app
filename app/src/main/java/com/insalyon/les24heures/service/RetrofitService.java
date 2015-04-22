@@ -25,7 +25,7 @@ public interface RetrofitService {
     @GET("/")
     void getResources(@Query("version") String dataVersion, Callback<AssomakerDTO> cb);
 
-    @GET("/liveUpdates.json")
+    @GET("/liveUpdates")
     void getLiveUpdates(Callback<List<LiveUpdateDTO>> cb);
 
     @GET("/version")

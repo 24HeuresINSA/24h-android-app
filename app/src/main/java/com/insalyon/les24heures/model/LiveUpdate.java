@@ -9,7 +9,7 @@ import android.os.Parcelable;
 public class LiveUpdate implements Parcelable {
 
     private String title;
-    private String description;
+    private String message;
 
 
 
@@ -21,7 +21,7 @@ public class LiveUpdate implements Parcelable {
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(title);
-        out.writeString(description);
+        out.writeString(message);
     }
 
     public String getTitle() {
@@ -32,11 +32,11 @@ public class LiveUpdate implements Parcelable {
         this.title = title;
     }
 
-    public String getDescription() {
-        return description;
+    public String getMessage() {
+        return message;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public void setMessage(String message) {
+        this.message = message;
     }
 }

@@ -198,7 +198,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         googleMap.clear();
         googleMap.addMarker(new MarkerOptions()
 //                                .title(resource.getTitle() + " " + resource.getCategory().getName())
-//                                .snippet(resource.getDescription())
+//                                .snippet(resource.getMessage())
                 .position(((DayResource) resource).getLoc()));
 
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(((DayResource) resource).getLoc(), 15));
