@@ -13,7 +13,7 @@ public class DayResourceDTO {
     ArrayList<ScheduleDTO> schedule;
     Integer category;
     String main_picture_url;
-    ArrayList<String> pictures;
+//    ArrayList<String> pictures;
 
     public Integer get_id() {
         return _id;
@@ -72,10 +72,10 @@ public class DayResourceDTO {
     }
 
     public ArrayList<String> getPictures() {
-        return pictures;
+        return new ArrayList<>();
     }
 
     public void setPictures(ArrayList<String> pictures) {
-        this.pictures = pictures;
+//        this.pictures = pictures;
     }
 }
