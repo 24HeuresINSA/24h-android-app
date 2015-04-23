@@ -3,14 +3,11 @@ package com.insalyon.les24heures;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.v4.app.NotificationCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
@@ -24,9 +21,9 @@ import com.github.mrengineer13.snackbar.SnackBar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
+import com.insalyon.les24heures.androidService.LiveUpdateService;
 import com.insalyon.les24heures.eventbus.ApplicationVersionEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
-import com.insalyon.les24heures.eventbus.LiveUpdatesReceivedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.RetrofitErrorEvent;
 import com.insalyon.les24heures.fragments.FacilitiesFragment;
@@ -35,7 +32,6 @@ import com.insalyon.les24heures.fragments.TclFragment;
 import com.insalyon.les24heures.fragments.TicketsFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
-import com.insalyon.les24heures.model.LiveUpdate;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.service.CategoryService;
 import com.insalyon.les24heures.service.DataBackendService;
@@ -44,7 +40,6 @@ import com.insalyon.les24heures.service.RetrofitService;
 import com.insalyon.les24heures.service.impl.ApplicationVersionServiceImpl;
 import com.insalyon.les24heures.service.impl.CategoryServiceImpl;
 import com.insalyon.les24heures.service.impl.DataBackendServiceImpl;
-import com.insalyon.les24heures.service.impl.LiveUpdateServiceImpl;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.ApplicationVersionState;
 import com.insalyon.les24heures.utils.RetrofitErrorHandler;
@@ -113,7 +108,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     Class nextStaticFragment;
     int positionCategorySelected;
     private BaseActivity self = this;
-    private LiveUpdateServiceImpl liveUpdateService;
 
     /**
      * Activity is being created
@@ -135,7 +129,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         dataBackendService = DataBackendServiceImpl.getInstance();
         resourceService = ResourceServiceImpl.getInstance();
         categoryService = CategoryServiceImpl.getInstance();
-        liveUpdateService = LiveUpdateServiceImpl.getInstance();
 
 
         if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null) {
@@ -347,26 +340,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         }
     }
 
-    public void onEvent(LiveUpdatesReceivedEvent event) {
-        List<LiveUpdate> liveupdates = event.getLiveUpdates();
-        LiveUpdate lastUpdate = liveupdates.get(0);
-        NotificationManager mNotificationManager = (NotificationManager)
-                this.getSystemService(Context.NOTIFICATION_SERVICE);
-
-
-
-            NotificationCompat.Builder mBuilder =
-                    new NotificationCompat.Builder(this)
-                            .setSmallIcon(R.drawable.ic_now)
-                            .setContentTitle(lastUpdate.getTitle())
-                            .setStyle(new NotificationCompat.BigTextStyle()
-                                    .bigText(lastUpdate.getMessage()))
-                            .setContentText(lastUpdate.getMessage());
-
-            mNotificationManager.notify(1, mBuilder.build());
-
-    }
-
 
     @OnClick(R.id.navigation_drawer_artists)
     public void onClickArtist(View v) {
@@ -512,7 +485,10 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
                 break;
             case TODATE:
                 dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion);
-                liveUpdateService.getLiveUpdatesAsyncFromBackend(retrofitService);
+
+                Intent checkForUpdates = new Intent(this, LiveUpdateService.class);
+                startService(checkForUpdates);
+
                 Log.d(TAG, "manageApplicationVersionState TODATE");
                 break;
         }
