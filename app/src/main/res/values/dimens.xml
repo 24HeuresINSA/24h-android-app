@@ -23,7 +23,7 @@
 
     <!--favorite icon-->
     <dimen name="favorite_icon">25dp</dimen>
-    <dimen name="icon_margin">16dp</dimen>
+    <dimen name="icon_margin">10dp</dimen>
 
     <!--artiste card img-->
     <dimen name="card_img_height">200dp</dimen>
