@@ -45,7 +45,7 @@
             <!-- SLIDING UP LAYOUT CONTENT -->
             <fragment
                 android:id="@+id/sliding_layout_content_fragment"
-                android:name="com.insalyon.les24heures.fragments.DetailFragment"
+                android:name="com.insalyon.les24heures.fragments.DayDetailFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
