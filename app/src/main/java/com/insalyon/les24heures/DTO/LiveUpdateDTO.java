@@ -6,6 +6,7 @@ package com.insalyon.les24heures.DTO;
 public class LiveUpdateDTO {
     private String title;
     private String message;
+    private long time;
 
     public LiveUpdateDTO() {
 
@@ -25,5 +26,13 @@ public class LiveUpdateDTO {
 
     public void setTitle(String title) {
         this.title = title;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }
