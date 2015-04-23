@@ -157,6 +157,10 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
 
     public void onEvent(ListSetIsVisible event){
         this.isVisible = event.isVisible();
+        if(this.isVisible){
+            this.catchUpCategorySelectedEvent();
+        }
+
     }
 
     @Override
