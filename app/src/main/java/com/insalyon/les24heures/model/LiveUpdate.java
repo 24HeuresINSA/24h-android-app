@@ -10,7 +10,7 @@ public class LiveUpdate implements Parcelable {
 
     private String title;
     private String message;
-    private long time;
+    private long timePublished;
 
 
     @Override
@@ -40,11 +40,15 @@ public class LiveUpdate implements Parcelable {
         this.message = message;
     }
 
-    public long getTime() {
-        return time;
+    public long getTimePublished() {
+        return timePublished;
     }
 
-    public void setTime(long time) {
-        this.time = time;
+    public void setTimePublished(long timePublished) {
+        this.timePublished = timePublished;
+    }
+
+    public boolean wasPublishedAfter(long referenceTimestamp){
+        return timePublished > referenceTimestamp;
     }
 }

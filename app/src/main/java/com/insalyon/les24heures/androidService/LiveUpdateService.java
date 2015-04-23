@@ -70,7 +70,7 @@ public class LiveUpdateService extends IntentService {
         LiveUpdate liveUpdate = new LiveUpdate();
         liveUpdate.setTitle(liveUpdateDTO.getTitle());
         liveUpdate.setMessage(liveUpdateDTO.getMessage());
-        liveUpdate.setTime(liveUpdateDTO.getTime());
+        liveUpdate.setTimePublished(liveUpdateDTO.getTimePublished());
         return liveUpdate;
     }
 
