@@ -9,6 +9,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.BaseDynamicDataActivity;
+import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.fragments.DetailFragment;
@@ -99,6 +100,14 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         @Override
         public void onPanelCollapsed(View panel) {
+            //easy trick : we try to know wether list or maps is active because we don't want to display the collasped mode on the list
+            if (DayActivity.class.isAssignableFrom(activity.getClass())) {
+                if(((DayActivity)activity).getmViewPager().getCurrentItem() != 0){//if list is active
+                    self.hidePanel(); //TODO doesn't work...
+                }
+            }
+
+
             nextSchedule.setVisibility(View.VISIBLE);
             favoriteImageButton.setVisibility(View.GONE);
 //                this.setDragView(wholeSlidingLayout);

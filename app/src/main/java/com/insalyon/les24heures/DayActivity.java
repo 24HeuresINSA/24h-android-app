@@ -290,5 +290,8 @@ public class DayActivity extends BaseDynamicDataActivity {
         }
     }
 
+    public ViewPager getmViewPager() {
+        return mViewPager;
+    }
 }
 

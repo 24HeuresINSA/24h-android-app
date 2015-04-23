@@ -17,6 +17,10 @@ public class ManageDetailSlidingUpDrawer {
         this.dayResource = dayResource;
     }
 
+    public ManageDetailSlidingUpDrawer(SlidingUpPannelState state) {
+        this.state = state;
+    }
+
     public ManageDetailSlidingUpDrawer(SlidingUpPannelState state, NightResource nightResource) {
         this.state = state;
         this.nightResource = nightResource;
