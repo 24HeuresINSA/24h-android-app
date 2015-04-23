@@ -203,6 +203,9 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
 
     public void onEvent(MapsSetIsVisible event){
         this.isVisible = event.isVisible();
+        if(this.isVisible){
+            this.catchUpCategorySelectedEvent();
+        }
     }
 
 

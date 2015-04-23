@@ -7,7 +7,6 @@ import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.FilterUpdateEnded;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
-import com.insalyon.les24heures.filter.ResourceCategoryFilter;
 import com.insalyon.les24heures.filter.ResourceSearchFilter;
 import com.insalyon.les24heures.model.DayResource;
 
@@ -56,10 +55,7 @@ public abstract class DayTypeFragment extends ContentFrameFragment<DayResource> 
         if (isVisible)
             super.onEvent(event);
 
-        //TODO update multi ouput TEST PURPOSE
-        if(cpt++ % 2 == 0) categoriesSelectedEventPending = event;
-
-
+        categoriesSelectedEventPending = event;
     }
 
 
@@ -75,15 +71,11 @@ public abstract class DayTypeFragment extends ContentFrameFragment<DayResource> 
         // if A.class extends B.class, and B.class extends C.class
 //        C.class.isAssignableFrom(A.class); // evaluates to true
 
+        //le search filter est effectué tout le temps
         if (ResourceSearchFilter.class.isAssignableFrom(event.getFilter().getClass())) {
             if (searchEventPending != null) {
                 super.onEvent(searchEventPending);
                 searchEventPending = null;
-            }
-        } else if (ResourceCategoryFilter.class.isAssignableFrom(event.getFilter().getClass())) {
-            if (categoriesSelectedEventPending != null) {
-                super.onEvent(categoriesSelectedEventPending);
-                categoriesSelectedEventPending = null;
             }
         }
 
@@ -98,4 +90,10 @@ public abstract class DayTypeFragment extends ContentFrameFragment<DayResource> 
     }
 
 
+    public void catchUpCategorySelectedEvent(){
+        if (categoriesSelectedEventPending != null) {
+                super.onEvent(categoriesSelectedEventPending);
+                categoriesSelectedEventPending = null;
+            }
+    }
 }
