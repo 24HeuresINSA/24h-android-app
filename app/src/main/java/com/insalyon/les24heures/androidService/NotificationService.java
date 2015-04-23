@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 
 import com.insalyon.les24heures.R;
@@ -17,7 +18,9 @@ import de.greenrobot.event.EventBus;
 
 public class NotificationService extends IntentService {
     private static final String TAG = NotificationService.class.getCanonicalName();
+    public static final String PREFS_NAME = "dataFile";
     EventBus eventBus = EventBus.getDefault();
+
 
     public NotificationService() {
         super(TAG);
@@ -30,23 +33,44 @@ public class NotificationService extends IntentService {
 
     }
 
+    //When new Liveupdates are received, show them as notification
     public void onEvent(LiveUpdatesReceivedEvent event) {
+
+
         List<LiveUpdate> liveUpdates = event.getLiveUpdates();
-        LiveUpdate lastUpdate = liveUpdates.get(0);
+        SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+
+        long timeLastLiveUpdateSeen = sharedPreferences.getLong(getResources().getString(R.string.SHARED_PREF_LAST_LIVEUPDATE_SEEN),0);
+
+        for(LiveUpdate liveUpdate : liveUpdates) {
+            if(liveUpdate.wasPublishedAfter(timeLastLiveUpdateSeen)) {
+                showLiveUpdateNotification(liveUpdate);
+                timeLastLiveUpdateSeen=liveUpdate.getTimePublished();
+            }
+        }
+
+        updateTimeLastLiveUpdateSeen(sharedPreferences, timeLastLiveUpdateSeen);
+
+    }
+
+    private void updateTimeLastLiveUpdateSeen(SharedPreferences sharedPreferences, long timeLastLiveUpdateSeen) {
+        sharedPreferences.edit().putLong(getResources().getString(R.string.SHARED_PREF_LAST_LIVEUPDATE_SEEN), timeLastLiveUpdateSeen).commit();
+    }
+
+    private void showLiveUpdateNotification(LiveUpdate liveUpdate) {
         NotificationManager mNotificationManager = (NotificationManager)
                 this.getSystemService(Context.NOTIFICATION_SERVICE);
+        NotificationCompat.Builder builder = getNotificationBuilder(liveUpdate);
+        mNotificationManager.notify((int) liveUpdate.getTimePublished(), builder.build());
+    }
 
-
-        NotificationCompat.Builder mBuilder =
-                new NotificationCompat.Builder(this)
-                        .setSmallIcon(R.drawable.ic_now)
-                        .setContentTitle(lastUpdate.getTitle())
-                        .setStyle(new NotificationCompat.BigTextStyle()
-                                .bigText(lastUpdate.getMessage()))
-                        .setContentText(lastUpdate.getMessage());
-
-        mNotificationManager.notify(1, mBuilder.build());
-
+    private NotificationCompat.Builder getNotificationBuilder(LiveUpdate liveUpdate) {
+        return new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.ic_now)
+                .setContentTitle(liveUpdate.getTitle())
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(liveUpdate.getMessage()))
+                .setContentText(liveUpdate.getMessage());
     }
 
 
