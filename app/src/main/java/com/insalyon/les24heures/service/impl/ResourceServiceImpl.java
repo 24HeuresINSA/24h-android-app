@@ -6,6 +6,7 @@ import com.insalyon.les24heures.DTO.NightResourceDTO;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceService;
 
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         return new NightResource(nightResourceDTO.getName(),
                 nightResourceDTO.getDescription(),
-                scheduleService.fromDTO(nightResourceDTO.getSchedule()),
+                ((nightResourceDTO.getSchedule() == null)? new ArrayList<Schedule>() :scheduleService.fromDTO(nightResourceDTO.getSchedule())),
                 null,
                 nightResourceDTO.getMain_picture_url(),
                 nightResourceDTO.getPictures(),
