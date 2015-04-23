@@ -1,9 +1,7 @@
 package com.insalyon.les24heures.fragments;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.view.PagerAdapter;
@@ -17,20 +15,11 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.insalyon.les24heures.JazzyViewPager.JazzyViewPager;
 import com.insalyon.les24heures.JazzyViewPager.OutlineContainer;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ScheduleAdapter;
-import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.eventbus.ResourceUpdatedEvent;
-import com.insalyon.les24heures.model.DayResource;
-import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ScheduleServiceImpl;
@@ -41,7 +30,6 @@ import com.squareup.picasso.Picasso;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import de.greenrobot.event.EventBus;
@@ -49,7 +37,7 @@ import de.greenrobot.event.EventBus;
 /**
  * Created by remi on 09/02/15.
  */
-public class DetailFragment extends Fragment implements OnMapReadyCallback {
+public abstract class DetailFragment extends Fragment {
     private static final String TAG = DayMapsFragment.class.getCanonicalName();
     private static ScheduleServiceImpl scheduleService = ScheduleServiceImpl.getInstance();
     View view;
@@ -67,26 +55,17 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     GridView schedulesGrid;
     @InjectView(R.id.detail_sliding_layout_header)
     View slidingHeader;
-    @InjectView(R.id.detail_url)
-    View detailUrlContainer;
-    @InjectView(R.id.detail_url_facebook)
-    TextView urlFacebook;
-    @InjectView(R.id.detail_url_twitter)
-    TextView urlTwitter;
-    @InjectView(R.id.detail_url_web)
-    TextView urlWeb;
-    @InjectView(R.id.detail_mini_maps_holder)
-    View miniMapsHolder;
+
+
     @InjectView(R.id.detail_carousel_layout)
     View carouselLayout;
 
     Resource resource;
-    private ScheduleAdapter scheduleAdapter;
-    private ArrayList<Schedule> schedules;
-    private GoogleMap googleMap;
+    ScheduleAdapter scheduleAdapter;
+    ArrayList<Schedule> schedules;
 
     private Boolean heavyDataUpdated = false;
-    private EventBus eventBus;
+    EventBus eventBus;
 
     private JazzyViewPager mJazzy;
     private android.content.Context appContext;
@@ -129,29 +108,13 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        super.onCreateView(inflater, container, savedInstanceState);
+       super.onCreateView(inflater, container, savedInstanceState);
 
-        view = inflater.inflate(R.layout.detail_fragment, container, false);
-        ButterKnife.inject(this, view);
 
         scheduleAdapter = new ScheduleAdapter(getActivity().getApplicationContext(),
                 R.layout.schedule_grid_item, schedules);
         schedulesGrid.setAdapter(scheduleAdapter);
 
-        FragmentManager fm;
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            fm = getFragmentManager();
-        } else {
-            fm = getChildFragmentManager();
-        }
-        MapFragment mapFragment = (MapFragment) fm
-                .findFragmentById(R.id.detail_mini_maps);
-        mapFragment.getMapAsync(this);
-        googleMap = mapFragment.getMap();
-        if(googleMap != null) {
-            googleMap.getUiSettings().setZoomControlsEnabled(true);
-            googleMap.getUiSettings().setAllGesturesEnabled(false);
-        }
 
         slidingHeader.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -166,7 +129,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
-    private void setupJazziness(JazzyViewPager.TransitionEffect effect) {
+
+
+
+   void setupJazziness(JazzyViewPager.TransitionEffect effect) {
         mJazzy = (JazzyViewPager) view.findViewById(R.id.jazzy_pager);
         mJazzy.setTransitionEffect(effect);
         picturePagerAdapter = new MainAdapter();
@@ -180,36 +146,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
     /**
      * Fragment is alive
      */
-    @Override
-    public void onMapReady(final GoogleMap map) {
-        if (resource != null && resource.getClass() == DayResource.class) {
-            addMarkerAndMoveCam();
-        } else {
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
-        }
 
-        // Other supported types include: MAP_TYPE_NORMAL,
-        // MAP_TYPE_TERRAIN, MAP_TYPE_HYBRID and MAP_TYPE_NONE MAP_TYPE_SATELLITE
-        map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
-    }
-
-    private void addMarkerAndMoveCam() {
-        if(googleMap == null) return;
-        googleMap.clear();
-        googleMap.addMarker(new MarkerOptions()
-//                                .title(resource.getTitle() + " " + resource.getCategory().getName())
-//                                .snippet(resource.getMessage())
-                .position(((DayResource) resource).getLoc()));
-
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(((DayResource) resource).getLoc(), 15));
-
-        googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                eventBus.postSticky(new ResourceSelectedEvent((DayResource) resource));
-            }
-        });
-    }
 
     @OnClick(R.id.detail_favorites)
     public void onClickFav(View v) {
@@ -225,27 +162,8 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
-    public void updateHeavyData() {
+    public Boolean updateHeavyData() {
         if (!heavyDataUpdated) {
-
-            if (resource.getClass() == DayResource.class) {
-                //mini maps
-                addMarkerAndMoveCam();
-
-                miniMapsHolder.setVisibility(View.VISIBLE);
-                detailUrlContainer.setVisibility(View.GONE);
-                slidingHeader.setBackground(this.getResources().getDrawable(R.color.primary_day));
-
-            } else if (resource.getClass() == NightResource.class) {
-                urlFacebook.setText(((NightResource) resource).getFacebookUrl());
-                urlWeb.setText(((NightResource) resource).getSiteUrl());
-                urlTwitter.setText(((NightResource) resource).getTwitterUrl());
-                slidingHeader.setBackground(this.getResources().getDrawable(R.color.primary_night));
-
-                miniMapsHolder.setVisibility(View.GONE);
-                detailUrlContainer.setVisibility(View.VISIBLE);
-            }
-
 
             //schedules
             schedules.clear();
@@ -261,8 +179,9 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             }
 
             heavyDataUpdated = true;
-
+            return true;
         }
+        return false;
     }
 
     public void notifyDataChanged(final Resource res) {
