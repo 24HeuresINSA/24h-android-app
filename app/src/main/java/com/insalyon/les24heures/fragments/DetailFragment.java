@@ -284,10 +284,10 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
             nextSchedule.setText(getResources().getString(R.string.no_more_schedule));
 
         if (resource.isFavorites()) {
-            favoriteImageButton.setImageResource(R.drawable.ic_action_favorite_uncheck);
+            favoriteImageButton.setImageResource(R.drawable.ic_action_favorite);
         }
         else {
-            favoriteImageButton.setImageResource(R.drawable.ic_action_favorite);
+            favoriteImageButton.setImageResource(R.drawable.ic_action_favorite_uncheck);
         }
 
 
