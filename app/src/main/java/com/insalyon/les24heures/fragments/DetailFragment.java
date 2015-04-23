@@ -278,7 +278,7 @@ public class DetailFragment extends Fragment implements OnMapReadyCallback {
 
         Schedule schedule = scheduleService.getNextSchedule(resource);
         if(schedule != null)
-        nextSchedule.setText((schedule.getPrintableDay() + "\n" +
+        nextSchedule.setText((schedule.getPrintableDay() + "  " +
                 schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
         else
             nextSchedule.setText(getResources().getString(R.string.no_more_schedule));
