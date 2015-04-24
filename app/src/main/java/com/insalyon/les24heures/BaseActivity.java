@@ -10,12 +10,17 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.github.mrengineer13.snackbar.SnackBar;
 import com.google.gson.Gson;
@@ -44,6 +49,7 @@ import com.insalyon.les24heures.utils.ApplicationVersionState;
 import com.insalyon.les24heures.utils.RetrofitErrorHandler;
 import com.insalyon.les24heures.view.CustomDrawerLayout;
 import com.insalyon.les24heures.view.DrawerArrowDrawable;
+import com.insalyon.les24heures.fragments.ConsoFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,6 +91,8 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     View facilitiesButton;
     @InjectView(R.id.navigation_drawer_params)
     View paramsButton;
+    @InjectView(R.id.navigation_drawer_conso)
+    View consoButton;
 
 
     DataBackendService dataBackendService;
@@ -145,7 +153,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         if (selectedCategories == null) {
             selectedCategories = new ArrayList<>();
         }
-
 
     }
 
@@ -344,6 +351,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     public void onClickArtist(View v) {
         clearDrawerChoices();
         v.setActivated(true);
+        setSelectedMenuItem(v, R.drawable.concert_bleu);
         drawerLayout.closeDrawer();
         nextActivity = NightActivity.class;
 
@@ -353,15 +361,27 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     public void onClickTickets(View v) {
         clearDrawerChoices();
         v.setActivated(true);
+        setSelectedMenuItem(v, R.drawable.billeterie_bleu);
         drawerLayout.closeDrawer();
         nextActivity = StaticDataActivity.class;
         nextStaticFragment = TicketsFragment.class;
+    }
+
+    @OnClick(R.id.navigation_drawer_conso)
+    public void onClickConso(View v) {
+        clearDrawerChoices();
+        v.setActivated(true);
+        setSelectedMenuItem(v, R.drawable.ic_beer_bleu);
+        drawerLayout.closeDrawer();
+        nextActivity = StaticDataActivity.class;
+        nextStaticFragment = ConsoFragment.class;
     }
 
     @OnClick(R.id.navigation_drawer_tcl)
     public void onClickTcl(View v) {
         clearDrawerChoices();
         v.setActivated(true);
+        setSelectedMenuItem(v, R.drawable.tcl_rouge);
         drawerLayout.closeDrawer();
         nextActivity = StaticDataActivity.class;
         nextStaticFragment = TclFragment.class;
@@ -371,6 +391,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     public void onClickFacilities(View v) {
         clearDrawerChoices();
         v.setActivated(true);
+        setSelectedMenuItem(v, R.drawable.drapeau_bleu);
         drawerLayout.closeDrawer();
         nextActivity = StaticDataActivity.class;
         nextStaticFragment = FacilitiesFragment.class;
@@ -380,11 +401,41 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     public void onClickParams(View v) {
         clearDrawerChoices();
         v.setActivated(true);
+        setSelectedMenuItem(v, R.drawable.ic_action_settings);
         drawerLayout.closeDrawer();
         nextActivity = StaticDataActivity.class;
         nextStaticFragment = ParamsFragment.class;
     }
 
+    public void setSelectedMenuItem(View v, int iconRes) {
+        for (int i = 0; i < ((ViewGroup) v).getChildCount(); ++i) {
+            View nextChild = ((ViewGroup) v).getChildAt(i);
+            if (nextChild instanceof ImageView) {
+                ImageView drawerSelectedIcon = (ImageView) nextChild;
+                drawerSelectedIcon.setImageResource(iconRes);
+                Log.d(v.toString(), "icon activated");
+            } else if (nextChild instanceof TextView) {
+                TextView drawerSelectedText = (TextView) nextChild;
+                drawerSelectedText.setTextColor(getResources().getColor(R.color.primary_day));
+                Log.d(v.toString(), "text activated");
+            }
+        }
+    }
+
+    public void setUnselectedMenuItem(View v, int iconRes) {
+        for (int i = 0; i < ((ViewGroup) v).getChildCount(); ++i) {
+            View nextChild = ((ViewGroup) v).getChildAt(i);
+            if (nextChild instanceof ImageView) {
+                ImageView drawerSelectedIcon = (ImageView) nextChild;
+                drawerSelectedIcon.setImageResource(iconRes);
+                Log.d(v.toString(), "icon desactivated");
+            } else if (nextChild instanceof TextView) {
+                TextView drawerSelectedText = (TextView) nextChild;
+                drawerSelectedText.setTextColor(getResources().getColor(R.color.drawer_label_default));
+                Log.d(v.toString(), "text desactivated");
+            }
+        }
+    }
 
     void clearDrawerChoices() {
         clearDrawerChoices(true);
@@ -395,11 +446,21 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             categoriesList.clearChoices();
             categoriesList.requestLayout();
         }
+
+        //TODO check avant si activated pour eviter de remplacer les icons des non-activated
+
         artistButton.setActivated(false);
+        setUnselectedMenuItem(artistButton, R.drawable.concert_gris);
         ticketsButton.setActivated(false);
+        setUnselectedMenuItem(ticketsButton, R.drawable.billeterie_gris);
         tclButton.setActivated(false);
+        setUnselectedMenuItem(tclButton, R.drawable.tcl_gris);
         facilitiesButton.setActivated(false);
+        setUnselectedMenuItem(facilitiesButton, R.drawable.drapeau_gris);
         paramsButton.setActivated(false);
+        setUnselectedMenuItem(paramsButton, R.drawable.ic_action_settings);
+        consoButton.setActivated(false);
+        setUnselectedMenuItem(consoButton, R.drawable.ic_beer);
     }
 
     /**
@@ -599,6 +660,4 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             drawerLayout.closeDrawer();
         }
     }
-
-
 }

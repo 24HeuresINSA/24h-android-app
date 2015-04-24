@@ -9,6 +9,7 @@ import com.insalyon.les24heures.fragments.FacilitiesFragment;
 import com.insalyon.les24heures.fragments.ParamsFragment;
 import com.insalyon.les24heures.fragments.TclFragment;
 import com.insalyon.les24heures.fragments.TicketsFragment;
+import com.insalyon.les24heures.fragments.ConsoFragment;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -61,13 +62,13 @@ public class StaticDataActivity extends BaseActivity {
         restoreTitle();
     }
 
-    @OnClick(R.id.navigation_drawer_tickets)
-    public void onClickTickets(View v) {
-        clearDrawerChoices();
-        v.setActivated(true);
-        drawerLayout.closeDrawer();
-        nextStaticFragment = TicketsFragment.class;
-        startFragment();
+    @OnClick(R.id.navigation_drawer_conso)
+    public void onClickConso(View v) {
+            clearDrawerChoices();
+            v.setActivated(true);
+            drawerLayout.closeDrawer();
+            nextStaticFragment = ConsoFragment.class;
+            startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_tcl)
@@ -132,6 +133,8 @@ public class StaticDataActivity extends BaseActivity {
                 str = (getResources().getString(R.string.facilities_fragment_appname));
             if (nextStaticFragment.equals(ParamsFragment.class))
                 str = (getResources().getString(R.string.params_fragment_appname));
+            if (nextStaticFragment.equals(ConsoFragment.class))
+                str = (getResources().getString(R.string.conso_fragment_appname));
         }
 
         if (str != getActionBar().getTitle()) {
