@@ -3,6 +3,7 @@ package com.insalyon.les24heures;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -419,6 +420,19 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         private MenuItem itemFav;
         private MenuItem itemSearch;
 
+        @Override
+        public void onDrawerOpened(View drawerView) {
+            super.onDrawerOpened(drawerView);
+            itemFav.setEnabled(false);
+            itemSearch.setEnabled(false);
+        }
+
+        @Override
+        public void onDrawerClosed(View drawerView) {
+            super.onDrawerClosed(drawerView);
+            itemFav.setEnabled(true);
+            itemSearch.setEnabled(true);
+        }
 
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
