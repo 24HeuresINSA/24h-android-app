@@ -3,7 +3,6 @@ package com.insalyon.les24heures;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -33,7 +32,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
     public static final String PREFS_NAME = "dataFile";
     private static final String TAG = BaseDynamicDataActivity.class.getCanonicalName();
     private static final int MAIN_CONTENT_FADEIN_DURATION = 250;
-//    FragmentManager fragmentManager;
+    //    FragmentManager fragmentManager;
 //    EventBus eventBus;
 //    RestAdapter restAdapter;
 //    RetrofitService retrofitService;
@@ -45,10 +44,10 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
 //    ListView categoriesList;
     @InjectView(R.id.sliding_layout)
     DetailSlidingUpPanelLayout detailSlidingUpPanelLayoutLayout;
-//    @InjectView(R.id.navigation_drawer_artists)
+    //    @InjectView(R.id.navigation_drawer_artists)
 //    View artistButton;
     DetailFragment detailFragment;
-//    DataBackendService dataBackendService;
+    //    DataBackendService dataBackendService;
 //    ResourceService resourceService;
 //    CategoryService categoryService;
 //    ArrayList<Category> categories;
@@ -66,7 +65,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
     Menu mMenu;
     String slidingUpState;
     RestAdapter restAdapterLocal;
-//    Class nextActivity;
+    //    Class nextActivity;
     private BaseDynamicDataActivity self = this;
 //    private int positionCategorySelected;
 
@@ -160,7 +159,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
             @Override
             public boolean onQueryTextChange(String newText) {
 
-                if(!searchView.isIconified()){
+                if (!searchView.isIconified()) {
                     SearchEvent searchEvent = new SearchEvent(newText);
                     eventBus.post(searchEvent);
                     searchQuery = newText;
@@ -212,8 +211,6 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
      */
 
 
-
-
     public void onEvent(ManageDetailSlidingUpDrawer m) {
 
         switch (m.getState()) {
@@ -249,7 +246,11 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         if (drawerLayout.isDrawerOpen()) {
             drawerLayout.closeDrawer();
         } else if (detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded()) {
-            detailSlidingUpPanelLayoutLayout.collapsePanel();
+            if (DayActivity.class.isAssignableFrom(this.getClass()) &&
+                    ((DayActivity) this).getmViewPager().getCurrentItem() == 1)//if list is active
+                detailSlidingUpPanelLayoutLayout.hidePanel(); //TODO le rendu est moche
+            else
+                detailSlidingUpPanelLayoutLayout.collapsePanel();
         } else if (!detailSlidingUpPanelLayoutLayout.isPanelHidden()) {
             detailSlidingUpPanelLayoutLayout.hideDetailPanel();
         } else {
@@ -296,8 +297,13 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         if (item.getTitle().equals(getActionBar().getTitle())) {
             //detail is visible
             if (detailSlidingUpPanelLayoutLayout.isPanelAnchored() || detailSlidingUpPanelLayoutLayout.isPanelExpanded()) {
-                detailSlidingUpPanelLayoutLayout.collapsePanel();
+                if (DayActivity.class.isAssignableFrom(this.getClass()) &&
+                        ((DayActivity) this).getmViewPager().getCurrentItem() == 1)//if list is active
+                    detailSlidingUpPanelLayoutLayout.hidePanel(); //TODO le rendu est moche
+                else
+                    detailSlidingUpPanelLayoutLayout.collapsePanel();
             }
+
             //search widget is active
             else if (!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()) {
                 drawerArrowDrawable.animateToSandwich();
@@ -414,7 +420,14 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         eventBus.post(event);
     }
 
+    protected void animateContentOut(float slideOffset) {
+        detailSlidingUpPanelLayoutLayout.setAlpha(slideOffset);
 
+    }
+
+    public DrawerListener getDrawerListener() {
+        return new DrawerListener();
+    }
 
     private class DrawerListener extends BaseActivity.DrawerListener {//DrawerLayout.SimpleDrawerListener {
         private MenuItem itemFav;
@@ -436,7 +449,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
 
         @Override
         public void onDrawerSlide(View drawerView, float slideOffset) {
-            super.onDrawerSlide(drawerView,slideOffset);
+            super.onDrawerSlide(drawerView, slideOffset);
 
             if (globalMenu != null && itemFav == null) {
                 itemFav = globalMenu.findItem(R.id.menu_favorites);
@@ -445,7 +458,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
 
             if (slideOffset > 0.95)
                 return;
-            if(itemFav != null && itemSearch != null) {
+            if (itemFav != null && itemSearch != null) {
                 itemFav.getIcon().setAlpha((int) (255 - slideOffset * 255));
                 itemSearch.getActionView().setAlpha(1 - slideOffset);
             }
@@ -457,18 +470,6 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
 
 
     }
-
-    protected void animateContentOut(float slideOffset) {
-        detailSlidingUpPanelLayoutLayout.setAlpha(slideOffset);
-
-    }
-
-
-
-    public DrawerListener getDrawerListener() {
-        return new DrawerListener();
-    }
-
 
 
 }

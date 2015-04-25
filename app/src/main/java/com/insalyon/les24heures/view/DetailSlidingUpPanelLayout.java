@@ -11,6 +11,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.BaseDynamicDataActivity;
+import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.fragments.DetailFragment;
@@ -119,6 +120,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         @Override
         public void onPanelCollapsed(View panel) {
+
 //                this.setDragView(wholeSlidingLayout);
             detailScrollView.setIsScrollEnable(false);
             detailScrollView.fullScroll(ScrollView.FOCUS_UP);

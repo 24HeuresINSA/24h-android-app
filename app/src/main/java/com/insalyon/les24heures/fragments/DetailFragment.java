@@ -197,16 +197,16 @@ public abstract class DetailFragment extends Fragment {
 
         Schedule schedule = scheduleService.getNextSchedule(resource);
         if(schedule != null)
-        nextSchedule.setText((schedule.getPrintableDay() + "\n" +
+        nextSchedule.setText((schedule.getPrintableDay() + "  " +
                 schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
         else
             nextSchedule.setText(getResources().getString(R.string.no_more_schedule));
 
         if (resource.isFavorites()) {
-            favoriteImageButton.setImageResource(R.drawable.ic_action_favorite_uncheck);
+            favoriteImageButton.setImageResource(R.drawable.ic_action_favorite);
         }
         else {
-            favoriteImageButton.setImageResource(R.drawable.ic_action_favorite);
+            favoriteImageButton.setImageResource(R.drawable.ic_action_favorite_uncheck);
         }
 
 
