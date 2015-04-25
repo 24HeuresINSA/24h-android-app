@@ -3,7 +3,6 @@ package com.insalyon.les24heures;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
-import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -298,8 +297,13 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         if (item.getTitle().equals(getActionBar().getTitle())) {
             //detail is visible
             if (detailSlidingUpPanelLayoutLayout.isPanelAnchored() || detailSlidingUpPanelLayoutLayout.isPanelExpanded()) {
-                detailSlidingUpPanelLayoutLayout.collapsePanel();
+                if (DayActivity.class.isAssignableFrom(this.getClass()) &&
+                        ((DayActivity) this).getmViewPager().getCurrentItem() == 1)//if list is active
+                    detailSlidingUpPanelLayoutLayout.hidePanel(); //TODO le rendu est moche
+                else
+                    detailSlidingUpPanelLayoutLayout.collapsePanel();
             }
+
             //search widget is active
             else if (!((SearchView) globalMenu.findItem(R.id.menu_search).getActionView()).isIconified()) {
                 drawerArrowDrawable.animateToSandwich();
