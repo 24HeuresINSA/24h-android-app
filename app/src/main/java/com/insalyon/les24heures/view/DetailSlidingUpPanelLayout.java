@@ -2,9 +2,10 @@ package com.insalyon.les24heures.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
@@ -36,6 +37,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     private ImageButton favoriteImageButton;
     private TextView detailSlidingTitle;
     private TextView detailSlidingDescription;
+    private LinearLayout detailSlidingHeaderLabel;
 
     private View parallaxHeader;
     private DrawerArrowDrawable drawerArrowDrawable;
@@ -89,7 +91,9 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
                 float alpha = slideOffset*a + b ;
                 favoriteImageButton.setX(alpha);
 
-                Log.d("DEBUG",slideOffset +" "+alpha+"");
+                ViewGroup.LayoutParams params = detailSlidingHeaderLabel.getLayoutParams();
+                params.width = (int) alpha;
+                detailSlidingHeaderLabel.setLayoutParams(params);
 
             } else {      //from anchored to expand and vice versa
                 drawerArrowDrawable.setParameter(1);
@@ -246,6 +250,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         favoriteImageButton = (ImageButton) detailFragment.getView().findViewById(R.id.detail_favorites);
         detailSlidingTitle = (TextView) detailFragment.getView().findViewById(R.id.detail_sliding_title);
         detailSlidingDescription = (TextView) detailFragment.getView().findViewById(R.id.detail_description_text);
+        detailSlidingHeaderLabel = (LinearLayout) detailFragment.getView().findViewById(R.id.detail_sliding_header_label);
     }
 
 
