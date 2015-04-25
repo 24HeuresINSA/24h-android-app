@@ -214,14 +214,14 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
             top = view.getChildAt(0).getTop();
         }
 
-        //ManageDetailSlidingUpDrawer slidingUpEvent = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE, (DayResource) null);
+        ManageDetailSlidingUpDrawer slidingUpEvent = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE, (DayResource) null);
 
         if (firstVisibleItem > lastVisibleItem) {
             //scroll down
-//            if (!isScrollingDown) {
-//                eventBus.post(slidingUpEvent);
-//
-//            }
+            if (!isScrollingDown) {
+                eventBus.post(slidingUpEvent);
+
+            }
             isScrollingDown = true;
             isScrollingUp = false;
         } else if (firstVisibleItem < lastVisibleItem) {
@@ -233,9 +233,9 @@ public class DayListFragment extends DayTypeFragment implements AbsListView.OnSc
         } else {
             if (top < lastY) {
                 //scroll down
-//                if (!isScrollingDown) {
-//                    eventBus.post(slidingUpEvent);
-//                }
+                if (!isScrollingDown) {
+                    eventBus.post(slidingUpEvent);
+                }
                 isScrollingDown = true;
                 isScrollingUp = false;
             } else if (top > lastY) {

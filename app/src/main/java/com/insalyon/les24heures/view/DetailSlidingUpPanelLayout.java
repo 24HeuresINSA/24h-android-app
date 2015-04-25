@@ -120,13 +120,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         @Override
         public void onPanelCollapsed(View panel) {
-            //easy trick : we try to know wether list or maps is active because we don't want to display the collasped mode on the list
-            if (DayActivity.class.isAssignableFrom(activity.getClass())) {
-                if(((DayActivity)activity).getmViewPager().getCurrentItem() != 0){//if list is active
-                    self.hidePanel(); //TODO doesn't work...
-                }
-            }
-
 
 //                this.setDragView(wholeSlidingLayout);
             detailScrollView.setIsScrollEnable(false);
