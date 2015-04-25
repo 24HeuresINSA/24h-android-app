@@ -18,31 +18,29 @@
         android:background="@color/primary_day">
 
         <LinearLayout
+            android:id="@+id/detail_sliding_header_label"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:baselineAligned="false"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/detail_favorites"
-            android:layout_toStartOf="@+id/detail_favorites"
             android:paddingLeft="@dimen/text_block_padding"
             android:paddingTop="@dimen/text_block_padding"
             android:paddingBottom="@dimen/text_block_padding">
 
-                <TextView
-                    android:id="@+id/detail_sliding_title"
-                    android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-                    android:text="@string/detail_title_text"
-                    android:textAppearance="@style/detail_title"
-                    android:clickable="false"
-                    android:focusable="true"
-                    android:focusableInTouchMode="true"/>
+            <TextView
+                android:id="@+id/detail_sliding_title"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="marquee"
+                android:marqueeRepeatLimit="marquee_forever"
+                android:scrollHorizontally="true"
+                android:singleLine="true"
+                android:text="@string/detail_title_text"
+                android:textAppearance="@style/detail_title"
+                android:clickable="false"
+                android:focusable="true"
+                android:focusableInTouchMode="true"/>
 
 
             <TextView
@@ -52,6 +50,7 @@
                 android:layout_gravity="center"
                 android:gravity="center_vertical|left"
                 android:text="@string/detail_header_schedule"
+                android:visibility="visible"
                 android:textAppearance="@style/detail_next_schedule"
                 android:textSize="@dimen/sub_title_detail" />
 
@@ -77,6 +76,7 @@
             android:layout_marginLeft="5dp" />
 
     </RelativeLayout>
+
 
     <com.insalyon.les24heures.view.DetailScrollView
         android:id="@+id/detail_scrollView"
@@ -120,43 +120,6 @@
                     android:longClickable="false" />
 
 
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/detail_url"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="horizontal"
-                android:gravity="center_vertical|right|end"
-                android:padding="@dimen/text_block_padding">
-
-                <TextView
-                    android:id="@+id/detail_url_web"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="u"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                    android:layout_marginLeft="@dimen/icon_margin"
-                    android:layout_marginRight="@dimen/icon_margin" />
-
-                <TextView
-                    android:id="@+id/detail_url_facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="f"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
-                    android:layout_marginLeft="@dimen/icon_margin"
-                    android:layout_marginRight="@dimen/icon_margin" />
-
-                <TextView
-                    android:id="@+id/detail_url_twitter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="t"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                    android:layout_marginLeft="@dimen/icon_margin"
-                    android:layout_marginRight="@dimen/icon_margin"
-                    android:singleLine="false" />
             </LinearLayout>
 
             <RelativeLayout

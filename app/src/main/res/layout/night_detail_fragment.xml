@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/detail_sliding_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/whole_detail_padding"
+    android:paddingRight="@dimen/whole_detail_padding">
+
+
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:fab="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/detail_sliding_layout_header"
+        android:layout_width="fill_parent"
+        android:layout_height="@dimen/detail_header_height"
+        android:background="@color/primary_day">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:baselineAligned="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/detail_favorites"
+            android:layout_toStartOf="@+id/detail_favorites"
+            android:paddingLeft="@dimen/text_block_padding"
+            android:paddingTop="@dimen/text_block_padding"
+            android:paddingBottom="@dimen/text_block_padding">
+
+                <TextView
+                    android:id="@+id/detail_sliding_title"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="marquee"
+                    android:marqueeRepeatLimit="marquee_forever"
+                    android:scrollHorizontally="true"
+                    android:singleLine="true"
+                    android:text="@string/detail_title_text"
+                    android:textAppearance="@style/detail_title"
+                    android:clickable="false"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"/>
+
+
+            <TextView
+                android:id="@+id/detail_next_schedule"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_gravity="center"
+                android:gravity="center_vertical|left"
+                android:text="@string/detail_header_schedule"
+                android:visibility="visible"
+                android:textAppearance="@style/detail_next_schedule"
+                android:textSize="@dimen/sub_title_detail" />
+
+        </LinearLayout>
+
+        <com.melnykov.fab.FloatingActionButton
+            android:id="@+id/detail_favorites"
+            android:layout_width="@dimen/favorite_icon"
+            android:layout_height="@dimen/favorite_icon"
+            android:layout_gravity="top|end"
+            android:layout_margin="@dimen/icon_margin"
+            android:src="@drawable/ic_action_favorite_uncheck"
+            fab:fab_colorNormal="@color/pink_24"
+            fab:fab_colorPressed="@color/navigation_drawer_background"
+            fab:fab_colorRipple="@color/ripple"
+            fab:fab_type="normal"
+            fab:fab_shadow="false"
+            android:scaleType="centerInside"
+            android:tint="@color/white"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp" />
+
+    </RelativeLayout>
+
+    <com.insalyon.les24heures.view.DetailScrollView
+        android:id="@+id/detail_scrollView"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
+
+
+            <LinearLayout
+                android:id="@+id/detail_schedules_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="vertical"
+                android:padding="@dimen/text_block_padding">
+
+                <com.insalyon.les24heures.view.AutoExpandGridView
+                    android:id="@+id/detail_schedule_grid_layout"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:columnCount="2"
+                    android:numColumns="2"></com.insalyon.les24heures.view.AutoExpandGridView>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/detail_description_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="@dimen/text_block_padding">
+
+                <TextView
+                    android:id="@+id/detail_description_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/fake_description_light"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:longClickable="false" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/detail_url"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                android:gravity="center_vertical|right|end"
+                android:padding="@dimen/text_block_padding">
+
+                <TextView
+                    android:id="@+id/detail_url_web"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="u"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:layout_marginLeft="@dimen/icon_margin"
+                    android:layout_marginRight="@dimen/icon_margin" />
+
+                <TextView
+                    android:id="@+id/detail_url_facebook"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="f"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                    android:layout_marginLeft="@dimen/icon_margin"
+                    android:layout_marginRight="@dimen/icon_margin" />
+
+                <TextView
+                    android:id="@+id/detail_url_twitter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="t"
+                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:layout_marginLeft="@dimen/icon_margin"
+                    android:layout_marginRight="@dimen/icon_margin"
+                    android:singleLine="false" />
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/detail_carousel_layout"
+                android:layout_width="fill_parent"
+                android:layout_height="200dp"
+                android:orientation="vertical">
+
+
+                <com.insalyon.les24heures.JazzyViewPager.JazzyViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:id="@+id/jazzy_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="200dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentTop="true" />
+
+                <com.insalyon.les24heures.view.viewpagerindicator.CirclePageIndicator
+                    android:id="@+id/indicator"
+                    android:padding="10dip"
+                    android:layout_height="20dp"
+                    android:layout_width="fill_parent"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+
+
+    </com.insalyon.les24heures.view.DetailScrollView>
+
+
+
+</LinearLayout>
