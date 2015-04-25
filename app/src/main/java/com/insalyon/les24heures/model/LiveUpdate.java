@@ -18,10 +18,18 @@ public class LiveUpdate implements Parcelable {
         return 0;
     }
 
+    public LiveUpdate(Parcel in){
+        this.message = in.readString();
+        this.title = in.readString();
+        this.timePublished = in.readLong();
+    }
+
+
     @Override
     public void writeToParcel(Parcel out, int flags) {
         out.writeString(title);
         out.writeString(message);
+        out.writeLong(timePublished);
     }
 
     public String getTitle() {
