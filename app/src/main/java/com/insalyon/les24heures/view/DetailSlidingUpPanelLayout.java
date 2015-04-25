@@ -2,6 +2,7 @@ package com.insalyon.les24heures.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.RelativeLayout;
@@ -48,6 +49,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     private float anchored;
     private int scrollingHeaderHeight;
     private PanelSlideListener panelSlideListener = new PanelSlideListener() {
+        public Double finalXFavPosition;
+
         @Override
         public void onPanelSlide(View panel, float slideOffset) {
             float newParallaxHeaderPos;
@@ -73,6 +76,21 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
                 drawerArrowDrawable.setParameter(param);
 
+
+                nextSchedule.setAlpha(1 - slideOffset / anchored);
+
+
+                int headerWidth = self.getWidth();
+                if(finalXFavPosition == null){
+                    finalXFavPosition = Double.valueOf(favoriteImageButton.getX());
+                }
+                float a = (float) ((finalXFavPosition - headerWidth) / anchored);
+                float b = headerWidth;
+                float alpha = slideOffset*a + b ;
+                favoriteImageButton.setX(alpha);
+
+                Log.d("DEBUG",slideOffset +" "+alpha+"");
+
             } else {      //from anchored to expand and vice versa
                 drawerArrowDrawable.setParameter(1);
             }
@@ -86,8 +104,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         @Override
         public void onPanelExpanded(View panel) {
             detailScrollView.setIsScrollEnable(true);
-            nextSchedule.setVisibility(View.GONE);
-            favoriteImageButton.setVisibility(View.VISIBLE);
             activity.getActionBar().setTitle("");   //=> hide title in detail
 
 //                this.setDragView(slidingDetailHeader);
@@ -99,8 +115,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         @Override
         public void onPanelCollapsed(View panel) {
-            nextSchedule.setVisibility(View.VISIBLE);
-            favoriteImageButton.setVisibility(View.GONE);
 //                this.setDragView(wholeSlidingLayout);
             detailScrollView.setIsScrollEnable(false);
             detailScrollView.fullScroll(ScrollView.FOCUS_UP);
@@ -114,8 +128,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         @Override
         public void onPanelAnchored(View panel) {
-            nextSchedule.setVisibility(View.GONE);
-            favoriteImageButton.setVisibility(View.VISIBLE);
             detailScrollView.setIsScrollEnable(false);
 
             activity.getActionBar().setTitle("");   //=> hide title in detail

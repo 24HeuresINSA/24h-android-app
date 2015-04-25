@@ -46,6 +46,7 @@
                 android:layout_gravity="center"
                 android:gravity="center_vertical|left"
                 android:text="@string/detail_header_schedule"
+                android:visibility="visible"
                 android:textAppearance="@style/detail_next_schedule"
                 android:textSize="@dimen/sub_title_detail" />
 

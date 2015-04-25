@@ -44,6 +44,7 @@
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
                 android:layout_gravity="center"
+                android:visibility="visible"
                 android:gravity="center_vertical|left"
                 android:text="@string/detail_header_schedule"
                 android:textAppearance="@style/detail_next_schedule"
