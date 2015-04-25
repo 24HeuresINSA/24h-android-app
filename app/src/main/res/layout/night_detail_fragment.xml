@@ -9,7 +9,7 @@
 
 
 
-    <FrameLayout
+    <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:fab="http://schemas.android.com/apk/res-auto"
         android:id="@+id/detail_sliding_layout_header"
@@ -21,12 +21,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:padding="@dimen/text_block_padding"
-            android:baselineAligned="false">
+            android:baselineAligned="false"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_toLeftOf="@+id/detail_favorites"
+            android:layout_toStartOf="@+id/detail_favorites"
+            android:paddingLeft="@dimen/text_block_padding"
+            android:paddingTop="@dimen/text_block_padding"
+            android:paddingBottom="@dimen/text_block_padding">
 
                 <TextView
                     android:id="@+id/detail_sliding_title"
-                    android:layout_width="@dimen/detail_title_width"
+                    android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
                     android:ellipsize="marquee"
                     android:marqueeRepeatLimit="marquee_forever"
@@ -46,6 +52,7 @@
                 android:layout_gravity="center"
                 android:gravity="center_vertical|left"
                 android:text="@string/detail_header_schedule"
+                android:visibility="visible"
                 android:textAppearance="@style/detail_next_schedule"
                 android:textSize="@dimen/sub_title_detail" />
 
@@ -64,9 +71,13 @@
             fab:fab_type="normal"
             fab:fab_shadow="false"
             android:scaleType="centerInside"
-            android:tint="@color/white" />
+            android:tint="@color/white"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="5dp" />
 
-    </FrameLayout>
+    </RelativeLayout>
 
     <com.insalyon.les24heures.view.DetailScrollView
         android:id="@+id/detail_scrollView"

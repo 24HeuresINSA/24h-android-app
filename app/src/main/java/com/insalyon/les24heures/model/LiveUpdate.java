@@ -12,6 +12,10 @@ public class LiveUpdate implements Parcelable {
     private String message;
     private long timePublished;
 
+    public LiveUpdate() {
+
+    }
+
 
     @Override
     public int describeContents() {
