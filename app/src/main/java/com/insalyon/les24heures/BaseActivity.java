@@ -25,6 +25,8 @@ import com.github.mrengineer13.snackbar.SnackBar;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
+import com.insalyon.les24heures.androidService.LiveUpdateService;
+import com.insalyon.les24heures.androidService.NotificationService;
 import com.insalyon.les24heures.eventbus.ApplicationVersionEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
@@ -254,6 +256,9 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         ButterKnife.inject(this);
+
+        Intent startNotificationServiceIntent = new Intent(this, NotificationService.class);
+        this.startService(startNotificationServiceIntent);
 
         retrieveData(savedInstanceState);
 
@@ -546,6 +551,10 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
                 break;
             case TODATE:
                 dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion);
+
+                Intent checkForUpdates = new Intent(this, LiveUpdateService.class);
+                startService(checkForUpdates);
+
                 Log.d(TAG, "manageApplicationVersionState TODATE");
                 break;
         }

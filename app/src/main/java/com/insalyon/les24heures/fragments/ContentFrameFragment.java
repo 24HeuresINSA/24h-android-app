@@ -87,7 +87,7 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     @Override
     public void onResume() {
         super.onResume();
-        eventBus.registerSticky(this);
+        eventBus.register(this);
         //TODO quick fix
         if(resourcesList.size() == 0){
             displayProgress();

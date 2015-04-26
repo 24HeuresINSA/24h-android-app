@@ -121,6 +121,8 @@ public class DayActivity extends BaseDynamicDataActivity {
     }
 
     private void dayTypeFragmentSetIsVisible(int position) {
+        if(position == 1)
+            detailSlidingUpPanelLayoutLayout.hideDetailPanel();
         eventBus.postSticky(new ListSetIsVisible(position != 0));
         eventBus.postSticky(new MapsSetIsVisible(position == 0));
     }
@@ -211,6 +213,7 @@ public class DayActivity extends BaseDynamicDataActivity {
     }
 
     public void selectList() {
+        detailSlidingUpPanelLayoutLayout.hidePanel();
         mViewPager.setCurrentItem(0, animateSwitching);
         dayTypeFragmentSetIsVisible(1);
 
@@ -289,5 +292,8 @@ public class DayActivity extends BaseDynamicDataActivity {
         }
     }
 
+    public ViewPager getmViewPager() {
+        return mViewPager;
+    }
 }
 

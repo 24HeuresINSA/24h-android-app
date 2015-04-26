@@ -203,6 +203,9 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
 
     public void onEvent(MapsSetIsVisible event){
         this.isVisible = event.isVisible();
+        if(this.isVisible){
+            this.catchUpCategorySelectedEvent();
+        }
     }
 
 
@@ -214,7 +217,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
 
     public void onEvent(ManageDetailSlidingUpDrawer event) {
         if (event.getState().equals(SlidingUpPannelState.HIDE)) {
-            resourceMarkerMap.get(selectedDayResource).setIcon(BitmapDescriptorFactory.defaultMarker());
+            if(selectedDayResource != null)resourceMarkerMap.get(selectedDayResource).setIcon(BitmapDescriptorFactory.defaultMarker());
         }
     }
 
@@ -304,7 +307,10 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     }
 
     private int getMarkerDrawable(DayResource dayResource) {
-        return getResources().getIdentifier("marker_"+dayResource.getCategory().getName(), "drawable", getActivity().getPackageName());
+        int result =  getResources().getIdentifier("marker_"+dayResource.getCategory().getName(), "drawable", getActivity().getPackageName());
+        if(result == 0) //TODO faire mieux ou pas du tout
+            result = getResources().getIdentifier("ic_action_select_all","drawable",getActivity().getPackageName());
+        return result;
     }
 
     private Float getCategoryHueColor(DayResource dayResource, Float color) {

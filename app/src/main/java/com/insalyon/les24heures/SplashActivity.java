@@ -2,20 +2,31 @@ package com.insalyon.les24heures;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.widget.TextView;
 
 import com.insalyon.les24heures.service.impl.ApplicationVersionServiceImpl;
 
 
-public class MainActivity extends Activity {
-    private static final String TAG = MainActivity.class.getCanonicalName();
+public class SplashActivity extends Activity {
+    private static final String TAG = SplashActivity.class.getCanonicalName();
 
     @Override
     //dans NavigationActivity sauf startRightOutput  
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.main_activity);
+        setContentView(R.layout.splash_activity);
+        PackageInfo pInfo = null;
+        try {
+            pInfo = getApplicationContext().getPackageManager().getPackageInfo(getApplicationContext().getPackageName(), 0);
+        } catch (PackageManager.NameNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        ((TextView)findViewById(R.id.app_version)).setText(pInfo.versionName);
 
         new BackgroundSplashTask().execute();
 
@@ -64,7 +75,7 @@ public class MainActivity extends Activity {
             super.onPostExecute(result);
 
             //TODO choisir quel activtiy lancer en fonction de l'heure ici
-            Intent i = new Intent(MainActivity.this,
+            Intent i = new Intent(SplashActivity.this,
                     DayActivity.class);
             // any info loaded can during splash_show
             // can be passed to main activity using
