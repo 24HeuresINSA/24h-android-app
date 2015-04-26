@@ -1,9 +1,6 @@
 package com.insalyon.les24heures.adapter;
 
 import android.content.Context;
-import android.graphics.Color;
-import android.graphics.Typeface;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.insalyon.les24heures.BaseActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.model.Category;
@@ -34,10 +32,14 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
     LayoutInflater vi;
     private List<Category> categories;
 
-    public CategoryAdapter(Context context, int resource, List<Category> categories) {
+    BaseActivity activity;
+
+
+    public CategoryAdapter(Context context, int resource, List<Category> categories, BaseActivity activity) {
         super(context, resource, categories);
         this.viewId = resource;
         this.categories = categories;
+        this.activity = activity;
         selectedCategoryInit = -1;
 
         this.vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -50,6 +52,8 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
+
+
 
         ViewHolder holder = null;
 
@@ -73,6 +77,9 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
             category.setDisplayName(getContext().getResources().getString(R.string.category_remaining_label));
         }
         holder.title.setText(category.getDisplayName());
+
+        Boolean isSelected = activity.getPositionCategorySelected() == position;
+        
 
         switch(category.getName()){
             case "divertissement":

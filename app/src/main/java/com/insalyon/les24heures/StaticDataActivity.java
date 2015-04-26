@@ -64,51 +64,31 @@ public class StaticDataActivity extends BaseActivity {
 
     @OnClick(R.id.navigation_drawer_tickets)
     public void onClickTickets(View v) {
-        clearDrawerChoices();
-        v.setActivated(true);
-        setSelectedMenuItem(v, R.drawable.billeterie_bleu);
-        drawerLayout.closeDrawer();
-        nextStaticFragment = TicketsFragment.class;
+        super.onClickTickets(v);
         startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_conso)
     public void onClickConso(View v) {
-        clearDrawerChoices();
-        v.setActivated(true);
-        setSelectedMenuItem(v, R.drawable.ic_beer_bleu);
-        drawerLayout.closeDrawer();
-        nextStaticFragment = ConsoFragment.class;
+       super.onClickConso(v);
         startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_tcl)
     public void onClickTcl(View v) {
-        clearDrawerChoices();
-        v.setActivated(true);
-        setSelectedMenuItem(v, R.drawable.tcl_rouge);
-        drawerLayout.closeDrawer();
-        nextStaticFragment = TclFragment.class;
+        super.onClickTcl(v);
         startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_facilities)
     public void onClickFacilities(View v) {
-        clearDrawerChoices();
-        v.setActivated(true);
-        setSelectedMenuItem(v, R.drawable.drapeau_bleu);
-        drawerLayout.closeDrawer();
-        nextStaticFragment = FacilitiesFragment.class;
+        super.onClickFacilities(v);
         startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_params)
     public void onClickParams(View v) {
-        clearDrawerChoices();
-        v.setActivated(true);
-        setSelectedMenuItem(v, R.drawable.ic_action_settings_bleu);
-        drawerLayout.closeDrawer();
-        nextStaticFragment = ParamsFragment.class;
+        super.onClickParams(v);
         startFragment();
     }
 
