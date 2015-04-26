@@ -102,6 +102,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_marginTop">3dp</item>
         <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:paddingLeft">-5dp</item>
     </style>
 
     <style name="NavigationDrawer.SectionItem.Label">

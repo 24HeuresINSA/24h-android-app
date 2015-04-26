@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -19,9 +20,6 @@ import com.insalyon.les24heures.model.Category;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
-
-import static com.insalyon.les24heures.R.color.drawer_label_default;
-import static com.insalyon.les24heures.R.color.primary_day;
 
 /**
  * Created by remi on 01/03/15.
@@ -61,6 +59,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
             holder = new ViewHolder();
             holder.title = (TextView) convertView.findViewById(R.id.drawer_item_title);
             holder.icon = (ImageView) convertView.findViewById(R.id.drawer_item_icon);
+            holder.type = (LinearLayout) convertView.findViewById(R.id.typecategory);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -77,16 +76,20 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
         switch(category.getName()){
             case "divertissement":
-                holder.icon.setImageResource(R.drawable.category_divert);
+                holder.icon.setImageResource(R.drawable.animation_gris);
+                holder.type.setBackgroundColor(Color.rgb(248,154,29));
                 break;
             case "culturer":
-                holder.icon.setImageResource(R.drawable.category_culture);
+                holder.icon.setImageResource(R.drawable.culture_gris);
+                holder.type.setBackgroundColor(Color.rgb(105,199,186));
                 break;
             case "sportiver":
-                holder.icon.setImageResource(R.drawable.category_sport);
+                holder.icon.setImageResource(R.drawable.sport_gris);
+                holder.type.setBackgroundColor(Color.rgb(246,237,17));
                 break;
             case "prevention":
-                holder.icon.setImageResource(R.drawable.category_prevention);
+                holder.icon.setImageResource(R.drawable.prevention_gris);
+                holder.type.setBackgroundColor(Color.rgb(173,208,55));
                 break;
             case "ALL":
                 holder.icon.setImageResource(R.drawable.ic_action_select_all);
@@ -113,6 +116,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
     }
 
     private class ViewHolder {
+        LinearLayout type;
         TextView title;
         ImageView icon;
     }

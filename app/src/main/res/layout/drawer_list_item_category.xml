@@ -7,6 +7,13 @@
         style="@style/NavigationDrawer.SectionItem"
         android:orientation="horizontal">
 
+        <LinearLayout
+            android:id="@+id/typecategory"
+            android:orientation="horizontal"
+            android:layout_width="5dp"
+            android:layout_height="fill_parent"
+            android:background="@color/white"></LinearLayout>
+
         <ImageView
             android:id="@+id/drawer_item_icon"
             style="@style/NavigationDrawer.SectionItem.Icon" />
@@ -14,6 +21,7 @@
         <TextView xmlns:android="http://schemas.android.com/apk/res/android"
             android:id="@+id/drawer_item_title"
             style="@style/NavigationDrawer.SectionItem.Label" />
+
     </LinearLayout>
 
 </LinearLayout>
