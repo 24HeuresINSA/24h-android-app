@@ -233,7 +233,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         drawerLayout.setDrawerShadow(R.drawable.drawer_shadow, GravityCompat.START);
         drawerLayout.setDrawerView(drawerView);
         // set up the drawer's list view with items and click listener
-        categoriesList.setAdapter(new CategoryAdapter(this, R.layout.drawer_list_item_category, categories));
+        categoriesList.setAdapter(new CategoryAdapter(this, R.layout.drawer_list_item_category, categories, this));
         categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
         getActionBar().setHomeButtonEnabled(true);
 
@@ -669,5 +669,9 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             positionCategorySelected = position;
             drawerLayout.closeDrawer();
         }
+    }
+
+    public int getPositionCategorySelected() {
+        return positionCategorySelected;
     }
 }
