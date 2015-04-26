@@ -1,6 +1,9 @@
 package com.insalyon.les24heures.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +19,9 @@ import com.insalyon.les24heures.model.Category;
 import java.util.List;
 
 import de.greenrobot.event.EventBus;
+
+import static com.insalyon.les24heures.R.color.drawer_label_default;
+import static com.insalyon.les24heures.R.color.primary_day;
 
 /**
  * Created by remi on 01/03/15.
@@ -82,19 +88,14 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
             case "prevention":
                 holder.icon.setImageResource(R.drawable.category_prevention);
                 break;
-            default:
+            case "ALL":
                 holder.icon.setImageResource(R.drawable.ic_action_select_all);
                 break;
-        }
-
-        switch(category.getDisplayName()){
-            case "Tout":
-                holder.icon.setImageResource(R.drawable.ic_action_select_all);
-                break;
-            case "A venir":
+            case "REMAINING":
                 holder.icon.setImageResource(R.drawable.ic_now);
                 break;
             default:
+                holder.icon.setImageResource(R.drawable.ic_action_select_all);
                 break;
         }
 
@@ -111,7 +112,6 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
         this.notifyDataSetInvalidated();
     }
 
-
     private class ViewHolder {
         TextView title;
         ImageView icon;
@@ -120,4 +120,53 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
     public void setSelectedCategoryInit(int selectedCategoryInit) {
         this.selectedCategoryInit = selectedCategoryInit;
     }
+
+    //TODO utiliser ces deux fonctions sur le on click drawer category item
+
+   /* private setSelectedCategoryItem(ViewHolder holder, View convertView, int position) {
+        holder = (ViewHolder) convertView.getTag();
+        switch (categories.get(position).getName()){
+            case "divertissement":
+                holder.icon.setImageResource(R.drawable.animation_bleu);
+                 break;
+            case "culturer":
+                holder.icon.setImageResource(R.drawable.culture_bleu);
+                break;
+            case "sportiver":
+                holder.icon.setImageResource(R.drawable.sport_bleu);
+                 break;
+            case "prevention":
+                holder.icon.setImageResource(R.drawable.prevention_bleu);
+                break;
+            case "ALL":
+                holder.icon.setImageResource(R.drawable.ic_action_select_all_bleu);
+                break;
+            case "REMAINING":
+                holder.icon.setImageResource(R.drawable.ic_now_bleu);
+                break;
+            default:
+                holder.icon.setImageResource(R.drawable.ic_action_select_all);
+                break;
+        }
+        holder.title.setTextColor(Color.CYAN);
+        holder.title.setTypeface(null, Typeface.BOLD);
+
+    }
+
+    public void setUnselectedCategoryItem(View v, int iconRes) {
+        for (int i = 0; i < ((ViewGroup) v).getChildCount(); ++i) {
+            View nextChild = ((ViewGroup) v).getChildAt(i);
+            if (nextChild instanceof ImageView && iconRes!=0) {
+                ImageView drawerSelectedIcon = (ImageView) nextChild;
+                drawerSelectedIcon.setImageResource(iconRes);
+                Log.d(v.toString(), "icon desactivated");
+            } else if (nextChild instanceof TextView) {
+                TextView drawerSelectedText = (TextView) nextChild;
+              //  drawerSelectedText.setTextColor(getResources().getColor(R.color.drawer_label_default));
+                drawerSelectedText.setTypeface(null, Typeface.NORMAL);
+                Log.d(v.toString(), "text desactivated");
+            }
+        }
+    }*/
+
 }

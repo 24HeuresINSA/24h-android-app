@@ -6,11 +6,11 @@ import android.app.FragmentManager;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +20,6 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.github.mrengineer13.snackbar.SnackBar;
 import com.google.gson.Gson;
@@ -83,9 +82,9 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     ListView categoriesList;
     @InjectView(R.id.navigation_drawer_artists)
     View artistButton;
-    @InjectView(R.id.navigation_drawer_tcl)
-    View ticketsButton;
     @InjectView(R.id.navigation_drawer_tickets)
+    View ticketsButton;
+    @InjectView(R.id.navigation_drawer_tcl)
     View tclButton;
     @InjectView(R.id.navigation_drawer_facilities)
     View facilitiesButton;
@@ -417,6 +416,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             } else if (nextChild instanceof TextView) {
                 TextView drawerSelectedText = (TextView) nextChild;
                 drawerSelectedText.setTextColor(getResources().getColor(R.color.primary_day));
+                drawerSelectedText.setTypeface(null, Typeface.BOLD);
                 Log.d(v.toString(), "text activated");
             }
         }
@@ -432,6 +432,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             } else if (nextChild instanceof TextView) {
                 TextView drawerSelectedText = (TextView) nextChild;
                 drawerSelectedText.setTextColor(getResources().getColor(R.color.drawer_label_default));
+                drawerSelectedText.setTypeface(null, Typeface.NORMAL);
                 Log.d(v.toString(), "text desactivated");
             }
         }
