@@ -90,8 +90,9 @@
                     android:id="@+id/detail_schedule_grid_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:columnCount="2"
-                    android:numColumns="2"></com.insalyon.les24heures.view.AutoExpandGridView>
+                    android:layout_margin="@dimen/text_block_padding"
+                    android:columnCount="1"
+                    android:numColumns="1"></com.insalyon.les24heures.view.AutoExpandGridView>
             </LinearLayout>
 
             <LinearLayout
