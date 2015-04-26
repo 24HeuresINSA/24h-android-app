@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.insalyon.les24heures.BaseActivity;
 import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.LiveUpdatesReceivedEvent;
@@ -44,12 +43,12 @@ public class NotificationService extends IntentService {
         Log.d(TAG, "Got : " + liveUpdates.size() + " LiveUpdates, ");
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
-        long timeLastLiveUpdateSeen = sharedPreferences.getLong(getResources().getString(R.string.SHARED_PREF_LAST_LIVEUPDATE_SEEN),0);
+        long timeLastLiveUpdateSeen = sharedPreferences.getLong(getResources().getString(R.string.SHARED_PREF_LAST_LIVEUPDATE_SEEN), 0);
 
-        for(LiveUpdate liveUpdate : liveUpdates) {
-            if(liveUpdate.wasPublishedAfter(timeLastLiveUpdateSeen)) {
+        for (LiveUpdate liveUpdate : liveUpdates) {
+            if (liveUpdate.wasPublishedAfter(timeLastLiveUpdateSeen)) {
                 showLiveUpdateNotification(liveUpdate);
-                timeLastLiveUpdateSeen=liveUpdate.getTimePublished();
+                timeLastLiveUpdateSeen = liveUpdate.getTimePublished();
             }
         }
 
@@ -70,10 +69,7 @@ public class NotificationService extends IntentService {
 
     private NotificationCompat.Builder getNotificationBuilder(LiveUpdate liveUpdate) {
         Intent intent = new Intent(this, DayActivity.class);
-
-
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-
         stackBuilder.addParentStack(DayActivity.class);
         stackBuilder.addNextIntent(intent);
         PendingIntent resultPendingIntent =
@@ -87,7 +83,7 @@ public class NotificationService extends IntentService {
                 .setSmallIcon(R.drawable.ic_now)
                 .setContentTitle(liveUpdate.getTitle())
                 .setStyle(new NotificationCompat.BigTextStyle()
-                .bigText(liveUpdate.getMessage()))
+                        .bigText(liveUpdate.getMessage()))
                 .setContentText(liveUpdate.getMessage())
                 .setContentIntent(resultPendingIntent)
                 .setAutoCancel(true);

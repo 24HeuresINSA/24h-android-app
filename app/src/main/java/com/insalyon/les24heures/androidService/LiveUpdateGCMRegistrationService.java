@@ -43,7 +43,7 @@ public class LiveUpdateGCMRegistrationService extends IntentService {
 //            TODO:Store Registration Id in prefs, clear it on application update
 
         } catch (IOException ex) {
-            Log.e(TAG,"Error :" + ex.getMessage());
+            Log.e(TAG, "Error :" + ex.getMessage());
         }
     }
 
@@ -54,7 +54,7 @@ public class LiveUpdateGCMRegistrationService extends IntentService {
 
             @Override
             public void success(String result, Response response) {
-                Log.d(TAG, "Published key successfully");
+                Log.d(TAG, "Key successfully sent to server");
             }
 
             @Override

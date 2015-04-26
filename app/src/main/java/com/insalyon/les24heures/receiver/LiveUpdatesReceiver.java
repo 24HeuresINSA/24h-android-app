@@ -19,11 +19,14 @@ public class LiveUpdatesReceiver extends WakefulBroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        Log.d(TAG,"Received something");
-        // Explicitly specify that GcmIntentService will handle the intent.
+        Log.d(TAG, "Received a GCM message");
+        forwardMessageToLiveUpdateService(context, intent);
+    }
+
+    private void forwardMessageToLiveUpdateService(Context context, Intent intent) {
         ComponentName comp = new ComponentName(context.getPackageName(),
                 LiveUpdateService.class.getName());
-        // Start the service, keeping the device awake while it is launching.
+
         startWakefulService(context, (intent.setComponent(comp)));
         setResultCode(Activity.RESULT_OK);
     }
