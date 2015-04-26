@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
+import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.insalyon.les24heures.DTO.LiveUpdateDTO;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.LiveUpdatesReceivedEvent;
@@ -11,6 +12,7 @@ import com.insalyon.les24heures.model.LiveUpdate;
 import com.insalyon.les24heures.service.RetrofitService;
 import com.insalyon.les24heures.utils.RetrofitErrorHandler;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,8 +34,13 @@ public class LiveUpdateService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(TAG, "Getting Updates...");
+        Log.d(TAG, "Intent received");
+        retreiveUpdatesFromServer();
+    }
 
+
+
+    private void retreiveUpdatesFromServer() {
         RetrofitService retrofitService = getLiveUpdatesRetrofitService();
         retrofitService.getLiveUpdates(new Callback<List<LiveUpdateDTO>>() {
             @Override
@@ -47,7 +54,6 @@ public class LiveUpdateService extends IntentService {
                 Log.e(TAG, " failure " + error);
             }
         });
-
     }
 
     private RetrofitService getLiveUpdatesRetrofitService() {
@@ -82,6 +88,8 @@ public class LiveUpdateService extends IntentService {
         }
         return liveUpdates;
     }
+
+
 
 
 }

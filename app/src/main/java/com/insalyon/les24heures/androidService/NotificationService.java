@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.LiveUpdatesReceivedEvent;
@@ -35,9 +36,8 @@ public class NotificationService extends IntentService {
 
     //When new Liveupdates are received, show them as notification
     public void onEvent(LiveUpdatesReceivedEvent event) {
-
-
         List<LiveUpdate> liveUpdates = event.getLiveUpdates();
+        Log.d(TAG, "Got : " + liveUpdates.size() + " LiveUpdates, ");
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
         long timeLastLiveUpdateSeen = sharedPreferences.getLong(getResources().getString(R.string.SHARED_PREF_LAST_LIVEUPDATE_SEEN),0);

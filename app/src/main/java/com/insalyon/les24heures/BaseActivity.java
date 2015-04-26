@@ -18,9 +18,12 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.github.mrengineer13.snackbar.SnackBar;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
+import com.insalyon.les24heures.androidService.LiveUpdateGCMRegistrationService;
 import com.insalyon.les24heures.androidService.LiveUpdateService;
 import com.insalyon.les24heures.androidService.NotificationService;
 import com.insalyon.les24heures.eventbus.ApplicationVersionEvent;
@@ -65,6 +68,7 @@ import retrofit.RestAdapter;
 public abstract class BaseActivity extends Activity implements SnackBar.OnMessageClickListener {
     public static final String PREFS_NAME = "dataFile";
     private static final String TAG = BaseActivity.class.getCanonicalName();
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     FragmentManager fragmentManager;
     EventBus eventBus;
@@ -146,6 +150,11 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
         if (selectedCategories == null) {
             selectedCategories = new ArrayList<>();
+        }
+
+        if(checkPlayServices()){
+            Intent registerOnGCM = new Intent(this, LiveUpdateGCMRegistrationService.class);
+            startService(registerOnGCM);
         }
 
 
@@ -264,6 +273,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     protected void onResume() {
         super.onResume();
         eventBus.registerSticky(this);
+        checkPlayServices();
 
     }
 
@@ -489,10 +499,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
                 break;
             case TODATE:
                 dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion);
-
-                Intent checkForUpdates = new Intent(this, LiveUpdateService.class);
-                startService(checkForUpdates);
-
                 Log.d(TAG, "manageApplicationVersionState TODATE");
                 break;
         }
@@ -599,7 +605,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     }
 
     private class DrawerCategoriesClickListener implements ListView.OnItemClickListener {
-
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             clearDrawerChoices(false);
@@ -607,6 +612,21 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             positionCategorySelected = position;
             drawerLayout.closeDrawer();
         }
+    }
+
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 
 
