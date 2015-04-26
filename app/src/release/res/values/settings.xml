@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--Settings for the debug build-->
-<resources>
-    <string name="backend_url">http://assomaker.24heures.org</string>
-    <string name="backend_url_mobile_test">http://test.24heures.org:3030/</string>
-    <string name="backend_url_mobile">http://mobile.24heures.org:3030/</string>
-</resources>
