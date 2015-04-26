@@ -1,6 +1,8 @@
 package com.insalyon.les24heures.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -78,40 +80,99 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
         }
         holder.title.setText(category.getDisplayName());
 
-        Boolean isSelected = activity.getPositionCategorySelected() == position;
-        
-
-        switch(category.getName()){
-            case "divertissement":
-                holder.icon.setImageResource(R.drawable.animation_gris);
-                holder.type.setBackgroundColor(Color.rgb(248,154,29));
-                break;
-            case "culturer":
-                holder.icon.setImageResource(R.drawable.culture_gris);
-                holder.type.setBackgroundColor(Color.rgb(105,199,186));
-                break;
-            case "sportiver":
-                holder.icon.setImageResource(R.drawable.sport_gris);
-                holder.type.setBackgroundColor(Color.rgb(246,237,17));
-                break;
-            case "prevention":
-                holder.icon.setImageResource(R.drawable.prevention_gris);
-                holder.type.setBackgroundColor(Color.rgb(173,208,55));
-                break;
-            case "ALL":
-                holder.icon.setImageResource(R.drawable.ic_action_select_all);
-                break;
-            case "REMAINING":
-                holder.icon.setImageResource(R.drawable.ic_now);
-                break;
-            default:
-                holder.icon.setImageResource(R.drawable.ic_action_select_all);
-                break;
-        }
 
         if(!init && position == selectedCategoryInit){
             ((ListView)parent).setItemChecked(position,position == selectedCategoryInit);
             init = true;
+        }
+
+        Boolean isSelected = activity.getPositionCategorySelected() == position;
+        
+        if(isSelected==false) {
+            switch (category.getName()) {
+                case "divertissement":
+                    holder.icon.setImageResource(R.drawable.animation_gris);
+                    holder.type.setBackgroundColor(Color.rgb(248, 154, 29));
+                    holder.title.setTextColor(Color.rgb(77, 77, 77));
+                    holder.title.setTypeface(null, Typeface.NORMAL);
+                    break;
+                case "culturer":
+                    holder.icon.setImageResource(R.drawable.culture_gris);
+                    holder.type.setBackgroundColor(Color.rgb(105, 199, 186));
+                    holder.title.setTextColor(Color.rgb(77, 77, 77));
+                    holder.title.setTypeface(null, Typeface.NORMAL);
+                    break;
+                case "sportiver":
+                    holder.icon.setImageResource(R.drawable.sport_gris);
+                    holder.type.setBackgroundColor(Color.rgb(246, 237, 17));
+                    holder.title.setTextColor(Color.rgb(77, 77, 77));
+                    holder.title.setTypeface(null, Typeface.NORMAL);
+                    break;
+                case "prevention":
+                    holder.icon.setImageResource(R.drawable.prevention_gris);
+                    holder.type.setBackgroundColor(Color.rgb(173, 208, 55));
+                    holder.title.setTextColor(Color.rgb(77, 77, 77));
+                    holder.title.setTypeface(null, Typeface.NORMAL);
+                    break;
+                case "ALL":
+                    holder.icon.setImageResource(R.drawable.ic_action_select_all);
+                    holder.title.setTextColor(Color.rgb(77, 77, 77));
+                    holder.title.setTypeface(null, Typeface.NORMAL);
+                    break;
+                case "REMAINING":
+                    holder.icon.setImageResource(R.drawable.ic_now);
+                    holder.title.setTextColor(Color.rgb(77, 77, 77));
+                    holder.title.setTypeface(null, Typeface.NORMAL);
+                    break;
+                default:
+                    holder.icon.setImageResource(R.drawable.ic_action_select_all);
+                    holder.title.setTextColor(Color.rgb(77, 77, 77));
+                    holder.title.setTypeface(null, Typeface.NORMAL);
+                    break;
+            }
+        }
+        else{
+            switch (category.getName()) {
+                case "divertissement":
+                    holder.icon.setImageResource(R.drawable.animation_bleu);
+                    holder.type.setBackgroundColor(Color.rgb(248, 154, 29));
+                    holder.title.setTextColor(Color.rgb(17, 135, 142));
+                    holder.title.setTypeface(null, Typeface.BOLD);
+                    break;
+                case "culturer":
+                    holder.icon.setImageResource(R.drawable.culture_bleu);
+                    holder.type.setBackgroundColor(Color.rgb(105, 199, 186));
+                    holder.title.setTextColor(Color.rgb(17, 135, 142));
+                    holder.title.setTypeface(null, Typeface.BOLD);
+                    break;
+                case "sportiver":
+                    holder.icon.setImageResource(R.drawable.sport_bleu);
+                    holder.type.setBackgroundColor(Color.rgb(246, 237, 17));
+                    holder.title.setTextColor(Color.rgb(17, 135, 142));
+                    holder.title.setTypeface(null, Typeface.BOLD);
+                    break;
+                case "prevention":
+                    holder.icon.setImageResource(R.drawable.prevention_bleu);
+                    holder.type.setBackgroundColor(Color.rgb(173, 208, 55));
+                    holder.title.setTextColor(Color.rgb(17, 135, 142));
+                    holder.title.setTypeface(null, Typeface.BOLD);
+                    break;
+                case "ALL":
+                    holder.icon.setImageResource(R.drawable.ic_action_select_all_bleu);
+                    holder.title.setTextColor(Color.rgb(17, 135, 142));
+                    holder.title.setTypeface(null, Typeface.BOLD);
+                    break;
+                case "REMAINING":
+                    holder.icon.setImageResource(R.drawable.ic_now_bleu);
+                    holder.title.setTextColor(Color.rgb(17, 135, 142));
+                    holder.title.setTypeface(null, Typeface.BOLD);
+                    break;
+                default:
+                    holder.icon.setImageResource(R.drawable.ic_action_select_all_bleu);
+                    holder.title.setTextColor(Color.rgb(17, 135, 142));
+                    holder.title.setTypeface(null, Typeface.BOLD);
+                    break;
+            }
         }
 
         return convertView;
@@ -131,53 +192,5 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
     public void setSelectedCategoryInit(int selectedCategoryInit) {
         this.selectedCategoryInit = selectedCategoryInit;
     }
-
-    //TODO utiliser ces deux fonctions sur le on click drawer category item
-
-   /* private setSelectedCategoryItem(ViewHolder holder, View convertView, int position) {
-        holder = (ViewHolder) convertView.getTag();
-        switch (categories.get(position).getName()){
-            case "divertissement":
-                holder.icon.setImageResource(R.drawable.animation_bleu);
-                 break;
-            case "culturer":
-                holder.icon.setImageResource(R.drawable.culture_bleu);
-                break;
-            case "sportiver":
-                holder.icon.setImageResource(R.drawable.sport_bleu);
-                 break;
-            case "prevention":
-                holder.icon.setImageResource(R.drawable.prevention_bleu);
-                break;
-            case "ALL":
-                holder.icon.setImageResource(R.drawable.ic_action_select_all_bleu);
-                break;
-            case "REMAINING":
-                holder.icon.setImageResource(R.drawable.ic_now_bleu);
-                break;
-            default:
-                holder.icon.setImageResource(R.drawable.ic_action_select_all);
-                break;
-        }
-        holder.title.setTextColor(Color.CYAN);
-        holder.title.setTypeface(null, Typeface.BOLD);
-
-    }
-
-    public void setUnselectedCategoryItem(View v, int iconRes) {
-        for (int i = 0; i < ((ViewGroup) v).getChildCount(); ++i) {
-            View nextChild = ((ViewGroup) v).getChildAt(i);
-            if (nextChild instanceof ImageView && iconRes!=0) {
-                ImageView drawerSelectedIcon = (ImageView) nextChild;
-                drawerSelectedIcon.setImageResource(iconRes);
-                Log.d(v.toString(), "icon desactivated");
-            } else if (nextChild instanceof TextView) {
-                TextView drawerSelectedText = (TextView) nextChild;
-              //  drawerSelectedText.setTextColor(getResources().getColor(R.color.drawer_label_default));
-                drawerSelectedText.setTypeface(null, Typeface.NORMAL);
-                Log.d(v.toString(), "text desactivated");
-            }
-        }
-    }*/
 
 }
