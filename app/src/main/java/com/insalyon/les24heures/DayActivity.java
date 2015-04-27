@@ -60,7 +60,7 @@ public class DayActivity extends BaseDynamicDataActivity {
             if (intent.getParcelableArrayListExtra("selectedCategories") != null)
                 selectedCategories = intent.getParcelableArrayListExtra("selectedCategories");
 
-            position = intent.getIntExtra("categoryPosition", 4); // a l'ouverture on montre toutes les categories = select_all
+            position = intent.getIntExtra("categoryPosition", (categories.size() - 2 >= 0)? categories.size() - 2: 0);
         }
 
 
