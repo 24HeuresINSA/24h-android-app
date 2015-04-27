@@ -86,7 +86,9 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
             init = true;
         }
 
-        Boolean isSelected = activity.getPositionCategorySelected() == position;
+        Boolean isSelected = (activity.getPositionCategorySelected() != null)?
+                activity.getPositionCategorySelected() == position
+                : false;
         
         if(isSelected==false) {
             switch (category.getName()) {
