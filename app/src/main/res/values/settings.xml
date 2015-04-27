@@ -1,6 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!--Settings for the main build, overridden by the settings.xml file in the debug directory-->
 <resources>
     <string name="SHARED_PREF_LAST_LIVEUPDATE_SEEN">SHARED_PREF_LAST_LIVEUPDATE_SEEN</string>
-    <string name="GCM_SENDER_ID">354094554848</string>
 </resources>

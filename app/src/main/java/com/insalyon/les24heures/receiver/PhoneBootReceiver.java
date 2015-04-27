@@ -13,12 +13,8 @@ public class PhoneBootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
 
-        executePhoneBootActions(context);
-
-    }
-
-    private void executePhoneBootActions(Context context) {
         Intent startNotificationServiceIntent = new Intent(context, NotificationService.class);
         context.startService(startNotificationServiceIntent);
+
     }
 }

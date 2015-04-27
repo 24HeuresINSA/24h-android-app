@@ -32,12 +32,8 @@ public class LiveUpdateService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(TAG, "Intent received");
-        retrieveUpdatesFromServer();
-    }
+        Log.d(TAG, "Getting Updates...");
 
-
-    private void retrieveUpdatesFromServer() {
         RetrofitService retrofitService = getLiveUpdatesRetrofitService();
         retrofitService.getLiveUpdates(new Callback<List<LiveUpdateDTO>>() {
             @Override
@@ -51,6 +47,7 @@ public class LiveUpdateService extends IntentService {
                 Log.e(TAG, " failure " + error);
             }
         });
+
     }
 
     private RetrofitService getLiveUpdatesRetrofitService() {
