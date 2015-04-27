@@ -11,6 +11,8 @@ import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.DataBackendService;
 import com.insalyon.les24heures.service.RetrofitService;
@@ -58,7 +60,8 @@ public class DataBackendServiceImpl implements DataBackendService {
     }
 
 
-    public void getResourcesAsyncFromBackend(RetrofitService retrofitService, final String dataVersion) {
+    @Override
+    public void getResourcesAsyncFromBackend(RetrofitService retrofitService, final String dataVersion, final ArrayList<DayResource> dayResources, final ArrayList<NightResource> nightResources) {
         retrofitService.getResources(dataVersion,new Callback<AssomakerDTO>() {
             @Override
             public void success(AssomakerDTO assomakerDTO, Response response) {
@@ -82,10 +85,17 @@ public class DataBackendServiceImpl implements DataBackendService {
                 eventBus.post(categoriesUpdatedEvent);
 
 
-                ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(resourceService.fromDTO(dayResourceDTOs,categories),
-                        resourceService.fromDTO(nightResourceDTOs),dataVersion);
-                Collections.sort(resourcesUpdatedEvent.getDayResourceList(),new AlphabeticalSortComparator());
-                Collections.sort(resourcesUpdatedEvent.getNightResourceList(),new AlphabeticalSortComparator());
+                ArrayList<DayResource> newDayResources = resourceService.fromDTO(dayResourceDTOs, categories);
+                ArrayList<NightResource> newNightResources = resourceService.fromDTO(nightResourceDTOs);
+
+                Collections.sort(newDayResources,new AlphabeticalSortComparator());
+                Collections.sort(newNightResources,new AlphabeticalSortComparator());
+
+                restoreFavorites(dayResources, newDayResources);
+                restoreFavorites(nightResources,newNightResources);
+
+                ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(newDayResources,newNightResources,dataVersion);
+
                 eventBus.post(resourcesUpdatedEvent);
             }
 
@@ -98,6 +108,26 @@ public class DataBackendServiceImpl implements DataBackendService {
             }
         });
 
+    }
+
+    private void restoreFavorites(ArrayList<? extends Resource> resources, ArrayList<? extends Resource> newResources) {
+        Resource temp;
+        for (Resource resource : resources) {
+            if(resource.isFavorites()){
+                temp = getResourceById(newResources, resource);
+                if(temp != null)
+                    temp.setIsFavorites(true);
+            }
+        }
+
+    }
+
+    private Resource getResourceById(ArrayList<? extends Resource> resources, Resource resource) {
+
+        for (Resource res : resources) {
+            if(res.get_id().equals(resource.get_id())) return res;
+        }
+        return null;
     }
 
     public void getResourcesAsyncMock() {

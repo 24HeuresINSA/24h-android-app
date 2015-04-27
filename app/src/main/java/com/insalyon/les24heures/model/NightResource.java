@@ -25,8 +25,8 @@ public class NightResource extends Resource {
         this.stage = stage;
     }
 
-    public NightResource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures, String facebookUrl, String twitterUrl, String siteUrl, String stage) {
-        super(title, description, schedules, category, mainPictureUrl, pictures);
+    public NightResource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures, String facebookUrl, String twitterUrl, String siteUrl, String stage, Integer _id) {
+        super(title, description, schedules, category, mainPictureUrl, pictures,_id);
         this.facebookUrl = facebookUrl;
         this.twitterUrl = twitterUrl;
         this.siteUrl = siteUrl;
