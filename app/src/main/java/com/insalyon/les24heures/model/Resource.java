@@ -20,6 +20,7 @@ public class Resource implements Parcelable {
             return new DayResource[size];
         }
     };
+    Integer _id;
     String title;
     String description;
     List<Schedule> schedules;
@@ -48,7 +49,7 @@ public class Resource implements Parcelable {
         this.pictures = pictures;
     }
 
-    public Resource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures) {
+    public Resource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures, Integer _id) {
         this.title = title;
         this.description = description;
         this.schedules = schedules;
@@ -56,6 +57,7 @@ public class Resource implements Parcelable {
         this.mainPictureUrl = mainPictureUrl;
         this.pictures = pictures;
         this.isFavorites = false;
+        this._id = _id;
     }
 
     public Resource(Parcel in) {
@@ -173,5 +175,13 @@ public class Resource implements Parcelable {
 
     public void setPictures(ArrayList<String> pictures) {
         this.pictures = pictures;
+    }
+
+    public Integer get_id() {
+        return _id;
+    }
+
+    public void set_id(Integer _id) {
+        this._id = _id;
     }
 }
