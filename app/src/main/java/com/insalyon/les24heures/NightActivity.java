@@ -24,9 +24,10 @@ public class NightActivity extends BaseDynamicDataActivity {
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
+        clearDrawerChoices();
         artistButton.setActivated(true);
-
-
+        setSelectedMenuItem(artistButton, R.drawable.concert_bleu);
+        drawerLayout.closeDrawer();
         startFragment();
         restoreTitle();
     }

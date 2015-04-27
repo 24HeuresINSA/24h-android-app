@@ -80,6 +80,7 @@
     <string name="navigationdrawer_label_tcl">TCL</string>
     <string name="navigationdrawer_label_facilities">Lieux utiles</string>
     <string name="navigationdrawer_label_params">Paramètres</string>
+    <string name="navigationdrawer_label_conso">Carte des Consommations</string>
     <string name="category_all_label">Tout</string>
     <string name="favorite_desc">favorite</string>
     <string name="detail_header_schedule">samedi 23 Mai - 10h-21h</string>
@@ -102,5 +103,31 @@
     <string name="tickets_fragment_appname">Billeterie</string>
     <string name="facilities_fragment_appname">Lieux utiles</string>
     <string name="params_fragment_appname">Paramètres</string>
+    <string name="conso_fragment_appname">Carte des Consommations</string>
+    <string name="conso_kro_title">Kronenbourg</string>
+    <string name="text_demi">Demi</string>
+    <string name="text_pinte">Pinte</string>
+    <string name="text_prix_3">3€</string>
+    <string name="text_prix_5">5€</string>
+    <string name="text_promo">Promo! 5x Pintes</string>
+    <string name="text_prix_20">20€</string>
+    <string name="conso_carlsberg_title"><![CDATA[Carlsberg & Skoll]]></string>
+    <string name="text_labouteille">La bouteille</string>
+    <string name="text_prix35">3,5€</string>
+    <string name="text_prix_6">6€</string>
+    <string name="les_deux">Les deux</string>
+    <string name="redbull_title">Redbull</string>
+    <string name="standard_text">Standard</string>
+    <string name="aroma_text">Aromatisée</string>
+    <string name="Text_prix_redbull">\n3€</string>
+    <string name="soft_title">Softs</string>
+    <string name="text_prix_25">2,5€</string>
+    <string name="frites_text">Frites</string>
+    <string name="barquette_text">La barquette</string>
+    <string name="Sandwich_title">Sandwichs</string>
+    <string name="sandwich_type1">SaladeTomateOignons</string>
+    <string name="Ecocup_title">Ecocup</string>
+    <string name="consigne_text">Consigne</string>
+    <string name="prix_text_1">1€</string>
 
 </resources>

@@ -61,9 +61,7 @@
             android:name=".StaticDataActivity"
             android:label="@string/app_name"
             android:launchMode="singleTop"
-            android:theme="@style/NightActionBarTheme">
-
-            <!-- TODO faire un nouveau theme -->
+            android:theme="@style/EverywhereActionBarTheme">
         </activity>
 
         <service

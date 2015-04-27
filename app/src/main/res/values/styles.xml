@@ -19,6 +19,16 @@
 
     </style>
 
+    <style name="EverywhereActionBarTheme"
+        parent="@android:style/Theme.Holo.Light.DarkActionBar">
+        <item name="android:actionBarStyle">@style/EverywhereActionBar</item>
+        <!--<item name="drawerArrowStyle">@style/DrawerArrowStyle</item>-->
+        <item name="spbStyle">@style/GNowProgressBar</item>
+        <item name="android:activatedBackgroundIndicator">@drawable/activated_background</item>
+
+    </style>
+
+
     <!-- ActionBar styles -->
     <style name="DayActionBar"
         parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
@@ -29,6 +39,12 @@
         parent="@style/DayActionBar">
         <item name="android:background">@color/primary_night</item>
     </style>
+
+    <style name="EverywhereActionBar"
+        parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+        <item name="android:background">@color/light_black</item>
+    </style>
+
 
     <style name="ProgressBar.Horizontal" parent="@android:style/Widget.Holo.ProgressBar.Horizontal">
     </style>
@@ -86,6 +102,7 @@
         <item name="android:layout_weight">1</item>
         <item name="android:layout_marginTop">3dp</item>
         <item name="android:layout_marginBottom">3dp</item>
+        <item name="android:paddingLeft">-5dp</item>
     </style>
 
     <style name="NavigationDrawer.SectionItem.Label">

@@ -60,7 +60,7 @@ public class DayActivity extends BaseDynamicDataActivity {
             if (intent.getParcelableArrayListExtra("selectedCategories") != null)
                 selectedCategories = intent.getParcelableArrayListExtra("selectedCategories");
 
-            position = intent.getIntExtra("categoryPosition", categories.size() - 1);
+            position = intent.getIntExtra("categoryPosition", (categories.size() - 2 >= 0)? categories.size() - 2: 0);
         }
 
 
@@ -91,7 +91,6 @@ public class DayActivity extends BaseDynamicDataActivity {
 
 
         mSlidingTabLayout.setCustomTabView(R.layout.tab_indicator, android.R.id.text1);
-
 
         mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.tab_selected_strip));
         mSlidingTabLayout.setDistributeEvenly(true);
