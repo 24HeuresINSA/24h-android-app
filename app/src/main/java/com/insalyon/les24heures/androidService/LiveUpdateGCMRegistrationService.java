@@ -7,15 +7,11 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.service.RetrofitService;
-import com.insalyon.les24heures.utils.RetrofitErrorHandler;
 
 import java.io.IOException;
 
 import de.greenrobot.event.EventBus;
-import retrofit.Callback;
 import retrofit.RestAdapter;
-import retrofit.RetrofitError;
-import retrofit.client.Response;
 
 
 public class LiveUpdateGCMRegistrationService extends IntentService {
@@ -50,25 +46,25 @@ public class LiveUpdateGCMRegistrationService extends IntentService {
     private void sendRegistrationIdToServer(String regid) {
 
         RetrofitService retrofitService = getLiveUpdatesPutKeyRetrofitService();
-        retrofitService.postLiveUpdatesKey(regid, new Callback<String>() {
-
-            @Override
-            public void success(String result, Response response) {
-                Log.d(TAG, "Key successfully sent to server");
-            }
-
-            @Override
-            public void failure(RetrofitError error) {
-                Log.e(TAG, " failure " + error);
-            }
-        });
+//        retrofitService.postLiveUpdatesKey(regid, new Callback<String>() {
+//
+//            @Override
+//            public void success(String result, Response response) {
+//                Log.d(TAG, "Key successfully sent to server");
+//            }
+//
+//            @Override
+//            public void failure(RetrofitError error) {
+//                Log.e(TAG, " failure " + error);
+//            }
+//        });
     }
 
     private RetrofitService getLiveUpdatesPutKeyRetrofitService() {
         RestAdapter restAdapter = new RestAdapter.Builder()
                 .setEndpoint(getResources().getString(R.string.backend_url_mobile))
                 .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setErrorHandler(new RetrofitErrorHandler())
+//                .setErrorHandler(new RetrofitErrorHandler())
                 .build();
 
         return restAdapter.create(RetrofitService.class);
