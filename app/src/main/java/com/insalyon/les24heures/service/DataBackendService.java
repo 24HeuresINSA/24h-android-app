@@ -1,11 +1,16 @@
 package com.insalyon.les24heures.service;
 
+import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.NightResource;
+
+import java.util.ArrayList;
+
 /**
  * Created by remi on 14/03/15.
  */
 public interface DataBackendService {
 
-    public void getResourcesAsyncFromBackend(RetrofitService retrofitService, String dataVersion);
+    void getResourcesAsyncFromBackend(RetrofitService retrofitService, String dataVersion, ArrayList<DayResource> dayResources, ArrayList<NightResource> nightResources);
 
     public void getResourcesAsyncMock();
 
