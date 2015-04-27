@@ -7,10 +7,13 @@ import android.util.Log;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.service.RetrofitService;
-
+import com.insalyon.les24heures.utils.RetrofitErrorHandler;
 import java.io.IOException;
-
 import de.greenrobot.event.EventBus;
+import retrofit.Callback;
+import retrofit.RestAdapter;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 import retrofit.RestAdapter;
 
 
