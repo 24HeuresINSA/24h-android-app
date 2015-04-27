@@ -80,7 +80,7 @@ public class NotificationService extends IntentService {
 
 
         return new NotificationCompat.Builder(this)
-                .setSmallIcon(R.drawable.ic_now)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(liveUpdate.getTitle())
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(liveUpdate.getMessage()))
