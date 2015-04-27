@@ -91,8 +91,8 @@ public class DataBackendServiceImpl implements DataBackendService {
                 Collections.sort(newDayResources,new AlphabeticalSortComparator());
                 Collections.sort(newNightResources,new AlphabeticalSortComparator());
 
-                restoreFavorites(dayResources, newDayResources);
-                restoreFavorites(nightResources,newNightResources);
+                if(dayResources != null) restoreFavorites(dayResources, newDayResources);
+                if(nightResources != null)restoreFavorites(nightResources,newNightResources);
 
                 ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(newDayResources,newNightResources,dataVersion);
 
