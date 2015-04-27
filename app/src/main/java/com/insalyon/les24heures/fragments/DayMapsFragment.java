@@ -287,6 +287,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         if (resourcesList.isEmpty()) {
             return;
         }
+        googleMap.clear();
         resourceMarkerMap.clear();
         for (DayResource dayResource : resourcesList) {
             if (resourceMarkerMap.get(dayResource) == null) {

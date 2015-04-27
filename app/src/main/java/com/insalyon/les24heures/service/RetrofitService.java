@@ -9,11 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit.Callback;
-import retrofit.http.Field;
-import retrofit.http.FormUrlEncoded;
 import retrofit.http.GET;
-import retrofit.http.POST;
-import retrofit.http.PUT;
 import retrofit.http.Query;
 
 /**
@@ -35,9 +31,6 @@ public interface RetrofitService {
     @GET("/version")
     void getApplicationVersion(Callback<ApplicationVersionDTO> cb);
 
-    @FormUrlEncoded
-    @POST("/liveUpdatesKey")
-    void postLiveUpdatesKey(@Field("regid")String regid,Callback<String> cb);
 
 
 

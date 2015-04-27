@@ -19,9 +19,9 @@ public abstract class DayTypeFragment extends ContentFrameFragment<DayResource> 
     private static final String TAG = ContentFrameFragment.class.getCanonicalName();
 
     public Boolean isVisible;
+    public int cpt = 0;
     CategoriesSelectedEvent categoriesSelectedEventPending;
     SearchEvent searchEventPending;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -33,11 +33,15 @@ public abstract class DayTypeFragment extends ContentFrameFragment<DayResource> 
             resourcesList = new ArrayList<>();
         }
 
-        if ( categoriesSelected == null) {
+        if (categoriesSelected == null) {
             Log.e("OutputTypeFragment", "resourcesList or categoriesSelected are null. Are you sur you create the fragment with these parameters ?");
             //TODO #31
             resourcesList = new ArrayList<>();
         }
+
+        if(savedInstanceState != null)
+        isVisible = savedInstanceState.getBoolean("isVisible", true);
+
     }
 
     /**
@@ -50,7 +54,6 @@ public abstract class DayTypeFragment extends ContentFrameFragment<DayResource> 
         resourcesList.addAll(event.getDayResourceList());
     }
 
-    public int cpt = 0;
     public void onEvent(CategoriesSelectedEvent event) {
         if (isVisible)
             super.onEvent(event);
@@ -90,10 +93,17 @@ public abstract class DayTypeFragment extends ContentFrameFragment<DayResource> 
     }
 
 
-    public void catchUpCategorySelectedEvent(){
+    public void catchUpCategorySelectedEvent() {
         if (categoriesSelectedEventPending != null) {
-                super.onEvent(categoriesSelectedEventPending);
-                categoriesSelectedEventPending = null;
-            }
+            super.onEvent(categoriesSelectedEventPending);
+            categoriesSelectedEventPending = null;
+        }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        outState.putBoolean("isVisible", isVisible);
     }
 }
