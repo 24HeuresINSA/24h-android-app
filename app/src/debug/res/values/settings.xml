@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Settings for the debug build-->
+<resources>
+    <string name="backend_url">http://cetaitmieuxavant.24heures.org</string>
+    <string name="backend_url_mobile_test">http://test.mobile.24heures.org:3030/</string>
+    <string name="backend_url_mobile">http://test.mobile.24heures.org:3030/</string>
+</resources>

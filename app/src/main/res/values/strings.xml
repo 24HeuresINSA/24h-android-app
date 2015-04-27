@@ -33,9 +33,6 @@
 
     <!--TODO should be displayed by MainActivity ??-->
     <string name="noCategoriesSelected">Feel free to select at least one category</string>
-    <string name="backend_url">http://cetaitmieuxavant.24heures.org</string>
-    <string name="backend_url_mobile_test">http://test.mobile.24heures.org:3030/</string>
-    <string name="backend_url_mobile">http://mobile.24heures.org:3030/</string>
     <string name="backend_url_local">http://dev.24heures.org.192.168.1.69.xip.io/app_dev.php</string>
     <string name="list_no_last_known_location"/>
 
