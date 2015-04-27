@@ -114,7 +114,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
     Class nextActivity;
     Class nextStaticFragment;
-    int positionCategorySelected;
+    Integer positionCategorySelected;
     private BaseActivity self = this;
 
     /**
@@ -671,7 +671,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         }
     }
 
-    public int getPositionCategorySelected() {
+    public Integer getPositionCategorySelected() {
         return positionCategorySelected;
     }
 }

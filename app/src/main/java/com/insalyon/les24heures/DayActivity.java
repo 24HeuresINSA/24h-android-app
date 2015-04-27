@@ -62,6 +62,9 @@ public class DayActivity extends BaseDynamicDataActivity {
 
             position = intent.getIntExtra("categoryPosition", (categories.size() - 2 >= 0)? categories.size() - 2: 0);
         }
+        if(savedInstanceState != null){
+            position = savedInstanceState.getInt("categoryPosition",1);
+        }
 
 
     }
@@ -72,8 +75,10 @@ public class DayActivity extends BaseDynamicDataActivity {
         super.onPostCreate(savedInstanceState);
         //override Base's DrawerCategoriesClickListener
         categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
-
         ((CategoryAdapter) categoriesList.getAdapter()).setSelectedCategoryInit(position);
+        positionCategorySelected = position;
+        ((CategoryAdapter) categoriesList.getAdapter()).notifyDataSetChanged();
+
 
         //TODO revoir ca en fonction de la maniere dont on recupere les categories
         if (!selectedCategories.isEmpty()) {
@@ -186,6 +191,9 @@ public class DayActivity extends BaseDynamicDataActivity {
         } else {
             outState.putString("outputType", OutputType.LIST.toString());
         }
+
+       outState.putInt("categoryPosition", positionCategorySelected);
+
     }
 
     /**
@@ -289,6 +297,8 @@ public class DayActivity extends BaseDynamicDataActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             selectCategory(position);
+            positionCategorySelected = position;
+            ((CategoryAdapter) categoriesList.getAdapter()).notifyDataSetChanged();
         }
     }
 
