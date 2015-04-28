@@ -255,6 +255,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     }
 
     private void setFavoriteMovesParams() {
+        this.setOverlayed(false);
         //get params for favorite moves
         if(headerWidth == null) headerWidth = self.getWidth();
         if(finalXFavPosition == null){ //pour recuperer la position settée dans le layout
@@ -323,4 +324,35 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     }
 
 
+    public boolean isPanelAnchored() {
+        return getPanelState() == PanelState.ANCHORED;
+    }
+
+    public boolean isPanelExpanded() {
+        return getPanelState() == PanelState.EXPANDED;
+    }
+
+    public void hidePanel() {
+        setPanelState(PanelState.HIDDEN);
+    }
+
+    public void collapsePanel() {
+        setPanelState(PanelState.COLLAPSED);
+    }
+
+    public boolean isPanelHidden() {
+        return getPanelState() == PanelState.HIDDEN;
+    }
+
+    public void anchorPanel() {
+        setPanelState(PanelState.ANCHORED);
+    }
+
+    public void showPanel() {
+        setPanelState(PanelState.COLLAPSED);
+    }
+
+    public void expandPanel() {
+        setPanelState(PanelState.EXPANDED);
+    }
 }
