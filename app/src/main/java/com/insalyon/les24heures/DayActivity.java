@@ -21,6 +21,7 @@ import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.fragments.DayListFragment;
 import com.insalyon.les24heures.fragments.DayMapsFragment;
 import com.insalyon.les24heures.model.Category;
+import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.utils.OutputType;
 import com.insalyon.les24heures.utils.SpecificCategory;
 import com.insalyon.les24heures.view.SlidingTabLayout;
@@ -171,6 +172,16 @@ public class DayActivity extends BaseDynamicDataActivity {
             selectMaps();
 
         }
+    }
+
+    private Intent getDayResourceSharingIntent(DayResource dayResource) {
+
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, dayResource.getTitle());
+        sharingIntent.putExtra(Intent.EXTRA_TEXT, dayResource.getDescription());
+
+        return sharingIntent;
     }
 
     private boolean isMapsSelected() {

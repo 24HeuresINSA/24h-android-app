@@ -2,6 +2,7 @@ package com.insalyon.les24heures;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.ShareActionProvider;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
@@ -67,6 +69,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
     RestAdapter restAdapterLocal;
     //    Class nextActivity;
     private BaseDynamicDataActivity self = this;
+    private ShareActionProvider mShareActionProvider;
 //    private int positionCategorySelected;
 
     /**
@@ -118,6 +121,11 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         final SearchView searchView =
                 (SearchView) menu.findItem(R.id.menu_search).getActionView();
         final MenuItem favoritesItem = menu.findItem(R.id.menu_favorites);
+
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+
+
 
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -471,5 +479,10 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
 
     }
 
+    public void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+    }
 
 }
