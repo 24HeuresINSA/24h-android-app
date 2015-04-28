@@ -75,6 +75,7 @@
     <string name="navigationdrawer_label_artist">Concerts</string>
     <string name="navigationdrawer_label_tickets">Billeterie</string>
     <string name="navigationdrawer_label_tcl">TCL</string>
+    <string name="navigationdrawer_label_live_updates">Notifications</string>
     <string name="navigationdrawer_label_facilities">Lieux utiles</string>
     <string name="navigationdrawer_label_params">Paramètres</string>
     <string name="navigationdrawer_label_conso">Carte des Consommations</string>
@@ -98,6 +99,7 @@
     <string name="retrofit_error_snackbar_action_label">Réessayer</string>
     <string name="tcl_fragment_appname">TCL</string>
     <string name="tickets_fragment_appname">Billeterie</string>
+    <string name="live_updates_fragment_appname">Notifications</string>
     <string name="facilities_fragment_appname">Lieux utiles</string>
     <string name="params_fragment_appname">Paramètres</string>
     <string name="conso_fragment_appname">Carte des Consommations</string>

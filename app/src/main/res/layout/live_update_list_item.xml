@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    android:padding="@dimen/ouput_list_item_padding"
+    android:paddingBottom="@dimen/ouput_list_item_padding"
+    android:paddingTop="@dimen/ouput_list_item_padding">
+
+
+    <TextView
+        android:id="@+id/list_item_live_update_title_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ellipsize="marquee"
+        android:marqueeRepeatLimit="marquee_forever"
+        android:scrollHorizontally="true"
+        android:singleLine="true"
+        android:text="LiveUpdate !! "
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="#333333"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/list_item_live_update_message_text"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Il y a des vendeurs de glace au PS4!"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="#333333"
+        android:textSize="15dp" />
+
+
+</LinearLayout>
