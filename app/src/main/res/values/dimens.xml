@@ -37,6 +37,6 @@
     <dimen name="conso_img_height">150dp</dimen>
 
     <!--detail-->
-    <dimen name="umanoParalaxOffset">0dp</dimen>
+    <dimen name="umanoParalaxOffset">100dp</dimen>
 
 </resources>
