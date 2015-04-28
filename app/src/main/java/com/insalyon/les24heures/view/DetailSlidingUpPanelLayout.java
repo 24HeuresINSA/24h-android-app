@@ -162,6 +162,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         private void collapseUIState() {
             favoriteImageButton.setX(self.getWidth());
+            drawerArrowDrawable.setParameter(0);
         }
 
     };
