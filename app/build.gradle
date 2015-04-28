@@ -45,7 +45,7 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.squareup.retrofit:retrofit:1.8.0'
     compile 'com.felipecsl.quickreturn:library:1.5.0'
-    compile 'com.sothree.slidinguppanel:library:2.0.4'
+    compile 'com.sothree.slidinguppanel:library:3.0.0'
     compile 'com.nispok:snackbar:2.10.0'
     compile 'com.hannesdorfmann.smoothprogressbar:library:1.0.0'
     compile 'com.google.code.gson:gson:2.2.4'

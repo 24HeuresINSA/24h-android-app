@@ -2,6 +2,7 @@ package com.insalyon.les24heures.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -11,7 +12,6 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.BaseDynamicDataActivity;
-import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.fragments.DetailFragment;
@@ -51,11 +51,15 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
     private float anchored;
     private int scrollingHeaderHeight;
-    private PanelSlideListener panelSlideListener = new PanelSlideListener() {
-        public Double finalXFavPosition;
+    private Integer headerWidth;
+    private Double finalXFavPosition;
 
+
+    private PanelSlideListener panelSlideListener = new PanelSlideListener() {
         @Override
         public void onPanelSlide(View panel, float slideOffset) {
+            setFavoriteMovesParams();
+
             float newParallaxHeaderPos;
             float parallaxContentFrame = -self.getCurrentParalaxOffset();
 
@@ -82,15 +86,11 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
                 nextSchedule.setAlpha(1 - slideOffset / anchored);
 
-
-                int headerWidth = self.getWidth();
-                if(finalXFavPosition == null){
-                    finalXFavPosition = Double.valueOf(favoriteImageButton.getX());
-                }
                 float a = (float) ((finalXFavPosition - headerWidth) / anchored);
                 float b = headerWidth;
                 float alpha = slideOffset*a + b ;
                 favoriteImageButton.setX(alpha);
+                Log.d("DETAIL FAVORITES X",alpha+"");
 
                 ViewGroup.LayoutParams params = detailSlidingHeaderLabel.getLayoutParams();
                 params.width = (int) alpha;
@@ -108,51 +108,68 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
         @Override
         public void onPanelExpanded(View panel) {
+            setFavoriteMovesParams();
+
             detailScrollView.setIsScrollEnable(true);
             activity.getActionBar().setTitle("");   //=> hide title in detail
 
-//                this.setDragView(slidingDetailHeader);
+            anchoredUIState();
 
-//            activity.invalidateOptionsMenu();
             activity.customOnOptionsMenu();
-
         }
+
 
         @Override
         public void onPanelCollapsed(View panel) {
+            setFavoriteMovesParams();
 
-//                this.setDragView(wholeSlidingLayout);
             detailScrollView.setIsScrollEnable(false);
             detailScrollView.fullScroll(ScrollView.FOCUS_UP);
 
-//            activity.invalidateOptionsMenu();
+            collapseUIState();
+
             activity.customOnOptionsMenu();
             activity.restoreTitle();
-
-
         }
 
         @Override
         public void onPanelAnchored(View panel) {
+            setFavoriteMovesParams();
+
             detailScrollView.setIsScrollEnable(false);
 
-            activity.getActionBar().setTitle("");   //=> hide title in detail
+            anchoredUIState();
 
+            activity.getActionBar().setTitle("");   //=> hide title in detail
             activity.customOnOptionsMenu();
-//            activity.invalidateOptionsMenu();
 
             //if anchored without touching header, need update
             detailFragment.updateHeavyData();
-
         }
 
         @Override
         public void onPanelHidden(View panel) {
+            setFavoriteMovesParams();
+
+            collapseUIState();
+
             eventBus.post(new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE,(NightResource)null));
         }
+
+        private void anchoredUIState() {
+            favoriteImageButton.setX(finalXFavPosition.floatValue());
+        }
+
+        private void collapseUIState() {
+            favoriteImageButton.setX(self.getWidth());
+            drawerArrowDrawable.setParameter(0);
+        }
+
     };
     private DetailSlidingUpPanelLayout self;
     private DetailFragment detailFragment;
+
+
 
 
     public DetailSlidingUpPanelLayout(Context context) {
@@ -168,7 +185,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     }
 
 
-
     /**
      * if return false it's because the height of the view isn't yet ready, the setup will be done once the view is rendered and
      * the view height is processed
@@ -182,6 +198,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         if (activity == null) {
             throw new DetailSlidingUpPanelLayoutNullActivity();
         }
+
+        self = this;
 
         findDetailView();
         eventBus = EventBus.getDefault(); //pas ouf, mettre dans le constructeur par défaut ?
@@ -200,7 +218,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         parallaxHeader.setLayoutParams(params);
         parallaxHeader.setTranslationY(wideHeight);
 
-        self = this;
 
         //setup
         this.setAnchorPoint(anchored);
@@ -235,6 +252,15 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         }
 
         return true;
+    }
+
+    private void setFavoriteMovesParams() {
+        this.setOverlayed(false);
+        //get params for favorite moves
+        if(headerWidth == null) headerWidth = self.getWidth();
+        if(finalXFavPosition == null){ //pour recuperer la position settée dans le layout
+            finalXFavPosition = Double.valueOf(favoriteImageButton.getX());
+        }
     }
 
 
@@ -283,6 +309,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
             } catch (DetailSlidingUpPanelLayoutNullActivity detailSlidingUpPanelLayoutNullActivity) {
                 detailSlidingUpPanelLayoutNullActivity.printStackTrace();
             }
+
+
     }
 
 
@@ -296,4 +324,35 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     }
 
 
+    public boolean isPanelAnchored() {
+        return getPanelState() == PanelState.ANCHORED;
+    }
+
+    public boolean isPanelExpanded() {
+        return getPanelState() == PanelState.EXPANDED;
+    }
+
+    public void hidePanel() {
+        setPanelState(PanelState.HIDDEN);
+    }
+
+    public void collapsePanel() {
+        setPanelState(PanelState.COLLAPSED);
+    }
+
+    public boolean isPanelHidden() {
+        return getPanelState() == PanelState.HIDDEN;
+    }
+
+    public void anchorPanel() {
+        setPanelState(PanelState.ANCHORED);
+    }
+
+    public void showPanel() {
+        setPanelState(PanelState.COLLAPSED);
+    }
+
+    public void expandPanel() {
+        setPanelState(PanelState.EXPANDED);
+    }
 }
