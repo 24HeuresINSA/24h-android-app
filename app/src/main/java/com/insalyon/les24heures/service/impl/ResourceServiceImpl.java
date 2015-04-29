@@ -53,7 +53,8 @@ public class ResourceServiceImpl implements ResourceService {
                 dayResourceDTO.getMain_picture_url(),
                 dayResourceDTO.getPictures(),
                 new LatLng(Double.valueOf(dayResourceDTO.getLocalisation().get(0)),
-                        Double.valueOf(dayResourceDTO.getLocalisation().get(1))));
+                        Double.valueOf(dayResourceDTO.getLocalisation().get(1))),
+                dayResourceDTO.get_id());
     }
 
     @Override
@@ -68,7 +69,8 @@ public class ResourceServiceImpl implements ResourceService {
                 nightResourceDTO.getFacebook_url(),
                 nightResourceDTO.getTwitter_url(),
                 nightResourceDTO.getSite_url(),
-                nightResourceDTO.getStage());
+                nightResourceDTO.getStage(),
+                nightResourceDTO.get_id());
     }
 
 

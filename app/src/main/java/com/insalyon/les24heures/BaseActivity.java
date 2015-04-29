@@ -22,15 +22,19 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.github.mrengineer13.snackbar.SnackBar;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
+import com.insalyon.les24heures.androidService.LiveUpdateGCMRegistrationService;
 import com.insalyon.les24heures.androidService.LiveUpdateService;
 import com.insalyon.les24heures.androidService.NotificationService;
 import com.insalyon.les24heures.eventbus.ApplicationVersionEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.RetrofitErrorEvent;
+import com.insalyon.les24heures.fragments.ConsoFragment;
 import com.insalyon.les24heures.fragments.FacilitiesFragment;
 import com.insalyon.les24heures.fragments.ParamsFragment;
 import com.insalyon.les24heures.fragments.TclFragment;
@@ -50,7 +54,6 @@ import com.insalyon.les24heures.utils.ApplicationVersionState;
 import com.insalyon.les24heures.utils.RetrofitErrorHandler;
 import com.insalyon.les24heures.view.CustomDrawerLayout;
 import com.insalyon.les24heures.view.DrawerArrowDrawable;
-import com.insalyon.les24heures.fragments.ConsoFragment;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -70,6 +73,7 @@ import retrofit.RestAdapter;
 public abstract class BaseActivity extends Activity implements SnackBar.OnMessageClickListener {
     public static final String PREFS_NAME = "dataFile";
     private static final String TAG = BaseActivity.class.getCanonicalName();
+    private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
 
     FragmentManager fragmentManager;
     EventBus eventBus;
@@ -155,6 +159,12 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             selectedCategories = new ArrayList<>();
         }
 
+        if(checkPlayServices()){
+            Intent registerOnGCM = new Intent(this, LiveUpdateGCMRegistrationService.class);
+            startService(registerOnGCM);
+        }
+
+
     }
 
     public void retrieveData(Bundle savedInstanceState) {
@@ -177,25 +187,40 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             if (savedInstanceState.getParcelableArrayList("nightResourceArrayList") != null) {
                 nightResourceArrayList = savedInstanceState.getParcelableArrayList("nightResourceArrayList");
             }
+        } else {
+
+            //get from shared pref
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
+            Gson gson = new Gson();
+
+
+            String categoriesListStr = settings.getString("categoriesList", "");
+            String dayResourceArrayListStr = settings.getString("dayResourceList", "");
+            String nightResourceArrayListStr = settings.getString("nightResourcesList", "");
+            dataVersion = settings.getString("dataVersion", "");
+            applicationVersion = settings.getString("applicationVersion", "");
+
+            categories = gson.fromJson(categoriesListStr, new TypeToken<List<Category>>() {
+            }.getType());
+            dayResourceArrayList = gson.fromJson(dayResourceArrayListStr, new TypeToken<List<DayResource>>() {
+            }.getType());
+            nightResourceArrayList = gson.fromJson(nightResourceArrayListStr, new TypeToken<List<NightResource>>() {
+            }.getType());
+
+
+            //TODO debug purpose only
+            dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
+
+            //check if the app can download data
+            settings = getSharedPreferences(getResources().getString(R.string.SHARED_PREF_APP_VERSION), 0);
+            if (settings.getString("applicationVersionState", null) != null)
+                manageApplicationVersionState(ApplicationVersionState.valueOf(
+                                settings.getString("applicationVersionState", ApplicationVersionState.TODATE.toString()))
+                );
+            else
+                Log.d(TAG, " retrieveData wait for authorization to download data");
+
         }
-
-        //get from shared pref
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
-        Gson gson = new Gson();
-
-
-        String categoriesListStr = settings.getString("categoriesList", "");
-        String dayResourceArrayListStr = settings.getString("dayResourceList", "");
-        String nightResourceArrayListStr = settings.getString("nightResourcesList", "");
-        dataVersion = settings.getString("dataVersion", "");
-        applicationVersion = settings.getString("applicationVersion", "");
-
-        categories = gson.fromJson(categoriesListStr, new TypeToken<List<Category>>() {
-        }.getType());
-        dayResourceArrayList = gson.fromJson(dayResourceArrayListStr, new TypeToken<List<DayResource>>() {
-        }.getType());
-        nightResourceArrayList = gson.fromJson(nightResourceArrayListStr, new TypeToken<List<NightResource>>() {
-        }.getType());
 
 
         if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null) {
@@ -208,19 +233,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
             applicationVersion = getResources().getString(R.string.INSTALL_APPLICATION_VERSION);
         }
-
-        //TODO debug purpose only
-        dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
-
-        //check if the app can download data
-        settings = getSharedPreferences(getResources().getString(R.string.SHARED_PREF_APP_VERSION), 0);
-        if (settings.getString("applicationVersionState", null) != null)
-            manageApplicationVersionState(ApplicationVersionState.valueOf(
-                            settings.getString("applicationVersionState", ApplicationVersionState.TODATE.toString()))
-            );
-        else
-            Log.d(TAG, " retrieveData wait for authorization to download data");
-
 
         if (selectedCategories == null) {
             selectedCategories = new ArrayList<>();
@@ -270,6 +282,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     protected void onResume() {
         super.onResume();
         eventBus.registerSticky(this);
+        checkPlayServices();
 
     }
 
@@ -282,18 +295,25 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         dayResourceArrayList.addAll(event.getDayResourceList());
         nightResourceArrayList.clear();
         nightResourceArrayList.addAll(event.getNightResourceList());
+        dataVersion = event.getDataVersion();
 
+        writeResourceInSharedPref();
+    }
+
+    private void writeResourceInSharedPref() {
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
 
         Gson gson = new Gson();
         String dayResourcesList = gson.toJson(dayResourceArrayList);
         String nightResourcesList = gson.toJson(nightResourceArrayList);
+        String categoriesResourceList = gson.toJson(categories);
 
 
         editor.putString("dayResourceList", dayResourcesList);
+        editor.putString("categoriesList",categoriesResourceList);
         editor.putString("nightResourcesList", nightResourcesList);
-        editor.putString("dataVersion", event.getDataVersion());
+        editor.putString("dataVersion", dataVersion);
         editor.commit();
     }
 
@@ -479,6 +499,10 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         super.onPause();
         EventBus.getDefault().unregister(this);
 
+        //resource storage
+        writeResourceInSharedPref();
+
+
     }
 
 
@@ -491,9 +515,8 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         //categories state
         outState.putParcelableArrayList("selectedCategories", selectedCategories);
         //resources
-        outState.putParcelableArrayList("dayResourceArrayList", dayResourceArrayList);
+        outState.putParcelableArrayList("dayResourceList", dayResourceArrayList);
         outState.putParcelableArrayList("nightResourceArrayList", nightResourceArrayList);
-
 
     }
 
@@ -539,7 +562,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
                 break;
             case MINOR:
-                dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion);
+                dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion, dayResourceArrayList, nightResourceArrayList);
                 Log.d(TAG, "manageApplicationVersionState MINOR");
                 builder = new AlertDialog.Builder(this);
                 builder.setMessage(R.string.apologize_dialog_messag_minor)
@@ -550,11 +573,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
                 break;
             case TODATE:
-                dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion);
-
-                Intent checkForUpdates = new Intent(this, LiveUpdateService.class);
-                startService(checkForUpdates);
-
+                dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion, dayResourceArrayList, nightResourceArrayList);
                 Log.d(TAG, "manageApplicationVersionState TODATE");
                 break;
         }
@@ -600,6 +619,10 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
     public void onEvent(ApplicationVersionEvent event) {
         manageApplicationVersionState(event.getState());
+    }
+
+    public Integer getPositionCategorySelected() {
+        return positionCategorySelected;
     }
 
     public class DrawerListener extends DrawerLayout.SimpleDrawerListener {
@@ -671,7 +694,18 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         }
     }
 
-    public Integer getPositionCategorySelected() {
-        return positionCategorySelected;
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 }

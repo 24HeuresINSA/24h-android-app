@@ -20,8 +20,8 @@ public class DayResource extends Resource {
         this.loc = loc;
     }
 
-    public DayResource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures, LatLng loc) {
-        super(title, description, schedules, category, mainPictureUrl, pictures);
+    public DayResource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures, LatLng loc, Integer _id) {
+        super(title, description, schedules, category, mainPictureUrl, pictures,_id);
         this.loc = loc;
     }
 

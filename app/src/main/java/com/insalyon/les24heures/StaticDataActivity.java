@@ -65,30 +65,35 @@ public class StaticDataActivity extends BaseActivity {
     @OnClick(R.id.navigation_drawer_tickets)
     public void onClickTickets(View v) {
         super.onClickTickets(v);
+        nextActivity = null;
         startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_conso)
     public void onClickConso(View v) {
        super.onClickConso(v);
+        nextActivity = null;
         startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_tcl)
     public void onClickTcl(View v) {
         super.onClickTcl(v);
+        nextActivity = null;
         startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_facilities)
     public void onClickFacilities(View v) {
         super.onClickFacilities(v);
+        nextActivity = null;
         startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_params)
     public void onClickParams(View v) {
         super.onClickParams(v);
+        nextActivity = null;
         startFragment();
     }
 

@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--Settings for the debug build-->
+<resources>
+    <string name="app_name">DEBUG 24h de l\'INSA</string>
+</resources>
