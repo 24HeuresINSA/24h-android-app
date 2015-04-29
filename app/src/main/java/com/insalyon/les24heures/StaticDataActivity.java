@@ -4,12 +4,14 @@ import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 
+import com.insalyon.les24heures.fragments.ConsoFragment;
 import com.insalyon.les24heures.fragments.FacilitiesFragment;
 import com.insalyon.les24heures.fragments.ParamsFragment;
 import com.insalyon.les24heures.fragments.TclFragment;
 import com.insalyon.les24heures.fragments.TicketsFragment;
-import com.insalyon.les24heures.fragments.ConsoFragment;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -28,7 +30,7 @@ public class StaticDataActivity extends BaseActivity {
 
         setContentView(R.layout.static_activity);
         if (savedInstanceState != null)
-            if(savedInstanceState.getString("nextStaticFragment")!= null){
+            if (savedInstanceState.getString("nextStaticFragment") != null) {
                 String nextStaticFragmentClassName = savedInstanceState.getString("nextStaticFragment");
                 try {
                     Class<?> clazz = Class.forName(nextStaticFragmentClassName.toString());
@@ -37,7 +39,7 @@ public class StaticDataActivity extends BaseActivity {
                 } catch (ClassNotFoundException e) {
                     e.printStackTrace();
                 }
-        }
+            }
 
         if (getIntent() != null && nextStaticFragment == null) {
             if (getIntent().getStringExtra("nextStaticFragment") != null) {
@@ -52,13 +54,45 @@ public class StaticDataActivity extends BaseActivity {
 
             }
         }
+
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setItemSelected(nextStaticFragment);
+    }
+
+    @Deprecated
+    private void setItemSelected(Class fragmentClassName) {
+
+        if (fragmentClassName == TicketsFragment.class) {
+            ((ViewGroup) ticketsButton).setActivated(true);
+            ((ImageView) ((ViewGroup) ticketsButton).getChildAt(0)).setImageResource(R.drawable.billeterie_bleu);
+        }
+        if (fragmentClassName == ConsoFragment.class) {
+            ((ViewGroup) consoButton).setActivated(true);
+            ((ImageView) ((ViewGroup) consoButton).getChildAt(0)).setImageResource(R.drawable.ic_beer_bleu);
+        }
+        if (fragmentClassName == TclFragment.class) {
+            ((ViewGroup) tclButton).setActivated(true);
+            ((ImageView) ((ViewGroup) tclButton).getChildAt(0)).setImageResource(R.drawable.tcl_rouge);
+        }
+        if (fragmentClassName == FacilitiesFragment.class) {
+            ((ViewGroup) facilitiesButton).setActivated(true);
+            ((ImageView) ((ViewGroup) facilitiesButton).getChildAt(0)).setImageResource(R.drawable.drapeau_bleu);
+        }
+        if (fragmentClassName == ParamsFragment.class) {
+            ((ViewGroup) paramsButton).setActivated(true);
+            ((ImageView) ((ViewGroup) paramsButton).getChildAt(0)).setImageResource(R.drawable.ic_action_settings_bleu);
+        }
+
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-
-
         restoreTitle();
     }
 
@@ -71,7 +105,7 @@ public class StaticDataActivity extends BaseActivity {
 
     @OnClick(R.id.navigation_drawer_conso)
     public void onClickConso(View v) {
-       super.onClickConso(v);
+        super.onClickConso(v);
         nextActivity = null;
         startFragment();
     }
@@ -144,6 +178,6 @@ public class StaticDataActivity extends BaseActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("nextStaticFragment",nextStaticFragment.getCanonicalName());
+        outState.putString("nextStaticFragment", nextStaticFragment.getCanonicalName());
     }
 }
