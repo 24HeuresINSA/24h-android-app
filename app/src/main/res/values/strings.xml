@@ -126,5 +126,7 @@
     <string name="Ecocup_title">Ecocup</string>
     <string name="consigne_text">Consigne</string>
     <string name="prix_text_1">1€</string>
+    <string name="tickets_title">Billeterie</string>
+    <string name="ticket_long_label">L\'accès à la zone concerts ne pourra se faire qu\'entre 19h45 et 2h</string>
 
 </resources>
