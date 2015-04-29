@@ -6,148 +6,250 @@
     android:gravity="center_horizontal">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="@string/tickets_title"
-        android:id="@+id/textView" />
-
     <LinearLayout
         android:orientation="vertical"
-        android:id="@+id/price_table"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:padding="@dimen/text_block_padding">
+
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar">
 
-        <LinearLayout
-            style="@style/TicketPriceRow"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
+        <TextView
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:weightSum="3">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text=" "
-                android:id="@+id/textView14"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="1 soir"
-                android:id="@+id/textView11"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="2 soirs"
-                android:id="@+id/textView12"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            style="@style/TicketPriceRow"
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:weightSum="3" >
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="En ligne"
-                android:id="@+id/textView15"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="10€*"
-                android:id="@+id/textView16"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="16€*"
-                android:id="@+id/textView17"
-                android:layout_weight="1" />
-        </LinearLayout>
-
-        <LinearLayout
-            android:orientation="horizontal"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            style="@style/TicketPriceRow"
-            android:weightSum="3">
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Sur place"
-                android:id="@+id/textView9"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="15€"
-                android:id="@+id/textView10"
-                android:layout_weight="1" />
-
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="25€"
-                android:id="@+id/textView13"
-                android:layout_weight="1" />
-        </LinearLayout>
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+            android:text="@string/billet_text"
+            android:layout_marginRight="5dip"
+            android:id="@+id/billeterie_desc_1" />
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="*+0.99€ de frais de location"
-        android:id="@+id/textView18"
-        android:layout_below="@+id/price_table"
-        android:layout_gravity="center_horizontal"
-        android:gravity="center_vertical|center_horizontal" />
+        <LinearLayout
+            android:orientation="vertical"
+            android:id="@+id/price_table"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_marginTop="@dimen/text_block_padding"
+            android:layout_marginBottom="@dimen/text_block_padding"
+            android:background="@drawable/price_table"
+            android:baselineAligned="true"
+            android:layout_marginLeft="@dimen/sb__text_padding_top"
+            android:layout_marginRight="@dimen/sb__text_padding_top">
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Acheter mes places maintenant"
-        android:id="@+id/ticket_button"
-        android:layout_below="@+id/textView18"
-        android:layout_centerHorizontal="true" />
+            <LinearLayout
+                style="@style/TicketPriceRow"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:weightSum="3"
+                android:layout_gravity="center">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/ticket_long_label"
-        android:id="@+id/textView19"
-        android:layout_below="@+id/ticket_button"
-        android:layout_centerHorizontal="true"
-        android:gravity="center_vertical|center_horizontal" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:text=" "
+                    android:id="@+id/textView14"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:editable="true"
+                    android:background="@color/second_night"
+                    android:textColor="@color/white"
+                    android:paddingTop="@dimen/text_block_padding"
+                    android:paddingBottom="@dimen/text_block_padding" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:text="1 soir"
+                    android:id="@+id/textView11"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:editable="true"
+                    android:background="@color/third_night"
+                    android:textColor="@color/white"
+                    android:paddingTop="@dimen/text_block_padding"
+                    android:paddingBottom="@dimen/text_block_padding" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:text="2 soirs"
+                    android:id="@+id/textView12"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:editable="true"
+                    android:background="@color/third_night"
+                    android:textColor="@color/white"
+                    android:paddingTop="@dimen/text_block_padding"
+                    android:paddingBottom="@dimen/text_block_padding" />
+            </LinearLayout>
+
+            <LinearLayout
+                style="@style/TicketPriceRow"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                android:weightSum="3">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:text="En ligne"
+                    android:id="@+id/textView15"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:editable="true"
+                    android:background="@color/second_night"
+                    android:textColor="@color/white"
+                    android:paddingTop="@dimen/text_block_padding"
+                    android:paddingBottom="@dimen/text_block_padding" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:text="10€*"
+                    android:id="@+id/textView16"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:editable="true"
+                    android:background="@color/third_night"
+                    android:textColor="@color/white"
+                    android:paddingTop="@dimen/text_block_padding"
+                    android:paddingBottom="@dimen/text_block_padding" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:text="16€*"
+                    android:id="@+id/textView17"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:editable="true"
+                    android:background="@color/third_night"
+                    android:textColor="@color/white"
+                    android:paddingTop="@dimen/text_block_padding"
+                    android:paddingBottom="@dimen/text_block_padding" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|right"
+                style="@style/TicketPriceRow"
+                android:weightSum="3">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:text="Sur place"
+                    android:id="@+id/textView9"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:editable="true"
+                    android:background="@color/second_night"
+                    android:textColor="@color/white"
+                    android:paddingTop="@dimen/text_block_padding"
+                    android:paddingBottom="@dimen/text_block_padding" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:text="15€"
+                    android:id="@+id/textView10"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:editable="true"
+                    android:background="@color/third_night"
+                    android:textColor="@color/white"
+                    android:paddingTop="@dimen/text_block_padding"
+                    android:paddingBottom="@dimen/text_block_padding" />
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
+                    android:text="25€"
+                    android:id="@+id/textView13"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:gravity="center_horizontal"
+                    android:editable="true"
+                    android:background="@color/third_night"
+                    android:textColor="@color/white"
+                    android:paddingTop="@dimen/text_block_padding"
+                    android:paddingBottom="@dimen/text_block_padding" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:text="*+0.99€ de frais de location"
+            android:id="@+id/textView18"
+            android:layout_below="@+id/price_table"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center_vertical|center_horizontal"
+            android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar" />
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_margin="@dimen/text_block_padding"
+            android:layout_marginTop="@dimen/sb__text_padding_top"
+            android:layout_marginBottom="@dimen/sb__text_padding_top">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/ACHETER"
+                android:id="@+id/ticket_button"
+                android:layout_below="@+id/textView18"
+                android:layout_centerHorizontal="true"
+                android:background="@color/third_day"
+                android:padding="@dimen/text_block_padding"
+                android:textColor="@color/white" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
+            android:text="@string/ticket_long_label"
+            android:id="@+id/textView19"
+            android:layout_below="@+id/ticket_button"
+            android:layout_centerHorizontal="true"
+            android:gravity="center_vertical|center_horizontal"
+            android:padding="@dimen/text_block_padding"
+            android:layout_marginTop="@dimen/abc_text_size_subtitle_material_toolbar" />
+
+    </LinearLayout>
 
 </RelativeLayout>
