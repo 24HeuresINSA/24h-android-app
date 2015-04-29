@@ -13,6 +13,7 @@ import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.utils.Day;
 import com.insalyon.les24heures.utils.SlidingUpPannelState;
 import com.insalyon.les24heures.view.AutoExpandGridView;
 
@@ -32,6 +33,7 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
     AutoExpandGridView artistGridView;
     @InjectView(R.id.progress_wheel)
     View progressBar;
+    Day day;
 
     private NightResourceAdapter nightResourceAdapter;
 
@@ -39,6 +41,10 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         displayName = getActivity().getResources().getString(R.string.artist_fragment_appname);
+
+        if(getArguments() != null){
+            day = (Day) getArguments().getSerializable("day");
+        }
     }
 
 
