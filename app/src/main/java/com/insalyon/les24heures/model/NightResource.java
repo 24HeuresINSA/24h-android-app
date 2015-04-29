@@ -14,6 +14,7 @@ public class NightResource extends Resource {
     private String twitterUrl;
     private String siteUrl;
     private String stage;
+    private Integer position;
 
 
     @Deprecated
@@ -25,6 +26,7 @@ public class NightResource extends Resource {
         this.stage = stage;
     }
 
+    @Deprecated
     public NightResource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures, String facebookUrl, String twitterUrl, String siteUrl, String stage, Integer _id) {
         super(title, description, schedules, category, mainPictureUrl, pictures,_id);
         this.facebookUrl = facebookUrl;
@@ -33,12 +35,22 @@ public class NightResource extends Resource {
         this.stage = stage;
     }
 
+    public NightResource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures, String facebookUrl, String twitterUrl, String siteUrl, String stage, Integer _id, Integer position) {
+        super(title, description, schedules, category, mainPictureUrl, pictures,_id);
+        this.facebookUrl = facebookUrl;
+        this.twitterUrl = twitterUrl;
+        this.siteUrl = siteUrl;
+        this.stage = stage;
+        this.position = position;
+    }
+
     public NightResource(Parcel in) {
         super(in);
         this.facebookUrl = in.readString();
         this.twitterUrl = in.readString();
         this.siteUrl = in.readString();
         this.stage = in.readString();
+        this.position = in.readInt();
     }
 
 
@@ -48,6 +60,7 @@ public class NightResource extends Resource {
         out.writeString(twitterUrl);
         out.writeString(siteUrl);
         out.writeString(stage);
+        out.writeInt(position);
     }
 
     public String getFacebookUrl() {
@@ -64,5 +77,9 @@ public class NightResource extends Resource {
 
     public String getStage() {
         return stage;
+    }
+
+    public Integer getPosition() {
+        return position;
     }
 }

@@ -17,6 +17,15 @@ public class NightResourceDTO {
     String twitter_url;
     String site_url;
     Integer _id;
+    Integer position;
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer position) {
+        this.position = position;
+    }
 
     public String getFacebook_url() {
         return facebook_url;
