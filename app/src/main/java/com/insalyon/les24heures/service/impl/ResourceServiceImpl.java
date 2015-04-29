@@ -70,7 +70,8 @@ public class ResourceServiceImpl implements ResourceService {
                 nightResourceDTO.getTwitter_url(),
                 nightResourceDTO.getSite_url(),
                 nightResourceDTO.getStage(),
-                nightResourceDTO.get_id());
+                nightResourceDTO.get_id(),
+                nightResourceDTO.getPosition());
     }
 
 
