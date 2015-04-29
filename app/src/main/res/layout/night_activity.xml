@@ -28,6 +28,14 @@
                 android:layout_height="match_parent">
 
                 <!--REAL CONTENT-->
+
+<!--  SANS CA CA MARCHE PAS POUR L'INSTANT ! INSTALLER LES TABS DANS NIGHT ACTIVITY.JAVA AVANT DE TEST
+              <FrameLayout
+                    android:id="@+id/content_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"></FrameLayout>
+-->
                 <include
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
