@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/night_activity_content">
+
+    <com.insalyon.les24heures.view.SlidingTabLayout
+        android:background="@color/second_night"
+        android:id="@+id/sliding_tabs_night"
+        android:layout_width="match_parent"
+        android:layout_height="40dp" />
+
+    <!-- Sessions fragments showing each day of the conference -->
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager_night"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+</LinearLayout>
