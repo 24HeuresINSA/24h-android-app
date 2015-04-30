@@ -28,12 +28,12 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
 import com.insalyon.les24heures.androidService.LiveUpdateGCMRegistrationService;
-import com.insalyon.les24heures.androidService.LiveUpdateService;
 import com.insalyon.les24heures.androidService.NotificationService;
 import com.insalyon.les24heures.eventbus.ApplicationVersionEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.RetrofitErrorEvent;
+import com.insalyon.les24heures.fragments.ArtistFragment;
 import com.insalyon.les24heures.fragments.ConsoFragment;
 import com.insalyon.les24heures.fragments.FacilitiesFragment;
 import com.insalyon.les24heures.fragments.ParamsFragment;
@@ -105,9 +105,9 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     CategoryService categoryService;
     ArrayList<Category> categories;
     //need a list to store a category and favorites or not (it's a bad code resulting from the old impl where it could be possible to select several categories)
-    ArrayList<Category> selectedCategories = new ArrayList<>();
+    public ArrayList<Category> selectedCategories = new ArrayList<>();
     ArrayList<DayResource> dayResourceArrayList;
-    ArrayList<NightResource> nightResourceArrayList;
+    public ArrayList<NightResource> nightResourceArrayList;
     String dataVersion;
     String applicationVersion;
 
@@ -378,6 +378,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         setSelectedMenuItem(v, R.drawable.concert_bleu);
         drawerLayout.closeDrawer();
         nextActivity = NightActivity.class;
+        nextStaticFragment = ArtistFragment.class;
 
     }
 
@@ -387,7 +388,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         v.setActivated(true);
         setSelectedMenuItem(v, R.drawable.billeterie_bleu);
         drawerLayout.closeDrawer();
-        nextActivity = StaticDataActivity.class;
+        nextActivity = NightActivity.class;
         nextStaticFragment = TicketsFragment.class;
     }
 
@@ -668,6 +669,13 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
                     if (this.getClass().equals(StaticDataActivity.class)) {
                         ((StaticDataActivity) self).startFragment(nextStaticFragment);
+                        return;
+                    } else
+                        intent.putExtra("nextStaticFragment", nextStaticFragment.getCanonicalName());
+                } else if (nextActivity.equals(NightActivity.class)) {
+
+                    if (this.getClass().equals(NightActivity.class)) {
+                        ((NightActivity) self).startFragment(nextStaticFragment);
                         return;
                     } else
                         intent.putExtra("nextStaticFragment", nextStaticFragment.getCanonicalName());

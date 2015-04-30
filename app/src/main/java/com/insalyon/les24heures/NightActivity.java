@@ -1,88 +1,107 @@
 package com.insalyon.les24heures;
 
 import android.app.Fragment;
-import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.os.Bundle;
-import android.support.v13.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
+import android.view.View;
 
-import com.insalyon.les24heures.fragments.ArtistFragment;
-import com.insalyon.les24heures.utils.Day;
-import com.insalyon.les24heures.view.SlidingTabLayout;
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
 
-import butterknife.InjectView;
+import butterknife.OnClick;
 
 /**
  * Created by remi on 12/03/15.
  */
 public class NightActivity extends BaseDynamicDataActivity {
 
-    @InjectView(R.id.sliding_tabs)
-    SlidingTabLayout mSlidingTabLayout;
-    @InjectView(R.id.view_pager)
-    ViewPager mViewPager;
-    private OurViewPagerAdapter mViewPagerAdapter;
-
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.night_activity);
+        if (savedInstanceState != null)
+            if(savedInstanceState.getString("nextStaticFragment")!= null){
+                String nextStaticFragmentClassName = savedInstanceState.getString("nextStaticFragment");
+                try {
+                    Class<?> clazz = Class.forName(nextStaticFragmentClassName.toString());
+                    startFragment(clazz);
+                    nextStaticFragment = clazz;
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        if (getIntent() != null && nextStaticFragment == null) {
+            if (getIntent().getStringExtra("nextStaticFragment") != null) {
+                String nextStaticFragmentClassName = getIntent().getStringExtra("nextStaticFragment");
+                try {
+                    Class<?> clazz = Class.forName(nextStaticFragmentClassName.toString());
+                    startFragment(clazz);
+                    nextStaticFragment = clazz;
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
     }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
 
-        mViewPagerAdapter = new OurViewPagerAdapter(getFragmentManager());
-        mViewPager.setAdapter(mViewPagerAdapter);
-
-
-        mSlidingTabLayout.setCustomTabView(R.layout.tab_indicator, android.R.id.text1);
-
-        mSlidingTabLayout.setSelectedIndicatorColors(getResources().getColor(R.color.tab_selected_strip));
-        mSlidingTabLayout.setDistributeEvenly(true);
-        mSlidingTabLayout.setViewPager(mViewPager);
-
-        mSlidingTabLayout.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset,
-                                       int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                restoreTitle();
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-            }
-        });
-
         clearDrawerChoices();
         artistButton.setActivated(true);
         setSelectedMenuItem(artistButton, R.drawable.concert_bleu);
         drawerLayout.closeDrawer();
-        //startFragment();
+        startFragment();
         restoreTitle();
     }
 
+    @OnClick(R.id.navigation_drawer_tickets)
+    public void onClickTickets(View v) {
+        super.onClickTickets(v);
+        nextActivity = null;
+        startFragment();
+    }
 
-    private ArtistFragment getArtistFragment(Day day) {
+    @OnClick(R.id.navigation_drawer_artists)
+    public void onClickArtist(View v) {
+        super.onClickArtist(v);
+        nextActivity = null;
+        startFragment();
+    }
+
+    void startFragment() {
+        startFragment(nextStaticFragment);
+    }
+
+
+    public void startFragment(Class fragmentClssName) {
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
         bundleArgs.putParcelableArrayList("resourcesList", nightResourceArrayList);
         searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
         bundleArgs.putString("searchQuery", searchQuery);
-        bundleArgs.putSerializable("day",day);
 
-        ArtistFragment fragment = new ArtistFragment();
+        Fragment fragment = null;
+        try {
+            Constructor<?> ctor = fragmentClssName.getConstructor();
+            fragment = (Fragment) ctor.newInstance(new Object[]{});
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        }
+
         fragment.setArguments(bundleArgs);
-
-        return fragment;
+        FragmentTransaction ft = fragmentManager.beginTransaction();
+        ft.replace(R.id.content_frame, fragment).commit();
     }
 
     @Override
@@ -94,29 +113,7 @@ public class NightActivity extends BaseDynamicDataActivity {
         }
     }
 
-    private class OurViewPagerAdapter extends FragmentPagerAdapter {
 
-        public OurViewPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-
-            return getArtistFragment((position == 0)? Day.FRIDAY: Day.SATURDAY );
-        }
-
-        @Override
-        public int getCount() {
-            return 2;
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            if (position == 0) return getResources().getString(R.string.dayTabOne);
-            return getResources().getString(R.string.dayTabTwo);
-        }
-    }
 
 
 }
