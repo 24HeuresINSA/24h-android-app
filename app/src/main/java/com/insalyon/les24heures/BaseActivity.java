@@ -3,10 +3,12 @@ package com.insalyon.les24heures;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.view.GravityCompat;
@@ -28,7 +30,6 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
 import com.insalyon.les24heures.androidService.LiveUpdateGCMRegistrationService;
-import com.insalyon.les24heures.androidService.LiveUpdateService;
 import com.insalyon.les24heures.androidService.NotificationService;
 import com.insalyon.les24heures.eventbus.ApplicationVersionEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
@@ -159,7 +160,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             selectedCategories = new ArrayList<>();
         }
 
-        if(checkPlayServices()){
+        if (checkPlayServices()) {
             Intent registerOnGCM = new Intent(this, LiveUpdateGCMRegistrationService.class);
             startService(registerOnGCM);
         }
@@ -311,7 +312,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
 
         editor.putString("dayResourceList", dayResourcesList);
-        editor.putString("categoriesList",categoriesResourceList);
+        editor.putString("categoriesList", categoriesResourceList);
         editor.putString("nightResourcesList", nightResourcesList);
         editor.putString("dataVersion", dataVersion);
         editor.commit();
@@ -538,6 +539,12 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
                 AlertDialog dialog;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setPositiveButton(getResources().getString(R.string.update_app_label), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        startPlayStoreIntent();
+                    }
+                });
+
 
                 self = this;
                 builder.setMessage(R.string.apologize_dialog_messag_major)
@@ -565,6 +572,16 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
                 dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion, dayResourceArrayList, nightResourceArrayList);
                 Log.d(TAG, "manageApplicationVersionState MINOR");
                 builder = new AlertDialog.Builder(this);
+                builder.setPositiveButton(getResources().getString(R.string.update_app_label), new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        startPlayStoreIntent();
+                    }
+                })
+                        .setNegativeButton(getResources().getString(R.string.dealy_update_app_label), new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.cancel();
+                            }
+                        });
                 builder.setMessage(R.string.apologize_dialog_messag_minor)
                         .setTitle(R.string.apologize_dialog_title);
 
@@ -581,6 +598,15 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
         //si popup sharedPref == major, (2.1) lance le timerTask pour la popup major changes
         //sinon si popup sharedPref == minor ou == toDate effectue le download des donnees et si popup sharedPref == minor affiche popup minor
+    }
+
+    private void startPlayStoreIntent() {
+        final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+        try {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+        } catch (android.content.ActivityNotFoundException anfe) {
+            startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+        }
     }
 
     @Override
@@ -623,6 +649,21 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
     public Integer getPositionCategorySelected() {
         return positionCategorySelected;
+    }
+
+    private boolean checkPlayServices() {
+        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
+        if (resultCode != ConnectionResult.SUCCESS) {
+            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
+                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
+                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
+            } else {
+                Log.i(TAG, "This device is not supported.");
+                finish();
+            }
+            return false;
+        }
+        return true;
     }
 
     public class DrawerListener extends DrawerLayout.SimpleDrawerListener {
@@ -692,20 +733,5 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             positionCategorySelected = position;
             drawerLayout.closeDrawer();
         }
-    }
-
-    private boolean checkPlayServices() {
-        int resultCode = GooglePlayServicesUtil.isGooglePlayServicesAvailable(this);
-        if (resultCode != ConnectionResult.SUCCESS) {
-            if (GooglePlayServicesUtil.isUserRecoverableError(resultCode)) {
-                GooglePlayServicesUtil.getErrorDialog(resultCode, this,
-                        PLAY_SERVICES_RESOLUTION_REQUEST).show();
-            } else {
-                Log.i(TAG, "This device is not supported.");
-                finish();
-            }
-            return false;
-        }
-        return true;
     }
 }

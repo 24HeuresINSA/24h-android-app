@@ -131,5 +131,7 @@
     <string name="ticket_url">https://www.24heures.org/billetterie</string>
     <string name="billet_text">Pour éviter l\'attente aux caisses les soirs du festival, et pour être sûr d\'avoir une place, achetez votre billet sur Internet et profitez de tarifs préférentiels.</string>
     <string name="ACHETER">ACHETER MES PLACES MAINTENANT!</string>
+    <string name="update_app_label">Mettre à jour</string>
+    <string name="dealy_update_app_label">Plus tard</string>
 
 </resources>
