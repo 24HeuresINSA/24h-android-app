@@ -126,5 +126,7 @@
     <string name="Ecocup_title">Ecocup</string>
     <string name="consigne_text">Consigne</string>
     <string name="prix_text_1">1€</string>
+    <string name="update_app_label">Mettre à jour</string>
+    <string name="dealy_update_app_label">Plus tard</string>
 
 </resources>
