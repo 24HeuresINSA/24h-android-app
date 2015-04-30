@@ -539,7 +539,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
                 AlertDialog dialog;
                 AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                builder.setPositiveButton("Mettre à jour", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(getResources().getString(R.string.update_app_label), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         startPlayStoreIntent();
                     }
@@ -572,12 +572,12 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
                 dataBackendService.getResourcesAsyncFromBackend(retrofitService, dataVersion, dayResourceArrayList, nightResourceArrayList);
                 Log.d(TAG, "manageApplicationVersionState MINOR");
                 builder = new AlertDialog.Builder(this);
-                builder.setPositiveButton("Mettre à jour", new DialogInterface.OnClickListener() {
+                builder.setPositiveButton(getResources().getString(R.string.update_app_label), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         startPlayStoreIntent();
                     }
                 })
-                        .setNegativeButton("Plus tard", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(getResources().getString(R.string.dealy_update_app_label), new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
                                 dialog.cancel();
                             }
