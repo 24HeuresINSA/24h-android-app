@@ -3,11 +3,15 @@ package com.insalyon.les24heures;
 import android.app.SearchManager;
 import android.content.Context;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.SearchView;
@@ -17,6 +21,7 @@ import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.Category;
+import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
 
@@ -192,7 +197,88 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
 
         setupDetailFragment();
 
+        attachKeyboardListeners();
+
     }
+
+
+    private boolean keyboardHidden = true;
+    private ViewTreeObserver.OnGlobalLayoutListener keyboardLayoutListener = new ViewTreeObserver.OnGlobalLayoutListener() {
+        @Override
+        public void onGlobalLayout() {
+            int heightDiff = rootLayout.getRootView().getHeight() - rootLayout.getHeight();
+            int contentViewTop = getWindow().findViewById(Window.ID_ANDROID_CONTENT).getTop();
+
+            LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(BaseDynamicDataActivity.this);
+
+            if(heightDiff <= contentViewTop) {
+                if (heightDiff == contentViewTop && !keyboardHidden ) {
+                    keyboardHidden = true;
+
+                    onHideKeyboard();
+                }
+
+               // Intent intent = new Intent("KeyboardWillHide");
+               // broadcastManager.sendBroadcast(intent);
+            }else{
+                keyboardHidden = false;
+            }
+//            } else {
+//                int keyboardHeight = heightDiff - contentViewTop;
+//                onShowKeyboard(keyboardHeight);
+//
+//                Intent intent = new Intent("KeyboardWillShow");
+//                intent.putExtra("KeyboardHeight", keyboardHeight);
+//                broadcastManager.sendBroadcast(intent);
+//            }
+        }
+    };
+
+    private boolean keyboardListenersAttached = false;
+    private ViewGroup rootLayout;
+
+
+    protected void onHideKeyboard() {
+        Log.d("KEYBOARD HIDDEN","");
+
+        if(pendingSlidingShow){
+            if(pendingSlidingShowResource != null){
+                detailSlidingUpPanelLayoutLayout.showDetailPanel((com.insalyon.les24heures.model.DayResource) pendingSlidingShowResource);
+            } else {
+                detailSlidingUpPanelLayoutLayout.showPanel();
+
+            }
+
+            pendingSlidingShow = false;
+            pendingSlidingShowResource = null;
+        }
+
+
+
+
+    }
+
+    protected void attachKeyboardListeners() {
+        if (keyboardListenersAttached) {
+            return;
+        }
+
+        rootLayout = (ViewGroup) findViewById(R.id.sliding_layout);
+        rootLayout.getViewTreeObserver().addOnGlobalLayoutListener(keyboardLayoutListener);
+
+        keyboardListenersAttached = true;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        if (keyboardListenersAttached) {
+            rootLayout.getViewTreeObserver().removeGlobalOnLayoutListener(keyboardLayoutListener);
+        }
+    }
+
+
 
     @Override
     protected void onResume() {
@@ -210,8 +296,13 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
      * Activity is alive
      */
 
+    Boolean pendingSlidingShow = false;
+    Resource pendingSlidingShowResource = null;
+
 
     public void onEvent(ManageDetailSlidingUpDrawer m) {
+
+        hideKeyboard();
 
         switch (m.getState()) {
             case COLLAPSE:
@@ -224,10 +315,12 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
                 detailSlidingUpPanelLayoutLayout.hidePanel();
                 break;
             case SHOW:
+                pendingSlidingShow = true;
                 if (m.getDayResource() == null) {
-                    detailSlidingUpPanelLayoutLayout.showPanel();
+//                    detailSlidingUpPanelLayoutLayout.showPanel();
                 } else {
-                    detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getDayResource());
+//                    detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getDayResource());
+                    pendingSlidingShowResource = m.getDayResource();
                 }
                 break;
             case ANCHORED:
