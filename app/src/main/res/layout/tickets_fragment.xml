@@ -240,7 +240,8 @@
                     android:layout_centerHorizontal="true"
                     android:background="@color/third_day"
                     android:padding="@dimen/text_block_padding"
-                    android:textColor="@color/white" />
+                    android:textColor="@color/white"
+                    android:shadowColor="@color/second_day" />
             </LinearLayout>
 
             <TextView
