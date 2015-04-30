@@ -18,6 +18,7 @@
         android:background="@color/primary_day">
 
         <LinearLayout
+            android:id="@+id/detail_sliding_header_label"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
