@@ -43,8 +43,8 @@ public class ResourceServiceImpl implements ResourceService {
     }
 
     @Override
-    public DayResource fromDTO(DayResourceDTO dayResourceDTO,ArrayList<Category> categories) {
-        Category category = categoryService.findById(categories,Integer.toString(dayResourceDTO.getCategory()));
+    public DayResource fromDTO(DayResourceDTO dayResourceDTO, ArrayList<Category> categories) {
+        Category category = categoryService.findById(categories, Integer.toString(dayResourceDTO.getCategory()));
 
         return new DayResource(dayResourceDTO.getName(),
                 dayResourceDTO.getDescription(),
@@ -62,7 +62,7 @@ public class ResourceServiceImpl implements ResourceService {
 
         return new NightResource(nightResourceDTO.getName(),
                 nightResourceDTO.getDescription(),
-                ((nightResourceDTO.getSchedule() == null)? new ArrayList<Schedule>() :scheduleService.fromDTO(nightResourceDTO.getSchedule())),
+                ((nightResourceDTO.getSchedule() == null) ? new ArrayList<Schedule>() : scheduleService.fromDTO(nightResourceDTO.getSchedule())),
                 null,
                 nightResourceDTO.getMain_picture_url(),
                 nightResourceDTO.getPictures(),
@@ -71,10 +71,9 @@ public class ResourceServiceImpl implements ResourceService {
                 nightResourceDTO.getSite_url(),
                 nightResourceDTO.getStage(),
                 nightResourceDTO.get_id(),
-                nightResourceDTO.getPosition());
+                (nightResourceDTO.getPosition() == null) ? -1 :
+                        nightResourceDTO.getPosition());
     }
-
-
 
 
     @Override
@@ -82,7 +81,7 @@ public class ResourceServiceImpl implements ResourceService {
         ArrayList<DayResource> dayResources = new ArrayList<>();
 
         for (DayResourceDTO dayResourceDTO : dayResourceDTOs) {
-            dayResources.add(this.fromDTO(dayResourceDTO,categories));
+            dayResources.add(this.fromDTO(dayResourceDTO, categories));
         }
 
         return dayResources;
@@ -100,9 +99,6 @@ public class ResourceServiceImpl implements ResourceService {
         return nightResources;
 
     }
-
-
-
 
 
 }
