@@ -12,7 +12,9 @@ import android.util.Log;
 
 import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
+import com.insalyon.les24heures.StaticDataActivity;
 import com.insalyon.les24heures.eventbus.LiveUpdatesReceivedEvent;
+import com.insalyon.les24heures.fragments.LiveUpdatesFragment;
 import com.insalyon.les24heures.model.LiveUpdate;
 
 import java.util.List;
@@ -68,7 +70,8 @@ public class NotificationService extends IntentService {
     }
 
     private NotificationCompat.Builder getNotificationBuilder(LiveUpdate liveUpdate) {
-        Intent intent = new Intent(this, DayActivity.class);
+        Intent intent = new Intent(this, StaticDataActivity.class);
+        intent.putExtra("nextStaticFragment", LiveUpdatesFragment.class.getCanonicalName());
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(DayActivity.class);
         stackBuilder.addNextIntent(intent);

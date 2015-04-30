@@ -37,6 +37,7 @@ import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.RetrofitErrorEvent;
 import com.insalyon.les24heures.fragments.ConsoFragment;
 import com.insalyon.les24heures.fragments.FacilitiesFragment;
+import com.insalyon.les24heures.fragments.LiveUpdatesFragment;
 import com.insalyon.les24heures.fragments.ParamsFragment;
 import com.insalyon.les24heures.fragments.TclFragment;
 import com.insalyon.les24heures.fragments.TicketsFragment;
@@ -99,6 +100,8 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     View paramsButton;
     @InjectView(R.id.navigation_drawer_conso)
     View consoButton;
+    @InjectView(R.id.navigation_drawer_live_updates)
+    View liveUpdatesButton;
 
 
     DataBackendService dataBackendService;
@@ -412,6 +415,17 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         nextStaticFragment = TclFragment.class;
     }
 
+    @OnClick(R.id.navigation_drawer_live_updates)
+    public void onClickLiveUpdates(View v) {
+        clearDrawerChoices();
+        v.setActivated(true);
+        //Todo change
+        setSelectedMenuItem(v, R.drawable.ic_now);
+        drawerLayout.closeDrawer();
+        nextActivity = StaticDataActivity.class;
+        nextStaticFragment = LiveUpdatesFragment.class;
+    }
+
     @OnClick(R.id.navigation_drawer_facilities)
     public void onClickFacilities(View v) {
         clearDrawerChoices();
@@ -488,6 +502,8 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         setUnselectedMenuItem(paramsButton, R.drawable.ic_action_settings);
         consoButton.setActivated(false);
         setUnselectedMenuItem(consoButton, R.drawable.ic_beer);
+        liveUpdatesButton.setActivated(false);
+        setUnselectedMenuItem(liveUpdatesButton, R.drawable.ic_now);
     }
 
     /**
