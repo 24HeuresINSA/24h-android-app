@@ -17,12 +17,12 @@ import android.widget.ShareActionProvider;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.SearchEvent;
-import com.insalyon.les24heures.socialSharing.OnShareTargetSelectedListener;
-import com.insalyon.les24heures.socialSharing.ShareIntentFactory;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.socialSharing.OnShareTargetSelectedListener;
+import com.insalyon.les24heures.socialSharing.ShareIntentFactory;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
 
@@ -127,8 +127,6 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         final MenuItem favoritesItem = menu.findItem(R.id.menu_favorites);
 
         MenuItem item = menu.findItem(R.id.menu_item_share);
-
-
 
 
         searchView.setOnClickListener(new View.OnClickListener() {
@@ -257,19 +255,13 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
     }
 
 
-
-
     private void setupResourceSharingIntent(DayResource resource) {
-        setShareIntent(ShareIntentFactory.getResourceSharingIntent(this,resource));
+        setShareIntent(ShareIntentFactory.getResourceSharingIntent(this, resource));
     }
 
     private void setupResourceSharingIntent(NightResource resource) {
-        setShareIntent(ShareIntentFactory.getResourceSharingIntent(this,resource));
+        setShareIntent(ShareIntentFactory.getResourceSharingIntent(this, resource));
     }
-
-
-
-
 
 
     @Override
@@ -308,8 +300,6 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         mShareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener());
 
     }
-
-
 
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -515,7 +505,6 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         }
         invalidateOptionsMenu();
     }
-
 
 
 }

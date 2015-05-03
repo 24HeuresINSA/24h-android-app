@@ -68,7 +68,6 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
         }
 
 
-
     }
 
 
@@ -89,7 +88,7 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
         super.onResume();
         eventBus.register(this);
         //TODO quick fix
-        if(resourcesList.size() == 0){
+        if (resourcesList.size() == 0) {
             displayProgress();
         }
 
@@ -97,7 +96,7 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
     }
 
     //TODO quick fix
-    public void onEvent(RetrofitErrorEvent event){
+    public void onEvent(RetrofitErrorEvent event) {
         hideProgress();
     }
 
