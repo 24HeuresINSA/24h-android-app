@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.GridView;
 
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.NightResourceAdapter;
@@ -30,7 +31,7 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
     View view;
 
     @InjectView(R.id.artiste_fragment_grid_layout)
-    AutoExpandGridView artistGridView;
+    GridView artistGridView;
     @InjectView(R.id.progress_wheel)
     View progressBar;
     Day day;

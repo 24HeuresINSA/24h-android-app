@@ -38,5 +38,6 @@
 
     <!--detail-->
     <dimen name="umanoParalaxOffset">100dp</dimen>
+    <dimen name="favorite_on_card">30dp</dimen>
 
 </resources>

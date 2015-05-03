@@ -5,81 +5,79 @@
     android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
-    android:gravity="center_horizontal"
     android:padding="5dp">
 
-    <!-- A CardView that contains a TextView -->
-    <android.support.v7.widget.CardView
-        xmlns:card_view="http://schemas.android.com/apk/res-auto"
-        android:id="@+id/artist_card_view"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_width="match_parent"
-        card_view:cardCornerRadius="4dp"
-        android:elevation="5dp"
-        android:background="@color/second_night">
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:descendantFocusability="blocksDescendants"
-            android:orientation="vertical"
-            android:background="@color/primary_night">
-
-            <ImageView
-                android:layout_width="fill_parent"
-                android:layout_height="@dimen/card_img_height"
-                android:id="@+id/artist_img"
-                android:background="@drawable/fish"
-                android:adjustViewBounds="false"
-                android:baselineAlignBottom="false"
-                android:scaleType="centerCrop" />
-
-            <LinearLayout
-                android:layout_width="match_parent"
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/artist_card_view"
                 android:layout_height="wrap_content"
-                android:descendantFocusability="blocksDescendants"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/artist_grid_item_title_text"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/detail_title_text"
-                    android:ellipsize="marquee"
-                    android:marqueeRepeatLimit="marquee_forever"
-                    android:scrollHorizontally="true"
-                    android:singleLine="true"
-
-                    android:textAppearance="@style/card_title"
-                    android:padding="@dimen/card_title_padding"
-                    android:textIsSelectable="true"
-                    android:layout_gravity="left" />
-                    />
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                card_view:cardCornerRadius="4dp"
+                android:elevation="5dp"
+                android:background="@color/second_night">
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="fill_parent"
+                    android:layout_height="match_parent"
                     android:descendantFocusability="blocksDescendants"
-                    android:orientation="horizontal"
-                    android:gravity="right">
+                    android:orientation="vertical"
+                    android:background="@color/primary_night">
 
-                    <ImageButton
-                        android:id="@+id/artist_grid_item_favorite"
-                        android:layout_width="@dimen/favorite_icon"
-                        android:layout_height="@dimen/favorite_icon"
-                        android:background="@null"
-                        android:scaleType="centerInside"
-                        android:src="@drawable/ic_action_favorite_uncheck"
-                        android:layout_margin="@dimen/icon_margin"
-                        android:tint="@color/white" />
+                    <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="@dimen/card_img_height"
+                        android:id="@+id/artist_img"
+                        android:adjustViewBounds="false"
+                        android:baselineAlignBottom="false"
+                        android:scaleType="centerCrop" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:descendantFocusability="blocksDescendants"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/artist_grid_item_title_text"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/detail_title_text"
+                            android:ellipsize="marquee"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:scrollHorizontally="true"
+                            android:singleLine="true"
+
+                            android:textAppearance="@style/card_title"
+                            android:padding="@dimen/card_title_padding"
+                            android:textIsSelectable="true"
+                            android:layout_gravity="left"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true" />
+                            />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="fill_parent"
+                            android:descendantFocusability="blocksDescendants"
+                            android:orientation="horizontal"
+                            android:gravity="right">
+
+                            <ImageButton
+                                android:id="@+id/artist_grid_item_favorite"
+                                android:layout_width="@dimen/favorite_on_card"
+                                android:layout_height="@dimen/favorite_on_card"
+                                android:background="@null"
+                                android:scaleType="centerInside"
+                                android:src="@drawable/ic_action_favorite_uncheck"
+                                android:layout_margin="@dimen/icon_margin"
+                                android:tint="@color/white" />
+
+                        </LinearLayout>
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
-            </LinearLayout>
-
-        </LinearLayout>
-
-    </android.support.v7.widget.CardView>
-
+            </android.support.v7.widget.CardView>
 </LinearLayout>

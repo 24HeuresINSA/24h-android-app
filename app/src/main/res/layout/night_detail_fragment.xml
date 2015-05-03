@@ -133,33 +133,32 @@
                 android:gravity="center_vertical|right|end"
                 android:padding="@dimen/text_block_padding">
 
-                <TextView
+                <Button
+                    style="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:layout_width="@dimen/output_list_sticky_item_height"
+                    android:layout_height="@dimen/output_list_sticky_item_height"
                     android:id="@+id/detail_url_web"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="u"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                    android:layout_marginLeft="@dimen/icon_margin"
-                    android:layout_marginRight="@dimen/icon_margin" />
+                    android:onClick="onClickWeb"
+                    android:background="@drawable/ic_action_web_site"
+                    android:backgroundTint="@color/primary_night" />
 
-                <TextView
+                <Button
                     android:id="@+id/detail_url_facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="f"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
-                    android:layout_marginLeft="@dimen/icon_margin"
-                    android:layout_marginRight="@dimen/icon_margin" />
+                    android:layout_width="@dimen/output_list_sticky_item_height"
+                    android:layout_height="@dimen/output_list_sticky_item_height"
+                    style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                    android:onClick="onClickFacebook"
+                    android:background="@drawable/facebook_couleur" />
 
-                <TextView
+                <Button
                     android:id="@+id/detail_url_twitter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="t"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                    android:layout_marginLeft="@dimen/icon_margin"
-                    android:layout_marginRight="@dimen/icon_margin"
-                    android:singleLine="false" />
+                    android:layout_width="@dimen/output_list_sticky_item_height"
+                    android:layout_height="@dimen/output_list_sticky_item_height"
+                    style="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:singleLine="false"
+                    android:background="@drawable/twitter_bleu"
+                    android:onClick="onClickTwitter"/>
+
             </LinearLayout>
 
             <RelativeLayout
