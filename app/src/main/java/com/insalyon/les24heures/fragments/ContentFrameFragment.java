@@ -93,7 +93,7 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
             displayProgress();
         }
 
-        setCategoryFilter();
+       // setCategoryFilter();
     }
 
     //TODO quick fix
