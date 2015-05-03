@@ -17,8 +17,12 @@ import android.widget.ShareActionProvider;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.SearchEvent;
+import com.insalyon.les24heures.socialSharing.OnShareTargetSelectedListener;
+import com.insalyon.les24heures.socialSharing.ShareIntentFactory;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.Category;
+import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
 
@@ -123,7 +127,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         final MenuItem favoritesItem = menu.findItem(R.id.menu_favorites);
 
         MenuItem item = menu.findItem(R.id.menu_item_share);
-        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+
 
 
 
@@ -236,18 +240,37 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
                     detailSlidingUpPanelLayoutLayout.showPanel();
                 } else {
                     detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getDayResource());
+                    setupResourceSharingIntent(m.getDayResource());
                 }
                 break;
             case ANCHORED:
                 if (m.getDayResource() != null) {
+                    setupResourceSharingIntent(m.getDayResource());
                     detailFragment.notifyDataChanged(m.getDayResource());
                 } else if (m.getNightResource() != null) {
                     detailFragment.notifyDataChanged(m.getNightResource());
+                    setupResourceSharingIntent(m.getNightResource());
                 }
                 detailSlidingUpPanelLayoutLayout.anchorPanel();
                 break;
         }
     }
+
+
+
+
+    private void setupResourceSharingIntent(DayResource resource) {
+        setShareIntent(ShareIntentFactory.getResourceSharingIntent(this,resource));
+    }
+
+    private void setupResourceSharingIntent(NightResource resource) {
+        setShareIntent(ShareIntentFactory.getResourceSharingIntent(this,resource));
+    }
+
+
+
+
+
 
     @Override
     public void onBackPressed() {
@@ -271,15 +294,22 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
      * invalidateOptionsMenu refire search from searchWidget, painful !
      */
     public void customOnOptionsMenu() {
-        boolean drawerOpen = drawerLayout.isDrawerVisible();//drawerLayout.isDrawerVisible(drawerView);
+        boolean drawerOpen = drawerLayout.isDrawerVisible();
         Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
-        // boolean listVisible = is ???
-        // boolean displaySortItem = displayGlobalItem && listVisible
+
+
         mMenu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
         mMenu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
-        //   mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
-        // mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+        mMenu.findItem(R.id.menu_item_share).setVisible(!displayGlobalItem);
+
+
+        MenuItem item = mMenu.findItem(R.id.menu_item_share);
+        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+        mShareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener());
+
     }
+
+
 
 
     /* Called whenever we call invalidateOptionsMenu() */
@@ -479,10 +509,13 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
 
     }
 
-    public void setShareIntent(Intent shareIntent) {
+    private void setShareIntent(Intent shareIntent) {
         if (mShareActionProvider != null) {
             mShareActionProvider.setShareIntent(shareIntent);
         }
+        invalidateOptionsMenu();
     }
+
+
 
 }
