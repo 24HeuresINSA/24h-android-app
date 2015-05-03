@@ -440,7 +440,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     public void onClickParams(View v) {
         clearDrawerChoices();
         v.setActivated(true);
-        setSelectedMenuItem(v, R.drawable.ic_action_settings);
+        setSelectedMenuItem(v, R.drawable.ic_action_settings_bleu);
         drawerLayout.closeDrawer();
         nextActivity = StaticDataActivity.class;
         nextStaticFragment = ParamsFragment.class;
