@@ -174,15 +174,7 @@ public class DayActivity extends BaseDynamicDataActivity {
         }
     }
 
-    private Intent getDayResourceSharingIntent(DayResource dayResource) {
 
-        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        sharingIntent.setType("text/plain");
-        sharingIntent.putExtra(Intent.EXTRA_SUBJECT, dayResource.getTitle());
-        sharingIntent.putExtra(Intent.EXTRA_TEXT, dayResource.getDescription());
-
-        return sharingIntent;
-    }
 
     private boolean isMapsSelected() {
         return mViewPager.getCurrentItem() == 0;
