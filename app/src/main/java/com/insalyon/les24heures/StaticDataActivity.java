@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 
 import com.insalyon.les24heures.fragments.FacilitiesFragment;
+import com.insalyon.les24heures.fragments.LiveUpdatesFragment;
 import com.insalyon.les24heures.fragments.ParamsFragment;
 import com.insalyon.les24heures.fragments.TclFragment;
 import com.insalyon.les24heures.fragments.TicketsFragment;
@@ -65,30 +66,35 @@ public class StaticDataActivity extends BaseActivity {
     @OnClick(R.id.navigation_drawer_tickets)
     public void onClickTickets(View v) {
         super.onClickTickets(v);
+        nextActivity = null;
         startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_conso)
     public void onClickConso(View v) {
        super.onClickConso(v);
+        nextActivity = null;
         startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_tcl)
     public void onClickTcl(View v) {
         super.onClickTcl(v);
+        nextActivity = null;
         startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_facilities)
     public void onClickFacilities(View v) {
         super.onClickFacilities(v);
+        nextActivity = null;
         startFragment();
     }
 
     @OnClick(R.id.navigation_drawer_params)
     public void onClickParams(View v) {
         super.onClickParams(v);
+        nextActivity = null;
         startFragment();
     }
 
@@ -123,6 +129,8 @@ public class StaticDataActivity extends BaseActivity {
                 str = (getResources().getString(R.string.tickets_fragment_appname));
             if (nextStaticFragment.equals(TclFragment.class))
                 str = (getResources().getString(R.string.tcl_fragment_appname));
+            if (nextStaticFragment.equals(LiveUpdatesFragment.class))
+                str = (getResources().getString(R.string.live_updates_fragment_appname));
             if (nextStaticFragment.equals(FacilitiesFragment.class))
                 str = (getResources().getString(R.string.facilities_fragment_appname));
             if (nextStaticFragment.equals(ParamsFragment.class))
