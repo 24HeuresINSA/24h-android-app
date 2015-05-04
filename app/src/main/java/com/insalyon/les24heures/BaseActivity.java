@@ -188,7 +188,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         } else {
 
             //get from shared pref
-            SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_MULTI_PROCESS);
+            SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
             Gson gson = new Gson();
 
 
@@ -206,7 +206,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
 
             //check if the app can download data
-            settings = getSharedPreferences(getResources().getString(R.string.SHARED_PREF_APP_VERSION), MODE_MULTI_PROCESS);
+            settings = getSharedPreferences(getResources().getString(R.string.SHARED_PREF_APP_VERSION), 0);
             if (settings.getString("applicationVersionState", null) != null)
                 manageApplicationVersionState(ApplicationVersionState.valueOf(
                                 settings.getString("applicationVersionState", ApplicationVersionState.TODATE.toString()))
@@ -226,8 +226,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             eventBus.post(resourcesUpdatedEvent);
             CategoriesUpdatedEvent categoriesUpdatedEvent = new CategoriesUpdatedEvent(categories, dataVersion);
             eventBus.post(categoriesUpdatedEvent);
-            onEvent(resourcesUpdatedEvent);
-            onEvent(categoriesUpdatedEvent);
         }
 
 
@@ -300,7 +298,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     }
 
     private void writeResourceInSharedPref() {
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_MULTI_PROCESS);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
 
         Gson gson = new Gson();
@@ -320,7 +318,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         categories.clear();
         categories.addAll(event.getCategories());
 
-        SharedPreferences settings = getSharedPreferences(PREFS_NAME, MODE_MULTI_PROCESS);
+        SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
 
         Gson gson = new Gson();
@@ -512,7 +510,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         EventBus.getDefault().unregister(this);
 
         //resource storage
-        writeResourceInSharedPref();
+       writeResourceInSharedPref();
 
 
     }

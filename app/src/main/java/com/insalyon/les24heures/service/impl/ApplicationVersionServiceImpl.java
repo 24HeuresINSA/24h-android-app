@@ -44,7 +44,7 @@ public class ApplicationVersionServiceImpl implements ApplicationVersionService 
         final EventBus eventBus = EventBus.getDefault();
 
         //each time we check for app version, we ensure that applicationVersionState is null while we did'nt get the answer
-        final SharedPreferences[] settings = {context.getSharedPreferences(context.getResources().getString(R.string.SHARED_PREF_APP_VERSION), Context.MODE_MULTI_PROCESS)};
+        final SharedPreferences[] settings = {context.getSharedPreferences(context.getResources().getString(R.string.SHARED_PREF_APP_VERSION), 0)};
         final SharedPreferences.Editor[] editor = {settings[0].edit()};
         editor[0].putString("applicationVersionState", null);
         editor[0].commit();
@@ -92,7 +92,7 @@ public class ApplicationVersionServiceImpl implements ApplicationVersionService 
                     event.setState(ApplicationVersionState.TODATE);                        //TODO piwik error
 
 
-                 settings[0] = context.getSharedPreferences(context.getResources().getString(R.string.SHARED_PREF_APP_VERSION), Context.MODE_MULTI_PROCESS );
+                 settings[0] = context.getSharedPreferences(context.getResources().getString(R.string.SHARED_PREF_APP_VERSION), 0);
                 editor[0] = settings[0].edit();
                 editor[0].putString("applicationVersionState", event.getState().toString());
                 editor[0].commit();
