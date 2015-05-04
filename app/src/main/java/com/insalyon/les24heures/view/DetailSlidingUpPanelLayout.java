@@ -39,6 +39,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     private TextView detailSlidingTitle;
     private TextView detailSlidingDescription;
     private LinearLayout detailSlidingHeaderLabel;
+    private RelativeLayout detailSlidingLayoutHeader;
 
     private View parallaxHeader;
     private DrawerArrowDrawable drawerArrowDrawable;
@@ -279,6 +280,15 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         detailSlidingTitle = (TextView) detailFragment.getView().findViewById(R.id.detail_sliding_title);
         detailSlidingDescription = (TextView) detailFragment.getView().findViewById(R.id.detail_description_text);
         detailSlidingHeaderLabel = (LinearLayout) detailFragment.getView().findViewById(R.id.detail_sliding_header_label);
+        detailSlidingLayoutHeader = (RelativeLayout) detailFragment.getView().findViewById(R.id.detail_sliding_layout_header);
+        detailSlidingLayoutHeader.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(self.isAnchoredOrExpanded()){
+                    self.hideDetailPanel();
+                }
+            }
+        });
     }
 
 
