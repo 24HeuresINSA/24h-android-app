@@ -72,8 +72,6 @@
 
     <!--Artists-->
     <string name="artist_fragment_appname">Artistes</string>
-    <string name="INSTALL_DATA_VERSION">0.0</string>
-    <string name="INSTALL_APPLICATION_VERSION">0.0</string>
     <string name="navigationdrawer_sectionname_day">En journée</string>
     <string name="navigationdrawer_sectionname_night">En soirée</string>
     <string name="navigationdrawer_sectionname_everytime">Tout le temps</string>
