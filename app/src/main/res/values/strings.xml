@@ -137,5 +137,6 @@
     <string name="ACHETER">ACHETER MES PLACES MAINTENANT!</string>
     <string name="update_app_label">Mettre à jour</string>
     <string name="dealy_update_app_label">Plus tard</string>
+    <string name="text_schedule_night_patient">Les horaires détaillés seront communiqués à 19h le soir du concert.\nMerci de votre compréhension.</string>
 
 </resources>
