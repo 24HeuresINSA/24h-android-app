@@ -293,7 +293,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
 
         mMenu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
         mMenu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
-        mMenu.findItem(R.id.menu_item_share).setVisible(!displayGlobalItem);
+        mMenu.findItem(R.id.menu_item_share).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
 
 
         MenuItem item = mMenu.findItem(R.id.menu_item_share);
