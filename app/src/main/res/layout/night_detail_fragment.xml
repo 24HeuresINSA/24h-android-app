@@ -23,10 +23,7 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:baselineAligned="false"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/detail_favorites"
-            android:layout_toStartOf="@+id/detail_favorites"
             android:paddingLeft="@dimen/text_block_padding"
             android:paddingTop="@dimen/text_block_padding"
             android:paddingBottom="@dimen/text_block_padding">
