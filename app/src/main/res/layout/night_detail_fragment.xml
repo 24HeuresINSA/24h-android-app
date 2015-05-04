@@ -45,7 +45,10 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"/>
 
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:id="@+id/detail_next_schedule"/>
             <TextView
                 android:id="@+id/detail_stage"
                 android:layout_width="fill_parent"
@@ -109,16 +112,18 @@
                     android:id="@+id/schedule_item_patient"
                     android:text="@string/text_schedule_night_patient"
                     android:textColor="@color/primary_day"
-                    android:layout_margin="@dimen/text_block_padding"
+                    android:layout_marginTop="@dimen/text_block_padding"
                     android:textSize="@dimen/sub_title_detail"/>
 
-              <!--  <com.insalyon.les24heures.view.AutoExpandGridView
+                <com.insalyon.les24heures.view.AutoExpandGridView
                     android:id="@+id/detail_schedule_grid_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_block_padding"
+                    android:layout_height="0dp"
                     android:columnCount="1"
-                    android:numColumns="1"></com.insalyon.les24heures.view.AutoExpandGridView>-->
+                    android:numColumns="1">
+                </com.insalyon.les24heures.view.AutoExpandGridView>
+                <!--  android:layout_height="wrap_content"
+                     android:layout_margin="@dimen/text_block_padding"    a rajouter au cas ou-->
             </LinearLayout>
 
             <LinearLayout
@@ -155,7 +160,7 @@
                     android:onClick="onClickWeb"
                     android:background="@drawable/ic_action_web_site"
                     android:backgroundTint="@color/primary_night"
-                    android:backgroundTintMode="src_over" />
+                    android:backgroundTintMode="src_in" />
 
                 <Button
                     android:id="@+id/detail_url_facebook"
