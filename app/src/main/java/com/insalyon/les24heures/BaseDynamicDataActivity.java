@@ -286,6 +286,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
      * invalidateOptionsMenu refire search from searchWidget, painful !
      */
     public void customOnOptionsMenu() {
+        if(drawerLayout == null) return; //on Lollipop, onPrepareOptionsMenu is called before onPostCreate which find the view (via ButterKnife). All view are null in thise case
         boolean drawerOpen = drawerLayout.isDrawerVisible();
         Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
 
