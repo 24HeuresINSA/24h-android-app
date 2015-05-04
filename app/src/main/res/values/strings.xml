@@ -75,6 +75,7 @@
     <string name="navigationdrawer_label_artist">Concerts</string>
     <string name="navigationdrawer_label_tickets">Billeterie</string>
     <string name="navigationdrawer_label_tcl">TCL</string>
+    <string name="navigationdrawer_label_live_updates">Notifications</string>
     <string name="navigationdrawer_label_facilities">Lieux utiles</string>
     <string name="navigationdrawer_label_params">Paramètres</string>
     <string name="navigationdrawer_label_conso">Carte des Consommations</string>
@@ -98,6 +99,7 @@
     <string name="retrofit_error_snackbar_action_label">Réessayer</string>
     <string name="tcl_fragment_appname">TCL</string>
     <string name="tickets_fragment_appname">Billeterie</string>
+    <string name="live_updates_fragment_appname">Notifications</string>
     <string name="facilities_fragment_appname">Lieux utiles</string>
     <string name="params_fragment_appname">Paramètres</string>
     <string name="conso_fragment_appname">Carte des Consommations</string>
@@ -128,5 +130,12 @@
     <string name="prix_text_1">1€</string>
     <string name="dayTabOne">Vendredi</string>
     <string name="dayTabTwo">Samedi</string>
+    <string name="tickets_title">Billeterie</string>
+    <string name="ticket_long_label">L \'accès à la zone concerts ne sera possible qu\'entre 19h45 et 2h</string>
+    <string name="ticket_url">https://www.24heures.org/billetterie</string>
+    <string name="billet_text">Pour éviter l\'attente aux caisses les soirs du festival, et pour être sûr d\'avoir une place, achetez votre billet sur Internet et profitez de tarifs préférentiels.</string>
+    <string name="ACHETER">ACHETER MES PLACES MAINTENANT!</string>
+    <string name="update_app_label">Mettre à jour</string>
+    <string name="dealy_update_app_label">Plus tard</string>
 
 </resources>

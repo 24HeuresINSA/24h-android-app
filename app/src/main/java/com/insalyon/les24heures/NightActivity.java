@@ -5,10 +5,14 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.text.Html;
+import android.widget.TextView;
 
 import com.insalyon.les24heures.fragments.ArtistFragment;
 import com.insalyon.les24heures.utils.Day;
 import com.insalyon.les24heures.view.SlidingTabLayout;
+
+import butterknife.InjectView;
 
 import butterknife.InjectView;
 
@@ -22,8 +26,6 @@ public class NightActivity extends BaseDynamicDataActivity {
     @InjectView(R.id.view_pager)
     ViewPager mViewPager;
     private OurViewPagerAdapter mViewPagerAdapter;
-
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +68,6 @@ public class NightActivity extends BaseDynamicDataActivity {
         artistButton.setActivated(true);
         setSelectedMenuItem(artistButton, R.drawable.concert_bleu);
         drawerLayout.closeDrawer();
-        //startFragment();
         restoreTitle();
     }
 

@@ -31,6 +31,8 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
 
     private final EventBus eventBus;
     private final int viewId;
+    private Picasso picasso;
+
 
     LayoutInflater vi;
 
@@ -40,6 +42,14 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
         this.viewId = textViewResourceId;
 
         this.vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+        picasso = new Picasso.Builder(context).listener(new Picasso.Listener() {
+            @Override
+            public void onImageLoadFailed(Picasso picasso, Uri uri, Exception exception) {
+                exception.printStackTrace();
+            }
+        }).build();
+
 
         //je voulais pas ca moi !
         eventBus = EventBus.getDefault();
@@ -79,18 +89,11 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
 
         holder.title.setText(nightResource.getTitle());
 
-        //TODO complete with real data : loading to long with backend img
-        switch(nightResource.getTitle()){
-            case "Goldfish":
-                holder.image.setImageResource(R.drawable.fish);
-                break;
-            case "John":
-                holder.image.setImageResource(R.drawable.ecocup);
-                break;
-            default:
-                holder.image.setImageResource(R.drawable.frites);
-                break;
-        }
+        picasso.load(URLDecoder.decode(nightResource.getMainPictureUrl()))
+                .placeholder(R.drawable.ic_waiting)
+                .error(R.drawable.ic_error)
+                .into(holder.image);
+
         holder.title.setSelected(true);
         if (nightResource.isFavorites())
             holder.favorites.setImageResource(R.drawable.ic_action_favorite);
