@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.insalyon.les24heures.BaseDynamicDataActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.model.NightResource;
 
@@ -55,6 +56,7 @@ public class NightDetailFragment extends DetailFragment {
         }
         return false;
     }
+
 
 
 }

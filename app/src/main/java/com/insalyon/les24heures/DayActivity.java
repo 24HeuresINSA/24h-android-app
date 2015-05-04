@@ -21,6 +21,7 @@ import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.fragments.DayListFragment;
 import com.insalyon.les24heures.fragments.DayMapsFragment;
 import com.insalyon.les24heures.model.Category;
+import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.utils.OutputType;
 import com.insalyon.les24heures.utils.SpecificCategory;
 import com.insalyon.les24heures.view.SlidingTabLayout;
@@ -172,6 +173,8 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         }
     }
+
+
 
     private boolean isMapsSelected() {
         return mViewPager.getCurrentItem() == 0;
