@@ -8,6 +8,7 @@ import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceService;
+import com.insalyon.les24heures.utils.Day;
 
 import java.util.ArrayList;
 
@@ -98,6 +99,19 @@ public class ResourceServiceImpl implements ResourceService {
 
         return nightResources;
 
+    }
+
+    @Override
+    public ArrayList<NightResource> filterByDay(ArrayList<NightResource> nightResources, Day day) {
+        ArrayList<NightResource> result = new ArrayList<>();
+        for (NightResource resource : nightResources) {
+            if(resource.getSchedules() != null && !resource.getSchedules().isEmpty() && resource.getSchedules().get(0).getDay().equals(day)) result.add(resource);
+        }
+
+        //TODO it's a stub !
+        if(result.isEmpty()) return nightResources;
+
+        return result;
     }
 
 

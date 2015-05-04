@@ -5,14 +5,11 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
-import android.widget.TextView;
 
 import com.insalyon.les24heures.fragments.ArtistFragment;
+import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.Day;
 import com.insalyon.les24heures.view.SlidingTabLayout;
-
-import butterknife.InjectView;
 
 import butterknife.InjectView;
 
@@ -75,7 +72,7 @@ public class NightActivity extends BaseDynamicDataActivity {
     private ArtistFragment getArtistFragment(Day day) {
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
-        bundleArgs.putParcelableArrayList("resourcesList", nightResourceArrayList);
+        bundleArgs.putParcelableArrayList("resourcesList", ResourceServiceImpl.getInstance().filterByDay(nightResourceArrayList,day));
         searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
         bundleArgs.putString("searchQuery", searchQuery);
         bundleArgs.putSerializable("day",day);

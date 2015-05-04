@@ -14,9 +14,9 @@ import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.Day;
 import com.insalyon.les24heures.utils.SlidingUpPannelState;
-import com.insalyon.les24heures.view.AutoExpandGridView;
 
 import java.util.ArrayList;
 
@@ -101,7 +101,7 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
         resourcesList.clear();
-        resourcesList.addAll(event.getNightResourceList());
+        resourcesList.addAll(ResourceServiceImpl.getInstance().filterByDay((ArrayList<NightResource>) event.getNightResourceList(),day));
 //        nightResourceAdapter.getFilter().filter("");
         //nightResourceAdapter.notifyDataSetChanged();
 
