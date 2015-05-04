@@ -217,10 +217,14 @@ public abstract class DetailFragment extends Fragment {
         }else {
             parallaxHeader.setVisibility(View.VISIBLE);
             parallaxHeader.setSelected(false); //to allow slidingUp to do its job
-            picasso.load(URLDecoder.decode(resource.getMainPictureUrl()))
-                    .placeholder(R.drawable.ic_waiting)
-                    .error(R.drawable.ic_error)
-                    .into(parallaxImageHeader);
+            try {
+                picasso.load(URLDecoder.decode(resource.getMainPictureUrl()))
+                        .placeholder(R.drawable.ic_waiting)
+                        .error(R.drawable.ic_error)
+                        .into(parallaxImageHeader);
+            }catch (NullPointerException e){
+                e.printStackTrace();
+            }
         }
 
 
@@ -252,10 +256,14 @@ public abstract class DetailFragment extends Fragment {
         public Object instantiateItem(ViewGroup container, final int position) {
             ImageView image = new ImageView(appContext);
 
-            picasso.load(URLDecoder.decode(resource.getPictures().get(position)))
-                    .placeholder(R.drawable.ic_waiting)
-                    .error(R.drawable.ic_error)
-                    .into(image);
+            try {
+                picasso.load(URLDecoder.decode(resource.getPictures().get(position)))
+                        .placeholder(R.drawable.ic_waiting)
+                        .error(R.drawable.ic_error)
+                        .into(image);
+            }catch (NullPointerException e){
+                e.printStackTrace();
+            }
 
             container.addView(image, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
 

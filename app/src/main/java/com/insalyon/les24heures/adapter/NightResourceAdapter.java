@@ -2,9 +2,7 @@ package com.insalyon.les24heures.adapter;
 
 import android.content.Context;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.net.Uri;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -89,10 +87,14 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
 
         holder.title.setText(nightResource.getTitle());
 
-        picasso.load(URLDecoder.decode(nightResource.getMainPictureUrl()))
-                .placeholder(R.drawable.ic_waiting)
-                .error(R.drawable.ic_error)
-                .into(holder.image);
+        try {
+            picasso.load(URLDecoder.decode(nightResource.getMainPictureUrl()))
+                    .placeholder(R.drawable.ic_waiting)
+                    .error(R.drawable.ic_error)
+                    .into(holder.image);
+        }catch (NullPointerException e){
+            e.printStackTrace();
+        }
 
         holder.title.setSelected(true);
         if (nightResource.isFavorites())
