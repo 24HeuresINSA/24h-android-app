@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.model.Schedule;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -28,6 +29,8 @@ public class NightDetailFragment extends DetailFragment {
     Button btnTwitter;
     @InjectView(R.id.detail_url_web)
     Button btnWeb;
+    @InjectView(R.id.schedule_item_patient)
+    TextView scheduleItemPatient;
 
     String urlFacebook;
     String urlTwitter;
@@ -53,10 +56,20 @@ public class NightDetailFragment extends DetailFragment {
     public Boolean updateHeavyData() {
         if (super.updateHeavyData()) {
 
-            urlFacebook = (((NightResource) resource).getFacebookUrl());
-            urlWeb = (((NightResource) resource).getSiteUrl());
-            urlTwitter = (((NightResource) resource).getTwitterUrl());
+            NightResource nightResource = (NightResource) resource;
+            urlFacebook = (nightResource.getFacebookUrl());
+            urlWeb = (nightResource.getSiteUrl());
+            urlTwitter = (nightResource.getTwitterUrl());
             slidingHeader.setBackground(this.getResources().getDrawable(R.color.primary_night));
+            if(nightResource.getSchedules() != null
+                    && !nightResource.getSchedules().isEmpty()
+                    && nightResource.getSchedules().get(0).getStart() != null
+                    && nightResource.getSchedules().get(0).getEnd() != null){
+                Schedule schedule = nightResource.getSchedules().get(0);
+                scheduleItemPatient.setText((schedule.getPrintableDay() + "  " +
+                        schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
+            }
+
 
 
             return true;
