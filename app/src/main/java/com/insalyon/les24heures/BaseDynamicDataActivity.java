@@ -298,7 +298,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
             //detail is visible
             if (detailSlidingUpPanelLayoutLayout.isPanelAnchored() || detailSlidingUpPanelLayoutLayout.isPanelExpanded()) {
                 if (DayActivity.class.isAssignableFrom(this.getClass()) &&
-                        ((DayActivity) this).getmViewPager().getCurrentItem() == 1)//if list is active
+                        ((DayActivity) this).getmViewPager().getCurrentItem() == 1 || NightActivity.class.isAssignableFrom(this.getClass()))//if list is active or night is
                     detailSlidingUpPanelLayoutLayout.hidePanel(); //TODO le rendu est moche
                 else
                     detailSlidingUpPanelLayoutLayout.collapsePanel();
