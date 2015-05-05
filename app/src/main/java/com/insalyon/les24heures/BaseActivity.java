@@ -38,7 +38,6 @@ import com.insalyon.les24heures.eventbus.RetrofitErrorEvent;
 import com.insalyon.les24heures.fragments.ConsoFragment;
 import com.insalyon.les24heures.fragments.FacilitiesFragment;
 import com.insalyon.les24heures.fragments.LiveUpdatesFragment;
-import com.insalyon.les24heures.fragments.ParamsFragment;
 import com.insalyon.les24heures.fragments.TclFragment;
 import com.insalyon.les24heures.fragments.TicketsFragment;
 import com.insalyon.les24heures.model.Category;
@@ -96,8 +95,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     View tclButton;
     @InjectView(R.id.navigation_drawer_facilities)
     View facilitiesButton;
-    @InjectView(R.id.navigation_drawer_params)
-    View paramsButton;
     @InjectView(R.id.navigation_drawer_conso)
     View consoButton;
     @InjectView(R.id.navigation_drawer_live_updates)
@@ -436,16 +433,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         nextStaticFragment = FacilitiesFragment.class;
     }
 
-    @OnClick(R.id.navigation_drawer_params)
-    public void onClickParams(View v) {
-        clearDrawerChoices();
-        v.setActivated(true);
-        setSelectedMenuItem(v, R.drawable.ic_action_settings);
-        drawerLayout.closeDrawer();
-        nextActivity = StaticDataActivity.class;
-        nextStaticFragment = ParamsFragment.class;
-    }
-
     public void setSelectedMenuItem(View v, int iconRes) {
         for (int i = 0; i < ((ViewGroup) v).getChildCount(); ++i) {
             View nextChild = ((ViewGroup) v).getChildAt(i);
@@ -488,18 +475,12 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             categoriesList.requestLayout();
         }
 
-        //TODO check avant si activated pour eviter de remplacer les icons des non-activated
-
         artistButton.setActivated(false);
         setUnselectedMenuItem(artistButton, R.drawable.concert_gris);
         ticketsButton.setActivated(false);
         setUnselectedMenuItem(ticketsButton, R.drawable.billeterie_gris);
         tclButton.setActivated(false);
         setUnselectedMenuItem(tclButton, R.drawable.tcl_gris);
-        facilitiesButton.setActivated(false);
-        setUnselectedMenuItem(facilitiesButton, R.drawable.drapeau_gris);
-        paramsButton.setActivated(false);
-        setUnselectedMenuItem(paramsButton, R.drawable.ic_action_settings);
         consoButton.setActivated(false);
         setUnselectedMenuItem(consoButton, R.drawable.ic_beer);
         liveUpdatesButton.setActivated(false);

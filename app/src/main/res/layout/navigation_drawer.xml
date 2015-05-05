@@ -145,17 +145,6 @@
                     android:text="@string/navigationdrawer_label_facilities"/>
             </LinearLayout>
 
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/navigation_drawer_params"
-                style="@style/NavigationDrawer.SectionItem">
-                <ImageView
-                    style="@style/NavigationDrawer.SectionItem.Icon"
-                    android:src="@drawable/ic_action_settings" />
-                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                    style="@style/NavigationDrawer.SectionItem.Label"
-                    android:text="@string/navigationdrawer_label_params"/>
-            </LinearLayout>
-
         </LinearLayout>
 
         </LinearLayout>

@@ -158,17 +158,17 @@
                     android:layout_height="@dimen/abc_text_size_display_2_material"
                     android:id="@+id/detail_url_web"
                     android:onClick="onClickWeb"
-                    android:background="@drawable/ic_action_web_site"
-                    android:backgroundTint="@color/primary_night"
-                    android:backgroundTintMode="src_in" />
+                    android:background="@drawable/ic_action_web_site" />
 
                 <Button
                     android:id="@+id/detail_url_facebook"
-                    android:layout_width="@dimen/output_list_sticky_item_height"
-                    android:layout_height="@dimen/output_list_sticky_item_height"
+                    android:layout_width="@dimen/fab_size_mini"
+                    android:layout_height="@dimen/fab_size_mini"
                     style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
                     android:onClick="onClickFacebook"
-                    android:background="@drawable/facebook_couleur" />
+                    android:background="@drawable/facebook"
+                    android:layout_marginLeft="@dimen/abc_action_bar_default_padding_material"
+                    android:layout_marginRight="@dimen/abc_action_bar_default_padding_material" />
 
                 <Button
                     android:id="@+id/detail_url_twitter"
@@ -176,7 +176,7 @@
                     android:layout_height="@dimen/output_list_sticky_item_height"
                     style="@style/TextAppearance.AppCompat.Small.Inverse"
                     android:singleLine="false"
-                    android:background="@drawable/twitter_bleu"
+                    android:background="@drawable/twitter"
                     android:onClick="onClickTwitter"/>
 
             </LinearLayout>

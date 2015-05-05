@@ -77,7 +77,6 @@
     <string name="navigationdrawer_label_tcl">TCL</string>
     <string name="navigationdrawer_label_live_updates">Notifications</string>
     <string name="navigationdrawer_label_facilities">Lieux utiles</string>
-    <string name="navigationdrawer_label_params">Paramètres</string>
     <string name="navigationdrawer_label_conso">Carte des Consommations</string>
     <string name="category_all_label">Tout</string>
     <string name="favorite_desc">favorite</string>
@@ -101,7 +100,6 @@
     <string name="tickets_fragment_appname">Billeterie</string>
     <string name="live_updates_fragment_appname">Notifications</string>
     <string name="facilities_fragment_appname">Lieux utiles</string>
-    <string name="params_fragment_appname">Paramètres</string>
     <string name="conso_fragment_appname">Carte des Consommations</string>
     <string name="conso_kro_title">Kronenbourg</string>
     <string name="text_demi">Demi</string>

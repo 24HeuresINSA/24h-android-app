@@ -7,7 +7,6 @@ import android.view.View;
 
 import com.insalyon.les24heures.fragments.FacilitiesFragment;
 import com.insalyon.les24heures.fragments.LiveUpdatesFragment;
-import com.insalyon.les24heures.fragments.ParamsFragment;
 import com.insalyon.les24heures.fragments.TclFragment;
 import com.insalyon.les24heures.fragments.TicketsFragment;
 import com.insalyon.les24heures.fragments.ConsoFragment;
@@ -91,13 +90,6 @@ public class StaticDataActivity extends BaseActivity {
         startFragment();
     }
 
-    @OnClick(R.id.navigation_drawer_params)
-    public void onClickParams(View v) {
-        super.onClickParams(v);
-        nextActivity = null;
-        startFragment();
-    }
-
     void startFragment() {
         startFragment(nextStaticFragment);
     }
@@ -133,8 +125,6 @@ public class StaticDataActivity extends BaseActivity {
                 str = (getResources().getString(R.string.live_updates_fragment_appname));
             if (nextStaticFragment.equals(FacilitiesFragment.class))
                 str = (getResources().getString(R.string.facilities_fragment_appname));
-            if (nextStaticFragment.equals(ParamsFragment.class))
-                str = (getResources().getString(R.string.params_fragment_appname));
             if (nextStaticFragment.equals(ConsoFragment.class))
                 str = (getResources().getString(R.string.conso_fragment_appname));
         }
