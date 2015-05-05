@@ -70,6 +70,21 @@ public class NightDetailFragment extends DetailFragment {
                         schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
             }
 
+            //TODO quickfix
+            Schedule schedule;
+            if(resource.getClass().isAssignableFrom(NightResource.class)){
+                if(resource.getSchedules().isEmpty())
+                    scheduleItemPatient.setText(getResources().getString(R.string.text_schedule_night_patient));
+                else {
+                    schedule = resource.getSchedules().get(0);
+                    if (schedule.getStart() != null && schedule.getEnd() != null)
+                        scheduleItemPatient.setText((schedule.getPrintableDay() + "  " +
+                                schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
+                    else
+                        scheduleItemPatient.setText(getResources().getString(R.string.text_schedule_night_patient));
+                }
+            }
+
 
 
             return true;

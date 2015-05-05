@@ -56,7 +56,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 
     private Date getHour(String debut) {
-
+        if(debut == null) return null;
         int i;
         if (debut.length() == 5)
             i = 0;
