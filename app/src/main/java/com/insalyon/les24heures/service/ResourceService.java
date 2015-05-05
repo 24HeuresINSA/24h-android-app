@@ -5,6 +5,7 @@ import com.insalyon.les24heures.DTO.NightResourceDTO;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.utils.Day;
 
 import java.util.ArrayList;
 
@@ -20,6 +21,8 @@ public interface ResourceService {
     public NightResource fromDTO(NightResourceDTO nightResourceDTO);
 
     public ArrayList<NightResource> fromDTO(ArrayList<NightResourceDTO> nightResourceDTOs);
+
+    public ArrayList<NightResource> filterByDay(ArrayList<NightResource> nightResources, Day day);
 
 
 }

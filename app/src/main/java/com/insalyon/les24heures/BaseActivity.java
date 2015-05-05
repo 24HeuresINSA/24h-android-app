@@ -110,7 +110,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     ArrayList<DayResource> dayResourceArrayList;
     ArrayList<NightResource> nightResourceArrayList;
     String dataVersion;
-    String applicationVersion;
 
     DrawerArrowDrawable drawerArrowDrawable;
     DrawerLayout.SimpleDrawerListener drawerListener;
@@ -148,11 +147,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             dayResourceArrayList = new ArrayList<>();
             nightResourceArrayList = new ArrayList<>();
             categories = new ArrayList<>();
-        }
-
-        if (dataVersion == null || applicationVersion == null) {
-            dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
-            applicationVersion = getResources().getString(R.string.INSTALL_APPLICATION_VERSION);
         }
 
 
@@ -199,7 +193,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             String dayResourceArrayListStr = settings.getString("dayResourceList", "");
             String nightResourceArrayListStr = settings.getString("nightResourcesList", "");
             dataVersion = settings.getString("dataVersion", "");
-            applicationVersion = settings.getString("applicationVersion", "");
 
             categories = gson.fromJson(categoriesListStr, new TypeToken<List<Category>>() {
             }.getType());
@@ -208,9 +201,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             nightResourceArrayList = gson.fromJson(nightResourceArrayListStr, new TypeToken<List<NightResource>>() {
             }.getType());
 
-
-            //TODO debug purpose only
-            dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
 
             //check if the app can download data
             settings = getSharedPreferences(getResources().getString(R.string.SHARED_PREF_APP_VERSION), 0);
@@ -228,16 +218,19 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             dayResourceArrayList = new ArrayList<>();
             nightResourceArrayList = new ArrayList<>();
             categories = new ArrayList<>();
+        } else {
+            ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(dayResourceArrayList, nightResourceArrayList, dataVersion);
+            eventBus.post(resourcesUpdatedEvent);
+            CategoriesUpdatedEvent categoriesUpdatedEvent = new CategoriesUpdatedEvent(categories, dataVersion);
+            eventBus.post(categoriesUpdatedEvent);
         }
 
-        if (dataVersion == null || applicationVersion == null) {
-            dataVersion = getResources().getString(R.string.INSTALL_DATA_VERSION);
-            applicationVersion = getResources().getString(R.string.INSTALL_APPLICATION_VERSION);
-        }
 
         if (selectedCategories == null) {
             selectedCategories = new ArrayList<>();
         }
+
+
     }
 
 
@@ -498,7 +491,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         EventBus.getDefault().unregister(this);
 
         //resource storage
-        writeResourceInSharedPref();
+       writeResourceInSharedPref();
 
 
     }

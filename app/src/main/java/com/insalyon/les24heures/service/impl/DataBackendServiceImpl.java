@@ -18,6 +18,7 @@ import com.insalyon.les24heures.service.DataBackendService;
 import com.insalyon.les24heures.service.RetrofitService;
 import com.insalyon.les24heures.utils.AlphabeticalSortComparator;
 import com.insalyon.les24heures.utils.Day;
+import com.insalyon.les24heures.utils.PositionSortComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -89,7 +90,7 @@ public class DataBackendServiceImpl implements DataBackendService {
                 ArrayList<NightResource> newNightResources = resourceService.fromDTO(nightResourceDTOs);
 
                 Collections.sort(newDayResources,new AlphabeticalSortComparator());
-                Collections.sort(newNightResources,new AlphabeticalSortComparator());
+                Collections.sort(newNightResources,new PositionSortComparator());
 
                 if(dayResources != null) restoreFavorites(dayResources, newDayResources);
                 if(nightResources != null)restoreFavorites(nightResources,newNightResources);

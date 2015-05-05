@@ -65,6 +65,9 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     DayResource selectedDayResource;
     CameraPosition initialCameraPosition;
 
+    SnackBar.Builder snackBar;
+    private boolean snackBarBoolean;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -78,8 +81,8 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
 
         displayableResourcesLists = new ArrayList<>();
         displayableResourcesLists.addAll(resourcesList);
-        categoryFilter = new ResourceMapsCategoryFilter(resourcesList, displayableResourcesLists, this,resourceMarkerMap);
-        searchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this,resourceMarkerMap);
+        categoryFilter = new ResourceMapsCategoryFilter(resourcesList, displayableResourcesLists, this, resourceMarkerMap);
+        searchFilter = new ResourceMapsSearchFilter(resourcesList, displayableResourcesLists, this, resourceMarkerMap);
 
 
         if (savedInstanceState != null) {
@@ -104,6 +107,10 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
                     new LatLng(Double.valueOf(lat), Double.valueOf(lng)), Float.valueOf(zoom), Float.valueOf(tilt), Float.valueOf(bearing));
         }
 
+        String content = getResources().getString(R.string.unexpected_move_camera_error, Toast.LENGTH_SHORT);
+        snackBar = new SnackBar.Builder(this.getActivity())
+                .withMessage(content);
+
     }
 
     @Nullable
@@ -121,7 +128,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         mapView.getMapAsync(this);
 
         googleMap = mapView.getMap();
-        if(googleMap != null) {
+        if (googleMap != null) {
             googleMap.getUiSettings().setZoomControlsEnabled(true);
             googleMap.setOnMarkerClickListener(this);
             addMarkers();
@@ -136,7 +143,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     public void onResume() {
         mapView.onResume();
         super.onResume();
-        if(googleMap != null)
+        if (googleMap != null)
             googleMap.setMyLocationEnabled(true);
 
     }
@@ -153,10 +160,10 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         map.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
         //if (initialCameraPosition != null) //{
-            googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(initialCameraPosition));
-       // } else
-            //to prevent user to throw up, zoom on Lyon without animateCamera
-           // googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
+        googleMap.moveCamera(CameraUpdateFactory.newCameraPosition(initialCameraPosition));
+        // } else
+        //to prevent user to throw up, zoom on Lyon without animateCamera
+        // googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
 
         //display data if already there when the fragment is created
         map.setOnCameraChangeListener(new GoogleMap.OnCameraChangeListener() {
@@ -188,36 +195,37 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     }
 
     public void onEvent(CategoriesSelectedEvent event) {
-      super.onEvent(event);
+        super.onEvent(event);
     }
 
     public void onEvent(ResourcesUpdatedEvent event) {
         super.onEvent(event);
-        if(googleMap != null) addMarkers();
+        if (googleMap != null) addMarkers();
     }
 
     public void onEvent(SearchEvent event) {
-      super.onEvent(event);
+        super.onEvent(event);
     }
 
 
-    public void onEvent(MapsSetIsVisible event){
+    public void onEvent(MapsSetIsVisible event) {
         this.isVisible = event.isVisible();
-        if(this.isVisible){
+        if (this.isVisible) {
             this.catchUpCategorySelectedEvent();
         }
     }
 
 
     public void onEvent(ResourceSelectedEvent selectedEvent) {
-        if(googleMap == null) return;
+        if (googleMap == null) return;
         googleMap.animateCamera(CameraUpdateFactory.newLatLngZoom(selectedEvent.getDayResource().getLoc(), 17));
         onMarkerClick(resourceMarkerMap.get(selectedEvent.getDayResource()));
     }
 
     public void onEvent(ManageDetailSlidingUpDrawer event) {
         if (event.getState().equals(SlidingUpPannelState.HIDE)) {
-            if(selectedDayResource != null)resourceMarkerMap.get(selectedDayResource).setIcon(BitmapDescriptorFactory.defaultMarker());
+            if (selectedDayResource != null)
+                resourceMarkerMap.get(selectedDayResource).setIcon(BitmapDescriptorFactory.defaultMarker());
         }
     }
 
@@ -248,7 +256,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     @Override
     public void onPause() {
         super.onPause();
-        if(googleMap == null) return;
+        if (googleMap == null) return;
 
         googleMap.setMyLocationEnabled(false);
 
@@ -268,7 +276,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        if(googleMap != null)
+        if (googleMap != null)
             outState.putParcelable("cameraPosition", googleMap.getCameraPosition());
     }
 
@@ -277,7 +285,6 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         super.onDestroy();
         mapView.onDestroy();
     }
-
 
 
     /**
@@ -308,24 +315,24 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     }
 
     private int getMarkerDrawable(DayResource dayResource) {
-        int result =  getResources().getIdentifier("marker_"+dayResource.getCategory().getName(), "drawable", getActivity().getPackageName());
-        if(result == 0) //TODO faire mieux ou pas du tout
-            result = getResources().getIdentifier("ic_action_select_all","drawable",getActivity().getPackageName());
+        int result = getResources().getIdentifier("marker_" + dayResource.getCategory().getName(), "drawable", getActivity().getPackageName());
+        if (result == 0) //TODO faire mieux ou pas du tout
+            result = getResources().getIdentifier("ic_action_select_all", "drawable", getActivity().getPackageName());
         return result;
     }
 
     private Float getCategoryHueColor(DayResource dayResource, Float color) {
-        switch( dayResource.getCategory().getName()){
-            case "divertissement" :
+        switch (dayResource.getCategory().getName()) {
+            case "divertissement":
                 color = BitmapDescriptorFactory.HUE_ORANGE;
                 break;
             case "culturer":
                 color = BitmapDescriptorFactory.HUE_BLUE;
                 break;
-            case "sportiver" :
+            case "sportiver":
                 color = BitmapDescriptorFactory.HUE_YELLOW;
                 break;
-            case "prevention" :
+            case "prevention":
                 color = BitmapDescriptorFactory.HUE_GREEN;
                 break;
         }
@@ -342,12 +349,13 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
     }
 
     public void moveCamera(Filter filter) {
-        if(googleMap == null) return;
+        if (googleMap == null) return;
         try {
             // Move camera
             googleMap.animateCamera(CameraUpdateFactory.newLatLngBounds(getBuilder().build(), 70));
 
             eventBus.post(new FilterUpdateEnded(filter));
+            snackBarBoolean = true;
         } catch (IllegalStateException e) {
             e.printStackTrace();
             //no resources were added to the builder
@@ -355,10 +363,10 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
             //lg 4.852847680449486
             //la 45.74968239082803
             googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(45.74968239082803, 4.852847680449486), 12));
-            String content = getResources().getString(R.string.unexpected_move_camera_error, Toast.LENGTH_SHORT);
-            SnackBar.Builder snackBar = new SnackBar.Builder(this.getActivity())
-                    .withMessage(content);
-            snackBar.show();
+
+            if (snackBarBoolean)
+                snackBar.show();
+            snackBarBoolean = false;
         }
     }
 
@@ -385,8 +393,8 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
 
     @Override
     protected Boolean setCategoryFilter() {
-        if(googleMap == null) return false;
+        if (googleMap == null) return false;
 
-            return super.setCategoryFilter();
+        return super.setCategoryFilter();
     }
 }

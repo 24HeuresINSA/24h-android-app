@@ -2,6 +2,7 @@ package com.insalyon.les24heures;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,12 +12,17 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.ImageView;
 import android.widget.SearchView;
+import android.widget.ShareActionProvider;
 
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.eventbus.SearchEvent;
 import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.Category;
+import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.socialSharing.OnShareTargetSelectedListener;
+import com.insalyon.les24heures.socialSharing.ShareIntentFactory;
 import com.insalyon.les24heures.utils.FilterAction;
 import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
 
@@ -67,6 +73,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
     RestAdapter restAdapterLocal;
     //    Class nextActivity;
     private BaseDynamicDataActivity self = this;
+    private ShareActionProvider mShareActionProvider;
 //    private int positionCategorySelected;
 
     /**
@@ -118,6 +125,9 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         final SearchView searchView =
                 (SearchView) menu.findItem(R.id.menu_search).getActionView();
         final MenuItem favoritesItem = menu.findItem(R.id.menu_favorites);
+
+        MenuItem item = menu.findItem(R.id.menu_item_share);
+
 
         searchView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -228,18 +238,31 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
                     detailSlidingUpPanelLayoutLayout.showPanel();
                 } else {
                     detailSlidingUpPanelLayoutLayout.showDetailPanel(m.getDayResource());
+                    setupResourceSharingIntent(m.getDayResource());
                 }
                 break;
             case ANCHORED:
                 if (m.getDayResource() != null) {
+                    setupResourceSharingIntent(m.getDayResource());
                     detailFragment.notifyDataChanged(m.getDayResource());
                 } else if (m.getNightResource() != null) {
                     detailFragment.notifyDataChanged(m.getNightResource());
+                    setupResourceSharingIntent(m.getNightResource());
                 }
                 detailSlidingUpPanelLayoutLayout.anchorPanel();
                 break;
         }
     }
+
+
+    private void setupResourceSharingIntent(DayResource resource) {
+        setShareIntent(ShareIntentFactory.getResourceSharingIntent(this, resource));
+    }
+
+    private void setupResourceSharingIntent(NightResource resource) {
+        setShareIntent(ShareIntentFactory.getResourceSharingIntent(this, resource));
+    }
+
 
     @Override
     public void onBackPressed() {
@@ -247,7 +270,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
             drawerLayout.closeDrawer();
         } else if (detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded()) {
             if (DayActivity.class.isAssignableFrom(this.getClass()) &&
-                    ((DayActivity) this).getmViewPager().getCurrentItem() == 1)//if list is active
+                    ((DayActivity) this).getmViewPager().getCurrentItem() == 1 || NightActivity.class.isAssignableFrom(this.getClass()))//if list is active or night is
                 detailSlidingUpPanelLayoutLayout.hidePanel(); //TODO le rendu est moche
             else
                 detailSlidingUpPanelLayoutLayout.collapsePanel();
@@ -263,14 +286,20 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
      * invalidateOptionsMenu refire search from searchWidget, painful !
      */
     public void customOnOptionsMenu() {
-        boolean drawerOpen = drawerLayout.isDrawerVisible();//drawerLayout.isDrawerVisible(drawerView);
+        if(drawerLayout == null) return; //on Lollipop, onPrepareOptionsMenu is called before onPostCreate which find the view (via ButterKnife). All view are null in thise case
+        boolean drawerOpen = drawerLayout.isDrawerVisible();
         Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
-        // boolean listVisible = is ???
-        // boolean displaySortItem = displayGlobalItem && listVisible
+
+
         mMenu.findItem(R.id.menu_search).setVisible(displayGlobalItem);
         mMenu.findItem(R.id.menu_favorites).setVisible(displayGlobalItem);
-        //   mMenu.findItem(R.id.menu_facebook).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
-        // mMenu.findItem(R.id.menu_twitter).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+        mMenu.findItem(R.id.menu_item_share).setVisible(detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded());
+
+
+        MenuItem item = mMenu.findItem(R.id.menu_item_share);
+        mShareActionProvider = (ShareActionProvider) item.getActionProvider();
+        mShareActionProvider.setOnShareTargetSelectedListener(new OnShareTargetSelectedListener());
+
     }
 
 
@@ -298,7 +327,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
             //detail is visible
             if (detailSlidingUpPanelLayoutLayout.isPanelAnchored() || detailSlidingUpPanelLayoutLayout.isPanelExpanded()) {
                 if (DayActivity.class.isAssignableFrom(this.getClass()) &&
-                        ((DayActivity) this).getmViewPager().getCurrentItem() == 1)//if list is active
+                        ((DayActivity) this).getmViewPager().getCurrentItem() == 1 || NightActivity.class.isAssignableFrom(this.getClass()))//if list is active or night is
                     detailSlidingUpPanelLayoutLayout.hidePanel(); //TODO le rendu est moche
                 else
                     detailSlidingUpPanelLayoutLayout.collapsePanel();
@@ -469,6 +498,13 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         }
 
 
+    }
+
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+        invalidateOptionsMenu();
     }
 
 

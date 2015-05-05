@@ -32,7 +32,7 @@
                         android:baselineAlignBottom="false"
                         android:scaleType="centerCrop" />
 
-                    <LinearLayout
+                    <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:descendantFocusability="blocksDescendants"
@@ -43,6 +43,7 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="@string/detail_title_text"
+
                             android:ellipsize="marquee"
                             android:marqueeRepeatLimit="marquee_forever"
                             android:scrollHorizontally="true"
@@ -50,32 +51,31 @@
 
                             android:textAppearance="@style/card_title"
                             android:padding="@dimen/card_title_padding"
-                            android:textIsSelectable="true"
-                            android:layout_gravity="left"
+                            android:clickable="false"
                             android:focusable="true"
-                            android:focusableInTouchMode="true" />
+                            android:focusableInTouchMode="true"
+
+                            android:layout_gravity="left"
+                            android:layout_alignParentLeft="true"
+                            android:layout_alignParentTop="true"
+                            android:layout_toLeftOf="@+id/artist_grid_item_favorite"
+                            android:layout_toStartOf="@+id/artist_grid_item_favorite" />
                             />
 
-                        <LinearLayout
-                            android:layout_width="match_parent"
-                            android:layout_height="fill_parent"
-                            android:descendantFocusability="blocksDescendants"
-                            android:orientation="horizontal"
-                            android:gravity="right">
+                        <ImageButton
+                            android:id="@+id/artist_grid_item_favorite"
+                            android:layout_width="@dimen/favorite_on_card"
+                            android:layout_height="@dimen/favorite_on_card"
+                            android:background="@null"
+                            android:scaleType="centerInside"
+                            android:src="@drawable/ic_action_favorite_uncheck"
+                            android:tint="@color/white"
+                            android:layout_marginRight="10dp"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true" />
 
-                            <ImageButton
-                                android:id="@+id/artist_grid_item_favorite"
-                                android:layout_width="@dimen/favorite_on_card"
-                                android:layout_height="@dimen/favorite_on_card"
-                                android:background="@null"
-                                android:scaleType="centerInside"
-                                android:src="@drawable/ic_action_favorite_uncheck"
-                                android:layout_margin="@dimen/icon_margin"
-                                android:tint="@color/white" />
-
-                        </LinearLayout>
-
-                    </LinearLayout>
+                    </RelativeLayout>
 
                 </LinearLayout>
 

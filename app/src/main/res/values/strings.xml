@@ -7,6 +7,11 @@
     <string name="app_name">24h de l\'INSA</string>
     <string name="action_settings">Settings</string>
 
+
+    <!--Sharing-->
+    <string name="sharing_append_message">aux 24 Heures de l\'INSA ! #24hINSA </string>
+
+
     <!--Navigation Drawer-->
 
 
@@ -67,8 +72,6 @@
 
     <!--Artists-->
     <string name="artist_fragment_appname">Artistes</string>
-    <string name="INSTALL_DATA_VERSION">0.0</string>
-    <string name="INSTALL_APPLICATION_VERSION">0.0</string>
     <string name="navigationdrawer_sectionname_day">En journée</string>
     <string name="navigationdrawer_sectionname_night">En soirée</string>
     <string name="navigationdrawer_sectionname_everytime">Tout le temps</string>
@@ -136,5 +139,7 @@
     <string name="update_app_label">Mettre à jour</string>
     <string name="dealy_update_app_label">Plus tard</string>
     <string name="text_schedule_night_patient">Les horaires détaillés seront communiqués à 19h le soir du concert.\nMerci de votre compréhension.</string>
+    <string name="dayTabThree">Dimanche</string>
+    <string name="dayNoTab">NoDay</string>
 
 </resources>

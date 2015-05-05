@@ -5,14 +5,11 @@ import android.app.FragmentManager;
 import android.os.Bundle;
 import android.support.v13.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.text.Html;
-import android.widget.TextView;
 
 import com.insalyon.les24heures.fragments.ArtistFragment;
+import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.Day;
 import com.insalyon.les24heures.view.SlidingTabLayout;
-
-import butterknife.InjectView;
 
 import butterknife.InjectView;
 
@@ -75,10 +72,10 @@ public class NightActivity extends BaseDynamicDataActivity {
     private ArtistFragment getArtistFragment(Day day) {
         Bundle bundleArgs = new Bundle();
         bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
-        bundleArgs.putParcelableArrayList("resourcesList", nightResourceArrayList);
+        bundleArgs.putParcelableArrayList("resourcesList", ResourceServiceImpl.getInstance().filterByDay(nightResourceArrayList, day));
         searchQuery = (searchQuery == null) ? null : (searchQuery.equals("")) ? null : searchQuery;
         bundleArgs.putString("searchQuery", searchQuery);
-        bundleArgs.putSerializable("day",day);
+        bundleArgs.putSerializable("day", day);
 
         ArtistFragment fragment = new ArtistFragment();
         fragment.setArguments(bundleArgs);
@@ -103,19 +100,43 @@ public class NightActivity extends BaseDynamicDataActivity {
 
         @Override
         public Fragment getItem(int position) {
+            Day day;
+            switch (position) {
+                case 0:
+                    day = Day.FRIDAY;
+                    break;
+                case 1:
+                    day = Day.SATURDAY;
+                    break;
+                case 2:
+                    day = Day.SUNDAY;
+                    break;
+                default:
+                    day = null;
+                    break;
 
-            return getArtistFragment((position == 0)? Day.FRIDAY: Day.SATURDAY );
+            }
+
+            return getArtistFragment(day);
         }
 
         @Override
         public int getCount() {
-            return 2;
+            return 3;
         }
 
         @Override
         public CharSequence getPageTitle(int position) {
-            if (position == 0) return getResources().getString(R.string.dayTabOne);
-            return getResources().getString(R.string.dayTabTwo);
+            switch (position) {
+                case 0:
+                    return getResources().getString(R.string.dayTabOne);
+                case 1:
+                    return getResources().getString(R.string.dayTabTwo);
+                case 2:
+                    return getResources().getString(R.string.dayTabThree);
+                default:
+                    return getResources().getString(R.string.dayNoTab);
+            }
         }
     }
 
