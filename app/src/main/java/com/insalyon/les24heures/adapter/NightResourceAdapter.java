@@ -13,6 +13,8 @@ import android.widget.TextView;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
+import com.insalyon.les24heures.utils.Day;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
@@ -30,14 +32,16 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
     private final EventBus eventBus;
     private final int viewId;
     private Picasso picasso;
+    private Day day;
 
 
     LayoutInflater vi;
 
     public NightResourceAdapter(Context context, int textViewResourceId,
-                                ArrayList<NightResource> dayResources) {
+                                ArrayList<NightResource> dayResources, Day day) {
         super(context, textViewResourceId, dayResources);
         this.viewId = textViewResourceId;
+        this.day = day;
 
         this.vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
@@ -108,7 +112,7 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
 
     public void onEvent(ResourcesUpdatedEvent event) {
         originalList.clear();
-        originalList.addAll(event.getNightResourceList());
+        originalList.addAll(ResourceServiceImpl.getInstance().filterByDay((ArrayList<NightResource>) event.getNightResourceList(),day));
     }
 
     private class ViewHolder {

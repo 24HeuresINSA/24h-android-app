@@ -61,7 +61,7 @@ public class ArtistFragment extends ContentFrameFragment<NightResource> {
 
         //create an ArrayAdaptar from the String Array
         nightResourceAdapter = new NightResourceAdapter(this.getActivity().getApplicationContext(),
-                R.layout.artist_grid_item, new ArrayList<>(resourcesList)); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
+                R.layout.artist_grid_item, new ArrayList<>(resourcesList),day); //no need of a pointer, ResourceAdapter takes care of its data via event and filter
 
         //get filters than are managed by ContentFrameFragment
         searchFilter = nightResourceAdapter.getFilter();
