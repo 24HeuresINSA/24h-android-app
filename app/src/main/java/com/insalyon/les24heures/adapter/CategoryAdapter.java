@@ -80,6 +80,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
         }
         holder.title.setText(category.getDisplayName());
 
+//pour l'instant a l'init rien ne sera selectionne
 
         if(!init && position == selectedCategoryInit){
             ((ListView)parent).setItemChecked(position,position == selectedCategoryInit);

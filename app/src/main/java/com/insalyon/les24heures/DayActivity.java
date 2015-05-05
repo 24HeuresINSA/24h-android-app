@@ -41,7 +41,9 @@ public class DayActivity extends BaseDynamicDataActivity {
     ViewPager mViewPager;
     Boolean animateSwitching = false;
     private Integer position;
+    private Integer positionInit;
     private OurViewPagerAdapter mViewPagerAdapter;
+    public Boolean initState = true;
 
     /**
      * Activity is being created       *
@@ -61,6 +63,7 @@ public class DayActivity extends BaseDynamicDataActivity {
                 selectedCategories = intent.getParcelableArrayListExtra("selectedCategories");
 
             position = intent.getIntExtra("categoryPosition", (categories.size() - 2 >= 0)? categories.size() - 2: 0);
+            positionInit = 4; // not dynamic, no other in this case
         }
         if(savedInstanceState != null){
             position = savedInstanceState.getInt("categoryPosition",1);
@@ -75,8 +78,14 @@ public class DayActivity extends BaseDynamicDataActivity {
         super.onPostCreate(savedInstanceState);
         //override Base's DrawerCategoriesClickListener
         categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
-        ((CategoryAdapter) categoriesList.getAdapter()).setSelectedCategoryInit(position);
-        positionCategorySelected = position;
+        ((CategoryAdapter) categoriesList.getAdapter()).setSelectedCategoryInit(positionInit);
+        if(initState) {
+            positionCategorySelected = positionInit;
+            initState = false;
+        }
+        else
+            positionCategorySelected = position;
+
         ((CategoryAdapter) categoriesList.getAdapter()).notifyDataSetChanged();
 
 
