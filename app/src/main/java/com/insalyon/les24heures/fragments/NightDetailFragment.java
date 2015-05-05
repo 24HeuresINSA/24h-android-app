@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.insalyon.les24heures.BaseDynamicDataActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Schedule;
@@ -91,6 +92,7 @@ public class NightDetailFragment extends DetailFragment {
         }
         return false;
     }
+
 
     @OnClick(R.id.detail_url_facebook)
     public void onClickFacebook(View v){

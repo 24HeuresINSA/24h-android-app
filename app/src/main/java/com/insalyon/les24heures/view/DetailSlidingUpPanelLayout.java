@@ -154,6 +154,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
             setFavoriteMovesParams();
 
             collapseUIState();
+            activity.customOnOptionsMenu();
 
             eventBus.post(new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE, (NightResource) null));
         }

@@ -67,6 +67,7 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
             searchQuery = getArguments().getString("searchQuery"); //we want null if there is no searchQuery
         }
 
+        if (!resourcesList.isEmpty()) setCategoryFilter();
 
 
     }
@@ -89,15 +90,15 @@ public abstract class ContentFrameFragment<T extends Resource> extends Fragment 
         super.onResume();
         eventBus.register(this);
         //TODO quick fix
-        if(resourcesList.size() == 0){
+        if (resourcesList.size() == 0) {
             displayProgress();
         }
 
-        setCategoryFilter();
+//        setCategoryFilter();
     }
 
     //TODO quick fix
-    public void onEvent(RetrofitErrorEvent event){
+    public void onEvent(RetrofitErrorEvent event) {
         hideProgress();
     }
 

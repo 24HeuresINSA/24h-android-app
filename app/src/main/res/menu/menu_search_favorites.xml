@@ -4,7 +4,7 @@
         android:id="@+id/menu_search"
         android:actionViewClass="android.widget.SearchView"
         android:showAsAction="ifRoom"
-        android:title="Search"/>
+        android:title="Search" />
 
 
     <item
@@ -12,5 +12,13 @@
         android:icon="@drawable/ic_action_favorite_uncheck"
         android:showAsAction="ifRoom"
         android:title="fav" />
+
+
+    <item
+        android:id="@+id/menu_item_share"
+        android:showAsAction="ifRoom"
+        android:title="Share"
+        android:actionProviderClass="android.widget.ShareActionProvider" />
+
 
 </menu>

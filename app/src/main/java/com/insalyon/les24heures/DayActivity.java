@@ -173,6 +173,8 @@ public class DayActivity extends BaseDynamicDataActivity {
         }
     }
 
+
+
     private boolean isMapsSelected() {
         return mViewPager.getCurrentItem() == 0;
     }
@@ -261,22 +263,19 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         @Override
         public Fragment getItem(int position) {
+            Bundle bundleArgs = new Bundle();
+            bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
+            bundleArgs.putParcelableArrayList("resourcesList", dayResourceArrayList);
+
             if (position == 0) {
                 DayMapsFragment fragment = new DayMapsFragment();
-
-                Bundle bundleArgs = new Bundle();
-                bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
                 fragment.setArguments(bundleArgs);
-
                 fragment.setIsVisible(true);
                 return fragment;
             }
+
             DayListFragment fragment = new DayListFragment();
-
-            Bundle bundleArgs = new Bundle();
-            bundleArgs.putParcelableArrayList("categoriesSelected", selectedCategories);
             fragment.setArguments(bundleArgs);
-
             fragment.setIsVisible(false);
             return fragment;
         }
