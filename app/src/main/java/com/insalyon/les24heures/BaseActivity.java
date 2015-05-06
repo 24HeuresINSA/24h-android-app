@@ -432,12 +432,10 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             if (nextChild instanceof ImageView) {
                 ImageView drawerSelectedIcon = (ImageView) nextChild;
                 drawerSelectedIcon.setImageResource(iconRes);
-                Log.d(v.toString(), "icon activated");
             } else if (nextChild instanceof TextView) {
                 TextView drawerSelectedText = (TextView) nextChild;
                 drawerSelectedText.setTextColor(getResources().getColor(R.color.primary_day));
                 drawerSelectedText.setTypeface(null, Typeface.BOLD);
-                Log.d(v.toString(), "text activated");
             }
         }
     }
@@ -448,12 +446,10 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             if (nextChild instanceof ImageView) {
                 ImageView drawerSelectedIcon = (ImageView) nextChild;
                 drawerSelectedIcon.setImageResource(iconRes);
-                Log.d(v.toString(), "icon desactivated");
             } else if (nextChild instanceof TextView) {
                 TextView drawerSelectedText = (TextView) nextChild;
                 drawerSelectedText.setTextColor(getResources().getColor(R.color.drawer_label_default));
                 drawerSelectedText.setTypeface(null, Typeface.NORMAL);
-                Log.d(v.toString(), "text desactivated");
             }
         }
     }
@@ -478,6 +474,8 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         setUnselectedMenuItem(consoButton, R.drawable.ic_beer);
         liveUpdatesButton.setActivated(false);
         setUnselectedMenuItem(liveUpdatesButton, R.drawable.ic_now);
+        facilitiesButton.setActivated(false);
+        setUnselectedMenuItem(facilitiesButton, R.drawable.drapeau_gris);
     }
 
     /**
