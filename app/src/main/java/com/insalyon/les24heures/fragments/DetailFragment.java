@@ -40,7 +40,7 @@ import de.greenrobot.event.EventBus;
  */
 public abstract class DetailFragment extends Fragment {
     private static final String TAG = DayMapsFragment.class.getCanonicalName();
-    private static ScheduleServiceImpl scheduleService = ScheduleServiceImpl.getInstance();
+    protected static ScheduleServiceImpl scheduleService = ScheduleServiceImpl.getInstance();
     View view;
     @InjectView(R.id.detail_scrollView)
     DetailScrollView detailScrollView;
@@ -193,29 +193,6 @@ public abstract class DetailFragment extends Fragment {
         detailSlidingTitle.setText(resource.getTitle());
         detailSlidingTitle.setSelected(true);
         detailSlidingDescription.setText(resource.getDescription());
-
-        //TODO quickfix
-        Schedule schedule;
-        if (resource.getClass().isAssignableFrom(NightResource.class)) {
-            if (resource.getSchedules() == null || resource.getSchedules().isEmpty())
-                nextSchedule.setText(getResources().getString(R.string.text_schedule_night_patient));
-            else {
-                schedule = resource.getSchedules().get(0);
-                if (schedule.getStart() != null && schedule.getEnd() != null)
-                    nextSchedule.setText((schedule.getPrintableDay() + "  " +
-                            schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
-                else
-                    nextSchedule.setText(getResources().getString(R.string.text_schedule_night_patient));
-            }
-        } else {
-            schedule = scheduleService.getNextSchedule(resource);
-
-            if (schedule != null)
-                nextSchedule.setText((schedule.getPrintableDay() + "  " +
-                        schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
-            else
-                nextSchedule.setText(getResources().getString(R.string.no_more_schedule));
-        }
 
 
         if (resource.isFavorites()) {

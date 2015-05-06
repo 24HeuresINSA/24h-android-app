@@ -16,6 +16,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.Schedule;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -44,23 +45,21 @@ public class DayDetailFragment extends DetailFragment implements OnMapReadyCallb
                 .findFragmentById(R.id.detail_mini_maps);
         mapFragment.getMapAsync(this);
         googleMap = mapFragment.getMap();
-        if(googleMap != null) {
+        if (googleMap != null) {
             googleMap.getUiSettings().setZoomControlsEnabled(true);
             googleMap.getUiSettings().setAllGesturesEnabled(false);
         }
 
 
-        super.onCreateView(inflater,container,savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
 
         return view;
     }
 
 
-
-
-        /**
-         * Fragment is alive
-         */
+    /**
+     * Fragment is alive
+     */
     public void onMapReady(final GoogleMap map) {
         if (resource != null && resource.getClass() == DayResource.class) {
             addMarkerAndMoveCam();
@@ -82,6 +81,13 @@ public class DayDetailFragment extends DetailFragment implements OnMapReadyCallb
 
             slidingHeader.setBackground(this.getResources().getDrawable(R.color.primary_day));
 
+            Schedule schedule;
+            schedule = scheduleService.getNextSchedule(resource);
+            if (schedule != null)
+                nextSchedule.setText((schedule.getPrintableDay() + "  " +
+                        schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
+            else
+                nextSchedule.setText(getResources().getString(R.string.no_more_schedule));
 
             return true;
         }
