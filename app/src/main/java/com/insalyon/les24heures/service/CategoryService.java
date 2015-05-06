@@ -19,4 +19,6 @@ public interface CategoryService {
     public Category getFavoriteCategory();
     public Category getAllCategory();
     public Category getRemainingCategory();
+
+    Category getFacilitiesCategory();
 }

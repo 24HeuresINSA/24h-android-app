@@ -25,4 +25,5 @@ public interface ResourceService {
     public ArrayList<NightResource> filterByDay(ArrayList<NightResource> nightResources, Day day);
 
 
+    ArrayList<DayResource> getFacilities(ArrayList<DayResource> newDayResources);
 }
