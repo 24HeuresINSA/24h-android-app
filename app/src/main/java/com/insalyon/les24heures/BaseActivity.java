@@ -251,6 +251,10 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
         drawerListener = getDrawerListener();
         drawerLayout.setDrawerListener(drawerListener);
+
+        if(drawerLayout.isDrawerVisible()){
+            drawerLayout.closeDrawer();
+        }
     }
 
     public DrawerListener getDrawerListener() {
