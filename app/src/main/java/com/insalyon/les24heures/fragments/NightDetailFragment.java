@@ -60,6 +60,7 @@ public class NightDetailFragment extends DetailFragment {
             urlWeb = (nightResource.getSiteUrl());
             urlTwitter = (nightResource.getTwitterUrl());
             slidingHeader.setBackground(this.getResources().getDrawable(R.color.primary_night));
+
             if (nightResource.getSchedules() != null
                     && !nightResource.getSchedules().isEmpty()
                     && nightResource.getSchedules().get(0).getStart() != null
@@ -67,20 +68,9 @@ public class NightDetailFragment extends DetailFragment {
                 Schedule schedule = nightResource.getSchedules().get(0);
                 scheduleItemPatient.setText((schedule.getPrintableDay() + "  " +
                         schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
-            }
-
-            Schedule schedule;
-            if (resource.getSchedules().isEmpty()) //TODO le backend ne devrait jamais envoyer un schedule vide
+            }else {
                 scheduleItemPatient.setText(getResources().getString(R.string.text_schedule_night_patient));
-            else {
-                schedule = resource.getSchedules().get(0);
-                if (schedule.getStart() != null && schedule.getEnd() != null)
-                    scheduleItemPatient.setText((schedule.getPrintableDay() + "  " +
-                            schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
-                else
-                    scheduleItemPatient.setText(getResources().getString(R.string.text_schedule_night_patient));
             }
-
 
             return true;
         }
