@@ -183,11 +183,11 @@ public abstract class DetailFragment extends Fragment {
         return false;
     }
 
-    public void notifyDataChanged(final Resource res) {
+    public Boolean notifyDataChanged(final Resource res) {
         if (res != null)
             resource = res;
         if (resource == null)
-            return;
+            return false;
         heavyDataUpdated = false;
 
         detailSlidingTitle.setText(resource.getTitle());
@@ -220,6 +220,7 @@ public abstract class DetailFragment extends Fragment {
             }
         }
 
+        return true;
 
     }
 

@@ -9,6 +9,7 @@ import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceService;
 import com.insalyon.les24heures.utils.Day;
+import com.insalyon.les24heures.utils.Stage;
 
 import java.util.ArrayList;
 
@@ -70,10 +71,18 @@ public class ResourceServiceImpl implements ResourceService {
                 nightResourceDTO.getFacebook_url(),
                 nightResourceDTO.getTwitter_url(),
                 nightResourceDTO.getSite_url(),
-                nightResourceDTO.getStage(),
+                getStage(nightResourceDTO.getStage()),
                 nightResourceDTO.get_id(),
                 (nightResourceDTO.getPosition() == null) ? -1 :
                         nightResourceDTO.getPosition());
+    }
+
+    private Stage getStage(String stage){
+        if(stage.equals("BIG"))
+            return Stage.BIG;
+        if(stage.equals("SMALL"))
+            return Stage.SMALL;
+        return Stage.NOSTAGE;
     }
 
 
