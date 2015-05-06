@@ -490,10 +490,6 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         super.onPause();
         EventBus.getDefault().unregister(this);
 
-        //resource storage
-       writeResourceInSharedPref();
-
-
     }
 
 

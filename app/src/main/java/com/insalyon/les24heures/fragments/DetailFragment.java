@@ -33,7 +33,6 @@ import java.util.ArrayList;
 
 import butterknife.InjectView;
 import butterknife.OnClick;
-import butterknife.Optional;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -45,7 +44,6 @@ public abstract class DetailFragment extends Fragment {
     View view;
     @InjectView(R.id.detail_scrollView)
     DetailScrollView detailScrollView;
-    @Optional
     @InjectView(R.id.detail_next_schedule)
     TextView nextSchedule;
     @InjectView(R.id.detail_favorites)
