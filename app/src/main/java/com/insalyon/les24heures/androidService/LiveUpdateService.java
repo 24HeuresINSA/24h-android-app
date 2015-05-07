@@ -84,7 +84,7 @@ public class LiveUpdateService extends IntentService {
 
 
     public List<LiveUpdate> fromDTO(List<LiveUpdateDTO> liveUpdateDTOs) {
-        ArrayList<LiveUpdate> liveUpdates = new ArrayList<LiveUpdate>();
+        ArrayList<LiveUpdate> liveUpdates = new ArrayList<>();
         for (LiveUpdateDTO liveUpdateDTO : liveUpdateDTOs) {
             liveUpdates.add(fromDTO(liveUpdateDTO));
         }

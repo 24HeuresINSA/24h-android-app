@@ -64,7 +64,7 @@ public class LiveUpdatesNotificationService extends IntentService {
     }
 
     private void updateTimeLastLiveUpdateSeen(SharedPreferences sharedPreferences, long timeLastLiveUpdateSeen) {
-        sharedPreferences.edit().putLong(getResources().getString(R.string.SHARED_PREF_LAST_LIVEUPDATE_SEEN), timeLastLiveUpdateSeen).commit();
+        sharedPreferences.edit().putLong(getResources().getString(R.string.SHARED_PREF_LAST_LIVEUPDATE_SEEN), timeLastLiveUpdateSeen).apply();
     }
 
     private void showLiveUpdateNotification(LiveUpdate liveUpdate) {
