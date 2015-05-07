@@ -30,7 +30,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
 import com.insalyon.les24heures.androidService.LiveUpdateGCMRegistrationService;
-import com.insalyon.les24heures.androidService.NotificationService;
+import com.insalyon.les24heures.androidService.LiveUpdatesNotificationService;
 import com.insalyon.les24heures.eventbus.ApplicationVersionEvent;
 import com.insalyon.les24heures.eventbus.CategoriesUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
@@ -157,8 +157,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         }
 
         if (checkPlayServices()) {
-            Intent registerOnGCM = new Intent(this, LiveUpdateGCMRegistrationService.class);
-            startService(registerOnGCM);
+            LiveUpdateGCMRegistrationService.startRegisterAction(this);
         }
 
 
@@ -276,8 +275,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         super.onPostCreate(savedInstanceState);
         ButterKnife.inject(this);
 
-        Intent startNotificationServiceIntent = new Intent(this, NotificationService.class);
-        this.startService(startNotificationServiceIntent);
+        LiveUpdatesNotificationService.start(this);
 
         retrieveData(savedInstanceState);
 

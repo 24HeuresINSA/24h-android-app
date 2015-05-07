@@ -84,7 +84,7 @@
             android:name=".androidService.LiveUpdateGCMRegistrationService"
             android:exported="false" />
         <service
-            android:name=".androidService.NotificationService"
+            android:name=".androidService.LiveUpdatesNotificationService"
             android:exported="false"></service>
 
         <receiver

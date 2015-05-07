@@ -4,7 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-import com.insalyon.les24heures.androidService.NotificationService;
+import com.insalyon.les24heures.androidService.LiveUpdatesNotificationService;
 
 public class PhoneBootReceiver extends BroadcastReceiver {
     public PhoneBootReceiver() {
@@ -18,7 +18,7 @@ public class PhoneBootReceiver extends BroadcastReceiver {
     }
 
     private void executePhoneBootActions(Context context) {
-        Intent startNotificationServiceIntent = new Intent(context, NotificationService.class);
+        Intent startNotificationServiceIntent = new Intent(context, LiveUpdatesNotificationService.class);
         context.startService(startNotificationServiceIntent);
     }
 }

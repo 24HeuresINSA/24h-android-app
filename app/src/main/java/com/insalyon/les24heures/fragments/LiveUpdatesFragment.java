@@ -66,8 +66,7 @@ public class LiveUpdatesFragment extends Fragment {
     }
 
     private void requestRefreshOfLiveUpdates() {
-        Intent requestLiveUpdatesFromServer = new Intent(getActivity(), LiveUpdateService.class);
-        getActivity().startService(requestLiveUpdatesFromServer);
+        LiveUpdateService.start(getActivity());
     }
 
     public void onEvent(LiveUpdatesReceivedEvent event) {
