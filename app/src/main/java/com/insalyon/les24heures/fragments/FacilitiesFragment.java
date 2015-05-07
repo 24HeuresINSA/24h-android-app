@@ -2,6 +2,7 @@ package com.insalyon.les24heures.fragments;
 
 import android.app.Fragment;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -17,12 +18,14 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.model.DayResource;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,20 +36,15 @@ import butterknife.InjectView;
  */
 public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
     public static final String PREFS_NAME = "dataFile";
-
-    private ArrayList<DayResource> resources;
-
-    private View view;
-
     MapView mapView;
     GoogleMap googleMap;
     CameraPosition initialCameraPosition;
     HashMap<DayResource, Marker> resourceMarkerMap;
-
-
+    ArrayList<LatLng> route;
     @InjectView(R.id.progress_wheel)
     View progressBar;
-
+    private ArrayList<DayResource> resources;
+    private View view;
 
     @Nullable
     @Override
@@ -63,7 +61,6 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         }.getType());
 
 
-
         mapView = (MapView) view.findViewById(R.id.map);
         mapView.onCreate(null);
         mapView.getMapAsync(this);
@@ -73,7 +70,6 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
             googleMap.getUiSettings().setZoomControlsEnabled(true);
             addMarkers();
         }
-
 
 
         return view;
@@ -106,6 +102,22 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
             initialCameraPosition = new CameraPosition(
                     new LatLng(Double.valueOf(lat), Double.valueOf(lng)), Float.valueOf(zoom), Float.valueOf(tilt), Float.valueOf(bearing));
         }
+
+
+        route = new ArrayList<>(Arrays.asList(
+                new LatLng(45.78495077, 4.87715721), //avenue des arts / rue des sports
+                new LatLng(45.78615533, 4.87657785), //rue des sports / Niels Bohr
+                new LatLng(45.78484603,4.87008691), //Niels Bohr / Gaston Berger
+                new LatLng(45.78430734, 4.86510873), //Niels Borh / avenur Pierre de Coubertin
+                new LatLng(45.78218244, 4.86484051), //Pierre de Coubertin / Rue Ada Byron
+                new LatLng(45.78293814, 4.8680377), //Ada Byron / Enrico
+                new LatLng(45.78344691, 4.86786604), //Enrico / Victor
+                new LatLng(45.78402302, 4.87043023), //Victor / Gaston Berger
+                new LatLng(45.78348432, 4.87074137), //Gaston Berger /  Avenue des arts
+                new LatLng(45.78495077, 4.87715721) //avenue des arts / rue des sports
+
+
+        ));
     }
 
 
@@ -197,7 +209,6 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
     }
 
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -215,16 +226,43 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         googleMap.clear();
         resourceMarkerMap.clear();
         for (DayResource facilities : resources) {
-                Marker marker = googleMap.addMarker(
-                        new MarkerOptions()
-                                .title(facilities.getTitle())
-                                .position(facilities.getLoc()));
+            Marker marker = googleMap.addMarker(
+                    new MarkerOptions()
+                            .title(facilities.getTitle())
+                            .position(facilities.getLoc()));
 
             resourceMarkerMap.put(facilities, marker);
 
 
         }
+
+        addLines();
+
+
     }
+
+
+    private void addLines() {
+
+        ArrayList<LatLng> points = null;
+        PolylineOptions polyLineOptions = null;
+
+        // traversing through routes
+        points = new ArrayList<LatLng>();
+        polyLineOptions = new PolylineOptions();
+
+        for (LatLng point : route) {
+            points.add(point);
+        }
+
+
+        polyLineOptions.addAll(points);
+        polyLineOptions.width(10);
+        polyLineOptions.color(Color.BLUE);
+
+        googleMap.addPolyline(polyLineOptions);
+    }
+
 
     private LatLngBounds.Builder getBuilder() {
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
