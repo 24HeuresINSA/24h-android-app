@@ -44,7 +44,22 @@ public class LiveUpdateService extends IntentService {
     private void retrieveUpdatesFromServer() {
         Log.d(TAG, "Retrieving LiveUpdates from server");
         RetrofitService retrofitService = getLiveUpdatesRetrofitService();
-        retrofitService.getLiveUpdates(new Callback<List<LiveUpdateDTO>>() {
+        retrofitService.getLiveUpdates(getGetLiveUpdatesCallback());
+    }
+
+
+    private RetrofitService getLiveUpdatesRetrofitService() {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(getResources().getString(R.string.backend_url_mobile))
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setErrorHandler(new RetrofitErrorHandler())
+                .build();
+
+        return restAdapter.create(RetrofitService.class);
+    }
+
+    private Callback<List<LiveUpdateDTO>> getGetLiveUpdatesCallback() {
+        return new Callback<List<LiveUpdateDTO>>() {
             @Override
             public void success(List<LiveUpdateDTO> liveUpdateDTOs, Response response) {
                 Log.d(TAG, "Got : " + liveUpdateDTOs.size() + " LiveUpdates, ");
@@ -55,17 +70,7 @@ public class LiveUpdateService extends IntentService {
             public void failure(RetrofitError error) {
                 Log.e(TAG, " failure " + error);
             }
-        });
-    }
-
-    private RetrofitService getLiveUpdatesRetrofitService() {
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(getResources().getString(R.string.backend_url_mobile))
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setErrorHandler(new RetrofitErrorHandler())
-                .build();
-
-        return restAdapter.create(RetrofitService.class);
+        };
     }
 
     private void broadcastNewLiveUpdates(List<LiveUpdateDTO> liveUpdateDTOs) {
@@ -81,7 +86,6 @@ public class LiveUpdateService extends IntentService {
         liveUpdate.setTimePublished(liveUpdateDTO.getTimePublished());
         return liveUpdate;
     }
-
 
     public List<LiveUpdate> fromDTO(List<LiveUpdateDTO> liveUpdateDTOs) {
         ArrayList<LiveUpdate> liveUpdates = new ArrayList<>();
