@@ -7,12 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
+import com.insalyon.les24heures.utils.Stage;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -34,6 +36,8 @@ public class NightDetailFragment extends DetailFragment {
     TextView scheduleItemPatient;
     @InjectView(R.id.detail_stage)
     TextView stageLabel;
+    @InjectView(R.id.stage_detail_icon)
+    ImageView stageIcon;
 
     String urlFacebook;
     String urlTwitter;
@@ -59,7 +63,10 @@ public class NightDetailFragment extends DetailFragment {
         if(super.notifyDataChanged(res)){
 
             stageLabel.setText("Scene "+((NightResource)res).getStage().toString());
-
+            if (((NightResource)res).getStage() == Stage.BIG)
+                stageIcon.setImageResource(R.drawable.ic_live);
+            else
+                stageIcon.setImageResource(R.drawable.ic_north);
             return true;
         }
         return false;
