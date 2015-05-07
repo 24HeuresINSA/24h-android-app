@@ -70,7 +70,7 @@ public class Category implements Parcelable {
 
         Category category = (Category) o;
 
-        if (! !name.equals(category.name)) return false;
+        if (!name.equals(category.name)) return false;
 
         return true;
     }

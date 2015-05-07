@@ -123,5 +123,16 @@ public class ResourceServiceImpl implements ResourceService {
         return result;
     }
 
+    @Override
+    public ArrayList<DayResource> getFacilities(ArrayList<DayResource> newDayResources) {
+        ArrayList<DayResource> result = new ArrayList<>();
+        for (DayResource resource : newDayResources) {
+            if(resource.getCategory().equals(categoryService.getFacilitiesCategory()))
+                result.add(resource);
+        }
+
+        return result;
+    }
+
 
 }

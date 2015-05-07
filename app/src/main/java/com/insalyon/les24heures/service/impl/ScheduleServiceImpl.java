@@ -139,6 +139,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public ArrayList<Schedule> fromDTO(ArrayList<ScheduleDTO> scheduleDTOs) {
         ArrayList<Schedule> schedules = new ArrayList<>();
+        if(scheduleDTOs == null) return schedules;
 
         for (ScheduleDTO scheduleDTO : scheduleDTOs) {
             schedules.add(this.fromDTO(scheduleDTO));

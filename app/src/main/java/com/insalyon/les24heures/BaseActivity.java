@@ -108,6 +108,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     //need a list to store a category and favorites or not (it's a bad code resulting from the old impl where it could be possible to select several categories)
     ArrayList<Category> selectedCategories = new ArrayList<>();
     ArrayList<DayResource> dayResourceArrayList;
+    ArrayList<DayResource> facilitiesArrayList;
     ArrayList<NightResource> nightResourceArrayList;
     String dataVersion;
 
@@ -143,8 +144,9 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         categoryService = CategoryServiceImpl.getInstance();
 
 
-        if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null) {
+        if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null || facilitiesArrayList == null) {
             dayResourceArrayList = new ArrayList<>();
+            facilitiesArrayList = new ArrayList<>();
             nightResourceArrayList = new ArrayList<>();
             categories = new ArrayList<>();
         }
@@ -179,6 +181,9 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
             if (savedInstanceState.getParcelableArrayList("dayResourceArrayList") != null) {
                 dayResourceArrayList = savedInstanceState.getParcelableArrayList("dayResourceArrayList");
             }
+            if (savedInstanceState.getParcelableArrayList("facilitiesArrayList") != null) {
+                facilitiesArrayList = savedInstanceState.getParcelableArrayList("facilitiesArrayList");
+            }
             if (savedInstanceState.getParcelableArrayList("nightResourceArrayList") != null) {
                 nightResourceArrayList = savedInstanceState.getParcelableArrayList("nightResourceArrayList");
             }
@@ -191,12 +196,15 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
             String categoriesListStr = settings.getString("categoriesList", "");
             String dayResourceArrayListStr = settings.getString("dayResourceList", "");
+            String facilitiesArrayListStr = settings.getString("facilitiesList", "");
             String nightResourceArrayListStr = settings.getString("nightResourcesList", "");
             dataVersion = settings.getString("dataVersion", "");
 
             categories = gson.fromJson(categoriesListStr, new TypeToken<List<Category>>() {
             }.getType());
             dayResourceArrayList = gson.fromJson(dayResourceArrayListStr, new TypeToken<List<DayResource>>() {
+            }.getType());
+            facilitiesArrayList = gson.fromJson(facilitiesArrayListStr, new TypeToken<List<DayResource>>() {
             }.getType());
             nightResourceArrayList = gson.fromJson(nightResourceArrayListStr, new TypeToken<List<NightResource>>() {
             }.getType());
@@ -214,12 +222,13 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         }
 
 
-        if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null) {
+        if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null || facilitiesArrayList == null) {
             dayResourceArrayList = new ArrayList<>();
+            facilitiesArrayList = new ArrayList<>();
             nightResourceArrayList = new ArrayList<>();
             categories = new ArrayList<>();
         } else {
-            ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(dayResourceArrayList, nightResourceArrayList, dataVersion);
+            ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(dayResourceArrayList, nightResourceArrayList, facilitiesArrayList,dataVersion);
             eventBus.post(resourcesUpdatedEvent);
             CategoriesUpdatedEvent categoriesUpdatedEvent = new CategoriesUpdatedEvent(categories, dataVersion);
             eventBus.post(categoriesUpdatedEvent);
@@ -291,6 +300,8 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     public void onEvent(ResourcesUpdatedEvent event) {
         dayResourceArrayList.clear();
         dayResourceArrayList.addAll(event.getDayResourceList());
+        facilitiesArrayList.clear();
+        facilitiesArrayList.addAll(event.getFacilitiesList());
         nightResourceArrayList.clear();
         nightResourceArrayList.addAll(event.getNightResourceList());
         dataVersion = event.getDataVersion();
@@ -304,11 +315,13 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
         Gson gson = new Gson();
         String dayResourcesList = gson.toJson(dayResourceArrayList);
+        String facilitiesList = gson.toJson(facilitiesArrayList);
         String nightResourcesList = gson.toJson(nightResourceArrayList);
         String categoriesResourceList = gson.toJson(categories);
 
 
         editor.putString("dayResourceList", dayResourcesList);
+        editor.putString("facilitiesList", facilitiesList);
         editor.putString("categoriesList", categoriesResourceList);
         editor.putString("nightResourcesList", nightResourcesList);
         editor.putString("dataVersion", dataVersion);
@@ -505,6 +518,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         outState.putParcelableArrayList("selectedCategories", selectedCategories);
         //resources
         outState.putParcelableArrayList("dayResourceList", dayResourceArrayList);
+        outState.putParcelableArrayList("facilitiesList", facilitiesArrayList);
         outState.putParcelableArrayList("nightResourceArrayList", nightResourceArrayList);
 
     }

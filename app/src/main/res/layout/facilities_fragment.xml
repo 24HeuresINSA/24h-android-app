@@ -6,10 +6,25 @@
     android:gravity="center_vertical|center_horizontal">
 
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Facilities"
-        android:id="@+id/textView2" />
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+    <com.google.android.gms.maps.MapView
+            android:id="@+id/map"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    <fr.castorflex.android.smoothprogressbar.SmoothProgressBar
+        android:id="@+id/progress_wheel"
+        android:layout_width="match_parent"
+        android:layout_height="4dp"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        style="@style/GNowProgressBar"
+        android:indeterminate="true"
+        android:visibility="gone" />
+
+    </FrameLayout>
+
 </LinearLayout>

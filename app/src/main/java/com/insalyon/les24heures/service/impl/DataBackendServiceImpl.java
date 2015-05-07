@@ -88,6 +88,8 @@ public class DataBackendServiceImpl implements DataBackendService {
 
                 ArrayList<DayResource> newDayResources = resourceService.fromDTO(dayResourceDTOs, categories);
                 ArrayList<NightResource> newNightResources = resourceService.fromDTO(nightResourceDTOs);
+                ArrayList<DayResource> newFacilities = resourceService.getFacilities(newDayResources);
+
 
                 Collections.sort(newDayResources,new AlphabeticalSortComparator());
                 Collections.sort(newNightResources,new PositionSortComparator());
@@ -95,7 +97,7 @@ public class DataBackendServiceImpl implements DataBackendService {
                 if(dayResources != null) restoreFavorites(dayResources, newDayResources);
                 if(nightResources != null)restoreFavorites(nightResources,newNightResources);
 
-                ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(newDayResources,newNightResources,dataVersion);
+                ResourcesUpdatedEvent resourcesUpdatedEvent = new ResourcesUpdatedEvent(newDayResources,newNightResources, newFacilities,dataVersion);
 
                 eventBus.post(resourcesUpdatedEvent);
             }
@@ -131,6 +133,7 @@ public class DataBackendServiceImpl implements DataBackendService {
         return null;
     }
 
+    @Deprecated
     public void getResourcesAsyncMock() {
         new AsyncTask() {
             @Override

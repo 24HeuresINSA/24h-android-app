@@ -73,5 +73,10 @@ public class CategoryServiceImpl implements CategoryService {
         return new Category(SpecificCategory.REMAINING.toString(),SpecificCategory.REMAINING.toString(),"ic_remaining_categories","REMAINING_LABEL");
     }
 
+    @Override
+    public Category getFacilitiesCategory(){
+        return new Category(SpecificCategory.FACILITIES.toString(),SpecificCategory.FACILITIES.toString().toLowerCase(),"ic_facilities_categories","FACILITIES_LABEL");
+    }
+
 
 }
