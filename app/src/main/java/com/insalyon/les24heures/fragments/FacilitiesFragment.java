@@ -13,6 +13,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -226,9 +227,12 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         googleMap.clear();
         resourceMarkerMap.clear();
         for (DayResource facilities : resources) {
+            int icon = getMarkerDrawable(facilities);
+
             Marker marker = googleMap.addMarker(
                     new MarkerOptions()
                             .title(facilities.getTitle())
+                            .icon(BitmapDescriptorFactory.fromResource(icon))
                             .position(facilities.getLoc()));
 
             resourceMarkerMap.put(facilities, marker);
@@ -237,8 +241,28 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         }
 
         addLines();
+    }
 
+    private int getMarkerDrawable(DayResource facilities) {
+        String iconName = "";
+        String title = facilities.getTitle();
 
+        if(title.toLowerCase().contains("toilette"))
+            iconName = "toilets";
+        if(title.toLowerCase().contains("accueil"))
+            iconName = "home";
+        if(title.toLowerCase().contains("bar"))
+            iconName = "food";
+        if(title.toLowerCase().contains("passage"))
+            iconName = "crossing";
+        if(title.toLowerCase().contains("secouriste"))
+            iconName = "secours";
+
+        int result = getResources().getIdentifier("ic_" + iconName, "drawable", getActivity().getPackageName());
+
+        if (result == 0) //TODO faire mieux ou pas du tout
+            result = getResources().getIdentifier("ic_action_select_all", "drawable", getActivity().getPackageName());
+        return result;
     }
 
 
