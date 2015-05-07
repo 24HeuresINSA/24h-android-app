@@ -154,7 +154,9 @@ public abstract class DetailFragment extends Fragment {
             ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite_uncheck);
         }
 
-        eventBus.post(new ResourceUpdatedEvent());
+        ResourceUpdatedEvent resourceUpdatedEvent = new ResourceUpdatedEvent();
+        resourceUpdatedEvent.setResource(resource);
+        eventBus.post(resourceUpdatedEvent);
 
     }
 

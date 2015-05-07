@@ -29,6 +29,7 @@ import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.adapter.CategoryAdapter;
+import com.insalyon.les24heures.androidService.FavoriteAlertingSchedulingService;
 import com.insalyon.les24heures.androidService.LiveUpdateGCMRegistrationService;
 import com.insalyon.les24heures.androidService.LiveUpdatesNotificationService;
 import com.insalyon.les24heures.eventbus.ApplicationVersionEvent;
@@ -142,6 +143,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         dataBackendService = DataBackendServiceImpl.getInstance();
         resourceService = ResourceServiceImpl.getInstance();
         categoryService = CategoryServiceImpl.getInstance();
+        FavoriteAlertingSchedulingService.start(this);
 
 
         if (dayResourceArrayList == null || nightResourceArrayList == null || categories == null || facilitiesArrayList == null) {
