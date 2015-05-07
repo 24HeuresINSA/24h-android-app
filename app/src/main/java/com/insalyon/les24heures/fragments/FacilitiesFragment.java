@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.R;
+import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.DayResource;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by remi on 19/04/15.
@@ -46,6 +48,8 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
     View progressBar;
     private ArrayList<DayResource> resources;
     private View view;
+    EventBus eventBus;
+
 
     @Nullable
     @Override
@@ -85,6 +89,8 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
                 initialCameraPosition = savedInstanceState.getParcelable("cameraPosition");
             }
         }
+
+        eventBus = EventBus.getDefault();
 
         resourceMarkerMap = new HashMap<>();
 
@@ -165,6 +171,13 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    public void onEvent(ResourcesUpdatedEvent event) {
+
+        hideProgress();
+
+        addMarkers();
+    }
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();
@@ -179,7 +192,16 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         if (googleMap != null)
             googleMap.setMyLocationEnabled(true);
 
+        eventBus.register(this);
+
+        //TODO quick fix
+        if (resources.size() == 0) {
+            displayProgress();
+        }
+
     }
+
+
 
     /**
      * Fragment is no more running *
@@ -188,6 +210,8 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
     public void onPause() {
         super.onPause();
         if (googleMap == null) return;
+
+        eventBus.unregister(this);
 
         googleMap.setMyLocationEnabled(false);
 
@@ -298,6 +322,14 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
             builder.include(latLng);
         }
         return builder;
+    }
+
+    protected void displayProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideProgress() {
+        progressBar.setVisibility(View.GONE);
     }
 
 }
