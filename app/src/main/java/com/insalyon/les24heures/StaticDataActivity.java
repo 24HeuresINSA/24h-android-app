@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import com.insalyon.les24heures.fragments.ConsoFragment;
 import com.insalyon.les24heures.fragments.FacilitiesFragment;
 import com.insalyon.les24heures.fragments.LiveUpdatesFragment;
-import com.insalyon.les24heures.fragments.ParamsFragment;
 import com.insalyon.les24heures.fragments.TclFragment;
 import com.insalyon.les24heures.fragments.TicketsFragment;
 
@@ -84,10 +83,10 @@ public class StaticDataActivity extends BaseActivity {
             ((ViewGroup) facilitiesButton).setActivated(true);
             ((ImageView) ((ViewGroup) facilitiesButton).getChildAt(0)).setImageResource(R.drawable.drapeau_bleu);
         }
-        if (fragmentClassName == ParamsFragment.class) {
-            ((ViewGroup) paramsButton).setActivated(true);
-            ((ImageView) ((ViewGroup) paramsButton).getChildAt(0)).setImageResource(R.drawable.ic_action_settings_bleu);
-        }
+//        if (fragmentClassName == ParamsFragment.class) {
+//            ((ViewGroup) paramsButton).setActivated(true);
+//            ((ImageView) ((ViewGroup) paramsButton).getChildAt(0)).setImageResource(R.drawable.ic_action_settings_bleu);
+//        }
 
     }
 
@@ -121,13 +120,6 @@ public class StaticDataActivity extends BaseActivity {
     @OnClick(R.id.navigation_drawer_facilities)
     public void onClickFacilities(View v) {
         super.onClickFacilities(v);
-        nextActivity = null;
-        startFragment();
-    }
-
-    @OnClick(R.id.navigation_drawer_params)
-    public void onClickParams(View v) {
-        super.onClickParams(v);
         nextActivity = null;
         startFragment();
     }
@@ -167,8 +159,6 @@ public class StaticDataActivity extends BaseActivity {
                 str = (getResources().getString(R.string.live_updates_fragment_appname));
             if (nextStaticFragment.equals(FacilitiesFragment.class))
                 str = (getResources().getString(R.string.facilities_fragment_appname));
-            if (nextStaticFragment.equals(ParamsFragment.class))
-                str = (getResources().getString(R.string.params_fragment_appname));
             if (nextStaticFragment.equals(ConsoFragment.class))
                 str = (getResources().getString(R.string.conso_fragment_appname));
         }

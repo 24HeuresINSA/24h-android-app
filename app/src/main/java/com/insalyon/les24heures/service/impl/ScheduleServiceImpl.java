@@ -7,8 +7,6 @@ import com.insalyon.les24heures.service.ScheduleService;
 import com.insalyon.les24heures.utils.Day;
 import com.insalyon.les24heures.utils.ScheduleComparator;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -56,7 +54,7 @@ public class ScheduleServiceImpl implements ScheduleService {
 
 
     private Date getHour(String debut) {
-
+        if(debut == null) return null;
         int i;
         if (debut.length() == 5)
             i = 0;
@@ -76,12 +74,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public ArrayList<Schedule> getNextSchedules(Resource dayResource) {
         Date nowDate = new Date();
-        //TODO democker
-        try {
-            nowDate = new SimpleDateFormat("hh:mm/dd/M/yyyy").parse("19:00/23/5/2015");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
 
         Calendar now = Calendar.getInstance();
         now.setTime(nowDate);
@@ -106,12 +99,7 @@ public class ScheduleServiceImpl implements ScheduleService {
     @Override
     public ArrayList<Schedule> getTodayNextSchedules(Resource dayResource) {
         Date nowDate = new Date();
-        //TODO democker
-        try {
-            nowDate = new SimpleDateFormat("hh:mm/dd/M/yyyy").parse("19:00/23/5/2015");  //ensemble vocal de 15-16 devrai pas etre affiché
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+       
 
         Calendar now = Calendar.getInstance();
         now.setTime(nowDate);

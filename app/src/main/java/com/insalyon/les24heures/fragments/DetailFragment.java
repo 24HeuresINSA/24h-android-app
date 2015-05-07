@@ -20,6 +20,7 @@ import com.insalyon.les24heures.JazzyViewPager.OutlineContainer;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.adapter.ScheduleAdapter;
 import com.insalyon.les24heures.eventbus.ResourceUpdatedEvent;
+import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.impl.ScheduleServiceImpl;
@@ -39,7 +40,7 @@ import de.greenrobot.event.EventBus;
  */
 public abstract class DetailFragment extends Fragment {
     private static final String TAG = DayMapsFragment.class.getCanonicalName();
-    private static ScheduleServiceImpl scheduleService = ScheduleServiceImpl.getInstance();
+    protected static ScheduleServiceImpl scheduleService = ScheduleServiceImpl.getInstance();
     View view;
     @InjectView(R.id.detail_scrollView)
     DetailScrollView detailScrollView;
@@ -63,10 +64,8 @@ public abstract class DetailFragment extends Fragment {
     Resource resource;
     ScheduleAdapter scheduleAdapter;
     ArrayList<Schedule> schedules;
-
-    private Boolean heavyDataUpdated = false;
     EventBus eventBus;
-
+    private Boolean heavyDataUpdated = false;
     private JazzyViewPager mJazzy;
     private android.content.Context appContext;
     private MainAdapter picturePagerAdapter;
@@ -108,7 +107,7 @@ public abstract class DetailFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-       super.onCreateView(inflater, container, savedInstanceState);
+        super.onCreateView(inflater, container, savedInstanceState);
 
 
         scheduleAdapter = new ScheduleAdapter(getActivity().getApplicationContext(),
@@ -130,15 +129,13 @@ public abstract class DetailFragment extends Fragment {
     }
 
 
-
-
-   void setupJazziness(JazzyViewPager.TransitionEffect effect) {
+    void setupJazziness(JazzyViewPager.TransitionEffect effect) {
         mJazzy = (JazzyViewPager) view.findViewById(R.id.jazzy_pager);
         mJazzy.setTransitionEffect(effect);
         picturePagerAdapter = new MainAdapter();
         mJazzy.setAdapter(picturePagerAdapter);
         mJazzy.setPageMargin(30);
-        mIndicator = (CirclePageIndicator)view.findViewById(R.id.indicator);
+        mIndicator = (CirclePageIndicator) view.findViewById(R.id.indicator);
         mIndicator.setViewPager(mJazzy);
 
     }
@@ -153,8 +150,7 @@ public abstract class DetailFragment extends Fragment {
         resource.setIsFavorites(!resource.isFavorites());
         if (resource.isFavorites()) {
             ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite);
-        }
-        else {
+        } else {
             ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite_uncheck);
         }
 
@@ -165,13 +161,16 @@ public abstract class DetailFragment extends Fragment {
     public Boolean updateHeavyData() {
         if (!heavyDataUpdated) {
 
-            //schedules
-            schedules.clear();
-            schedules.addAll(resource.getSchedules());
-            scheduleAdapter.notifyDataSetChanged();
+            //TODO quickfix
+            if (!resource.getClass().isAssignableFrom(NightResource.class)) {
+                //schedules
+                schedules.clear();
+                schedules.addAll(resource.getSchedules());
+                scheduleAdapter.notifyDataSetChanged();
+            }
 
             //optionals  pictures
-            if(resource.getPictures().size() == 0){
+            if (resource.getPictures().size() == 0) {
                 carouselLayout.setVisibility(View.INVISIBLE);
             } else {
                 mJazzy.setAdapter(picturePagerAdapter);
@@ -184,44 +183,44 @@ public abstract class DetailFragment extends Fragment {
         return false;
     }
 
-    public void notifyDataChanged(final Resource res) {
+    public Boolean notifyDataChanged(final Resource res) {
         if (res != null)
             resource = res;
-        if(resource == null)
-            return;
+        if (resource == null)
+            return false;
         heavyDataUpdated = false;
 
         detailSlidingTitle.setText(resource.getTitle());
         detailSlidingTitle.setSelected(true);
         detailSlidingDescription.setText(resource.getDescription());
 
-        Schedule schedule = scheduleService.getNextSchedule(resource);
-        if(schedule != null)
-        nextSchedule.setText((schedule.getPrintableDay() + "  " +
-                schedule.getStart().getHours() + "h-" + schedule.getEnd().getHours() + "h").toUpperCase());
-        else
-            nextSchedule.setText(getResources().getString(R.string.no_more_schedule));
 
         if (resource.isFavorites()) {
             favoriteImageButton.setImageResource(R.drawable.ic_action_favorite);
-        }
-        else {
+        } else {
             favoriteImageButton.setImageResource(R.drawable.ic_action_favorite_uncheck);
         }
 
 
-        if(resource.getMainPictureUrl() == null || resource.getMainPictureUrl() == ""){
+        if (resource.getMainPictureUrl() == null || resource.getMainPictureUrl() == "") {
             parallaxHeader.setVisibility(View.GONE);
             parallaxHeader.setSelected(true); //to prevent the slidingUp to display it
-        }else {
+        } else {
             parallaxHeader.setVisibility(View.VISIBLE);
             parallaxHeader.setSelected(false); //to allow slidingUp to do its job
-            picasso.load(URLDecoder.decode(resource.getMainPictureUrl()))
-                    .placeholder(R.drawable.ic_waiting)
-                    .error(R.drawable.ic_error)
-                    .into(parallaxImageHeader);
+            try {
+                picasso.load(URLDecoder.decode(resource.getMainPictureUrl()))
+                        .placeholder(R.drawable.ic_waiting)
+                        .error(R.drawable.ic_error)
+                        .into(parallaxImageHeader);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            } catch (OutOfMemoryError e) {
+                e.printStackTrace();
+            }
         }
 
+        return true;
 
     }
 
@@ -245,19 +244,21 @@ public abstract class DetailFragment extends Fragment {
     }
 
 
-
     private class MainAdapter extends PagerAdapter {
         @Override
         public Object instantiateItem(ViewGroup container, final int position) {
             ImageView image = new ImageView(appContext);
 
-            picasso.load(URLDecoder.decode(resource.getPictures().get(position)))
-                    .placeholder(R.drawable.ic_waiting)
-                    .error(R.drawable.ic_error)
-                    .into(image);
+            try {
+                picasso.load(URLDecoder.decode(resource.getPictures().get(position)))
+                        .placeholder(R.drawable.ic_waiting)
+                        .error(R.drawable.ic_error)
+                        .into(image);
+            } catch (NullPointerException e) {
+                e.printStackTrace();
+            }
 
             container.addView(image, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-
 
 
             mJazzy.setObjectForPosition(image, position);
@@ -272,7 +273,7 @@ public abstract class DetailFragment extends Fragment {
 
         @Override
         public int getCount() {
-            if(resource == null) return 0;
+            if (resource == null) return 0;
             return resource.getPictures().size();
         }
 

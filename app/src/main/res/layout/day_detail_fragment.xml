@@ -71,9 +71,10 @@
             android:scaleType="centerInside"
             android:tint="@color/white"
             android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentTop="false"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="5dp" />
+            android:layout_marginLeft="5dp"
+            android:layout_centerVertical="true" />
 
     </RelativeLayout>
 
@@ -100,8 +101,8 @@
                     android:id="@+id/detail_schedule_grid_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:columnCount="2"
-                    android:numColumns="2"></com.insalyon.les24heures.view.AutoExpandGridView>
+                    android:columnCount="1"
+                    android:numColumns="1"></com.insalyon.les24heures.view.AutoExpandGridView>
             </LinearLayout>
 
             <LinearLayout

@@ -2,6 +2,8 @@ package com.insalyon.les24heures.model;
 
 import android.os.Parcel;
 
+import com.insalyon.les24heures.utils.Stage;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -13,29 +15,10 @@ public class NightResource extends Resource {
     private String facebookUrl;
     private String twitterUrl;
     private String siteUrl;
-    private String stage;
+    private Stage stage;
     private Integer position;
 
-
-    @Deprecated
-    public NightResource(String title, String description, List<Schedule> schedules, Category category, Boolean isFavorites, String facebookUrl, String twitterUrl, String siteUrl, String stage) {
-        super(title, description, schedules, isFavorites, category);
-        this.facebookUrl = facebookUrl;
-        this.twitterUrl = twitterUrl;
-        this.siteUrl = siteUrl;
-        this.stage = stage;
-    }
-
-    @Deprecated
-    public NightResource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures, String facebookUrl, String twitterUrl, String siteUrl, String stage, Integer _id) {
-        super(title, description, schedules, category, mainPictureUrl, pictures,_id);
-        this.facebookUrl = facebookUrl;
-        this.twitterUrl = twitterUrl;
-        this.siteUrl = siteUrl;
-        this.stage = stage;
-    }
-
-    public NightResource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures, String facebookUrl, String twitterUrl, String siteUrl, String stage, Integer _id, Integer position) {
+    public NightResource(String title, String description, List<Schedule> schedules, Category category, String mainPictureUrl, ArrayList<String> pictures, String facebookUrl, String twitterUrl, String siteUrl, Stage stage, Integer _id, Integer position) {
         super(title, description, schedules, category, mainPictureUrl, pictures,_id);
         this.facebookUrl = facebookUrl;
         this.twitterUrl = twitterUrl;
@@ -49,7 +32,7 @@ public class NightResource extends Resource {
         this.facebookUrl = in.readString();
         this.twitterUrl = in.readString();
         this.siteUrl = in.readString();
-        this.stage = in.readString();
+        this.stage = Stage.valueOf(in.readString());
         this.position = in.readInt();
     }
 
@@ -59,7 +42,7 @@ public class NightResource extends Resource {
         out.writeString(facebookUrl);
         out.writeString(twitterUrl);
         out.writeString(siteUrl);
-        out.writeString(stage);
+        out.writeString(stage.toString());
         out.writeInt(position);
     }
 
@@ -75,7 +58,7 @@ public class NightResource extends Resource {
         return siteUrl;
     }
 
-    public String getStage() {
+    public Stage getStage() {
         return stage;
     }
 

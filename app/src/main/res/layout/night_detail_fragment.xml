@@ -18,14 +18,12 @@
         android:background="@color/primary_day">
 
         <LinearLayout
+            android:id="@+id/detail_sliding_header_label"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:baselineAligned="false"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@+id/detail_favorites"
-            android:layout_toStartOf="@+id/detail_favorites"
             android:paddingLeft="@dimen/text_block_padding"
             android:paddingTop="@dimen/text_block_padding"
             android:paddingBottom="@dimen/text_block_padding">
@@ -44,17 +42,38 @@
                     android:focusable="true"
                     android:focusableInTouchMode="true"/>
 
-
             <TextView
-                android:id="@+id/detail_next_schedule"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:id="@+id/detail_next_schedule"/>
+
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:gravity="center_vertical|left"
-                android:text="@string/detail_header_schedule"
-                android:visibility="visible"
-                android:textAppearance="@style/detail_next_schedule"
-                android:textSize="@dimen/sub_title_detail" />
+                android:layout_height="fill_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/stage_detail_icon"
+                    android:src="@drawable/ic_live"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="-20dp"
+                    android:layout_marginRight="-5dp" />
+
+                <TextView
+                    android:id="@+id/detail_stage"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical|left"
+                    android:text="Scene Pression Live"
+                    android:textAllCaps="true"
+                    android:visibility="visible"
+                    android:textAppearance="@style/detail_next_schedule"
+                    android:textSize="@dimen/sub_title_detail" />
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -73,9 +92,14 @@
             android:scaleType="centerInside"
             android:tint="@color/white"
             android:layout_alignParentLeft="false"
-            android:layout_alignParentTop="true"
+            android:layout_alignParentTop="false"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="5dp" />
+            android:layout_marginLeft="5dp"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentStart="false"
+            android:layout_alignWithParentIfMissing="false"
+            android:layout_alignParentBottom="false"
+            android:layout_centerVertical="true" />
 
     </RelativeLayout>
 
@@ -97,13 +121,24 @@
                 android:orientation="vertical"
                 android:padding="@dimen/text_block_padding">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/schedule_item_patient"
+                    android:text="@string/text_schedule_night_patient"
+                    android:textColor="@color/primary_day"
+                    android:layout_marginTop="@dimen/text_block_padding"
+                    android:textSize="@dimen/sub_title_detail"/>
+
                 <com.insalyon.les24heures.view.AutoExpandGridView
                     android:id="@+id/detail_schedule_grid_layout"
                     android:layout_width="fill_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/text_block_padding"
+                    android:layout_height="0dp"
                     android:columnCount="1"
-                    android:numColumns="1"></com.insalyon.les24heures.view.AutoExpandGridView>
+                    android:numColumns="1">
+                </com.insalyon.les24heures.view.AutoExpandGridView>
+                <!--  android:layout_height="wrap_content"
+                     android:layout_margin="@dimen/text_block_padding"    a rajouter au cas ou-->
             </LinearLayout>
 
             <LinearLayout
@@ -132,33 +167,33 @@
                 android:gravity="center_vertical|right|end"
                 android:padding="@dimen/text_block_padding">
 
-                <TextView
+                <Button
+                    style="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:layout_width="@dimen/abc_text_size_display_2_material"
+                    android:layout_height="@dimen/abc_text_size_display_2_material"
                     android:id="@+id/detail_url_web"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="u"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                    android:layout_marginLeft="@dimen/icon_margin"
-                    android:layout_marginRight="@dimen/icon_margin" />
+                    android:onClick="onClickWeb"
+                    android:background="@drawable/ic_action_web_site" />
 
-                <TextView
+                <Button
                     android:id="@+id/detail_url_facebook"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="f"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Small.Inverse"
-                    android:layout_marginLeft="@dimen/icon_margin"
-                    android:layout_marginRight="@dimen/icon_margin" />
+                    android:layout_width="@dimen/fab_size_mini"
+                    android:layout_height="@dimen/fab_size_mini"
+                    style="@style/Base.TextAppearance.AppCompat.Small.Inverse"
+                    android:onClick="onClickFacebook"
+                    android:background="@drawable/facebook"
+                    android:layout_marginLeft="@dimen/abc_action_bar_default_padding_material"
+                    android:layout_marginRight="@dimen/abc_action_bar_default_padding_material" />
 
-                <TextView
+                <Button
                     android:id="@+id/detail_url_twitter"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="t"
-                    android:textAppearance="@style/TextAppearance.AppCompat.Small.Inverse"
-                    android:layout_marginLeft="@dimen/icon_margin"
-                    android:layout_marginRight="@dimen/icon_margin"
-                    android:singleLine="false" />
+                    android:layout_width="@dimen/output_list_sticky_item_height"
+                    android:layout_height="@dimen/output_list_sticky_item_height"
+                    style="@style/TextAppearance.AppCompat.Small.Inverse"
+                    android:singleLine="false"
+                    android:background="@drawable/twitter"
+                    android:onClick="onClickTwitter"/>
+
             </LinearLayout>
 
             <RelativeLayout

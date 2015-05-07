@@ -12,6 +12,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.BaseDynamicDataActivity;
+import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ManageDetailSlidingUpDrawer;
 import com.insalyon.les24heures.fragments.DetailFragment;
@@ -39,6 +40,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     private TextView detailSlidingTitle;
     private TextView detailSlidingDescription;
     private LinearLayout detailSlidingHeaderLabel;
+    private RelativeLayout detailSlidingLayoutHeader;
 
     private View parallaxHeader;
     private DrawerArrowDrawable drawerArrowDrawable;
@@ -65,14 +67,14 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
             if (slideOffset <= 0) {//from visible to hidden and vice versa
                 //parallax
-                if(parallaxHeader.getVisibility() != INVISIBLE)
+                if (parallaxHeader.getVisibility() != INVISIBLE)
                     parallaxHeader.setVisibility(INVISIBLE);
 
             } else if (slideOffset < anchored) { //from visible to anchored and vice versa
                 //parallax
-                newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored)) -2;
+                newParallaxHeaderPos = (wideHeight - scrollingHeaderHeight) * (1 - slideOffset / (anchored)) - 2;
                 newParallaxHeaderPos = newParallaxHeaderPos + parallaxContentFrame;
-                if(parallaxHeader.getVisibility() == INVISIBLE && !parallaxHeader.isSelected()) //parallaxHeader.selected is set to true by DetailFragment when no pictures are to be displayed
+                if (parallaxHeader.getVisibility() == INVISIBLE && !parallaxHeader.isSelected()) //parallaxHeader.selected is set to true by DetailFragment when no pictures are to be displayed
                     parallaxHeader.setVisibility(VISIBLE);
                 parallaxHeader.setTranslationY(newParallaxHeaderPos);
 
@@ -88,9 +90,9 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
 
                 float a = (float) ((finalXFavPosition - headerWidth) / anchored);
                 float b = headerWidth;
-                float alpha = slideOffset*a + b ;
+                float alpha = slideOffset * a + b;
                 favoriteImageButton.setX(alpha);
-                Log.d("DETAIL FAVORITES X",alpha+"");
+                Log.d("DETAIL FAVORITES X", alpha + "");
 
                 ViewGroup.LayoutParams params = detailSlidingHeaderLabel.getLayoutParams();
                 params.width = (int) alpha;
@@ -154,7 +156,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
             collapseUIState();
             activity.customOnOptionsMenu();
 
-            eventBus.post(new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE,(NightResource)null));
+            eventBus.post(new ManageDetailSlidingUpDrawer(SlidingUpPannelState.HIDE, (NightResource) null));
         }
 
         private void anchoredUIState() {
@@ -169,8 +171,6 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     };
     private DetailSlidingUpPanelLayout self;
     private DetailFragment detailFragment;
-
-
 
 
     public DetailSlidingUpPanelLayout(Context context) {
@@ -231,7 +231,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         isSetup = true;
 
         //setup previous sliding state
-        String previousState =  activity.getSlidingUpState();
+        String previousState = activity.getSlidingUpState();
         if (previousState != null) {
             switch (previousState) {
                 case "hidden":
@@ -258,8 +258,8 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
     private void setFavoriteMovesParams() {
         this.setOverlayed(false);
         //get params for favorite moves
-        if(headerWidth == null) headerWidth = self.getWidth();
-        if(finalXFavPosition == null){ //pour recuperer la position settée dans le layout
+        if (headerWidth == null) headerWidth = self.getWidth();
+        if (finalXFavPosition == null) { //pour recuperer la position settée dans le layout
             finalXFavPosition = Double.valueOf(favoriteImageButton.getX());
         }
     }
@@ -280,6 +280,26 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
         detailSlidingTitle = (TextView) detailFragment.getView().findViewById(R.id.detail_sliding_title);
         detailSlidingDescription = (TextView) detailFragment.getView().findViewById(R.id.detail_description_text);
         detailSlidingHeaderLabel = (LinearLayout) detailFragment.getView().findViewById(R.id.detail_sliding_header_label);
+        detailSlidingLayoutHeader = (RelativeLayout) detailFragment.getView().findViewById(R.id.detail_sliding_layout_header);
+        detailSlidingLayoutHeader.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Boolean isMaps = false;
+                if (activity.getClass().isAssignableFrom(DayActivity.class)
+                        && ((DayActivity) activity).getmViewPager().getCurrentItem() == 0)
+                    isMaps = true;
+
+                if (self.isAnchoredOrExpanded()) {
+                    if (isMaps)
+                        self.collapsePanel();
+                    else
+                        self.hideDetailPanel();
+                } else {
+                    self.anchorPanel();
+                }
+            }
+        });
     }
 
 

@@ -80,7 +80,6 @@
     <string name="navigationdrawer_label_tcl">TCL</string>
     <string name="navigationdrawer_label_live_updates">Notifications</string>
     <string name="navigationdrawer_label_facilities">Lieux utiles</string>
-    <string name="navigationdrawer_label_params">Paramètres</string>
     <string name="navigationdrawer_label_conso">Carte des Consommations</string>
     <string name="category_all_label">Tout</string>
     <string name="favorite_desc">favorite</string>
@@ -104,7 +103,6 @@
     <string name="tickets_fragment_appname">Billeterie</string>
     <string name="live_updates_fragment_appname">Notifications</string>
     <string name="facilities_fragment_appname">Lieux utiles</string>
-    <string name="params_fragment_appname">Paramètres</string>
     <string name="conso_fragment_appname">Carte des Consommations</string>
     <string name="conso_kro_title">Kronenbourg</string>
     <string name="text_demi">Demi</string>
@@ -127,10 +125,13 @@
     <string name="frites_text">Frites</string>
     <string name="barquette_text">La barquette</string>
     <string name="Sandwich_title">Sandwichs</string>
-    <string name="sandwich_type1">SaladeTomateOignons</string>
+    <string name="sandwich_type1">Hot dog : Saucisse de Strasbourg, Chipolata, Merguez \n
+                                  Panini : Chèvre/Miel, Tomate/Mozza/Basilic, Jambon/Fromage</string>
     <string name="Ecocup_title">Ecocup</string>
     <string name="consigne_text">Consigne</string>
     <string name="prix_text_1">1€</string>
+    <string name="dayTabOne">Vendredi</string>
+    <string name="dayTabTwo">Samedi</string>
     <string name="tickets_title">Billeterie</string>
     <string name="ticket_long_label">L \'accès à la zone concerts ne sera possible qu\'entre 19h45 et 2h</string>
     <string name="ticket_url">https://www.24heures.org/billetterie</string>
@@ -138,5 +139,8 @@
     <string name="ACHETER">ACHETER MES PLACES MAINTENANT!</string>
     <string name="update_app_label">Mettre à jour</string>
     <string name="dealy_update_app_label">Plus tard</string>
+    <string name="text_schedule_night_patient">Les horaires détaillés seront communiqués à 19h le soir du concert.\nMerci de votre compréhension.</string>
+    <string name="dayTabThree">Dimanche</string>
+    <string name="dayNoTab">NoDay</string>
 
 </resources>

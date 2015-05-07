@@ -8,6 +8,8 @@ import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ResourceService;
+import com.insalyon.les24heures.utils.Day;
+import com.insalyon.les24heures.utils.Stage;
 
 import java.util.ArrayList;
 
@@ -69,10 +71,18 @@ public class ResourceServiceImpl implements ResourceService {
                 nightResourceDTO.getFacebook_url(),
                 nightResourceDTO.getTwitter_url(),
                 nightResourceDTO.getSite_url(),
-                nightResourceDTO.getStage(),
+                getStage(nightResourceDTO.getStage()),
                 nightResourceDTO.get_id(),
                 (nightResourceDTO.getPosition() == null) ? -1 :
                         nightResourceDTO.getPosition());
+    }
+
+    private Stage getStage(String stage){
+        if(stage.equals("BIG"))
+            return Stage.BIG;
+        if(stage.equals("SMALL"))
+            return Stage.SMALL;
+        return Stage.NOSTAGE;
     }
 
 
@@ -98,6 +108,19 @@ public class ResourceServiceImpl implements ResourceService {
 
         return nightResources;
 
+    }
+
+    @Override
+    public ArrayList<NightResource> filterByDay(ArrayList<NightResource> nightResources, Day day) {
+        ArrayList<NightResource> result = new ArrayList<>();
+        for (NightResource resource : nightResources) {
+            if(resource.getSchedules() != null && !resource.getSchedules().isEmpty() && resource.getSchedules().get(0).getDay().equals(day)) result.add(resource);
+        }
+
+        //TODO it's a stub !
+        if(result.isEmpty()) return nightResources;
+
+        return result;
     }
 
 

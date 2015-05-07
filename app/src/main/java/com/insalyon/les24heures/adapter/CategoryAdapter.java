@@ -118,16 +118,19 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
                     break;
                 case "ALL":
                     holder.icon.setImageResource(R.drawable.ic_action_select_all);
+                    holder.type.setBackgroundColor(Color.rgb(255,255,255));
                     holder.title.setTextColor(Color.rgb(77, 77, 77));
                     holder.title.setTypeface(null, Typeface.NORMAL);
                     break;
                 case "REMAINING":
-                    holder.icon.setImageResource(R.drawable.ic_now);
+                    holder.icon.setImageResource(R.drawable.ic_action_time_black);
+                    holder.type.setBackgroundColor(Color.rgb(255, 255, 255));
                     holder.title.setTextColor(Color.rgb(77, 77, 77));
                     holder.title.setTypeface(null, Typeface.NORMAL);
                     break;
                 default:
                     holder.icon.setImageResource(R.drawable.ic_action_select_all);
+                    holder.type.setBackgroundColor(Color.rgb(255, 255, 255));
                     holder.title.setTextColor(Color.rgb(77, 77, 77));
                     holder.title.setTypeface(null, Typeface.NORMAL);
                     break;
@@ -161,16 +164,19 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
                     break;
                 case "ALL":
                     holder.icon.setImageResource(R.drawable.ic_action_select_all_bleu);
+                    holder.type.setBackgroundColor(Color.rgb(213, 218, 223));
                     holder.title.setTextColor(Color.rgb(17, 135, 142));
                     holder.title.setTypeface(null, Typeface.BOLD);
                     break;
                 case "REMAINING":
-                    holder.icon.setImageResource(R.drawable.ic_now_bleu);
+                    holder.icon.setImageResource(R.drawable.ic_action_time_blue);
+                    holder.type.setBackgroundColor(Color.rgb(213, 218, 223));
                     holder.title.setTextColor(Color.rgb(17, 135, 142));
                     holder.title.setTypeface(null, Typeface.BOLD);
                     break;
                 default:
                     holder.icon.setImageResource(R.drawable.ic_action_select_all_bleu);
+                    holder.type.setBackgroundColor(Color.rgb(213, 218, 223));
                     holder.title.setTextColor(Color.rgb(17, 135, 142));
                     holder.title.setTypeface(null, Typeface.BOLD);
                     break;
