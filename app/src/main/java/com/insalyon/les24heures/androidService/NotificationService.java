@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.insalyon.les24heures.BaseActivity;
 import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.StaticDataActivity;
@@ -26,6 +27,11 @@ public class NotificationService extends IntentService {
     private static final String TAG = NotificationService.class.getCanonicalName();
     public static final String PREFS_NAME = "dataFile";
     EventBus eventBus = EventBus.getDefault();
+
+    public static void start(Context context) {
+        Intent intent = new Intent(context, NotificationService.class);
+        context.startService(intent);
+    }
 
 
     public NotificationService() {
@@ -91,6 +97,7 @@ public class NotificationService extends IntentService {
                 .setContentIntent(resultPendingIntent)
                 .setAutoCancel(true);
     }
+
 
 
 }

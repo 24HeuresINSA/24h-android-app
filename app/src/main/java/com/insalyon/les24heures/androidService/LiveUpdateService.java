@@ -1,6 +1,7 @@
 package com.insalyon.les24heures.androidService;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
@@ -25,19 +26,23 @@ public class LiveUpdateService extends IntentService {
     private static final String TAG = LiveUpdateService.class.getCanonicalName();
     EventBus eventBus = EventBus.getDefault();
 
+    public static void start(Context context) {
+        Intent intent = new Intent(context, LiveUpdateService.class);
+        context.startService(intent);
+    }
+
     public LiveUpdateService() {
         super("LiveUpdateService");
-        Log.d(TAG, "Started.");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(TAG, "Intent received");
         retrieveUpdatesFromServer();
     }
 
 
     private void retrieveUpdatesFromServer() {
+        Log.d(TAG, "Retrieving LiveUpdates from server");
         RetrofitService retrofitService = getLiveUpdatesRetrofitService();
         retrofitService.getLiveUpdates(new Callback<List<LiveUpdateDTO>>() {
             @Override

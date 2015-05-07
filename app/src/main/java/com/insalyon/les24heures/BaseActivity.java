@@ -157,8 +157,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         }
 
         if (checkPlayServices()) {
-            Intent registerOnGCM = new Intent(this, LiveUpdateGCMRegistrationService.class);
-            startService(registerOnGCM);
+            LiveUpdateGCMRegistrationService.startRegisterAction(this);
         }
 
 
@@ -276,8 +275,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         super.onPostCreate(savedInstanceState);
         ButterKnife.inject(this);
 
-        Intent startNotificationServiceIntent = new Intent(this, NotificationService.class);
-        this.startService(startNotificationServiceIntent);
+        NotificationService.start(this);
 
         retrieveData(savedInstanceState);
 

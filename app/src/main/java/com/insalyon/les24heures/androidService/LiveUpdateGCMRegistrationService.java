@@ -1,6 +1,7 @@
 package com.insalyon.les24heures.androidService;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
@@ -21,9 +22,13 @@ public class LiveUpdateGCMRegistrationService extends IntentService {
     private static final String TAG = LiveUpdateGCMRegistrationService.class.getCanonicalName();
     EventBus eventBus = EventBus.getDefault();
 
+    public static void startRegisterAction(Context context) {
+        Intent intent = new Intent(context, LiveUpdateGCMRegistrationService.class);
+        context.startService(intent);
+    }
+
     public LiveUpdateGCMRegistrationService() {
         super("LiveUpdateGCMRegistrationService");
-        Log.d(TAG, "Started.");
     }
 
     @Override
@@ -32,10 +37,11 @@ public class LiveUpdateGCMRegistrationService extends IntentService {
     }
 
     private void registerOnGCM() {
+        Log.d(TAG, "Trying to register on GCM...");
         try {
             GoogleCloudMessaging gcm = GoogleCloudMessaging.getInstance(this);
             String regid = gcm.register(getResources().getString(R.string.GCM_SENDER_ID));
-            Log.i(TAG, "Device registered in GCM, registration ID=" + regid);
+            Log.i(TAG, "Successful, registration ID=" + regid);
 
             sendRegistrationIdToServer(regid);
 
