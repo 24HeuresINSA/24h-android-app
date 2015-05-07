@@ -119,13 +119,23 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         route = new ArrayList<>(Arrays.asList(
                 new LatLng(45.78495077, 4.87715721), //avenue des arts / rue des sports
                 new LatLng(45.78615533, 4.87657785), //rue des sports / Niels Bohr
+                new LatLng(45.78539968,4.8731178),//Niels Bohr Gymnase C
                 new LatLng(45.78484603, 4.87008691), //Niels Bohr / Gaston Berger
-                new LatLng(45.78430734, 4.86510873), //Niels Borh / avenur Pierre de Coubertin
+                new LatLng(45.78448877,4.86735642), //Niels Bohr PS1
+                
+                //Niels Borh / avenur Pierre de Coubertin
+                new LatLng(45.7843887,4.86545876),
+                new LatLng(45.78433913, 4.86515835),
+                new LatLng(45.78430734, 4.86510873),
+                new LatLng(45.78421288,4.86499742),
+                new LatLng(45.78405763,4.86495852),
+                //Niels Borh / avenur Pierre de Coubertin
+
                 new LatLng(45.78218244, 4.86484051), //Pierre de Coubertin / Rue Ada Byron
-                new LatLng(45.78293814, 4.8680377), //Ada Byron / Enrico
-                new LatLng(45.78344691, 4.86786604), //Enrico / Victor
-                new LatLng(45.78402302, 4.87043023), //Victor / Gaston Berger
-                new LatLng(45.78348432, 4.87074137), //Gaston Berger /  Avenue des arts
+                new LatLng(45.78293159, 4.86806184), //Ada Byron / Enrico
+                new LatLng(45.78344691, 4.86784458), //Enrico / Victor
+                new LatLng(45.78403238, 4.87046242), //Victor / Gaston Berger
+                new LatLng(45.78350864, 4.87070784), //Gaston Berger /  Avenue des arts
                 new LatLng(45.78495077, 4.87715721) //avenue des arts / rue des sports
 
 
