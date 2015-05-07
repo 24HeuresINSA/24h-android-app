@@ -38,35 +38,50 @@
                         android:descendantFocusability="blocksDescendants"
                         android:orientation="horizontal">
 
-                        <TextView
-                            android:id="@+id/artist_grid_item_title_text"
+                        <LinearLayout
+                            android:orientation="horizontal"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/detail_title_text"
+                            android:layout_height="wrap_content">
 
-                            android:ellipsize="marquee"
-                            android:marqueeRepeatLimit="marquee_forever"
-                            android:scrollHorizontally="true"
-                            android:singleLine="true"
+                            <ImageView
+                                android:layout_width="@dimen/output_list_sticky_item_height"
+                                android:layout_height="fill_parent"
+                                android:id="@+id/stage_icon"
+                                android:src="@drawable/ic_live"
+                                android:scaleType="centerInside"
+                                android:layout_gravity="center_vertical"
+                                android:paddingLeft="@dimen/card_title_padding" />
 
-                            android:textAppearance="@style/card_title"
-                            android:padding="@dimen/card_title_padding"
-                            android:clickable="false"
-                            android:focusable="true"
-                            android:focusableInTouchMode="true"
+                            <TextView
+                                android:id="@+id/artist_grid_item_title_text"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/detail_title_text"
 
-                            android:layout_gravity="left"
-                            android:layout_alignParentLeft="true"
-                            android:layout_alignParentTop="true"
-                            android:layout_toLeftOf="@+id/artist_grid_item_favorite"
-                            android:layout_toStartOf="@+id/artist_grid_item_favorite" />
-                            />
+                                android:ellipsize="marquee"
+                                android:marqueeRepeatLimit="marquee_forever"
+                                android:scrollHorizontally="true"
+                                android:singleLine="true"
+
+                                android:textAppearance="@style/card_title"
+                                android:padding="@dimen/card_title_padding"
+                                android:clickable="false"
+                                android:focusable="true"
+                                android:focusableInTouchMode="true"
+
+                                android:layout_gravity="left"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_toLeftOf="@+id/artist_grid_item_favorite"
+                                android:layout_toStartOf="@+id/artist_grid_item_favorite"
+                                android:layout_marginRight="@dimen/abc_dropdownitem_icon_width" />
+                        </LinearLayout>
 
                         <ImageButton
                             android:id="@+id/artist_grid_item_favorite"
                             android:layout_width="@dimen/favorite_on_card"
                             android:layout_height="@dimen/favorite_on_card"
-                            android:background="@null"
+                            android:background="@color/primary_night"
                             android:scaleType="centerInside"
                             android:src="@drawable/ic_action_favorite_uncheck"
                             android:tint="@color/white"

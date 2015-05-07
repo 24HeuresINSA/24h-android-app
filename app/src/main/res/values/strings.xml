@@ -125,7 +125,8 @@
     <string name="frites_text">Frites</string>
     <string name="barquette_text">La barquette</string>
     <string name="Sandwich_title">Sandwichs</string>
-    <string name="sandwich_type1">SaladeTomateOignons</string>
+    <string name="sandwich_type1">Hot dog : Saucisse de Strasbourg, Chipolata, Merguez \n
+                                  Panini : Chèvre/Miel, Tomate/Mozza/Basilic, Jambon/Fromage</string>
     <string name="Ecocup_title">Ecocup</string>
     <string name="consigne_text">Consigne</string>
     <string name="prix_text_1">1€</string>

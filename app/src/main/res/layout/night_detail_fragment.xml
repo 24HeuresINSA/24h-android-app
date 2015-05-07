@@ -46,17 +46,34 @@
                 android:layout_width="wrap_content"
                 android:layout_height="0dp"
                 android:id="@+id/detail_next_schedule"/>
-            <TextView
-                android:id="@+id/detail_stage"
+
+            <LinearLayout
+                android:orientation="horizontal"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_gravity="center"
-                android:gravity="center_vertical|left"
-                android:text="Scene Pression Live"
-                android:textAllCaps="true"
-                android:visibility="visible"
-                android:textAppearance="@style/detail_next_schedule"
-                android:textSize="@dimen/sub_title_detail" />
+                android:layout_height="fill_parent">
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/stage_detail_icon"
+                    android:src="@drawable/ic_live"
+                    android:scaleType="centerInside"
+                    android:layout_gravity="left"
+                    android:layout_marginLeft="-20dp"
+                    android:layout_marginRight="-5dp" />
+
+                <TextView
+                    android:id="@+id/detail_stage"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical|left"
+                    android:text="Scene Pression Live"
+                    android:textAllCaps="true"
+                    android:visibility="visible"
+                    android:textAppearance="@style/detail_next_schedule"
+                    android:textSize="@dimen/sub_title_detail" />
+            </LinearLayout>
 
         </LinearLayout>
 

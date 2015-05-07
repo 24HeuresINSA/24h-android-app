@@ -15,6 +15,7 @@ import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
 import com.insalyon.les24heures.utils.Day;
+import com.insalyon.les24heures.utils.Stage;
 import com.squareup.picasso.Picasso;
 
 import java.io.InputStream;
@@ -71,6 +72,7 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
             holder.title = (TextView) convertView.findViewById(R.id.artist_grid_item_title_text);
             holder.favorites = (ImageButton) convertView.findViewById(R.id.artist_grid_item_favorite);
             holder.image = (ImageView) convertView.findViewById(R.id.artist_img);
+            holder.stage = (ImageView) convertView.findViewById(R.id.stage_icon);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -90,6 +92,7 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
         });
 
         holder.title.setText(nightResource.getTitle());
+        holder.title.setSelected(true);
 
         try {
             picasso.load(URLDecoder.decode(nightResource.getMainPictureUrl()))
@@ -106,6 +109,11 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
         else
             holder.favorites.setImageResource(R.drawable.ic_action_favorite_uncheck);
 
+        if (nightResource.getStage() == Stage.BIG)
+            holder.stage.setImageResource(R.drawable.ic_live);
+        else
+            holder.stage.setImageResource(R.drawable.ic_north);
+
         return convertView;
 
     }
@@ -120,6 +128,7 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
         TextView title;
         TextView schedule;
         ImageButton favorites;
+        ImageView stage;
     }
 
     public static Drawable LoadImageFromWebOperations(String url) {

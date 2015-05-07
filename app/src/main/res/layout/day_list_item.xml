@@ -100,7 +100,7 @@
                     android:id="@+id/list_item_schedule"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="5"
+                    android:layout_weight="6"
                     android:gravity="center_vertical"
                     android:orientation="horizontal">
 
@@ -111,22 +111,24 @@
                         android:text="sam : 10h-18h    |    dim: 10h-18h"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="#333333"
-                        android:textSize="15dp" />
+                        android:textSize="15dp"
+                        android:singleLine="true" />
                 </LinearLayout>
 
+                <!-- Je le laisse mais pas utilisé pour le moment-->
                 <LinearLayout
                     android:id="@+id/list_item_distance"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_height="0dp"
+                    android:layout_weight="0"
                     android:gravity="center_vertical|center_horizontal|right"
                     android:orientation="horizontal"
                     android:weightSum="3">
 
                     <TextView
                         android:id="@+id/list_item_distance_text"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
                         android:text="200m"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="#333333"
