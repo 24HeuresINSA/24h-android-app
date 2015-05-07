@@ -32,22 +32,22 @@ public class LiveUpdatesNotificationService extends IntentService {
         context.startService(intent);
     }
 
-
     public LiveUpdatesNotificationService() {
         super(TAG);
-        eventBus.registerSticky(this);
-    }
 
+    }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
+        Log.d(TAG, "Started");
+        eventBus.registerSticky(this);
     }
 
     //When new Liveupdates are received, show them as notification
     public void onEvent(LiveUpdatesReceivedEvent event) {
         List<LiveUpdate> liveUpdates = event.getLiveUpdates();
         Log.d(TAG, "Got : " + liveUpdates.size() + " LiveUpdates, ");
+
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
         long timeLastLiveUpdateSeen = sharedPreferences.getLong(getResources().getString(R.string.SHARED_PREF_LAST_LIVEUPDATE_SEEN), 0);
@@ -75,17 +75,6 @@ public class LiveUpdatesNotificationService extends IntentService {
     }
 
     private NotificationCompat.Builder getNotificationBuilder(LiveUpdate liveUpdate) {
-        Intent intent = new Intent(this, StaticDataActivity.class);
-        intent.putExtra("nextStaticFragment", LiveUpdatesFragment.class.getCanonicalName());
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(DayActivity.class);
-        stackBuilder.addNextIntent(intent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-
 
         return new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notification)
@@ -93,10 +82,21 @@ public class LiveUpdatesNotificationService extends IntentService {
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(liveUpdate.getMessage()))
                 .setContentText(liveUpdate.getMessage())
-                .setContentIntent(resultPendingIntent)
+                .setContentIntent(getNotificationPendingIntent())
                 .setAutoCancel(true);
     }
 
+    private PendingIntent getNotificationPendingIntent() {
+        Intent intent = new Intent(this, StaticDataActivity.class);
+        intent.putExtra("nextStaticFragment", LiveUpdatesFragment.class.getCanonicalName());
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(DayActivity.class);
+        stackBuilder.addNextIntent(intent);
+        return stackBuilder.getPendingIntent(
+                0,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+    }
 
 
 }
