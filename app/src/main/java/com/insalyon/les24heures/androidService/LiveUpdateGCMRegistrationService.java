@@ -26,6 +26,7 @@ public class LiveUpdateGCMRegistrationService extends IntentService {
         context.startService(intent);
     }
 
+
     public LiveUpdateGCMRegistrationService() {
         super("LiveUpdateGCMRegistrationService");
     }
@@ -42,9 +43,7 @@ public class LiveUpdateGCMRegistrationService extends IntentService {
             String regid = gcm.register(getResources().getString(R.string.GCM_SENDER_ID));
             Log.i(TAG, "Successful, registration ID=" + regid);
 
-            // sendRegistrationIdToServer(regid);
-
-            // TODO:Store Registration Id in prefs, clear it on application update
+            sendRegistrationIdToServer(regid);
 
         } catch (IOException ex) {
             Log.e(TAG, "Error :" + ex.getMessage());
@@ -52,9 +51,21 @@ public class LiveUpdateGCMRegistrationService extends IntentService {
     }
 
     private void sendRegistrationIdToServer(String regid) {
-
         RetrofitService retrofitService = getLiveUpdatesPutKeyRetrofitService();
-        retrofitService.postLiveUpdatesKey(regid, new Callback<String>() {
+        retrofitService.postLiveUpdatesKey(regid, getKeyPostCallback());
+    }
+
+    private RetrofitService getLiveUpdatesPutKeyRetrofitService() {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(getResources().getString(R.string.backend_url_mobile))
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .build();
+
+        return restAdapter.create(RetrofitService.class);
+    }
+
+    private Callback<String> getKeyPostCallback() {
+        return new Callback<String>() {
 
             @Override
             public void success(String result, Response response) {
@@ -65,18 +76,10 @@ public class LiveUpdateGCMRegistrationService extends IntentService {
             public void failure(RetrofitError error) {
                 Log.e(TAG, " failure " + error);
             }
-        });
+        };
     }
 
-    private RetrofitService getLiveUpdatesPutKeyRetrofitService() {
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(getResources().getString(R.string.backend_url_mobile))
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-//                .setErrorHandler(new RetrofitErrorHandler())
-                .build();
 
-        return restAdapter.create(RetrofitService.class);
-    }
 
 
 }
