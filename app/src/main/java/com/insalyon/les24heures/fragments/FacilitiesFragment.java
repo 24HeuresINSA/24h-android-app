@@ -270,6 +270,9 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         for (DayResource dayResource : resources) {
             builder.include(resourceMarkerMap.get(dayResource).getPosition());
         }
+        for (LatLng latLng : route) {
+            builder.include(latLng);
+        }
         return builder;
     }
 
