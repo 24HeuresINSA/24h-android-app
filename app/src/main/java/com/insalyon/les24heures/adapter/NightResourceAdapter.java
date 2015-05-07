@@ -1,7 +1,6 @@
 package com.insalyon.les24heures.adapter;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +17,6 @@ import com.insalyon.les24heures.utils.Day;
 import com.insalyon.les24heures.utils.Stage;
 import com.squareup.picasso.Picasso;
 
-import java.io.InputStream;
-import java.net.URL;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 
@@ -131,14 +128,5 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
         ImageView stage;
     }
 
-    public static Drawable LoadImageFromWebOperations(String url) {
-        try {
-            InputStream is = (InputStream) new URL(url).getContent();
-            Drawable d = Drawable.createFromStream(is, "src name");
-            return d;
-        } catch (Exception e) {
-            return null;
-        }
-    }
 
 }

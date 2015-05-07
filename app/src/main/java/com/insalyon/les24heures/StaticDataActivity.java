@@ -83,10 +83,6 @@ public class StaticDataActivity extends BaseActivity {
             ((ViewGroup) facilitiesButton).setActivated(true);
             ((ImageView) ((ViewGroup) facilitiesButton).getChildAt(0)).setImageResource(R.drawable.drapeau_bleu);
         }
-//        if (fragmentClassName == ParamsFragment.class) {
-//            ((ViewGroup) paramsButton).setActivated(true);
-//            ((ImageView) ((ViewGroup) paramsButton).getChildAt(0)).setImageResource(R.drawable.ic_action_settings_bleu);
-//        }
 
     }
 
