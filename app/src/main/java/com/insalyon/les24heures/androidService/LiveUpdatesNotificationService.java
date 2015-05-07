@@ -10,7 +10,6 @@ import android.content.SharedPreferences;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.insalyon.les24heures.BaseActivity;
 import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.StaticDataActivity;
@@ -23,18 +22,18 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 
 
-public class NotificationService extends IntentService {
-    private static final String TAG = NotificationService.class.getCanonicalName();
+public class LiveUpdatesNotificationService extends IntentService {
+    private static final String TAG = LiveUpdatesNotificationService.class.getCanonicalName();
     public static final String PREFS_NAME = "dataFile";
     EventBus eventBus = EventBus.getDefault();
 
     public static void start(Context context) {
-        Intent intent = new Intent(context, NotificationService.class);
+        Intent intent = new Intent(context, LiveUpdatesNotificationService.class);
         context.startService(intent);
     }
 
 
-    public NotificationService() {
+    public LiveUpdatesNotificationService() {
         super(TAG);
         eventBus.registerSticky(this);
     }
