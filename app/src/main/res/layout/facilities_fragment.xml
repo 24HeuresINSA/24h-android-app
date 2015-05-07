@@ -5,7 +5,12 @@
     android:orientation="vertical"
     android:gravity="center_vertical|center_horizontal">
 
-        <com.google.android.gms.maps.MapView
+
+    <FrameLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent">
+
+    <com.google.android.gms.maps.MapView
             android:id="@+id/map"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
@@ -19,5 +24,7 @@
         style="@style/GNowProgressBar"
         android:indeterminate="true"
         android:visibility="gone" />
+
+    </FrameLayout>
 
 </LinearLayout>

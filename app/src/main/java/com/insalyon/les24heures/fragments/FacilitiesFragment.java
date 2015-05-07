@@ -23,6 +23,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.insalyon.les24heures.R;
+import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.DayResource;
 
 import java.util.ArrayList;
@@ -30,7 +31,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.ButterKnife;
 import butterknife.InjectView;
+import de.greenrobot.event.EventBus;
 
 /**
  * Created by remi on 19/04/15.
@@ -44,6 +47,7 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
     ArrayList<LatLng> route;
     @InjectView(R.id.progress_wheel)
     View progressBar;
+    EventBus eventBus;
     private ArrayList<DayResource> resources;
     private View view;
 
@@ -53,6 +57,8 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         super.onCreateView(inflater, container, savedInstanceState);
 
         view = inflater.inflate(R.layout.facilities_fragment, container, false);
+        ButterKnife.inject(this, view);
+
 
         //impossible de faire passer les facilities dans le bundle de l'intent....
         SharedPreferences settings = getActivity().getSharedPreferences(PREFS_NAME, 0);
@@ -60,6 +66,9 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         String facilitiesArrayListStr = settings.getString("facilitiesList", "");
         resources = gson.fromJson(facilitiesArrayListStr, new TypeToken<List<DayResource>>() {
         }.getType());
+
+        if (resources == null)
+            resources = new ArrayList<>();
 
 
         mapView = (MapView) view.findViewById(R.id.map);
@@ -86,6 +95,8 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
             }
         }
 
+        eventBus = EventBus.getDefault();
+
         resourceMarkerMap = new HashMap<>();
 
         if (initialCameraPosition == null) {
@@ -108,7 +119,7 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         route = new ArrayList<>(Arrays.asList(
                 new LatLng(45.78495077, 4.87715721), //avenue des arts / rue des sports
                 new LatLng(45.78615533, 4.87657785), //rue des sports / Niels Bohr
-                new LatLng(45.78484603,4.87008691), //Niels Bohr / Gaston Berger
+                new LatLng(45.78484603, 4.87008691), //Niels Bohr / Gaston Berger
                 new LatLng(45.78430734, 4.86510873), //Niels Borh / avenur Pierre de Coubertin
                 new LatLng(45.78218244, 4.86484051), //Pierre de Coubertin / Rue Ada Byron
                 new LatLng(45.78293814, 4.8680377), //Ada Byron / Enrico
@@ -165,6 +176,16 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
 
     }
 
+    public void onEvent(ResourcesUpdatedEvent event) {
+
+        hideProgress();
+
+        resources.clear();
+        resources.addAll(event.getFacilitiesList());
+
+        addMarkers();
+    }
+
     @Override
     public void onLowMemory() {
         super.onLowMemory();
@@ -179,7 +200,15 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         if (googleMap != null)
             googleMap.setMyLocationEnabled(true);
 
+        eventBus.register(this);
+
+        //TODO quick fix
+        if (resources.size() == 0) {
+            displayProgress();
+        }
+
     }
+
 
     /**
      * Fragment is no more running *
@@ -188,6 +217,8 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
     public void onPause() {
         super.onPause();
         if (googleMap == null) return;
+
+        eventBus.unregister(this);
 
         googleMap.setMyLocationEnabled(false);
 
@@ -247,15 +278,15 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         String iconName = "";
         String title = facilities.getTitle();
 
-        if(title.toLowerCase().contains("toilette"))
+        if (title.toLowerCase().contains("toilette"))
             iconName = "toilets";
-        if(title.toLowerCase().contains("accueil"))
+        if (title.toLowerCase().contains("accueil"))
             iconName = "home";
-        if(title.toLowerCase().contains("bar"))
+        if (title.toLowerCase().contains("bar"))
             iconName = "food";
-        if(title.toLowerCase().contains("passage"))
+        if (title.toLowerCase().contains("passage"))
             iconName = "crossing";
-        if(title.toLowerCase().contains("secouriste"))
+        if (title.toLowerCase().contains("secouriste"))
             iconName = "secours";
 
         int result = getResources().getIdentifier("ic_" + iconName, "drawable", getActivity().getPackageName());
@@ -298,6 +329,14 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
             builder.include(latLng);
         }
         return builder;
+    }
+
+    protected void displayProgress() {
+        progressBar.setVisibility(View.VISIBLE);
+    }
+
+    protected void hideProgress() {
+        progressBar.setVisibility(View.GONE);
     }
 
 }
