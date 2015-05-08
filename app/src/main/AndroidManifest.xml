@@ -87,6 +87,14 @@
             android:name=".androidService.LiveUpdatesNotificationService"
             android:exported="false"></service>
 
+        <service
+            android:name=".androidService.FavoriteAlertingSchedulingService"
+            android:exported="false"></service>
+
+        <service
+            android:name=".androidService.FavoriteAlertingNotificationService"
+            android:exported="false"></service>
+
         <receiver
             android:name=".receiver.PhoneBootReceiver"
             android:enabled="true"
