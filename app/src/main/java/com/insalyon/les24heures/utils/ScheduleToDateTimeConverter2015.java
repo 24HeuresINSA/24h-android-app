@@ -7,7 +7,9 @@ import org.joda.time.DateTimeZone;
 import org.joda.time.LocalDate;
 import org.joda.time.LocalTime;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by lbillon on 5/4/2015.
@@ -17,6 +19,8 @@ public class ScheduleToDateTimeConverter2015 {
     static int YEAR = 2015;
     static int MONTH = 5;
     static String TIMEZONE_NAME = "Europe/Paris";
+
+
 
 
     public static DateTime getStart(Schedule schedule) throws Exception {
