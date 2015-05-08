@@ -12,6 +12,7 @@ import android.util.Log;
 import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.fragments.LiveUpdatesFragment;
+import com.insalyon.les24heures.model.Resource;
 
 import de.greenrobot.event.EventBus;
 
@@ -42,12 +43,12 @@ public class FavoriteAlertingNotificationService extends IntentService {
                 getSystemService(Context.NOTIFICATION_SERVICE);
 
 
-        int resource_id = intent.getIntExtra(FavoriteAlertingSchedulingService.EXTRA_RESOURCE_ID, 0);
+        Resource resource  = intent.getParcelableExtra(FavoriteAlertingSchedulingService.EXTRA_RESOURCE_PARCEL);
         String message = intent.getStringExtra(FavoriteAlertingSchedulingService.EXTRA_MESSAGE);
 
 
         builder.setContentText(message);
-        notificationManager.notify(resource_id, builder.build());
+        notificationManager.notify(resource.get_id(), builder.build());
 
     }
 
