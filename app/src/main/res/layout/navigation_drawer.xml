@@ -100,6 +100,28 @@
 
 
             <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/navigation_drawer_facilities"
+                style="@style/NavigationDrawer.SectionItem">
+                <ImageView
+                    style="@style/NavigationDrawer.SectionItem.Icon"
+                    android:src="@drawable/drapeau_gris" />
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    style="@style/NavigationDrawer.SectionItem.Label"
+                    android:text="@string/navigationdrawer_label_facilities"/>
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:id="@+id/navigation_drawer_live_updates"
+                style="@style/NavigationDrawer.SectionItem">
+                <ImageView
+                    style="@style/NavigationDrawer.SectionItem.Icon"
+                    android:src="@drawable/ic_now" />
+                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
+                    style="@style/NavigationDrawer.SectionItem.Label"
+                    android:text="@string/navigationdrawer_label_live_updates"/>
+            </LinearLayout>
+
+            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:id="@+id/navigation_drawer_conso"
                 style="@style/NavigationDrawer.SectionItem">
                 <ImageView
@@ -122,28 +144,6 @@
                     android:text="@string/navigationdrawer_label_tcl"/>
             </LinearLayout>
 
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/navigation_drawer_live_updates"
-                style="@style/NavigationDrawer.SectionItem">
-                <ImageView
-                    style="@style/NavigationDrawer.SectionItem.Icon"
-                    android:src="@drawable/ic_now" />
-                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                    style="@style/NavigationDrawer.SectionItem.Label"
-                    android:text="@string/navigationdrawer_label_live_updates"/>
-            </LinearLayout>
-
-            <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:id="@+id/navigation_drawer_facilities"
-                style="@style/NavigationDrawer.SectionItem">
-                <ImageView
-                    style="@style/NavigationDrawer.SectionItem.Icon"
-                    android:src="@drawable/drapeau_gris" />
-                <TextView xmlns:android="http://schemas.android.com/apk/res/android"
-                    style="@style/NavigationDrawer.SectionItem.Label"
-                    android:text="@string/navigationdrawer_label_facilities"/>
-            </LinearLayout>
 
         </LinearLayout>
 
