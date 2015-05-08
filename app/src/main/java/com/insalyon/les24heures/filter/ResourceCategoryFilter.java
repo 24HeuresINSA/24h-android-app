@@ -32,11 +32,15 @@ public abstract class ResourceCategoryFilter<T extends Resource> extends Filter 
     protected FilterResults performFiltering(CharSequence constraint) {
         FilterResults result = new FilterResults();
 
+
         if (constraint != null) {
             selectedCategories =
                     new ArrayList<>(Arrays.asList(
                             ((String) constraint).substring(1, constraint.length() - 1).split(", "))
                     );
+
+            if (selectedCategories.get(0).equals(SpecificCategory.ALL.toString()))
+                selectedCategories.clear();
 
             if (selectedCategories.size() != 0) {
                 ArrayList<Resource> filteredItems = new ArrayList<>();

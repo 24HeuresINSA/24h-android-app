@@ -1,5 +1,7 @@
 package com.insalyon.les24heures.service.impl;
 
+import android.util.Log;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.insalyon.les24heures.DTO.DayResourceDTO;
 import com.insalyon.les24heures.DTO.NightResourceDTO;
@@ -119,6 +121,18 @@ public class ResourceServiceImpl implements ResourceService {
 
         //TODO it's a stub !
         if(result.isEmpty()) return nightResources;
+
+        return result;
+    }
+
+    @Override
+    public ArrayList<DayResource> getDayResources(ArrayList<DayResource> dayResources) {
+        ArrayList<DayResource> result = new ArrayList<>();
+
+        for (DayResource resource : dayResources) {
+            if(!resource.getCategory().equals(categoryService.getFacilitiesCategory()))
+                result.add(resource);
+        }
 
         return result;
     }

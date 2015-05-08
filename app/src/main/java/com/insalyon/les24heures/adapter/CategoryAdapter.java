@@ -28,13 +28,11 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
     private final int viewId;
     private final EventBus eventBus;
+    LayoutInflater vi;
+    BaseActivity activity;
     private Boolean init = false;
     private int selectedCategoryInit;
-
-    LayoutInflater vi;
     private List<Category> categories;
-
-    BaseActivity activity;
 
 
     public CategoryAdapter(Context context, int resource, List<Category> categories, BaseActivity activity) {
@@ -56,7 +54,6 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
     public View getView(final int position, View convertView, ViewGroup parent) {
 
 
-
         ViewHolder holder = null;
 
         if (convertView == null) {
@@ -73,24 +70,24 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
         final Category category = categories.get(position);
 
-        if(category.getDisplayName() != null && category.getDisplayName().equals("ALL_LABEL")) {
+        if (category.getDisplayName() != null && category.getDisplayName().equals("ALL_LABEL")) {
             category.setDisplayName(getContext().getResources().getString(R.string.category_all_label));
-        } else  if(category.getDisplayName() != null && category.getDisplayName().equals("REMAINING_LABEL")) {
+        } else if (category.getDisplayName() != null && category.getDisplayName().equals("REMAINING_LABEL")) {
             category.setDisplayName(getContext().getResources().getString(R.string.category_remaining_label));
         }
         holder.title.setText(category.getDisplayName());
 
 
-        if(!init && position == selectedCategoryInit){
-            ((ListView)parent).setItemChecked(position,position == selectedCategoryInit);
+        if (!init && position == selectedCategoryInit) {
+            ((ListView) parent).setItemChecked(position, position == selectedCategoryInit);
             init = true;
         }
 
-        Boolean isSelected = (activity.getPositionCategorySelected() != null)?
+        Boolean isSelected = (activity.getPositionCategorySelected() != null) ?
                 activity.getPositionCategorySelected() == position
                 : false;
-        
-        if(isSelected==false) {
+
+        if (isSelected == false) {
             switch (category.getName()) {
                 case "divertissement":
                     holder.icon.setImageResource(R.drawable.animation_gris);
@@ -118,7 +115,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
                     break;
                 case "ALL":
                     holder.icon.setImageResource(R.drawable.ic_action_select_all);
-                    holder.type.setBackgroundColor(Color.rgb(255,255,255));
+                    holder.type.setBackgroundColor(Color.rgb(255, 255, 255));
                     holder.title.setTextColor(Color.rgb(77, 77, 77));
                     holder.title.setTypeface(null, Typeface.NORMAL);
                     break;
@@ -135,8 +132,7 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
                     holder.title.setTypeface(null, Typeface.NORMAL);
                     break;
             }
-        }
-        else{
+        } else {
             switch (category.getName()) {
                 case "divertissement":
                     holder.icon.setImageResource(R.drawable.animation_bleu);
@@ -188,17 +184,20 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
     }
 
     public void onEvent(CategoriesUpdatedEvent event) {
+
+        selectedCategoryInit = (categories.size() - 2 >= 0) ? categories.size() - 2 : 0;
+
         this.notifyDataSetInvalidated();
+    }
+
+    public void setSelectedCategoryInit(int selectedCategoryInit) {
+        this.selectedCategoryInit = selectedCategoryInit;
     }
 
     private class ViewHolder {
         LinearLayout type;
         TextView title;
         ImageView icon;
-    }
-
-    public void setSelectedCategoryInit(int selectedCategoryInit) {
-        this.selectedCategoryInit = selectedCategoryInit;
     }
 
 }

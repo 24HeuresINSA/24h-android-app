@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.DayResource;
+import com.insalyon.les24heures.model.Schedule;
 import com.insalyon.les24heures.service.ScheduleService;
 import com.insalyon.les24heures.service.impl.ScheduleServiceImpl;
 import com.insalyon.les24heures.utils.LocationDistanceSortComparator;
@@ -105,7 +106,18 @@ public class DayResourceAdapter extends ResourceAdapter<DayResource> {
             holder.favorites.setImageResource(R.drawable.ic_action_favorite);
         else
         holder.favorites.setImageResource(R.drawable.ic_action_favorite_uncheck);
-        holder.schedule.setText(scheduleService.printSchedules(dayResource.getSchedules()));
+
+        ArrayList<Schedule> nextSchedules = scheduleService.getNextSchedules(dayResource);
+        if(nextSchedules.isEmpty()) {
+            holder.schedule.setText(getContext().getResources().getString(R.string.no_more_schedule));
+        }else {
+            holder.schedule.setText(scheduleService.printNextSchedule(nextSchedules));
+        }
+
+
+
+
+
         Location loc = new Location("loc");
         loc.setLongitude(dayResource.getLoc().longitude);
         loc.setLatitude(dayResource.getLoc().latitude);
