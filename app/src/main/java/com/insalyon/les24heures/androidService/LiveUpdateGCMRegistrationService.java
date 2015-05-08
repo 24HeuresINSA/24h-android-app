@@ -21,6 +21,7 @@ public class LiveUpdateGCMRegistrationService extends IntentService {
     private static final String TAG = LiveUpdateGCMRegistrationService.class.getCanonicalName();
 
 
+
     public static void startRegisterAction(Context context) {
         Intent intent = new Intent(context, LiveUpdateGCMRegistrationService.class);
         context.startService(intent);
