@@ -252,6 +252,10 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
             //il faut le faire pour NightResource aussi, mais comment..., activity le sait...
         }
 
+        if(detailFragment.getResource() != null) {
+            this.anchorPanel();
+        }
+
         return true;
     }
 

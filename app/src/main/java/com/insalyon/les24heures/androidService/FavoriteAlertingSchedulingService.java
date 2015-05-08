@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.util.Log;
 
 import com.insalyon.les24heures.BuildConfig;
+import com.insalyon.les24heures.NightActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.eventbus.ResourceUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
@@ -16,6 +17,7 @@ import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.model.Schedule;
+import com.insalyon.les24heures.utils.IntentExtra;
 import com.insalyon.les24heures.utils.ScheduleToDateTimeConverter2015;
 import com.insalyon.les24heures.utils.ScheduleUtil;
 
@@ -110,6 +112,7 @@ public class FavoriteAlertingSchedulingService extends IntentService {
         intent.putExtra(EXTRA_RESOURCE_ID, resource.get_id());
         intent.putExtra(EXTRA_DATETIME, notificationTime.toString());
         intent.putExtra(EXTRA_MESSAGE, resource.getTitle() + " " + getResources().getString(R.string.favorite_notification_starts_at) + " " + notificationTime.toString("HH:mm") + "!");
+        intent.putExtra(IntentExtra.isNight.toString(),resource.getClass().isAssignableFrom(NightActivity.class));
 
         return PendingIntent.getService(this, resource.get_id(), intent, 0);
     }

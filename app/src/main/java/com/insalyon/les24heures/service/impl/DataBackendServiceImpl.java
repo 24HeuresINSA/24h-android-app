@@ -134,7 +134,7 @@ public class DataBackendServiceImpl implements DataBackendService {
     }
 
     @Override
-    public Resource getResourceById(ArrayList<? extends Resource> resources, String resourceId) {
+    public Resource getResourceById(ArrayList<? extends Resource> resources, Integer resourceId) {
 
         for (Resource res : resources) {
             if(res.get_id().equals(resourceId)) return res;

@@ -21,9 +21,11 @@ import com.insalyon.les24heures.fragments.DetailFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
+import com.insalyon.les24heures.model.Resource;
 import com.insalyon.les24heures.socialSharing.OnShareTargetSelectedListener;
 import com.insalyon.les24heures.socialSharing.ShareIntentFactory;
 import com.insalyon.les24heures.utils.FilterAction;
+import com.insalyon.les24heures.utils.IntentExtra;
 import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
 
 import java.util.ArrayList;
@@ -202,6 +204,26 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
 
         setupDetailFragment();
 
+        if (getIntent() != null) {
+            int resourceId = getIntent().getIntExtra(IntentExtra.toDisplayResourceId.toString(), -1);
+            Boolean isNight = getIntent().getBooleanExtra(String.valueOf(IntentExtra.isNight),false);
+            if (resourceId != -1) {
+                Resource resource;
+
+                if(isNight)
+                    resource = dataBackendService.getResourceById(nightResourceArrayList,resourceId);
+                else
+                    resource = dataBackendService.getResourceById(dayResourceArrayList,resourceId);
+
+
+//                detailSlidingUpPanelLayoutLayout.showDetailPanel((DayResource) resource);
+                detailFragment.notifyDataChanged(resource);
+                detailFragment.updateHeavyData();
+
+
+            }
+        }
+
     }
 
     @Override
@@ -286,7 +308,8 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
      * invalidateOptionsMenu refire search from searchWidget, painful !
      */
     public void customOnOptionsMenu() {
-        if(drawerLayout == null) return; //on Lollipop, onPrepareOptionsMenu is called before onPostCreate which find the view (via ButterKnife). All view are null in thise case
+        if (drawerLayout == null)
+            return; //on Lollipop, onPrepareOptionsMenu is called before onPostCreate which find the view (via ButterKnife). All view are null in thise case
         boolean drawerOpen = drawerLayout.isDrawerVisible();
         Boolean displayGlobalItem = !drawerOpen && !detailSlidingUpPanelLayoutLayout.isAnchoredOrExpanded();
 
@@ -458,6 +481,13 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         return new DrawerListener();
     }
 
+    private void setShareIntent(Intent shareIntent) {
+        if (mShareActionProvider != null) {
+            mShareActionProvider.setShareIntent(shareIntent);
+        }
+        invalidateOptionsMenu();
+    }
+
     private class DrawerListener extends BaseActivity.DrawerListener {//DrawerLayout.SimpleDrawerListener {
         private MenuItem itemFav;
         private MenuItem itemSearch;
@@ -498,13 +528,6 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         }
 
 
-    }
-
-    private void setShareIntent(Intent shareIntent) {
-        if (mShareActionProvider != null) {
-            mShareActionProvider.setShareIntent(shareIntent);
-        }
-        invalidateOptionsMenu();
     }
 
 

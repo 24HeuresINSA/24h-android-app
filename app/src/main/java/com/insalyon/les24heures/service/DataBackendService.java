@@ -13,7 +13,7 @@ public interface DataBackendService {
 
     void getResourcesAsyncFromBackend(RetrofitService retrofitService, String dataVersion, ArrayList<DayResource> dayResources, ArrayList<NightResource> nightResources);
 
-    Resource getResourceById(ArrayList<? extends Resource> resources, String resourceId);
+    Resource getResourceById(ArrayList<? extends Resource> resources, Integer resourceId);
 
     public void getResourcesAsyncMock();
 

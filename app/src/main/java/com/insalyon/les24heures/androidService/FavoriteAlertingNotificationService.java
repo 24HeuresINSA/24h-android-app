@@ -10,6 +10,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.insalyon.les24heures.DayActivity;
+import com.insalyon.les24heures.NightActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.fragments.LiveUpdatesFragment;
 import com.insalyon.les24heures.utils.IntentExtra;
@@ -20,20 +21,20 @@ public class FavoriteAlertingNotificationService extends IntentService {
 
     private NotificationCompat.Builder builder;
 
+    public FavoriteAlertingNotificationService() {
+        super("FavoriteAlertingNotificationService");
+    }
+
     public static void start(Context context) {
         Intent intent = new Intent(context, FavoriteAlertingNotificationService.class);
         context.startService(intent);
-    }
-
-    public FavoriteAlertingNotificationService() {
-        super("FavoriteAlertingNotificationService");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
 
 
-        Log.d(TAG,"Processing notifications...");
+        Log.d(TAG, "Processing notifications...");
 
         NotificationManager notificationManager = (NotificationManager)
                 getSystemService(Context.NOTIFICATION_SERVICE);
@@ -41,9 +42,10 @@ public class FavoriteAlertingNotificationService extends IntentService {
 
         int resource_id = intent.getIntExtra(FavoriteAlertingSchedulingService.EXTRA_RESOURCE_ID, 0);
         String message = intent.getStringExtra(FavoriteAlertingSchedulingService.EXTRA_MESSAGE);
+        Boolean isNight = intent.getBooleanExtra(IntentExtra.isNight.toString(), false);
 
         if (builder == null) {
-            builder = getNotificationBuilder(resource_id,message);
+            builder = getNotificationBuilder(resource_id, message, isNight);
         }
 
 
@@ -53,7 +55,7 @@ public class FavoriteAlertingNotificationService extends IntentService {
     }
 
 
-    private NotificationCompat.Builder getNotificationBuilder(int resource_id, String message) {
+    private NotificationCompat.Builder getNotificationBuilder(int resource_id, String message, Boolean isNight) {
 
         String notificationTitle = getResources().getString(R.string.favorite_notification_title);
 
@@ -62,14 +64,15 @@ public class FavoriteAlertingNotificationService extends IntentService {
                 .setContentTitle(notificationTitle)
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(message))
-                .setContentIntent(getNotificationPendingIntent(resource_id))
+                .setContentIntent(getNotificationPendingIntent(resource_id, isNight))
                 .setAutoCancel(true);
     }
 
-    private PendingIntent getNotificationPendingIntent(int resource_id) {
-        Intent intent = new Intent(this, DayActivity.class);
+    private PendingIntent getNotificationPendingIntent(int resource_id, Boolean isNight) {
+        Class nextClass = (isNight) ? NightActivity.class : DayActivity.class;
+        Intent intent = new Intent(this,nextClass);
         intent.putExtra("nextStaticFragment", LiveUpdatesFragment.class.getCanonicalName());
-        intent.putExtra(IntentExtra.toDisplayResourceId.toString(),resource_id);
+        intent.putExtra(IntentExtra.toDisplayResourceId.toString(), resource_id);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(DayActivity.class);
         stackBuilder.addNextIntent(intent);

@@ -288,4 +288,8 @@ public abstract class DetailFragment extends Fragment {
             }
         }
     }
+
+    public Resource getResource() {
+        return resource;
+    }
 }
