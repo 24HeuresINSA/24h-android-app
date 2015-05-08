@@ -60,12 +60,7 @@ public class DayActivity extends BaseDynamicDataActivity {
             if (intent.getParcelableArrayListExtra("selectedCategories") != null)
                 selectedCategories = intent.getParcelableArrayListExtra("selectedCategories");
 
-            position = intent.getIntExtra("categoryPosition", (categories.size() - 2 >= 0)? categories.size() - 2: 0);
         }
-        if(savedInstanceState != null){
-            position = savedInstanceState.getInt("categoryPosition",1);
-        }
-
 
     }
 
@@ -73,6 +68,14 @@ public class DayActivity extends BaseDynamicDataActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
+
+        Intent intent = getIntent();
+        if (intent != null) {
+            position = intent.getIntExtra("categoryPosition", (categories.size() - 2 >= 0)? categories.size() - 2: 0);
+        }
+        if(savedInstanceState != null){
+            position = savedInstanceState.getInt("categoryPosition",(categories.size() - 2 >= 0)? categories.size() - 2: 0);
+        }
         //override Base's DrawerCategoriesClickListener
         categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
         ((CategoryAdapter) categoriesList.getAdapter()).setSelectedCategoryInit(position);
