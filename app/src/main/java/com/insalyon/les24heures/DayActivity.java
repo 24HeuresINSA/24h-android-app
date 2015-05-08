@@ -71,10 +71,10 @@ public class DayActivity extends BaseDynamicDataActivity {
 
         Intent intent = getIntent();
         if (intent != null) {
-            position = intent.getIntExtra("categoryPosition", (categories.size() - 2 >= 0)? categories.size() - 2: 0);
+            position = intent.getIntExtra("categoryPosition", (categories.size() - 2 >= 0) ? categories.size() - 2 : 0);
         }
-        if(savedInstanceState != null){
-            position = savedInstanceState.getInt("categoryPosition",(categories.size() - 2 >= 0)? categories.size() - 2: 0);
+        if (savedInstanceState != null) {
+            position = savedInstanceState.getInt("categoryPosition", (categories.size() - 2 >= 0) ? categories.size() - 2 : 0);
         }
         //override Base's DrawerCategoriesClickListener
         categoriesList.setOnItemClickListener(new DrawerCategoriesClickListener());
@@ -129,7 +129,7 @@ public class DayActivity extends BaseDynamicDataActivity {
     }
 
     private void dayTypeFragmentSetIsVisible(int position) {
-        if(position == 1)
+        if (position == 1)
             detailSlidingUpPanelLayoutLayout.hideDetailPanel();
         eventBus.postSticky(new ListSetIsVisible(position != 0));
         eventBus.postSticky(new MapsSetIsVisible(position == 0));
@@ -177,7 +177,6 @@ public class DayActivity extends BaseDynamicDataActivity {
     }
 
 
-
     private boolean isMapsSelected() {
         return mViewPager.getCurrentItem() == 0;
     }
@@ -197,7 +196,7 @@ public class DayActivity extends BaseDynamicDataActivity {
             outState.putString("outputType", OutputType.LIST.toString());
         }
 
-       outState.putInt("categoryPosition", positionCategorySelected);
+        outState.putInt("categoryPosition", positionCategorySelected);
 
     }
 
@@ -243,10 +242,8 @@ public class DayActivity extends BaseDynamicDataActivity {
         if (categoriesList.isItemChecked(position)) {
             catSelected.clear();
             selectedCategories.clear();
-            if (categories.get(position).get_id() != SpecificCategory.ALL.toString()) {
-                catSelected.add(categories.get(position));
-                selectedCategories.add(categories.get(position));
-            }
+            catSelected.add(categories.get(position));
+            selectedCategories.add(categories.get(position));
         }
 
         if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
@@ -256,6 +253,10 @@ public class DayActivity extends BaseDynamicDataActivity {
         eventBus.post(categoriesSelectedEvent);
 
         return categoriesSelectedEvent.getCategories();
+    }
+
+    public ViewPager getmViewPager() {
+        return mViewPager;
     }
 
     private class OurViewPagerAdapter extends FragmentPagerAdapter {
@@ -302,10 +303,6 @@ public class DayActivity extends BaseDynamicDataActivity {
             positionCategorySelected = position;
             ((CategoryAdapter) categoriesList.getAdapter()).notifyDataSetChanged();
         }
-    }
-
-    public ViewPager getmViewPager() {
-        return mViewPager;
     }
 }
 
