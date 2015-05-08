@@ -133,6 +133,15 @@ public class DataBackendServiceImpl implements DataBackendService {
         return null;
     }
 
+    @Override
+    public Resource getResourceById(ArrayList<? extends Resource> resources, String resourceId) {
+
+        for (Resource res : resources) {
+            if(res.get_id().equals(resourceId)) return res;
+        }
+        return null;
+    }
+
     @Deprecated
     public void getResourcesAsyncMock() {
         new AsyncTask() {

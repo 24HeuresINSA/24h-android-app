@@ -12,8 +12,7 @@ import android.util.Log;
 import com.insalyon.les24heures.DayActivity;
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.fragments.LiveUpdatesFragment;
-
-import de.greenrobot.event.EventBus;
+import com.insalyon.les24heures.utils.IntentExtra;
 
 
 public class FavoriteAlertingNotificationService extends IntentService {
@@ -32,9 +31,7 @@ public class FavoriteAlertingNotificationService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        if (builder == null) {
-            builder = getNotificationBuilder();
-        }
+
 
         Log.d(TAG,"Processing notifications...");
 
@@ -45,6 +42,10 @@ public class FavoriteAlertingNotificationService extends IntentService {
         int resource_id = intent.getIntExtra(FavoriteAlertingSchedulingService.EXTRA_RESOURCE_ID, 0);
         String message = intent.getStringExtra(FavoriteAlertingSchedulingService.EXTRA_MESSAGE);
 
+        if (builder == null) {
+            builder = getNotificationBuilder(resource_id,message);
+        }
+
 
         builder.setContentText(message);
         notificationManager.notify(resource_id, builder.build());
@@ -52,7 +53,7 @@ public class FavoriteAlertingNotificationService extends IntentService {
     }
 
 
-    private NotificationCompat.Builder getNotificationBuilder() {
+    private NotificationCompat.Builder getNotificationBuilder(int resource_id, String message) {
 
         String notificationTitle = getResources().getString(R.string.favorite_notification_title);
 
@@ -60,14 +61,15 @@ public class FavoriteAlertingNotificationService extends IntentService {
                 .setSmallIcon(R.drawable.ic_notification)
                 .setContentTitle(notificationTitle)
                 .setStyle(new NotificationCompat.BigTextStyle()
-                        .bigText(notificationTitle))
-                .setContentIntent(getNotificationPendingIntent())
+                        .bigText(message))
+                .setContentIntent(getNotificationPendingIntent(resource_id))
                 .setAutoCancel(true);
     }
 
-    private PendingIntent getNotificationPendingIntent() {
+    private PendingIntent getNotificationPendingIntent(int resource_id) {
         Intent intent = new Intent(this, DayActivity.class);
         intent.putExtra("nextStaticFragment", LiveUpdatesFragment.class.getCanonicalName());
+        intent.putExtra(IntentExtra.toDisplayResourceId.toString(),resource_id);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(DayActivity.class);
         stackBuilder.addNextIntent(intent);
