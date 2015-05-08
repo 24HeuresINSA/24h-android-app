@@ -27,7 +27,6 @@ import de.greenrobot.event.EventBus;
 public class FavoriteAlertingSchedulingService extends IntentService {
     private static final String TAG = FavoriteAlertingSchedulingService.class.getCanonicalName();
     public static final String EXTRA_RESOURCE_ID = "RESOURCE_ID";
-    public static final String EXTRA_RESOURCE_PARCEL = "RESOURCE";
     public static final String EXTRA_MESSAGE = "MESSAGE";
     public static final String EXTRA_DATETIME = "DATETIME";
 
@@ -109,7 +108,6 @@ public class FavoriteAlertingSchedulingService extends IntentService {
         intent.setData(Uri.parse("notif:" + resource.get_id()));
 
         intent.putExtra(EXTRA_RESOURCE_ID, resource.get_id());
-        intent.putExtra(EXTRA_RESOURCE_PARCEL, resource);
         intent.putExtra(EXTRA_DATETIME, notificationTime.toString());
         intent.putExtra(EXTRA_MESSAGE, resource.getTitle() + " " + getResources().getString(R.string.favorite_notification_starts_at) + " " + notificationTime.toString("HH:mm") + "!");
 

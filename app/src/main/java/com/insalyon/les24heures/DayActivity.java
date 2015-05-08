@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.insalyon.les24heures.adapter.CategoryAdapter;
-import com.insalyon.les24heures.androidService.FavoriteAlertingSchedulingService;
 import com.insalyon.les24heures.eventbus.CategoriesSelectedEvent;
 import com.insalyon.les24heures.eventbus.ListSetIsVisible;
 import com.insalyon.les24heures.eventbus.MapsSetIsVisible;
@@ -22,7 +21,6 @@ import com.insalyon.les24heures.eventbus.ResourceSelectedEvent;
 import com.insalyon.les24heures.fragments.DayListFragment;
 import com.insalyon.les24heures.fragments.DayMapsFragment;
 import com.insalyon.les24heures.model.Category;
-import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.utils.OutputType;
 import com.insalyon.les24heures.utils.SpecificCategory;
 import com.insalyon.les24heures.view.SlidingTabLayout;
@@ -62,16 +60,7 @@ public class DayActivity extends BaseDynamicDataActivity {
             if (intent.getParcelableArrayListExtra("selectedCategories") != null)
                 selectedCategories = intent.getParcelableArrayListExtra("selectedCategories");
 
-            if(intent.getParcelableExtra(FavoriteAlertingSchedulingService.EXTRA_RESOURCE_PARCEL)!=null){
-                DayResource resource = intent.getParcelableExtra(FavoriteAlertingSchedulingService.EXTRA_RESOURCE_PARCEL);
-                Log.d(TAG,"Showing "+resource.toString());
-                detailSlidingUpPanelLayoutLayout.showDetailPanel(resource);
-            }
-
             position = intent.getIntExtra("categoryPosition", (categories.size() - 2 >= 0)? categories.size() - 2: 0);
-
-
-
         }
         if(savedInstanceState != null){
             position = savedInstanceState.getInt("categoryPosition",1);
