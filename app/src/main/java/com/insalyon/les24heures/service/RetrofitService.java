@@ -36,7 +36,7 @@ public interface RetrofitService {
     void getApplicationVersion(Callback<ApplicationVersionDTO> cb);
 
     @FormUrlEncoded
-    @POST("/liveUpdatesKey")
+    @POST("/mobileClient")
     void postLiveUpdatesKey(@Field("regid")String regid,Callback<String> cb);
 
 

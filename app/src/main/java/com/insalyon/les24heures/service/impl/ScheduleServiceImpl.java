@@ -134,6 +134,11 @@ public class ScheduleServiceImpl implements ScheduleService {
         return str;
     }
 
+    @Override
+    public String printNextSchedule(List<Schedule> schedules) {
+
+        return (schedules.size() == 1)? schedules.get(0).toString() : schedules.get(0).toString()+" ...";
+    }
 
 
     @Override

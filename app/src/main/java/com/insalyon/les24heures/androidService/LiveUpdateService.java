@@ -1,6 +1,7 @@
 package com.insalyon.les24heures.androidService;
 
 import android.app.IntentService;
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
@@ -25,21 +26,40 @@ public class LiveUpdateService extends IntentService {
     private static final String TAG = LiveUpdateService.class.getCanonicalName();
     EventBus eventBus = EventBus.getDefault();
 
+    public static void start(Context context) {
+        Intent intent = new Intent(context, LiveUpdateService.class);
+        context.startService(intent);
+    }
+
     public LiveUpdateService() {
         super("LiveUpdateService");
-        Log.d(TAG, "Started.");
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Log.d(TAG, "Intent received");
         retrieveUpdatesFromServer();
     }
 
 
     private void retrieveUpdatesFromServer() {
+        Log.d(TAG, "Retrieving LiveUpdates from server");
         RetrofitService retrofitService = getLiveUpdatesRetrofitService();
-        retrofitService.getLiveUpdates(new Callback<List<LiveUpdateDTO>>() {
+        retrofitService.getLiveUpdates(getGetLiveUpdatesCallback());
+    }
+
+
+    private RetrofitService getLiveUpdatesRetrofitService() {
+        RestAdapter restAdapter = new RestAdapter.Builder()
+                .setEndpoint(getResources().getString(R.string.backend_url_mobile))
+                .setLogLevel(RestAdapter.LogLevel.FULL)
+                .setErrorHandler(new RetrofitErrorHandler())
+                .build();
+
+        return restAdapter.create(RetrofitService.class);
+    }
+
+    private Callback<List<LiveUpdateDTO>> getGetLiveUpdatesCallback() {
+        return new Callback<List<LiveUpdateDTO>>() {
             @Override
             public void success(List<LiveUpdateDTO> liveUpdateDTOs, Response response) {
                 Log.d(TAG, "Got : " + liveUpdateDTOs.size() + " LiveUpdates, ");
@@ -50,17 +70,7 @@ public class LiveUpdateService extends IntentService {
             public void failure(RetrofitError error) {
                 Log.e(TAG, " failure " + error);
             }
-        });
-    }
-
-    private RetrofitService getLiveUpdatesRetrofitService() {
-        RestAdapter restAdapter = new RestAdapter.Builder()
-                .setEndpoint(getResources().getString(R.string.backend_url_mobile))
-                .setLogLevel(RestAdapter.LogLevel.FULL)
-                .setErrorHandler(new RetrofitErrorHandler())
-                .build();
-
-        return restAdapter.create(RetrofitService.class);
+        };
     }
 
     private void broadcastNewLiveUpdates(List<LiveUpdateDTO> liveUpdateDTOs) {
@@ -77,9 +87,8 @@ public class LiveUpdateService extends IntentService {
         return liveUpdate;
     }
 
-
     public List<LiveUpdate> fromDTO(List<LiveUpdateDTO> liveUpdateDTOs) {
-        ArrayList<LiveUpdate> liveUpdates = new ArrayList<LiveUpdate>();
+        ArrayList<LiveUpdate> liveUpdates = new ArrayList<>();
         for (LiveUpdateDTO liveUpdateDTO : liveUpdateDTOs) {
             liveUpdates.add(fromDTO(liveUpdateDTO));
         }

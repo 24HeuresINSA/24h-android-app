@@ -120,6 +120,13 @@ public class StaticDataActivity extends BaseActivity {
         startFragment();
     }
 
+    @OnClick(R.id.navigation_drawer_live_updates)
+    public void onClickLiveUpdates(View v) {
+        super.onClickLiveUpdates(v);
+        nextActivity = null;
+        startFragment();
+    }
+
     void startFragment() {
         startFragment(nextStaticFragment);
     }

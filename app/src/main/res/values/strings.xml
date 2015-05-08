@@ -11,6 +11,11 @@
     <!--Sharing-->
     <string name="sharing_append_message">aux 24 Heures de l\'INSA ! #24hINSA </string>
 
+    <!--FavoriteAlerting-->
+    <string name="favorite_notification_starts_at">à</string>
+    <string name="favorite_notification_title">Animations favorites</string>
+
+
 
     <!--Navigation Drawer-->
 

@@ -22,27 +22,32 @@ import java.util.List;
 import de.greenrobot.event.EventBus;
 
 
-public class NotificationService extends IntentService {
-    private static final String TAG = NotificationService.class.getCanonicalName();
+public class LiveUpdatesNotificationService extends IntentService {
+    private static final String TAG = LiveUpdatesNotificationService.class.getCanonicalName();
     public static final String PREFS_NAME = "dataFile";
     EventBus eventBus = EventBus.getDefault();
 
-
-    public NotificationService() {
-        super(TAG);
-        eventBus.registerSticky(this);
+    public static void start(Context context) {
+        Intent intent = new Intent(context, LiveUpdatesNotificationService.class);
+        context.startService(intent);
     }
 
+    public LiveUpdatesNotificationService() {
+        super(TAG);
+
+    }
 
     @Override
     protected void onHandleIntent(Intent intent) {
-
+        Log.d(TAG, "Started");
+        eventBus.registerSticky(this);
     }
 
     //When new Liveupdates are received, show them as notification
     public void onEvent(LiveUpdatesReceivedEvent event) {
         List<LiveUpdate> liveUpdates = event.getLiveUpdates();
         Log.d(TAG, "Got : " + liveUpdates.size() + " LiveUpdates, ");
+
         SharedPreferences sharedPreferences = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
 
         long timeLastLiveUpdateSeen = sharedPreferences.getLong(getResources().getString(R.string.SHARED_PREF_LAST_LIVEUPDATE_SEEN), 0);
@@ -59,7 +64,7 @@ public class NotificationService extends IntentService {
     }
 
     private void updateTimeLastLiveUpdateSeen(SharedPreferences sharedPreferences, long timeLastLiveUpdateSeen) {
-        sharedPreferences.edit().putLong(getResources().getString(R.string.SHARED_PREF_LAST_LIVEUPDATE_SEEN), timeLastLiveUpdateSeen).commit();
+        sharedPreferences.edit().putLong(getResources().getString(R.string.SHARED_PREF_LAST_LIVEUPDATE_SEEN), timeLastLiveUpdateSeen).apply();
     }
 
     private void showLiveUpdateNotification(LiveUpdate liveUpdate) {
@@ -70,17 +75,6 @@ public class NotificationService extends IntentService {
     }
 
     private NotificationCompat.Builder getNotificationBuilder(LiveUpdate liveUpdate) {
-        Intent intent = new Intent(this, StaticDataActivity.class);
-        intent.putExtra("nextStaticFragment", LiveUpdatesFragment.class.getCanonicalName());
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(DayActivity.class);
-        stackBuilder.addNextIntent(intent);
-        PendingIntent resultPendingIntent =
-                stackBuilder.getPendingIntent(
-                        0,
-                        PendingIntent.FLAG_UPDATE_CURRENT
-                );
-
 
         return new NotificationCompat.Builder(this)
                 .setSmallIcon(R.drawable.ic_notification)
@@ -88,8 +82,20 @@ public class NotificationService extends IntentService {
                 .setStyle(new NotificationCompat.BigTextStyle()
                         .bigText(liveUpdate.getMessage()))
                 .setContentText(liveUpdate.getMessage())
-                .setContentIntent(resultPendingIntent)
+                .setContentIntent(getNotificationPendingIntent())
                 .setAutoCancel(true);
+    }
+
+    private PendingIntent getNotificationPendingIntent() {
+        Intent intent = new Intent(this, StaticDataActivity.class);
+        intent.putExtra("nextStaticFragment", LiveUpdatesFragment.class.getCanonicalName());
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(DayActivity.class);
+        stackBuilder.addNextIntent(intent);
+        return stackBuilder.getPendingIntent(
+                0,
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
     }
 
 

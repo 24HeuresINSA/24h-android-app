@@ -17,6 +17,8 @@ public interface ScheduleService {
 
     String printSchedules(List<Schedule> schedules);
 
+    String printNextSchedule(List<Schedule> schedules);
+
     public ArrayList<Schedule> fromDTO(ArrayList<ScheduleDTO> scheduleDTOs);
 
     public Schedule getNextSchedule(Resource dayResource);

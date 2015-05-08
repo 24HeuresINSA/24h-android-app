@@ -1,7 +1,6 @@
 package com.insalyon.les24heures.fragments;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -44,7 +43,19 @@ public class LiveUpdatesFragment extends Fragment {
         liveUpdateAdapter = new LiveUpdateAdapter(getActivity(), liveUpdates);
 
         eventBus = EventBus.getDefault();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
         eventBus.registerSticky(this);
+
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        eventBus.unregister(this);
     }
 
     @Nullable
@@ -66,8 +77,7 @@ public class LiveUpdatesFragment extends Fragment {
     }
 
     private void requestRefreshOfLiveUpdates() {
-        Intent requestLiveUpdatesFromServer = new Intent(getActivity(), LiveUpdateService.class);
-        getActivity().startService(requestLiveUpdatesFromServer);
+        LiveUpdateService.start(getActivity());
     }
 
     public void onEvent(LiveUpdatesReceivedEvent event) {
