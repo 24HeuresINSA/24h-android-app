@@ -89,6 +89,7 @@ public class DataBackendServiceImpl implements DataBackendService {
                 ArrayList<DayResource> newDayResources = resourceService.fromDTO(dayResourceDTOs, categories);
                 ArrayList<NightResource> newNightResources = resourceService.fromDTO(nightResourceDTOs);
                 ArrayList<DayResource> newFacilities = resourceService.getFacilities(newDayResources);
+                newDayResources = resourceService.getDayResources(newDayResources);
 
 
                 Collections.sort(newDayResources,new AlphabeticalSortComparator());

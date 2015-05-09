@@ -331,6 +331,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     public void onEvent(CategoriesUpdatedEvent event) {
         categories.clear();
         categories.addAll(event.getCategories());
+        categories.remove(categoryService.getFacilitiesCategory());
 
         SharedPreferences settings = getSharedPreferences(PREFS_NAME, 0);
         SharedPreferences.Editor editor = settings.edit();
