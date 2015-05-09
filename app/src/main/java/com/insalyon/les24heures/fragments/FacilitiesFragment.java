@@ -289,7 +289,7 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
         String title = facilities.getTitle();
 
         if (title.toLowerCase().contains("toilette"))
-            iconName = "toilets";
+            iconName = "toilet";
         if (title.toLowerCase().contains("accueil"))
             iconName = "home";
         if (title.toLowerCase().contains("bar"))
@@ -298,16 +298,17 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
             iconName = "crossing";
         if (title.toLowerCase().contains("secouriste"))
             iconName = "secours";
-        if (title.toLowerCase().contains("secouriste"))
-            iconName = "secours";
         if (title.toLowerCase().contains("sortie"))
             iconName = "billeterie";
+        if (title.toLowerCase().contains("village"))
+            iconName = "village";
+        if (title.toLowerCase().contains("vention"))
+            iconName = "sam";
 
-
-        int result = getResources().getIdentifier("ic_" + iconName, "drawable", getActivity().getPackageName());
+        int result = getResources().getIdentifier("marker_" + iconName, "drawable", getActivity().getPackageName());
 
         if (result == 0) //TODO faire mieux ou pas du tout
-            result = getResources().getIdentifier("ic_action_select_all", "drawable", getActivity().getPackageName());
+            result = getResources().getIdentifier("marker_culturer", "drawable", getActivity().getPackageName());
         return result;
     }
 

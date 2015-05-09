@@ -681,7 +681,7 @@
                             android:orientation="horizontal"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:weightSum="3"
+                            android:weightSum="4"
                             android:layout_marginLeft="@dimen/ouput_list_item_padding"
                             android:layout_marginRight="@dimen/ouput_list_item_padding"
                             android:layout_marginBottom="@dimen/ouput_list_item_padding"
@@ -709,7 +709,7 @@
                                 android:orientation="vertical"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="2"
+                                android:layout_weight="3"
                                 android:layout_gravity="right"
                                 android:gravity="right">
 
