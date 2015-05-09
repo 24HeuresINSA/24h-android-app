@@ -148,5 +148,12 @@
     <string name="dayNoTab">NoDay</string>
     <string name="hotdog">Hot Dogs</string>
     <string name="dogdetails">Saucisse de Strasbourg, Chipolata, Merguez</string>
+    <string name="menu_text">Menus</string>
+    <string name="menu1_text">Panini + Soft + Frites</string>
+    <string name="text_prix_75">7,5€</string>
+    <string name="menu2_text">Hot dog + Soft + Frites</string>
+    <string name="text_prix_65">6,5€</string>
+    <string name="menu3_text">Frites + Demi de Bière</string>
+    <string name="text_prix_45">4,5€</string>
 
 </resources>

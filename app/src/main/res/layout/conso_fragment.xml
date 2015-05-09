@@ -717,7 +717,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_5"
+                                    android:text="@string/text_prix_45"
                                     android:id="@+id/csdcscsdfefs43fe"
                                     android:gravity="right"
                                     android:textStyle="italic"
@@ -824,7 +824,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_5"
+                                    android:text="@string/text_prix35"
                                     android:id="@+id/dsedds"
                                     android:gravity="right"
                                     android:textStyle="italic"
@@ -925,7 +925,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_3"
+                                    android:text="@string/text_prix_25"
                                     android:id="@+id/geegr5"
                                     android:gravity="right"
                                     android:textStyle="italic"
@@ -941,6 +941,163 @@
 
             </android.support.v7.widget.CardView>
 
+            <android.support.v7.widget.CardView
+                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+                android:id="@+id/menu_card_view"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="match_parent"
+                card_view:cardCornerRadius="4dp"
+                android:elevation="5dp"
+                android:background="@color/second_night"
+                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material">
+
+                <LinearLayout
+                    android:orientation="horizontal"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left|top">
+
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical|left">
+
+                        <ImageView
+                            android:layout_width="@dimen/conso_img_height"
+                            android:layout_height="220dp"
+                            android:id="@+id/menu_img"
+                            android:layout_gravity="left|top"
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/menu" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textAppearance="@style/card_title"
+                            android:text="@string/menu_text"
+                            android:id="@+id/menu_title"
+                            android:textColor="@color/light_black"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:ellipsize="marquee"
+                            android:singleLine="true"
+                            android:marqueeRepeatLimit="marquee_forever"
+                            android:scrollHorizontally="true"
+                            android:layout_marginLeft="@dimen/text_block_padding"
+                            android:layout_marginTop="@dimen/text_block_padding"
+                            android:layout_marginRight="@dimen/text_block_padding" />
+
+                        <TableLayout
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_marginLeft="@dimen/ouput_list_item_padding"
+                            android:layout_marginRight="@dimen/ouput_list_item_padding"
+                            android:layout_marginBottom="@dimen/ouput_list_item_padding">
+
+                            <TableRow
+                                android:layout_width="match_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_marginBottom="5dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:text="@string/menu1_text"
+                                    android:id="@+id/ccdcddc"
+                                    android:textStyle="italic"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:layout_weight="1" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:text="@string/text_prix_75"
+                                    android:id="@+id/geesdvsvcgr5"
+                                    android:gravity="right"
+                                    android:textStyle="italic"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:paddingLeft="@dimen/text_block_padding"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:layout_gravity="center_vertical" />
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_marginBottom="5dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:text="@string/menu2_text"
+                                    android:id="@+id/ccdsdvdvcddc"
+                                    android:textStyle="italic"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:layout_weight="1" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:text="@string/text_prix_65"
+                                    android:id="@+id/geesvsedcgr5"
+                                    android:gravity="right"
+                                    android:textStyle="italic"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:paddingLeft="@dimen/text_block_padding"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:layout_gravity="center_vertical" />
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_marginBottom="5dp">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:text="@string/menu3_text"
+                                    android:id="@+id/ccdcdcsevezddc"
+                                    android:textStyle="italic"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:layout_weight="1" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:text="@string/text_prix_45"
+                                    android:id="@+id/geesdcgr5"
+                                    android:gravity="right"
+                                    android:textStyle="italic"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:paddingLeft="@dimen/text_block_padding"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:layout_gravity="center_vertical" />
+                            </TableRow>
+                        </TableLayout>
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
