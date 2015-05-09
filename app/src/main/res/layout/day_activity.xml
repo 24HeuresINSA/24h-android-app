@@ -18,7 +18,7 @@
             android:layout_height="match_parent"
             android:gravity="bottom"
             sothree:umanoPanelHeight="@dimen/detail_header_height"
-            sothree:umanoParalaxOffset="0dp"
+            sothree:umanoParalaxOffset="@dimen/umanoParalaxOffset"
             sothree:umanoShadowHeight="4dp">
 
             <!-- NOT THE SLIDING UP LAYOUT CONTENT -->
