@@ -73,6 +73,7 @@ public class FavoriteAlertingNotificationService extends IntentService {
         Intent intent = new Intent(this,nextClass);
         intent.putExtra("nextStaticFragment", LiveUpdatesFragment.class.getCanonicalName());
         intent.putExtra(IntentExtra.toDisplayResourceId.toString(), resource_id);
+        intent.putExtra(IntentExtra.isNight.toString(),isNight);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
         stackBuilder.addParentStack(DayActivity.class);
         stackBuilder.addNextIntent(intent);
