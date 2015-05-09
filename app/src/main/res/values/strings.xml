@@ -116,7 +116,7 @@
     <string name="text_prix_5">5€</string>
     <string name="text_promo">Promo! 5x Pintes</string>
     <string name="text_prix_20">20€</string>
-    <string name="conso_carlsberg_title"><![CDATA[Carlsberg & Skoll]]></string>
+    <string name="conso_carlsberg_title"><![CDATA[Skoll & Carlsberg]]></string>
     <string name="text_labouteille">La bouteille</string>
     <string name="text_prix35">3,5€</string>
     <string name="text_prix_6">6€</string>
@@ -129,9 +129,8 @@
     <string name="text_prix_25">2,5€</string>
     <string name="frites_text">Frites</string>
     <string name="barquette_text">La barquette</string>
-    <string name="Sandwich_title">Sandwichs</string>
-    <string name="sandwich_type1">Hot dog : Saucisse de Strasbourg, Chipolata, Merguez \n
-                                  Panini : Chèvre/Miel, Tomate/Mozza/Basilic, Jambon/Fromage</string>
+    <string name="Sandwich_title">Paninis</string>
+    <string name="sandwich_type1">Chèvre/Miel, Tomate/Mozza/Basilic, Jambon/Fromage</string>
     <string name="Ecocup_title">Ecocup</string>
     <string name="consigne_text">Consigne</string>
     <string name="prix_text_1">1€</string>
@@ -147,5 +146,7 @@
     <string name="text_schedule_night_patient">Les horaires détaillés seront communiqués à 19h le soir du concert.\nMerci de votre compréhension.</string>
     <string name="dayTabThree">Dimanche</string>
     <string name="dayNoTab">NoDay</string>
+    <string name="hotdog">Hot Dogs</string>
+    <string name="dogdetails">Saucisse de Strasbourg, Chipolata, Merguez</string>
 
 </resources>
