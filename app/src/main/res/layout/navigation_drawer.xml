@@ -43,7 +43,7 @@
             <!--DAY-->
 
             <TextView
-                style="@style/NavigationDrawer.HeaderSection"
+                style="@style/NavigationDrawer.HeaderSectionDay"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/navigationdrawer_sectionname_day"
