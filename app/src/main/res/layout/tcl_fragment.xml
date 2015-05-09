@@ -39,7 +39,7 @@
                 android:layout_height="wrap_content"
                 android:shrinkColumns="*"
                 android:layout_weight="1"
-                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar" >
+                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar">
 
                 <TableRow
                     android:layout_width="fill_parent"
@@ -50,14 +50,206 @@
 
                     <ImageView
                         android:layout_column="1"
-                        android:id="@+id/imageView8"
-                        android:src="@drawable/MA"
+                        android:id="@+id/imageView3"
+                        android:src="@drawable/tu"
                         android:padding="@dimen/abc_control_inset_material"
                         android:scaleType="centerInside"
                         android:layout_height="@dimen/output_list_sticky_item_height"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:padding="@dimen/abc_control_inset_material"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="INSA Einstein"
+                        android:id="@+id/textView55"
+                        android:layout_weight="2"
+                        android:layout_gravity="center_vertical|right"
+                        android:textColor="@color/white" />
+                </TableRow>
+
+                <TableRow
+                    android:weightSum="3"
+                    android:layout_gravity="center"
+                    android:background="#ffa9d4ff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_column="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Dernier vers Perrache"
+                        android:id="@+id/textView"
+                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="00h30"
+                        android:id="@+id/textView2"
+                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content" />
+                </TableRow>
+
+                <TableRow
+                    android:weightSum="3"
+                    android:layout_gravity="center"
+                    android:background="#ffa9d4ff"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" >
+
+                    <TextView
+                        android:layout_column="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Premier vers Debourg"
+                        android:id="@+id/textView21"
+                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="samedi 05h05 - dimanche 05h33 - lundi 05h33"
+                        android:id="@+id/textView24"
+                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_gravity="center"
+                        android:layout_height="wrap_content" />
+                </TableRow>
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:shrinkColumns="*"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar">
+
+                <TableRow android:layout_width="fill_parent"
+                    android:weightSum="3"
+                    android:layout_gravity="center"
+                    android:background="@color/second_night">
+
+                    <ImageView
+                        android:layout_column="1"
+                        android:id="@+id/imageView2"
+                        android:src="@drawable/tq"
+                        android:padding="@dimen/abc_control_inset_material"
+                        android:scaleType="centerInside"
+                        android:layout_height="@dimen/output_list_sticky_item_height"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:padding="@dimen/abc_control_inset_material"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="La Doua - Gaston Berger"
+                        android:id="@+id/textView57"
+                        android:layout_weight="2"
+                        android:layout_gravity="center_vertical|right"
+                        android:textColor="@color/white" />
+
+                </TableRow>
+
+                <TableRow android:weightSum="3"
+                    android:layout_gravity="center"
+                    android:background="#ffa9d4ff">
+
+                    <TextView
+                        android:layout_column="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Derniers vers Hôpital Feyzin Vénissieux"
+                        android:id="@+id/textView20"
+                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="00h26"
+                        android:id="@+id/textView22"
+                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_gravity="center" />
+                </TableRow>
+
+                <TableRow android:weightSum="3"
+                    android:layout_gravity="center"
+                    android:background="#ffa9d4ff">
+
+                    <TextView
+                        android:layout_column="1"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Premiers vers Hôpital Feyzin Vénissieux"
+                        android:id="@+id/textView23"
+                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="samedi 04h26 - dimanche 04h53 - lundi 04h53"
+                        android:id="@+id/textView25"
+                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
+                        android:layout_width="0dp"
+                        android:layout_weight="1.5"
+                        android:layout_gravity="center" />
+                </TableRow>
+            </TableLayout>
+
+            <TableLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:shrinkColumns="*"
+                android:layout_weight="1"
+                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar">
+
+                <TableRow
+                    android:layout_width="fill_parent"
+                    android:weightSum="3"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/second_night"
+                    android:layout_height="wrap_content" >
+
+                    <ImageView
+                        android:layout_column="1"
+                        android:id="@+id/imageView8"
+                        android:src="@drawable/ma"
+                        android:padding="@dimen/abc_control_inset_material"
+                        android:scaleType="centerInside"
+                        android:layout_height="@dimen/output_list_sticky_item_height"
+                        android:layout_width="0dp"
+                        android:layout_weight="1"
+                        android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:padding="@dimen/abc_control_inset_material"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Charpennes"
+                        android:id="@+id/textView51"
+                        android:layout_weight="2"
+                        android:layout_gravity="center_vertical|right"
+                        android:textColor="@color/white" />
                 </TableRow>
 
                 <TableRow
@@ -129,7 +321,7 @@
                         android:layout_column="1"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Derniers vers Vaulx-en-Velin La Soie"
-                        android:id="@+id/textView49"
+                        android:id="@+id/textVcciew49"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
                         android:layout_weight="1.5"
@@ -139,7 +331,7 @@
                     <TextView
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="00h30"
-                        android:id="@+id/textView50"
+                        android:id="@+id/textViccew50"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
                         android:layout_weight="1.5"
@@ -194,13 +386,24 @@
                     <ImageView
                         android:layout_column="1"
                         android:id="@+id/imageView7"
-                        android:src="@drawable/MB"
+                        android:src="@drawable/mb"
                         android:padding="@dimen/abc_control_inset_material"
                         android:scaleType="centerInside"
                         android:layout_height="@dimen/output_list_sticky_item_height"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:padding="@dimen/abc_control_inset_material"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Charpennes"
+                        android:id="@+id/textView52"
+                        android:layout_weight="2"
+                        android:layout_gravity="center_vertical|right"
+                        android:textColor="@color/white" />
                 </TableRow>
 
                 <TableRow
@@ -279,13 +482,24 @@
                     <ImageView
                         android:layout_column="1"
                         android:id="@+id/imageView6"
-                        android:src="@drawable/C17"
+                        android:src="@drawable/cds"
                         android:padding="@dimen/abc_control_inset_material"
                         android:scaleType="centerInside"
                         android:layout_height="@dimen/output_list_sticky_item_height"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:padding="@dimen/abc_control_inset_material"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="INSA Einstein"
+                        android:id="@+id/textView53"
+                        android:layout_weight="2"
+                        android:layout_gravity="center_vertical|right"
+                        android:textColor="@color/white" />
                 </TableRow>
 
                 <TableRow
@@ -422,13 +636,24 @@
                     <ImageView
                         android:layout_column="1"
                         android:id="@+id/imageView5"
-                        android:src="@drawable/C26"
+                        android:src="@drawable/cvs"
                         android:padding="@dimen/abc_control_inset_material"
                         android:scaleType="centerInside"
                         android:layout_height="@dimen/output_list_sticky_item_height"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_gravity="center" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:padding="@dimen/abc_control_inset_material"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="INSA Einstein"
+                        android:id="@+id/textView54"
+                        android:layout_weight="2"
+                        android:layout_gravity="center_vertical|right"
+                        android:textColor="@color/white" />
                 </TableRow>
 
                 <TableRow
@@ -565,13 +790,24 @@
                     <ImageView
                         android:layout_column="1"
                         android:id="@+id/imageView4"
-                        android:src="@drawable/PL"
+                        android:src="@drawable/pl"
                         android:padding="@dimen/abc_control_inset_material"
                         android:scaleType="centerInside"
                         android:layout_height="@dimen/output_list_sticky_item_height"
                         android:layout_width="0dp"
                         android:layout_weight="1"
                         android:layout_gravity="center_vertical|left" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:padding="@dimen/abc_control_inset_material"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="INSA Einstein"
+                        android:id="@+id/textView56"
+                        android:layout_weight="2"
+                        android:layout_gravity="center_vertical|right"
+                        android:textColor="@color/white" />
                 </TableRow>
 
                 <TableRow
@@ -603,165 +839,6 @@
                         android:layout_height="wrap_content" />
                 </TableRow>
 
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:shrinkColumns="*"
-                android:layout_weight="1"
-                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar">
-
-                <TableRow
-                    android:layout_width="fill_parent"
-                    android:weightSum="3"
-                    android:layout_gravity="center"
-                    android:background="@color/second_night"
-                    android:layout_height="wrap_content" >
-
-                    <ImageView
-                        android:layout_column="1"
-                        android:id="@+id/imageView3"
-                        android:src="@drawable/T1"
-                        android:padding="@dimen/abc_control_inset_material"
-                        android:scaleType="centerInside"
-                        android:layout_height="@dimen/output_list_sticky_item_height"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center" />
-                </TableRow>
-
-                <TableRow
-                    android:weightSum="3"
-                    android:layout_gravity="center"
-                    android:background="#ffa9d4ff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:layout_column="1"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Dernier vers Perrache"
-                        android:id="@+id/textView"
-                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
-                        android:layout_width="0dp"
-                        android:layout_weight="1.5"
-                        android:layout_gravity="center"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="00h30"
-                        android:id="@+id/textView2"
-                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
-                        android:layout_width="0dp"
-                        android:layout_weight="1.5"
-                        android:layout_gravity="center"
-                        android:layout_height="wrap_content" />
-                </TableRow>
-
-                <TableRow
-                    android:weightSum="3"
-                    android:layout_gravity="center"
-                    android:background="#ffa9d4ff"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
-
-                    <TextView
-                        android:layout_column="1"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Premier vers Debourg"
-                        android:id="@+id/textView21"
-                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
-                        android:layout_width="0dp"
-                        android:layout_weight="1.5"
-                        android:layout_gravity="center"
-                        android:layout_height="wrap_content" />
-
-                    <TextView
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="samedi 05h05 - dimanche 05h33 - lundi 05h33"
-                        android:id="@+id/textView24"
-                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
-                        android:layout_width="0dp"
-                        android:layout_weight="1.5"
-                        android:layout_gravity="center"
-                        android:layout_height="wrap_content" />
-                </TableRow>
-            </TableLayout>
-
-            <TableLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:shrinkColumns="*"
-                android:layout_weight="1"
-                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar">
-
-                <TableRow android:layout_width="fill_parent"
-                    android:weightSum="3"
-                    android:layout_gravity="center"
-                    android:background="@color/second_night">
-
-                    <ImageView
-                        android:layout_column="1"
-                        android:id="@+id/imageView2"
-                        android:src="@drawable/T4"
-                        android:padding="@dimen/abc_control_inset_material"
-                        android:scaleType="centerInside"
-                        android:layout_height="@dimen/output_list_sticky_item_height"
-                        android:layout_width="0dp"
-                        android:layout_weight="1"
-                        android:layout_gravity="center" />
-
-                </TableRow>
-
-                <TableRow android:weightSum="3"
-                    android:layout_gravity="center"
-                    android:background="#ffa9d4ff">
-
-                    <TextView
-                        android:layout_column="1"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Derniers vers Hôpital Feyzin Vénissieux"
-                        android:id="@+id/textView20"
-                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
-                        android:layout_width="0dp"
-                        android:layout_weight="1.5"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="vendredi 00h26  - samedi 00h26 - dimanche 00h26"
-                        android:id="@+id/textView22"
-                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
-                        android:layout_width="0dp"
-                        android:layout_weight="1.5"
-                        android:layout_gravity="center" />
-                </TableRow>
-
-                <TableRow android:weightSum="3"
-                    android:layout_gravity="center"
-                    android:background="#ffa9d4ff">
-
-                    <TextView
-                        android:layout_column="1"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Premiers vers Hôpital Feyzin Vénissieux"
-                        android:id="@+id/textView23"
-                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
-                        android:layout_width="0dp"
-                        android:layout_weight="1.5"
-                        android:layout_gravity="center" />
-
-                    <TextView
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="samedi 04h26 - dimanche 04h53 - lundi 04h53"
-                        android:id="@+id/textView25"
-                        android:padding="@dimen/abc_dropdownitem_text_padding_right"
-                        android:layout_width="0dp"
-                        android:layout_weight="1.5"
-                        android:layout_gravity="center" />
-                </TableRow>
             </TableLayout>
 
         </LinearLayout>
