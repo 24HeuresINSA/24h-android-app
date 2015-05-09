@@ -207,6 +207,7 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
         if (getIntent() != null) {
             int resourceId = getIntent().getIntExtra(IntentExtra.toDisplayResourceId.toString(), -1);
             Boolean isNight = getIntent().getBooleanExtra(IntentExtra.isNight.toString(),false);
+            isNight = this.getClass().isAssignableFrom(NightActivity.class);
             if (resourceId != -1) {
                 Resource resource;
 
