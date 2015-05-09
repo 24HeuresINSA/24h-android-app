@@ -92,7 +92,7 @@ public class DetailSlidingUpPanelLayout extends SlidingUpPanelLayout {
                 float b = headerWidth;
                 float alpha = slideOffset * a + b;
                 favoriteImageButton.setX(alpha);
-                Log.d("DETAIL FAVORITES X", alpha + "");
+                Log.v("DETAIL FAVORITES X", alpha + "");
 
                 ViewGroup.LayoutParams params = detailSlidingHeaderLabel.getLayoutParams();
                 params.width = (int) alpha;
