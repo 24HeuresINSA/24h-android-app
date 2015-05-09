@@ -126,6 +126,8 @@
     <string name="aroma_text">Aromatisée</string>
     <string name="Text_prix_redbull">\n3€</string>
     <string name="soft_title">Softs</string>
+    <string name="text_prix_2">2€</string>
+    <string name="canette">La canette (33cl)</string>
     <string name="text_prix_25">2,5€</string>
     <string name="frites_text">Frites</string>
     <string name="barquette_text">La barquette</string>
@@ -155,5 +157,7 @@
     <string name="text_prix_65">6,5€</string>
     <string name="menu3_text">Frites + Demi de Bière</string>
     <string name="text_prix_45">4,5€</string>
+    <string name="dernierdepart">Dernier</string>
+    <string name="premierdeparts">Premier</string>
 
 </resources>
