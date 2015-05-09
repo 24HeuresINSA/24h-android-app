@@ -114,7 +114,7 @@
     <string name="text_pinte">Pinte</string>
     <string name="text_prix_3">3€</string>
     <string name="text_prix_5">5€</string>
-    <string name="text_promo">Promo! 5x Pintes</string>
+    <string name="text_promo">Promo! \n5x Pintes</string>
     <string name="text_prix_20">20€</string>
     <string name="conso_carlsberg_title"><![CDATA[Skoll & Carlsberg]]></string>
     <string name="text_labouteille">La bouteille</string>
