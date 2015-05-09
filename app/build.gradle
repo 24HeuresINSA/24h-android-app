@@ -8,8 +8,8 @@ android {
         applicationId "com.insalyon.les24heures"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 6
-        versionName "0.3.1"
+        versionCode 9
+        versionName "1.0"
 
     }
 
@@ -17,7 +17,6 @@ android {
         release {
             storeFile file('/Users/remi/keystores/android.keystore')
             keyAlias '24h-2015'
-
         }
     }
 

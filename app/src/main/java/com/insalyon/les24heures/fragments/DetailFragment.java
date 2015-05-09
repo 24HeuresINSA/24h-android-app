@@ -163,6 +163,8 @@ public abstract class DetailFragment extends Fragment {
     public Boolean updateHeavyData() {
         if (!heavyDataUpdated) {
 
+            detailScrollView.scrollTo(0,0);
+
             //TODO quickfix
             if (!resource.getClass().isAssignableFrom(NightResource.class)) {
                 //schedules

@@ -7,7 +7,7 @@
 
 
     <ScrollView
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/scrollView2" >
 
@@ -35,7 +35,7 @@
 
             <LinearLayout
                 android:orientation="vertical"
-                android:id="@+id/price_table"
+                android:id="@+id/tcl_table"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
@@ -217,7 +217,7 @@
                 android:textAppearance="@style/Base.TextAppearance.AppCompat.Small"
                 android:text="*+0.99€ de frais de location"
                 android:id="@+id/textView18"
-                android:layout_below="@+id/price_table"
+                android:layout_below="@+id/tcl_table"
                 android:layout_gravity="center_horizontal"
                 android:gravity="center_vertical|center_horizontal"
                 android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar" />

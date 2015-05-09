@@ -114,6 +114,15 @@ public class DayActivity extends BaseDynamicDataActivity {
             public void onPageSelected(int position) {
                 dayTypeFragmentSetIsVisible(position);
                 restoreTitle();
+
+                int offset;
+                if (position == 0)
+                    offset = getResources().getDimensionPixelSize(R.dimen.umanoParalaxOffset);
+                else
+                    offset = getResources().getDimensionPixelSize(R.dimen.umanoParalaxOffsetList);
+
+                detailSlidingUpPanelLayoutLayout.setParalaxOffset(offset);
+
             }
 
             @Override

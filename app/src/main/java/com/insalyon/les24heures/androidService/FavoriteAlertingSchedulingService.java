@@ -106,12 +106,20 @@ public class FavoriteAlertingSchedulingService extends IntentService {
 
     private PendingIntent getPendingIntentForResource(Resource resource, DateTime notificationTime) {
         Intent intent = new Intent(this, FavoriteAlertingNotificationService.class);
-        intent.setData(Uri.parse("notif:" + resource.get_id()));
 
-        intent.putExtra(EXTRA_RESOURCE_ID, resource.get_id());
+        boolean isNight = resource.getClass().isAssignableFrom(NightResource.class);
+
+        if(isNight)
+            intent.setData(Uri.parse("notif:n" + resource.get_id() ));
+        else
+            intent.setData(Uri.parse("notif:d" + resource.get_id()));
+
+        intent.putExtra(EXTRA_RESOURCE_ID, 5);
         intent.putExtra(EXTRA_DATETIME, notificationTime.toString());
-        intent.putExtra(EXTRA_MESSAGE, resource.getTitle() + " " + getResources().getString(R.string.favorite_notification_starts_at) + " " + notificationTime.toString("HH:mm") + "!");
-        intent.putExtra(IntentExtra.isNight.toString(),resource.getClass().isAssignableFrom(NightResource.class));
+        String message = resource.getTitle() + " " + getResources().getString(R.string.favorite_notification_starts_at) + " " + notificationTime.toString("HH:mm") + "!";
+        intent.putExtra(EXTRA_MESSAGE, message);
+
+        intent.putExtra(IntentExtra.isNight.toString(), isNight);
 
         return PendingIntent.getService(this, resource.get_id(), intent, 0);
     }

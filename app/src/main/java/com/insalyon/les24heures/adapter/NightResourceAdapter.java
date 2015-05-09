@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
+import com.insalyon.les24heures.eventbus.ResourceUpdatedEvent;
 import com.insalyon.les24heures.eventbus.ResourcesUpdatedEvent;
 import com.insalyon.les24heures.model.NightResource;
 import com.insalyon.les24heures.service.impl.ResourceServiceImpl;
@@ -85,6 +86,10 @@ public class NightResourceAdapter extends ResourceAdapter<NightResource> {
                     ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite);
                 else
                     ((ImageButton) v).setImageResource(R.drawable.ic_action_favorite_uncheck);
+
+                ResourceUpdatedEvent resourceUpdatedEvent = new ResourceUpdatedEvent();
+                resourceUpdatedEvent.setResource(nightResource);
+                eventBus.post(resourceUpdatedEvent);
             }
         });
 
