@@ -27,8 +27,6 @@ public class ApplicationVersionServiceImpl implements ApplicationVersionService 
     static ApplicationVersionServiceImpl applicationVersionService;
 
 
-
-
     public static ApplicationVersionServiceImpl getInstance() {
         if (applicationVersionService == null) {
             //synchronized (resourceService) {
@@ -55,10 +53,8 @@ public class ApplicationVersionServiceImpl implements ApplicationVersionService 
                 .setErrorHandler(new RetrofitErrorHandler())
                 .build().create(RetrofitService.class).getApplicationVersion(new Callback<ApplicationVersionDTO>() {
             @Override
-            public void success(ApplicationVersionDTO applicationVersionDTO, Response response)  {
+            public void success(ApplicationVersionDTO applicationVersionDTO, Response response) {
                 String appVersion = applicationVersionDTO.getAndroid();
-
-
 
 
                 ApplicationVersionEvent event = new ApplicationVersionEvent();
@@ -76,23 +72,20 @@ public class ApplicationVersionServiceImpl implements ApplicationVersionService 
 
                     String[] app = appVersion.split("\\.");
                     String[] current = currentVersion.split("\\.");
-                    if (app.length == 2 && current.length == 2)
-                        if (app[0].equals(current[0]))
-                            if (Integer.valueOf(app[1]) <= Integer.valueOf(current[1]))
-                                event.setState(ApplicationVersionState.TODATE);
-                            else
-                                event.setState(ApplicationVersionState.MINOR);
-                        else if(Integer.valueOf(app[0]) > Integer.valueOf(current[0]))
-                            event.setState(ApplicationVersionState.MAJOR);
-                        else
+                    if (app[0].equals(current[0]))
+                        if (Integer.valueOf(app[1]) <= Integer.valueOf(current[1]))
                             event.setState(ApplicationVersionState.TODATE);
+                        else
+                            event.setState(ApplicationVersionState.MINOR);
+                    else if (Integer.valueOf(app[0]) > Integer.valueOf(current[0]))
+                        event.setState(ApplicationVersionState.MAJOR);
                     else
-                        event.setState(ApplicationVersionState.TODATE);                        //TODO piwik error
+                        event.setState(ApplicationVersionState.TODATE);
                 } else
                     event.setState(ApplicationVersionState.TODATE);                        //TODO piwik error
 
 
-                 settings[0] = context.getSharedPreferences(context.getResources().getString(R.string.SHARED_PREF_APP_VERSION), 0);
+                settings[0] = context.getSharedPreferences(context.getResources().getString(R.string.SHARED_PREF_APP_VERSION), 0);
                 editor[0] = settings[0].edit();
                 editor[0].putString("applicationVersionState", event.getState().toString());
                 editor[0].commit();
