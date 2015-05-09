@@ -428,7 +428,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         clearDrawerChoices();
         v.setActivated(true);
         //Todo change
-        setSelectedMenuItem(v, R.drawable.ic_now);
+        setSelectedMenuItem(v, R.drawable.ic_now_bleu);
         drawerLayout.closeDrawer();
         nextActivity = StaticDataActivity.class;
         nextStaticFragment = LiveUpdatesFragment.class;

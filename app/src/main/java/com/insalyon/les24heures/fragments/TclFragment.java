@@ -14,7 +14,6 @@ import com.insalyon.les24heures.R;
  */
 public class TclFragment extends Fragment {
 
-
     private View view;
 
     @Nullable
@@ -23,7 +22,6 @@ public class TclFragment extends Fragment {
         super.onCreateView(inflater, container, savedInstanceState);
 
         view = inflater.inflate(R.layout.tcl_fragment, container, false);
-
 
         return view;
     }
