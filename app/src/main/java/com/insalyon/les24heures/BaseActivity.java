@@ -41,6 +41,7 @@ import com.insalyon.les24heures.fragments.FacilitiesFragment;
 import com.insalyon.les24heures.fragments.LiveUpdatesFragment;
 import com.insalyon.les24heures.fragments.TclFragment;
 import com.insalyon.les24heures.fragments.TicketsFragment;
+import com.insalyon.les24heures.fragments.TweetWallFragment;
 import com.insalyon.les24heures.model.Category;
 import com.insalyon.les24heures.model.DayResource;
 import com.insalyon.les24heures.model.NightResource;
@@ -94,6 +95,8 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
     View ticketsButton;
     @InjectView(R.id.navigation_drawer_tcl)
     View tclButton;
+    @InjectView(R.id.navigation_drawer_tweetwall)
+    View tclTweetWall;
     @InjectView(R.id.navigation_drawer_facilities)
     View facilitiesButton;
     @InjectView(R.id.navigation_drawer_conso)
@@ -422,6 +425,17 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
         nextActivity = StaticDataActivity.class;
         nextStaticFragment = TclFragment.class;
     }
+
+    @OnClick(R.id.navigation_drawer_tweetwall)
+    public void onClickTweetWall(View v) {
+        clearDrawerChoices();
+        v.setActivated(true);
+        setSelectedMenuItem(v, R.drawable.twitter);
+        drawerLayout.closeDrawer();
+        nextActivity = StaticDataActivity.class;
+        nextStaticFragment = TweetWallFragment.class;
+    }
+
 
     @OnClick(R.id.navigation_drawer_live_updates)
     public void onClickLiveUpdates(View v) {

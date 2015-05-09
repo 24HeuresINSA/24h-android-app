@@ -12,6 +12,7 @@ import com.insalyon.les24heures.fragments.FacilitiesFragment;
 import com.insalyon.les24heures.fragments.LiveUpdatesFragment;
 import com.insalyon.les24heures.fragments.TclFragment;
 import com.insalyon.les24heures.fragments.TicketsFragment;
+import com.insalyon.les24heures.fragments.TweetWallFragment;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -113,6 +114,14 @@ public class StaticDataActivity extends BaseActivity {
         startFragment();
     }
 
+    @OnClick(R.id.navigation_drawer_tweetwall)
+    public void onClickTweetWall(View v) {
+        super.onClickTweetWall(v);
+        nextActivity = null;
+        startFragment();
+    }
+
+
     @OnClick(R.id.navigation_drawer_facilities)
     public void onClickFacilities(View v) {
         super.onClickFacilities(v);
@@ -164,6 +173,8 @@ public class StaticDataActivity extends BaseActivity {
                 str = (getResources().getString(R.string.facilities_fragment_appname));
             if (nextStaticFragment.equals(ConsoFragment.class))
                 str = (getResources().getString(R.string.conso_fragment_appname));
+            if (nextStaticFragment.equals(TweetWallFragment.class))
+                str = (getResources().getString(R.string.tweetname_fragment_appname));
         }
 
         if (str != getActionBar().getTitle()) {

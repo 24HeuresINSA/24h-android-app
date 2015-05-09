@@ -139,7 +139,7 @@
     <string name="dayTabOne">Vendredi</string>
     <string name="dayTabTwo">Samedi</string>
     <string name="tickets_title">Billeterie</string>
-    <string name="ticket_long_label">L \'accès à la zone concerts ne sera possible qu\'entre 19h45 et 2h</string>
+    <string name="ticket_long_label">L\'accès à la zone concerts ne sera possible qu\'entre 19h45 et 2h</string>
     <string name="ticket_url">https://www.24heures.org/billetterie</string>
     <string name="billet_text">Pour éviter l\'attente aux caisses les soirs du festival, et pour être sûr d\'avoir une place, achetez votre billet sur Internet et profitez de tarifs préférentiels.</string>
     <string name="ACHETER">ACHETER MES PLACES MAINTENANT!</string>
@@ -159,5 +159,8 @@
     <string name="text_prix_45">4,5€</string>
     <string name="dernierdepart">Dernier</string>
     <string name="premierdeparts">Premier</string>
+    <string name="navigationdrawer_label_tweetwall">Tweet Wall</string>
+    <string name="tweetname_fragment_appname">Tweet Wall</string>
+    <string name="tweetWallUrl">http://www.24heures.org/</string>
 
 </resources>
