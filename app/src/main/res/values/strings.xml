@@ -161,6 +161,6 @@
     <string name="premierdeparts">Premier</string>
     <string name="navigationdrawer_label_tweetwall">Tweet Wall</string>
     <string name="tweetname_fragment_appname">Tweet Wall</string>
-    <string name="tweetWallUrl">http://www.24heures.org/</string>
+    <string name="tweetWallUrl">https://app.livetweetapp.com/display/IGr0ZEl19m/</string>
 
 </resources>
