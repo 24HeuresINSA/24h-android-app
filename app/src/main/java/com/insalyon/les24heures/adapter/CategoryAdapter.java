@@ -50,6 +50,8 @@ public class CategoryAdapter extends ArrayAdapter<Category> {
 
     }
 
+
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
 
