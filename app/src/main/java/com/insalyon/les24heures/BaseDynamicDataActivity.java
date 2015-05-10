@@ -29,6 +29,7 @@ import com.insalyon.les24heures.utils.IntentExtra;
 import com.insalyon.les24heures.view.DetailSlidingUpPanelLayout;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.InjectView;
 import retrofit.RestAdapter;
@@ -172,9 +173,22 @@ public abstract class BaseDynamicDataActivity extends BaseActivity {
             public boolean onQueryTextChange(String newText) {
 
                 if (!searchView.isIconified()) {
-                    SearchEvent searchEvent = new SearchEvent(newText);
-                    eventBus.post(searchEvent);
-                    searchQuery = newText;
+                    if(!newText.equals("")){
+                        SearchEvent searchEvent = new SearchEvent(newText);
+                        eventBus.post(searchEvent);
+                        searchQuery = newText;
+                    } else{
+
+                        List<Category> catSelected = new ArrayList<>(selectedCategories);
+
+                        CategoriesSelectedEvent categoriesSelectedEvent = new CategoriesSelectedEvent(catSelected);
+
+                        if (globalMenu.findItem(R.id.menu_favorites).isChecked()) {
+                            catSelected.add(categoryService.getFavoriteCategory());
+                        }
+
+                        eventBus.post(categoriesSelectedEvent);
+                    }
                 }
 
                 return false;
