@@ -1,7 +1,10 @@
 package com.insalyon.les24heures.view;
 
 import android.content.Context;
+import android.os.Build;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.GridView;
 
 /**
@@ -28,8 +31,15 @@ public class AutoExpandGridView extends GridView {
             // The great Android "hackatlon", the love, the magic.
             // The two leftmost bits in the height measure spec have
             // a special meaning, hence we can't use them to describe height.
-            heightSpec = MeasureSpec.makeMeasureSpec(
-                    Integer.MAX_VALUE, MeasureSpec.AT_MOST);
+//            heightSpec = MeasureSpec.makeMeasureSpec(
+//                    Integer.MAX_VALUE, MeasureSpec.AT_MOST);
+//
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+                heightSpec = View.MeasureSpec.makeMeasureSpec(ViewGroup.LayoutParams.WRAP_CONTENT, View.MeasureSpec.AT_MOST);
+            } else {
+                heightSpec = View.MeasureSpec.makeMeasureSpec(ViewGroup.LayoutParams.WRAP_CONTENT, View.MeasureSpec.EXACTLY);
+            }
+
         } else {
             // Any other height should be respected as is.
             heightSpec = heightMeasureSpec;
