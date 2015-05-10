@@ -17,6 +17,7 @@ import java.util.List;
  * Created by remi on 29/01/15.
  */
 public class ScheduleServiceImpl implements ScheduleService {
+    private static final int MANFIWEEKNUMBER = 21;
     private static ScheduleServiceImpl scheduleService;
 
     public static ScheduleServiceImpl getInstance() {
@@ -95,22 +96,29 @@ public class ScheduleServiceImpl implements ScheduleService {
     }
 
 
-
     @Override
     public ArrayList<Schedule> getTodayNextSchedules(Resource dayResource) {
         Date nowDate = new Date();
-       
+
 
         Calendar now = Calendar.getInstance();
         now.setTime(nowDate);
-        Day nowDay = Day.values()[(now.get(Calendar.DAY_OF_WEEK))-1];
+        now.add(Calendar.WEEK_OF_YEAR, 1);
+        Day nowDay = Day.values()[(now.get(Calendar.DAY_OF_WEEK)) - 1];
         int nowHours = now.get(Calendar.HOUR_OF_DAY);
+
+        if (now.get(Calendar.WEEK_OF_YEAR) - 1 < MANFIWEEKNUMBER) {
+            return (ArrayList<Schedule>) dayResource.getSchedules();
+        } else if (now.get(Calendar.WEEK_OF_YEAR) - 1 > MANFIWEEKNUMBER) {
+            return new ArrayList<>();
+        }
+
 
         ArrayList<Schedule> result = new ArrayList<>();
         for (Schedule schedule : dayResource.getSchedules()) {
-            if(schedule.getDay().equals(nowDay)
+            if (schedule.getDay().equals(nowDay)
                     && (schedule.getEnd().getHours() >= nowHours
-                        || schedule.getEnd().getHours() == 0)) //traitement de faveur pour le minuit des 24h de cinema
+                    || schedule.getEnd().getHours() == 0)) //traitement de faveur pour le minuit des 24h de cinema
                 result.add(schedule);
         }
 

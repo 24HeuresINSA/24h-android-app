@@ -224,8 +224,7 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
 
     public void onEvent(ManageDetailSlidingUpDrawer event) {
         if (event.getState().equals(SlidingUpPannelState.HIDE)) {
-            if (selectedDayResource != null)
-                resourceMarkerMap.get(selectedDayResource).setIcon(BitmapDescriptorFactory.defaultMarker());
+            unSelectMarker();
         }
     }
 
@@ -236,17 +235,21 @@ public class DayMapsFragment extends DayTypeFragment implements OnMapReadyCallba
         ManageDetailSlidingUpDrawer manageDetailSlidingUpDrawer = new ManageDetailSlidingUpDrawer(SlidingUpPannelState.SHOW, markerResourceMap.get(marker));
         eventBus.post(manageDetailSlidingUpDrawer);
 
-        if (selectedDayResource != null) {
-            //unset previously selected marker
-            Marker previouslySelected = resourceMarkerMap.get(selectedDayResource);
-            previouslySelected.setIcon(BitmapDescriptorFactory.fromResource(getMarkerDrawable(selectedDayResource)));
-        }
+        unSelectMarker();
 
         //set selected marker
         marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
         selectedDayResource = markerResourceMap.get(marker);
 
         return false;
+    }
+
+    private void unSelectMarker() {
+        if (selectedDayResource != null) {
+            //unset previously selected marker
+            Marker previouslySelected = resourceMarkerMap.get(selectedDayResource);
+            previouslySelected.setIcon(BitmapDescriptorFactory.fromResource(getMarkerDrawable(selectedDayResource)));
+        }
     }
 
 

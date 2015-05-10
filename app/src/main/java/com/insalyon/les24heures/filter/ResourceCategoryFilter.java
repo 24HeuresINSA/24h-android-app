@@ -39,8 +39,8 @@ public abstract class ResourceCategoryFilter<T extends Resource> extends Filter 
                             ((String) constraint).substring(1, constraint.length() - 1).split(", "))
                     );
 
-            if (selectedCategories.get(0).equals(SpecificCategory.ALL.toString()))
-                selectedCategories.clear();
+            if (selectedCategories.contains(SpecificCategory.ALL.toString()))
+                selectedCategories.remove(selectedCategories.indexOf(SpecificCategory.ALL.toString()));
 
             if (selectedCategories.size() != 0) {
                 ArrayList<Resource> filteredItems = new ArrayList<>();

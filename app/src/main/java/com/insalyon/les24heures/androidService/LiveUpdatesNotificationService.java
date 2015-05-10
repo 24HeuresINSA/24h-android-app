@@ -43,6 +43,12 @@ public class LiveUpdatesNotificationService extends IntentService {
         eventBus.registerSticky(this);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        eventBus.unregister(this);
+    }
+
     //When new Liveupdates are received, show them as notification
     public void onEvent(LiveUpdatesReceivedEvent event) {
         List<LiveUpdate> liveUpdates = event.getLiveUpdates();
