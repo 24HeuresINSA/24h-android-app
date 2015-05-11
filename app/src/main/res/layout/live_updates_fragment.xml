@@ -29,9 +29,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             style="@style/GNowProgressBar"
-            android:indeterminate="true"
-            android:layout_marginTop="@dimen/output_list_sticky_item_height"
-            android:visibility="gone" />
+            android:indeterminate="true" />
 
 
     </FrameLayout>
