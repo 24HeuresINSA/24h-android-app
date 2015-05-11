@@ -18,7 +18,8 @@
         <ListView
             android:id="@+id/list_live_updates"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:divider="@null"/>
 
 
         <fr.castorflex.android.smoothprogressbar.SmoothProgressBar

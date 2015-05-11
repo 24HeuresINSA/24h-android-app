@@ -18,13 +18,15 @@ import butterknife.ButterKnife;
 
 
 public class LiveUpdateAdapter extends BaseAdapter {
+    static String TIMEZONE_NAME = "Europe/Paris";
+
 
     private final LayoutInflater mInflater;
     private List<LiveUpdate> liveUpdates;
 
     public LiveUpdateAdapter(Context context, List<LiveUpdate> liveUpdates) {
         mInflater = LayoutInflater.from(context);
-        this.liveUpdates=liveUpdates;
+        this.liveUpdates = liveUpdates;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class LiveUpdateAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         View view;
         ViewHolder holder;
-        if(convertView == null) {
+        if (convertView == null) {
             view = mInflater.inflate(R.layout.live_update_list_item, parent, false);
             holder = new ViewHolder();
             holder.title = ButterKnife.findById(view, R.id.list_item_live_update_title_text);
@@ -56,7 +58,7 @@ public class LiveUpdateAdapter extends BaseAdapter {
 
         } else {
             view = convertView;
-            holder = (ViewHolder)view.getTag();
+            holder = (ViewHolder) view.getTag();
         }
 
         LiveUpdate liveUpdate = liveUpdates.get(position);
@@ -64,9 +66,10 @@ public class LiveUpdateAdapter extends BaseAdapter {
         holder.message.setText(liveUpdate.getMessage());
 
         Calendar calendar = Calendar.getInstance();
-        calendar.setTimeZone(TimeZone.getDefault());
+        calendar.setTimeZone(TimeZone.getTimeZone(TIMEZONE_NAME));
         calendar.setTimeInMillis(liveUpdate.getTimePublished() * 1000);
-        holder.time.setText(calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.HOUR_OF_DAY));
+        holder.time.setText(calendar.get(Calendar.HOUR_OF_DAY) + ":"
+                + ((calendar.get(Calendar.MINUTE) < 10) ? "0"+calendar.get(Calendar.MINUTE) : calendar.get(Calendar.MINUTE)));
 
         return view;
     }
