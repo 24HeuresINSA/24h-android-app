@@ -4,18 +4,17 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.insalyon.les24heures.R;
 import com.insalyon.les24heures.model.LiveUpdate;
 
-import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 
 import butterknife.ButterKnife;
-import butterknife.InjectView;
 
 
 public class LiveUpdateAdapter extends BaseAdapter {
@@ -52,6 +51,7 @@ public class LiveUpdateAdapter extends BaseAdapter {
             holder = new ViewHolder();
             holder.title = ButterKnife.findById(view, R.id.list_item_live_update_title_text);
             holder.message = ButterKnife.findById(view, R.id.list_item_live_update_message_text);
+            holder.time = ButterKnife.findById(view, R.id.list_item_live_update_time);
             view.setTag(holder);
 
         } else {
@@ -63,10 +63,15 @@ public class LiveUpdateAdapter extends BaseAdapter {
         holder.title.setText(liveUpdate.getTitle());
         holder.message.setText(liveUpdate.getMessage());
 
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTimeZone(TimeZone.getDefault());
+        calendar.setTimeInMillis(liveUpdate.getTimePublished() * 1000);
+        holder.time.setText(calendar.get(Calendar.HOUR_OF_DAY)+":"+calendar.get(Calendar.HOUR_OF_DAY));
+
         return view;
     }
 
     private class ViewHolder {
-        public TextView title, message;
+        public TextView title, message, time;
     }
 }
