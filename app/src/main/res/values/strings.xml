@@ -159,5 +159,6 @@
     <string name="text_prix_45">4,5€</string>
     <string name="dernierdepart">Dernier</string>
     <string name="premierdeparts">Premier</string>
+    <string name="conso_header_label">Pas de verres en soirées\nCB à partir de 6 €</string>
 
 </resources>
