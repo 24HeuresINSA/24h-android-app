@@ -430,7 +430,8 @@
                 card_view:cardCornerRadius="4dp"
                 android:elevation="5dp"
                 android:background="@color/second_night"
-                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material">
+                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material"
+                android:visibility="gone">
 
                 <LinearLayout
                     android:orientation="horizontal"
