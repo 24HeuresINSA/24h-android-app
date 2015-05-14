@@ -2,6 +2,8 @@ package com.insalyon.les24heures;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
@@ -175,5 +177,16 @@ public class StaticDataActivity extends BaseActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("nextStaticFragment", nextStaticFragment.getCanonicalName());
+    }
+
+
+    //    TCL
+    public void showTclOnMaps(View v) {
+
+        String locStr = (String) v.getTag();
+        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("geo:"+locStr+"?q="+locStr+"(Arrêt TCL)"));
+        startActivity(intent);
+
+
     }
 }
