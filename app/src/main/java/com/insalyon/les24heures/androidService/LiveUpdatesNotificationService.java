@@ -46,7 +46,7 @@ public class LiveUpdatesNotificationService extends IntentService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        eventBus.unregister(this);
+       // eventBus.unregister(this);
     }
 
     //When new Liveupdates are received, show them as notification
