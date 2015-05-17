@@ -29,6 +29,8 @@ public class LiveUpdatesFragment extends Fragment {
 
     @InjectView(R.id.list_live_updates)
     ListView liveUpdatesListView;
+    @InjectView(R.id.progress_wheel)
+    View progressWheel;
     private List<LiveUpdate> liveUpdates;
     private EventBus eventBus;
     private LiveUpdateAdapter liveUpdateAdapter;
@@ -66,6 +68,7 @@ public class LiveUpdatesFragment extends Fragment {
         prepareView(inflater, container);
         requestRefreshOfLiveUpdates();
 
+        progressWheel.setVisibility(View.VISIBLE);
 
         return view;
     }
@@ -84,6 +87,7 @@ public class LiveUpdatesFragment extends Fragment {
         liveUpdates.clear();
         liveUpdates.addAll(event.getLiveUpdates());
         liveUpdateAdapter.notifyDataSetChanged();
+        progressWheel.setVisibility(View.GONE);
     }
 
     public String getDisplayName() {
