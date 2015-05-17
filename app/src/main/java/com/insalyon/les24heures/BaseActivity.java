@@ -348,6 +348,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
 
     public void onEvent(RetrofitErrorEvent event) {
+        eventBus.removeStickyEvent(event);
 
         String content = null;
         Boolean withAction = true;
