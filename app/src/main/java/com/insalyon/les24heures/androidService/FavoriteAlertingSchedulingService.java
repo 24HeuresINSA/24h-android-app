@@ -55,7 +55,7 @@ public class FavoriteAlertingSchedulingService extends IntentService {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        eventBus.unregister(this);
+        //eventBus.unregister(this);
     }
 
     public void onEvent(ResourceUpdatedEvent event) {
