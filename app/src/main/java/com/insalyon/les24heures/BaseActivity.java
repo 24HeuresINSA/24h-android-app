@@ -66,6 +66,7 @@ import java.util.TimerTask;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import butterknife.OnLongClick;
 import de.greenrobot.event.EventBus;
 import retrofit.RestAdapter;
 
@@ -347,6 +348,7 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
 
     public void onEvent(RetrofitErrorEvent event) {
+        eventBus.removeStickyEvent(event);
 
         String content = null;
         Boolean withAction = true;
@@ -379,6 +381,28 @@ public abstract class BaseActivity extends Activity implements SnackBar.OnMessag
 
             snackBar.show();
 
+        }
+    }
+
+    private Boolean longClicked = false;
+    private int clicked = 0;
+    @OnLongClick(R.id.navigation_drawer_header)
+    public boolean onLongClick(View v){
+        longClicked = true;
+        clicked = 0;
+        return true;
+    }
+
+    @OnClick(R.id.navigation_drawer_header)
+    public void onClick(View v){
+        if(longClicked){
+            clicked++;
+            if(clicked > 1){
+                clicked = 0;
+                longClicked = false;
+                Intent intent = new Intent(this,HiddenActivity.class);
+                startActivity(intent);
+            }
         }
     }
 

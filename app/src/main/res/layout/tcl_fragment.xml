@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:gravity="center_horizontal">
+    android:gravity="center_horizontal"
+    tools:ignore="ResAuto">
 
 
     <ScrollView
@@ -22,7 +24,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="0dp"
                 android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:orientation="vertical">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -32,6 +35,15 @@
                     android:layout_marginRight="5dip"
                     android:id="@+id/info_tcl" />
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="Clique sur une vignette pour savoir où se trouve l&apos;arret"
+                    android:id="@+id/textView3"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginBottom="5dp" />
+
             </LinearLayout>
 
             <TableLayout
@@ -39,7 +51,10 @@
                 android:layout_height="wrap_content"
                 android:shrinkColumns="*"
                 android:layout_weight="1"
-                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar">
+                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar"
+                android:clickable="true"
+                android:tag="45.78244432,4.8776722"
+                android:onClick="showTclOnMaps">
 
                 <TableRow
                     android:layout_width="fill_parent"
@@ -135,7 +150,9 @@
                 android:layout_height="wrap_content"
                 android:shrinkColumns="*"
                 android:layout_weight="1"
-                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar">
+                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar"
+                android:tag="45.78151653,4.87215757"
+                android:onClick="showTclOnMaps">
 
                 <TableRow android:layout_width="fill_parent"
                     android:weightSum="3"
@@ -220,7 +237,9 @@
                 android:layout_height="wrap_content"
                 android:shrinkColumns="*"
                 android:layout_weight="1"
-                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar">
+                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar"
+                android:tag="45.77052261,4.86319229"
+                android:onClick="showTclOnMaps">
 
                 <TableRow
                     android:layout_width="fill_parent"
@@ -374,7 +393,9 @@
                 android:layout_height="wrap_content"
                 android:shrinkColumns="*"
                 android:layout_weight="1"
-                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar" >
+                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar"
+                android:tag="45.77052261,4.86319229"
+                android:onClick="showTclOnMaps">
 
                 <TableRow
                     android:layout_width="fill_parent"
@@ -470,7 +491,10 @@
                 android:layout_height="wrap_content"
                 android:shrinkColumns="*"
                 android:layout_weight="1"
-                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar" >
+                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar"
+                android:clickable="true"
+                android:tag="45.78244432,4.8776722"
+                android:onClick="showTclOnMaps">
 
                 <TableRow
                     android:layout_width="fill_parent"
@@ -624,7 +648,9 @@
                 android:layout_height="wrap_content"
                 android:shrinkColumns="*"
                 android:layout_weight="1"
-                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar" >
+                android:layout_marginBottom="@dimen/abc_text_size_subtitle_material_toolbar"
+                android:tag="45.78244432,4.8776722"
+                android:onClick="showTclOnMaps">
 
                 <TableRow
                     android:layout_width="fill_parent"
@@ -719,7 +745,10 @@
                     android:layout_gravity="center"
                     android:background="#ffa9d4ff"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:clickable="true"
+                    android:tag="45.78244432,4.8776722"
+                    android:onClick="showTclOnMaps">
 
                     <TextView
                         android:layout_column="1"
@@ -785,7 +814,11 @@
                     android:weightSum="3"
                     android:layout_gravity="center_vertical|left"
                     android:background="@color/second_night"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:clickable="true"
+                    android:tag="45.78244432,4.8776722"
+                    android:onClick="showTclOnMaps">
 
                     <ImageView
                         android:layout_column="1"
@@ -815,7 +848,8 @@
                     android:layout_gravity="center"
                     android:background="#ffa9d4ff"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" >
+                    android:layout_height="wrap_content"
+                    android:visibility="gone">
 
                     <TextView
                         android:layout_column="1"

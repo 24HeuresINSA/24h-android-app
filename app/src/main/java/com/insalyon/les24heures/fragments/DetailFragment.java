@@ -175,9 +175,9 @@ public abstract class DetailFragment extends Fragment {
 
             //optionals  pictures
             if (resource.getPictures().size() == 0) {
-                carouselLayout.setVisibility(View.INVISIBLE);
+                carouselLayout.setVisibility(View.GONE);
             } else {
-                mJazzy.setAdapter(picturePagerAdapter);
+                mJazzy.setAdapter(picturePagerAdapter); 
                 carouselLayout.setVisibility(View.VISIBLE);
             }
 
