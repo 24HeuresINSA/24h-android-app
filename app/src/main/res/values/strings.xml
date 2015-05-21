@@ -124,7 +124,7 @@
     <string name="redbull_title">Redbull</string>
     <string name="standard_text">Standard</string>
     <string name="aroma_text">Aromatisée</string>
-    <string name="Text_prix_redbull">\n3€</string>
+    <string name="Text_prix_redbull">\n2,5€</string>
     <string name="soft_title">Softs</string>
     <string name="text_prix_2">2€</string>
     <string name="canette">La canette (33cl)</string>
@@ -160,5 +160,6 @@
     <string name="dernierdepart">Dernier</string>
     <string name="premierdeparts">Premier</string>
     <string name="conso_header_label">Pas de verres en soirées\nCB à partir de 6 €</string>
+    <string name="text_tcl_cata">En raison de la grève TCL <i>le vendredi 22 mai</i>, le campus de La Doua <i>ne sera plus desservi par les trams T1 et T4 à partir de 19h30.</i> Nous sommes vraiment désolé pour cet imprévu, mais cela ne dépend absolument pas de nous. \n\nNous sommes prêt à vous <b>accueillir</b> sur la zone à partir de <b>19h45</b>, alors n\'hésitez pas à venir plus tôt ! Venez pourrez écouter les premiers concerts de OK PRESS et BRNS, où vous poser dans les des espaces détentes. Le trafic normal reprend le samedi matin à 4h30. \n\nDe plus, nous vous rappelons que vous pouvez profiter de notre code <b>Uber</b> <b>24HINSA2015</b> afin de bénéficier de 10% de remise sur la course !\n\n\n</string>
 
 </resources>

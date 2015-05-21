@@ -8,8 +8,8 @@ android {
         applicationId "com.insalyon.les24heures"
         minSdkVersion 16
         targetSdkVersion 21
-        versionCode 11
-        versionName "1.2"
+        versionCode 12
+        versionName "1.3"
 
     }
 
