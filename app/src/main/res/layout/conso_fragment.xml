@@ -316,7 +316,7 @@
 
             <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/carlsberg_card_view"
+                android:id="@+id/skoll_card_view"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="match_parent"
@@ -357,8 +357,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:textAppearance="@style/card_title"
-                                android:text="@string/conso_carlsberg_title"
-                                android:id="@+id/carlsberg_title"
+                                android:text="@string/conso_skoll_title"
+                                android:id="@+id/skoll_title"
                                 android:textColor="@color/light_black"
                                 android:focusable="true"
                                 android:focusableInTouchMode="true"
@@ -449,7 +449,7 @@
 
             <android.support.v7.widget.CardView
                 xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/redbull_card_view"
+                android:id="@+id/tourtel_card_view"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="match_parent"
@@ -483,8 +483,8 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:textAppearance="@style/card_title"
-                            android:text="@string/redbull_title"
-                            android:id="@+id/redbull_title"
+                            android:text="@string/tourtel_title"
+                            android:id="@+id/tourtel_title"
                             android:textColor="@color/light_black"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
