@@ -31,14 +31,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:text="@string/text_tcl_cata"
-                     android:layout_marginRight="5dip"
-                    android:id="@+id/textView5" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
                     android:text="Pour rentrer en toute sécurité, utilisez les transports en communs ! Les horaires des arrêts sont indiqués à titre d&apos;information."
                     android:layout_marginRight="5dip"
                     android:id="@+id/info_tcl" />
