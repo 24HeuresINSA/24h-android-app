@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.insalyon.les24heures.service.impl.ApplicationVersionServiceImpl;
 
+import java.util.Date;
+
 
 public class SplashActivity extends Activity {
     private static final String TAG = SplashActivity.class.getCanonicalName();
@@ -74,9 +76,15 @@ public class SplashActivity extends Activity {
         protected void onPostExecute(Void result) {
             super.onPostExecute(result);
 
+            Class startActivity = DayActivity.class;
+            Date now = new Date();
+            if(now.getHours() >= 19 || now.getHours() <= 3){
+                startActivity = NightActivity.class;
+            }
+
             //TODO choisir quel activtiy lancer en fonction de l'heure ici
             Intent i = new Intent(SplashActivity.this,
-                    DayActivity.class);
+                    startActivity);
             // any info loaded can during splash_show
             // can be passed to main activity using
             // below
