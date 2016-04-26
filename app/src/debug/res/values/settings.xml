@@ -4,4 +4,8 @@
     <string name="backend_url">http://cetaitmieuxavant.24heures.org</string>
     <string name="backend_url_mobile_test">http://test.mobile.24heures.org:3030/</string>
     <string name="backend_url_mobile">http://mobile.24heures.org/</string>
+    <integer name="DISPLAY_ARTIST_HOUR">11</integer>
+    <string name="FRIDAY_DATE">26/04/2016</string>
+    <string name="SATURDAY_DATE">27/04/2016</string>
+    <string name="SUNDAY_DATE">28/04/2016</string>
 </resources>

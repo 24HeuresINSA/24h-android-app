@@ -78,7 +78,7 @@ public class SplashActivity extends Activity {
 
             Class startActivity = DayActivity.class;
             Date now = new Date();
-            if(now.getHours() >= 19 || now.getHours() <= 3){
+            if(now.getHours() >= getResources().getInteger(R.integer.DISPLAY_ARTIST_HOUR) || now.getHours() <= 6){
                 startActivity = NightActivity.class;
             }
 
