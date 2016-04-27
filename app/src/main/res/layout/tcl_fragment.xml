@@ -31,7 +31,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"
-                    android:text="Pour rentrer en toute sécurité, utilisez les transports en communs ! Les horaires des arrêts sont indiqués à titre d&apos;information."
+                    android:text="Pour rentrer en toute sécurité, utilisez les transport en communs ! Les horaires des arrêts sont indiqués à titre d&apos;information."
                     android:layout_marginRight="5dip"
                     android:id="@+id/info_tcl" />
 
@@ -39,7 +39,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:text="Clique sur une vignette pour savoir où se trouve l&apos;arret"
+                    android:text="Cliquez sur une vignette pour savoir où se trouve l&apos;arret"
                     android:id="@+id/textView3"
                     android:layout_marginTop="5dp"
                     android:layout_marginBottom="5dp" />
@@ -190,7 +190,7 @@
                     <TextView
                         android:layout_column="1"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Derniers vers Hôpital Feyzin Vénissieux"
+                        android:text="Dernier vers Hôpital Feyzin Vénissieux"
                         android:id="@+id/textView20"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
@@ -214,7 +214,7 @@
                     <TextView
                         android:layout_column="1"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Premiers vers Hôpital Feyzin Vénissieux"
+                        android:text="Premier vers Hôpital Feyzin Vénissieux"
                         android:id="@+id/textView23"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
@@ -281,7 +281,7 @@
                     <TextView
                         android:layout_column="1"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Derniers vers Vaulx-en-Velin La Soie"
+                        android:text="Dernier vers Perrache"
                         android:id="@+id/textView45"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
@@ -310,7 +310,7 @@
                     <TextView
                         android:layout_column="1"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Premier vers Vaulx-en-Velin La Soie"
+                        android:text="Premier Perrache"
                         android:id="@+id/textView47"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
@@ -339,7 +339,7 @@
                     <TextView
                         android:layout_column="1"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Derniers vers Vaulx-en-Velin La Soie"
+                        android:text="Dernier vers Vaulx-en-Velin La Soie"
                         android:id="@+id/textVcciew49"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
@@ -437,7 +437,7 @@
                     <TextView
                         android:layout_column="1"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="Derniers vers Gare d&apos;Oullins"
+                        android:text="Dernier vers Gare d&apos;Oullins"
                         android:id="@+id/textView41"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
