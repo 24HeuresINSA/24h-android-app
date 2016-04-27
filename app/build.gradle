@@ -6,11 +6,10 @@ android {
 
     defaultConfig {
         applicationId "com.insalyon.les24heures"
-        minSdkVersion 16
+        minSdkVersion 17
         targetSdkVersion 21
-        versionCode 12
-        versionName "1.3"
-
+        versionCode 14
+        versionName "2.0"
     }
 
     signingConfigs {
