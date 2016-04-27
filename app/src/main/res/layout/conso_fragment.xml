@@ -761,7 +761,7 @@
                                 android:layout_gravity="right"
                                 android:gravity="right">
 
-                                <com.insalyon.les24heures.view.VerticalTextView
+                                <com.insadelyon.les24heures.view.VerticalTextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"

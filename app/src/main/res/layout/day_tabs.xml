@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:id="@+id/day_activity_content">
 
-    <com.insalyon.les24heures.view.SlidingTabLayout
+    <com.insadelyon.les24heures.view.SlidingTabLayout
         android:background="@color/second_day"
         android:id="@+id/sliding_tabs"
         android:layout_width="match_parent"

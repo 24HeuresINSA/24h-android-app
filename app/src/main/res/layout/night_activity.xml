@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <com.insalyon.les24heures.view.CustomDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <com.insadelyon.les24heures.view.CustomDrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -12,7 +12,7 @@
         android:layout_alignParentTop="true">
 
         <!--VISIBLE CONTENT-->
-        <com.insalyon.les24heures.view.DetailSlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
+        <com.insadelyon.les24heures.view.DetailSlidingUpPanelLayout xmlns:sothree="http://schemas.android.com/apk/res-auto"
             android:id="@+id/sliding_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -49,12 +49,12 @@
             <!-- SLIDING UP LAYOUT CONTENT -->
             <fragment
                 android:id="@+id/sliding_layout_content_fragment"
-                android:name="com.insalyon.les24heures.fragments.NightDetailFragment"
+                android:name="com.insadelyon.les24heures.fragments.NightDetailFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
 
-        </com.insalyon.les24heures.view.DetailSlidingUpPanelLayout>
+        </com.insadelyon.les24heures.view.DetailSlidingUpPanelLayout>
 
         <!--NAVIGATION DRAWER-->
         <FrameLayout
@@ -65,7 +65,7 @@
             <include layout="@layout/navigation_drawer" />
         </FrameLayout>
 
-    </com.insalyon.les24heures.view.CustomDrawerLayout>
+    </com.insadelyon.les24heures.view.CustomDrawerLayout>
 
 
 </FrameLayout>

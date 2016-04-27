@@ -103,7 +103,7 @@
 
     </RelativeLayout>
 
-    <com.insalyon.les24heures.view.DetailScrollView
+    <com.insadelyon.les24heures.view.DetailScrollView
         android:id="@+id/detail_scrollView"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
@@ -130,13 +130,13 @@
                     android:layout_marginTop="@dimen/text_block_padding"
                     android:textSize="@dimen/sub_title_detail"/>
 
-                <com.insalyon.les24heures.view.AutoExpandGridView
+                <com.insadelyon.les24heures.view.AutoExpandGridView
                     android:id="@+id/detail_schedule_grid_layout"
                     android:layout_width="fill_parent"
                     android:layout_height="0dp"
                     android:columnCount="1"
                     android:numColumns="1">
-                </com.insalyon.les24heures.view.AutoExpandGridView>
+                </com.insadelyon.les24heures.view.AutoExpandGridView>
                 <!--  android:layout_height="wrap_content"
                      android:layout_margin="@dimen/text_block_padding"    a rajouter au cas ou-->
             </LinearLayout>
@@ -203,14 +203,14 @@
                 android:orientation="vertical">
 
 
-                <com.insalyon.les24heures.JazzyViewPager.JazzyViewPager xmlns:android="http://schemas.android.com/apk/res/android"
+                <com.insadelyon.les24heures.JazzyViewPager.JazzyViewPager xmlns:android="http://schemas.android.com/apk/res/android"
                     android:id="@+id/jazzy_pager"
                     android:layout_width="match_parent"
                     android:layout_height="200dp"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true" />
 
-                <com.insalyon.les24heures.view.viewpagerindicator.CirclePageIndicator
+                <com.insadelyon.les24heures.view.viewpagerindicator.CirclePageIndicator
                     android:id="@+id/indicator"
                     android:padding="10dip"
                     android:layout_height="20dp"
@@ -225,7 +225,7 @@
 
 
 
-    </com.insalyon.les24heures.view.DetailScrollView>
+    </com.insadelyon.les24heures.view.DetailScrollView>
 
 
 
