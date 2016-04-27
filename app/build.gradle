@@ -8,7 +8,7 @@ android {
         applicationId "com.insadelyon.les24heures"
         minSdkVersion 17
         targetSdkVersion 21
-        versionCode 14
+        versionCode 15
         versionName "2.0"
     }
 

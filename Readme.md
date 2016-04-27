@@ -35,7 +35,7 @@ Tous ces parametres peuvent etre override dans le fichier de debug (app/src/debu
 ### Deploy
 
 Classiquement, changer le versioCode et le versioName dans le fichier Gradle
-* versionCode 14
+* versionCode 15
 * versionName "2.0"
 
 Et **changer le flag "Version de l'appli mobile"** ici http://assomaker.24heures.org/configv/ . Ce flag est utilisé par l'application pour savoir si elle une nouvelle version de l'application est disponible :

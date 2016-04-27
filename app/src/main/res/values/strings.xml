@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!--Maps conf-->
-    <string name="maps_api_key">AIzaSyA4dlZvjFmFs3ZLFC7t9V3LJCgzewGPCZo</string>
+    <string name="maps_api_key">AIzaSyBGNONZSXwqPsE3dJq-pdJIhoPpM6hXrPc</string>
 
     <!--General-->
     <string name="app_name">24h de l\'INSA</string>
