@@ -68,7 +68,7 @@
                     android:layout_height="fill_parent"
                     android:layout_gravity="center"
                     android:gravity="center_vertical|left"
-                    android:text="Scene Pression Live"
+                    android:text="Scene Kikivousaime"
                     android:textAllCaps="true"
                     android:visibility="visible"
                     android:textAppearance="@style/detail_next_schedule"

@@ -44,6 +44,28 @@ Et **changer le flag "Version de l'appli mobile"** ici http://assomaker.24heures
 
 
 
+Console developpeur
+https://play.google.com/apps/publish
+
+Ne pas oublier de modifier la description et les captures d'écran.
+
+
+
+Gmail account :
+dsi-android@24heures.org
+Me demander le password (RemiP, cf Github collaborateur)
+
+Signing application
+http://developer.android.com/tools/publishing/app-signing.html
+
+Pour ajouter une clef de signature
+https://console.developers.google.com
+
+Building release with Android Studio
+
+Upload new APK
+
+
 
 ## La connection avec Assomaker
 
