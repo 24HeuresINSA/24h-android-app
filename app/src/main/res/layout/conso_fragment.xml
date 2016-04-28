@@ -516,22 +516,12 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/standard_text"
+                                    android:text="@string/text_demi"
                                     android:id="@+id/standard_text"
                                     android:textStyle="italic"
                                     android:paddingTop="@dimen/spb_default_stroke_width"
                                     android:paddingRight="@dimen/text_block_padding" />
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/aroma_text"
-                                    android:id="@+id/textView4dvdfv"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding"
-                                    android:nestedScrollingEnabled="false" />
 
                             </LinearLayout>
 
