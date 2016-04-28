@@ -238,10 +238,10 @@
                     android:id="@+id/ticket_button"
                     android:layout_below="@+id/textView18"
                     android:layout_centerHorizontal="true"
-                    android:background="@color/third_day"
+                    android:background="@color/third_night"
                     android:padding="@dimen/text_block_padding"
                     android:textColor="@color/white"
-                    android:shadowColor="@color/second_day" />
+                    android:shadowColor="@color/second_night" />
             </LinearLayout>
 
             <TextView
