@@ -22,7 +22,7 @@ public class HiddenActivity extends Activity {
 
         ViewSwitcher switcher = (ViewSwitcher) findViewById(R.id.qawsed);
 
-        if (str.contains("24837645")) {
+        if (str.contains("_")) { //don't search further, it should be here but it's not
             str = "BITE";
             switcher.showNext();
 
