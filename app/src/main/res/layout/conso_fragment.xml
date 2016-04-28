@@ -674,7 +674,6 @@
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
                                     android:text="@string/text_prix_1"
-                                    android:id="@+id/cdscs"
                                     android:gravity="right"
                                     android:textStyle="italic"
                                     android:paddingTop="@dimen/spb_default_stroke_width"
