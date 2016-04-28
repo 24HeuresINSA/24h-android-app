@@ -632,10 +632,19 @@
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
                                     android:text="@string/canette"
-                                    android:id="@+id/une_textcsdc"
                                     android:textStyle="italic"
                                     android:paddingTop="@dimen/spb_default_stroke_width"
                                     android:paddingRight="@dimen/text_block_padding" />
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:text="@string/sirop"
+                                    android:textStyle="italic"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:paddingRight="@dimen/text_block_padding" />
+
 
                             </LinearLayout>
 
@@ -646,6 +655,19 @@
                                 android:layout_weight="2"
                                 android:layout_gravity="right"
                                 android:gravity="right">
+
+                                <TextView
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:text="@string/text_prix_2"
+                                    android:id="@+id/cdscs"
+                                    android:gravity="right"
+                                    android:textStyle="italic"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:paddingLeft="@dimen/text_block_padding"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:phoneNumber="false" />
 
                                 <TextView
                                     android:layout_width="wrap_content"
@@ -765,7 +787,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_45"
+                                    android:text="@string/text_prix_4"
                                     android:id="@+id/csdcscsdfefs43fe"
                                     android:gravity="right"
                                     android:textStyle="italic"
@@ -1072,7 +1094,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_75"
+                                    android:text="@string/text_prix_7"
                                     android:id="@+id/geesdvsvcgr5"
                                     android:gravity="right"
                                     android:textStyle="italic"
@@ -1102,7 +1124,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_65"
+                                    android:text="@string/text_prix_7"
                                     android:id="@+id/geesvsedcgr5"
                                     android:gravity="right"
                                     android:textStyle="italic"
@@ -1132,7 +1154,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_45"
+                                    android:text="@string/text_prix_5"
                                     android:id="@+id/geesdcgr5"
                                     android:gravity="right"
                                     android:textStyle="italic"

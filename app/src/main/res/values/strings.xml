@@ -129,7 +129,7 @@
     <string name="text_prix_2">2€</string>
     <string name="canette">La canette (33cl)</string>
     <string name="text_prix_25">2€</string>
-    <string name="frites_text">Frites</string>
+    <string name="frites_text">Frites / Nuggets</string>
     <string name="barquette_text">La barquette</string>
     <string name="Sandwich_title">Paninis</string>
     <string name="sandwich_type1">Chèvre/Miel, Tomate/Mozza/Basilic, Jambon/Fromage</string>
@@ -151,14 +151,17 @@
     <string name="hotdog">Hot Dogs</string>
     <string name="dogdetails">Chipolata, Merguez</string>
     <string name="menu_text">Menus</string>
-    <string name="menu1_text">Panini + Soft + Frites/Nuggets</string>
+    <string name="menu1_text">L'Italien : Panini + Frites/Nuggets + Soft</string>
     <string name="text_prix_75">7,5€</string>
-    <string name="menu2_text">Hot dog + Soft + Frites/Nuggets</string>
+    <string name="menu2_text">Le Texan : Hot dog + Frites/Nuggets + Soft</string>
     <string name="text_prix_65">6,5€</string>
-    <string name="menu3_text">Demi de Bière + Frites/Nuggets</string>
+    <string name="menu3_text">Le Belge : Demi au choix + Frites/Soft</string>
     <string name="text_prix_45">4,5€</string>
     <string name="dernierdepart">Dernier</string>
     <string name="premierdeparts">Premier</string>
     <string name="conso_header_label">Pas de verre en soirée\nCB à partir de 6 €</string>
+    <string name="sirop">Le sirop</string>
+    <string name="text_prix_4">4€</string>
+    <string name="text_prix_7">7€</string>
 
 </resources>
