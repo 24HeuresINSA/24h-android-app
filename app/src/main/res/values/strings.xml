@@ -159,10 +159,11 @@
     <string name="text_prix_45">4,5€</string>
     <string name="dernierdepart">Dernier</string>
     <string name="premierdeparts">Premier</string>
-    <string name="conso_header_label">Pas de verre en soirée\nCB à partir de 6 €</string>
+    <string name="conso_header_label">Pas de bouteille en verre en soirée</string>
     <string name="sirop">Le sirop</string>
     <string name="text_prix_4">4€</string>
     <string name="text_prix_7">7€</string>
     <string name="text_prix_1">1€</string>
+    <string name="eau_bellecour">Eau de Bellecour</string>
 
 </resources>

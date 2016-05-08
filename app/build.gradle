@@ -8,8 +8,8 @@ android {
         applicationId "com.insadelyon.les24heures"
         minSdkVersion 17
         targetSdkVersion 21
-        versionCode 15
-        versionName "2.0"
+        versionCode 18
+        versionName "2.1"
     }
 
     signingConfigs {

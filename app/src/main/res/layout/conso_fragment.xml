@@ -1,143 +1,141 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:gravity="center_horizontal"
+    android:orientation="vertical"
     android:padding="5dp">
 
     <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="10dp">
+        android:layout_margin="10dp"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/conso_header_label"
-            android:textStyle="italic"
             android:layout_gravity="center_horizontal"
-            android:gravity="center_vertical|center_horizontal" />
+            android:gravity="center_vertical|center_horizontal"
+            android:text="@string/conso_header_label"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textStyle="italic" />
 
     </LinearLayout>
 
     <ScrollView
+        android:id="@+id/scrollViewConso"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/scrollViewConso">
+        android:layout_height="wrap_content">
 
         <LinearLayout
-            android:orientation="vertical"
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent">
+            android:layout_height="fill_parent"
+            android:orientation="vertical">
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/ecocup_card_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="match_parent"
-                card_view:cardCornerRadius="4dp"
-                android:elevation="5dp"
+                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material"
                 android:background="@color/second_night"
-                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material">
+                android:elevation="5dp"
+                card_view:cardCornerRadius="4dp">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical|left">
+                    android:gravity="center_vertical|left"
+                    android:orientation="horizontal">
 
 
                     <ImageView
+                        android:id="@+id/ecocup_img"
                         android:layout_width="@dimen/conso_img_height"
                         android:layout_height="@dimen/conso_img_height"
-                        android:id="@+id/ecocup_img"
                         android:layout_gravity="left|top"
                         android:scaleType="centerCrop"
                         android:src="@drawable/ecocup" />
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/ecocup_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/card_title"
-                            android:text="@string/Ecocup_title"
-                            android:id="@+id/ecocup_title"
-                            android:textColor="@color/light_black"
+                            android:layout_marginLeft="@dimen/text_block_padding"
+                            android:layout_marginRight="@dimen/text_block_padding"
+                            android:layout_marginTop="@dimen/text_block_padding"
+                            android:ellipsize="marquee"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:ellipsize="marquee"
-                            android:singleLine="true"
                             android:marqueeRepeatLimit="marquee_forever"
                             android:scrollHorizontally="true"
-                            android:layout_marginLeft="@dimen/text_block_padding"
-                            android:layout_marginTop="@dimen/text_block_padding"
-                            android:layout_marginRight="@dimen/text_block_padding" />
+                            android:singleLine="true"
+                            android:text="@string/Ecocup_title"
+                            android:textAppearance="@style/card_title"
+                            android:textColor="@color/light_black" />
 
                         <RelativeLayout
-                            android:orientation="horizontal"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:weightSum="3"
+                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
                             android:layout_marginLeft="@dimen/ouput_list_item_padding"
                             android:layout_marginRight="@dimen/ouput_list_item_padding"
-                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
-                            android:transitionGroup="true">
+                            android:orientation="horizontal"
+                            android:transitionGroup="true"
+                            android:weightSum="3">
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:layout_alignParentLeft="true"
-                                android:layout_marginLeft="0dp"
                                 android:layout_alignParentTop="true"
-                                android:layout_marginTop="0dp">
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/sdcc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/consigne_text"
-                                    android:id="@+id/sdcc"
-                                    android:textStyle="italic"
+                                    android:paddingRight="@dimen/text_block_padding"
                                     android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:text="@string/consigne_text"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
 
                             </LinearLayout>
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="wrap_content"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="3"
-                                android:layout_gravity="right"
-                                android:gravity="right"
-                                android:layout_alignParentTop="true"
-                                android:layout_alignParentRight="true"
                                 android:layout_alignParentEnd="true"
-                                android:layout_alignParentLeft="true">
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentTop="true"
+                                android:layout_gravity="right"
+                                android:layout_weight="3"
+                                android:gravity="right"
+                                android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/textView6"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="1€"
-                                    android:id="@+id/textView6"
                                     android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
                                     android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="1€"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
 
                             </LinearLayout>
 
@@ -148,164 +146,163 @@
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/kro_card_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="match_parent"
-                card_view:cardCornerRadius="4dp"
-                android:elevation="5dp"
+                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material"
                 android:background="@color/second_night"
-                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material">
+                android:elevation="5dp"
+                card_view:cardCornerRadius="4dp">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left">
+                    android:gravity="left"
+                    android:orientation="horizontal">
 
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
-                        android:gravity="center_vertical">
+                        android:gravity="center_vertical"
+                        android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/kro_img"
                             android:layout_width="@dimen/conso_img_height"
                             android:layout_height="@dimen/conso_img_height"
-                            android:id="@+id/kro_img"
-                            android:src="@drawable/kro"
                             android:layout_gravity="left|top"
-                            android:scaleType="centerCrop" />
+                            android:scaleType="centerCrop"
+                            android:src="@drawable/kro" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <LinearLayout
-                            android:orientation="vertical"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:gravity="center_vertical|center_horizontal">
+                            android:gravity="center_vertical|center_horizontal"
+                            android:orientation="vertical">
 
                             <TextView
+                                android:id="@+id/kro_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textAppearance="@style/card_title"
-                                android:text="@string/conso_kro_title"
-                                android:id="@+id/kro_title"
-                                android:textColor="@color/light_black"
+                                android:layout_marginLeft="@dimen/text_block_padding"
+                                android:layout_marginRight="@dimen/text_block_padding"
+                                android:layout_marginTop="@dimen/text_block_padding"
+                                android:ellipsize="marquee"
                                 android:focusable="true"
                                 android:focusableInTouchMode="true"
-                                android:ellipsize="marquee"
-                                android:singleLine="true"
                                 android:marqueeRepeatLimit="marquee_forever"
                                 android:scrollHorizontally="true"
-                                android:layout_marginLeft="@dimen/text_block_padding"
-                                android:layout_marginTop="@dimen/text_block_padding"
-                                android:layout_marginRight="@dimen/text_block_padding" />
+                                android:singleLine="true"
+                                android:text="@string/conso_kro_title"
+                                android:textAppearance="@style/card_title"
+                                android:textColor="@color/light_black" />
                         </LinearLayout>
 
                         <RelativeLayout
-                            android:orientation="horizontal"
                             android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
-                            android:weightSum="4"
+                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
                             android:layout_marginLeft="@dimen/ouput_list_item_padding"
                             android:layout_marginRight="@dimen/ouput_list_item_padding"
-                            android:layout_marginBottom="@dimen/ouput_list_item_padding" >
+                            android:orientation="horizontal"
+                            android:weightSum="4">
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_weight="1"
                                 android:layout_alignParentLeft="true"
-                                android:layout_marginLeft="0dp"
                                 android:layout_alignParentTop="true"
-                                android:layout_marginTop="0dp" >
+                                android:layout_marginLeft="0dp"
+                                android:layout_marginTop="0dp"
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_demi"
                                     android:id="@+id/textView"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding" />
-
-                                <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_demi"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_pinte"
+                                    android:textStyle="italic" />
+
+                                <TextView
                                     android:id="@+id/textView20"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding" />
-
-                                <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_promo"
-                                    android:id="@+id/textView21"
-                                    android:textStyle="italic"
+                                    android:paddingRight="@dimen/text_block_padding"
                                     android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:text="@string/text_pinte"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/textView21"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_promo"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
                             </LinearLayout>
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="wrap_content"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="3"
-                                android:layout_gravity="right"
-                                android:gravity="right"
-                                android:layout_alignParentTop="true"
+                                android:layout_alignParentEnd="true"
                                 android:layout_alignParentRight="true"
-                                android:layout_alignParentEnd="true" >
+                                android:layout_alignParentTop="true"
+                                android:layout_gravity="right"
+                                android:layout_weight="3"
+                                android:gravity="right"
+                                android:orientation="vertical">
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_3"
                                     android:id="@+id/textView22"
-                                    android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding" />
-
-                                <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:gravity="right"
+                                    android:paddingLeft="@dimen/text_block_padding"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_prix_3"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_5"
+                                    android:textStyle="italic" />
+
+                                <TextView
                                     android:id="@+id/textView23"
-                                    android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding" />
-
-                                <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_20"
-                                    android:id="@+id/textView24"
                                     android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
                                     android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_prix_5"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/textView24"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="right"
+                                    android:paddingLeft="@dimen/text_block_padding"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_prix_20"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
                             </LinearLayout>
                         </RelativeLayout>
 
@@ -314,130 +311,129 @@
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/skoll_card_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="match_parent"
-                card_view:cardCornerRadius="4dp"
-                android:elevation="5dp"
+                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material"
                 android:background="@color/second_night"
-                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material">
+                android:elevation="5dp"
+                card_view:cardCornerRadius="4dp">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical|left">
+                    android:gravity="center_vertical|left"
+                    android:orientation="horizontal">
 
 
                     <ImageView
+                        android:id="@+id/carlsberg_img"
                         android:layout_width="@dimen/conso_img_height"
                         android:layout_height="@dimen/conso_img_height"
-                        android:id="@+id/carlsberg_img"
                         android:layout_gravity="left|top"
                         android:scaleType="centerCrop"
                         android:src="@drawable/skoll" />
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="match_parent"
-                        android:layout_height="fill_parent">
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical">
 
                         <LinearLayout
-                            android:orientation="horizontal"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_marginLeft="@dimen/text_block_padding"
+                            android:layout_marginRight="@dimen/text_block_padding"
                             android:layout_marginTop="@dimen/text_block_padding"
-                            android:layout_marginRight="@dimen/text_block_padding">
+                            android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/skoll_title"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:textAppearance="@style/card_title"
-                                android:text="@string/conso_skoll_title"
-                                android:id="@+id/skoll_title"
-                                android:textColor="@color/light_black"
+                                android:ellipsize="marquee"
                                 android:focusable="true"
                                 android:focusableInTouchMode="true"
-                                android:ellipsize="marquee"
-                                android:singleLine="false"
                                 android:marqueeRepeatLimit="marquee_forever"
-                                android:scrollHorizontally="true" />
+                                android:scrollHorizontally="true"
+                                android:singleLine="false"
+                                android:text="@string/conso_skoll_title"
+                                android:textAppearance="@style/card_title"
+                                android:textColor="@color/light_black" />
                         </LinearLayout>
 
                         <LinearLayout
-                            android:orientation="horizontal"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:weightSum="3"
+                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
                             android:layout_marginLeft="@dimen/ouput_list_item_padding"
                             android:layout_marginRight="@dimen/ouput_list_item_padding"
-                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
-                            android:transitionGroup="true">
+                            android:orientation="horizontal"
+                            android:transitionGroup="true"
+                            android:weightSum="3">
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="1">
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_demi"
                                     android:id="@+id/une_text"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding"
-                                    android:nestedScrollingEnabled="false" />
-
-                                <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_pinte"
-                                    android:id="@+id/textView4"
-                                    android:textStyle="italic"
+                                    android:nestedScrollingEnabled="false"
+                                    android:paddingRight="@dimen/text_block_padding"
                                     android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:text="@string/text_demi"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/textView4"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_pinte"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
 
                             </LinearLayout>
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="2"
                                 android:layout_gravity="right"
-                                android:gravity="right">
+                                android:layout_weight="2"
+                                android:gravity="right"
+                                android:orientation="vertical">
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix35"
                                     android:id="@+id/textView531"
-                                    android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding" />
-
-                                <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_6"
-                                    android:id="@+id/textVi2rwr"
                                     android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
                                     android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_prix35"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/textVi2rwr"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:gravity="right"
+                                    android:paddingLeft="@dimen/text_block_padding"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_prix_6"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
 
                             </LinearLayout>
                         </LinearLayout>
@@ -447,103 +443,102 @@
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/tourtel_card_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="match_parent"
-                card_view:cardCornerRadius="4dp"
-                android:elevation="5dp"
-                android:background="@color/second_night"
                 android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material"
-                android:visibility="visible">
+                android:background="@color/second_night"
+                android:elevation="5dp"
+                android:visibility="visible"
+                card_view:cardCornerRadius="4dp">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical|left">
+                    android:gravity="center_vertical|left"
+                    android:orientation="horizontal">
 
 
                     <ImageView
+                        android:id="@+id/redbull_img"
                         android:layout_width="@dimen/conso_img_height"
                         android:layout_height="@dimen/conso_img_height"
-                        android:id="@+id/redbull_img"
                         android:layout_gravity="left|top"
                         android:scaleType="centerCrop"
                         android:src="@drawable/redbull" />
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/tourtel_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/card_title"
-                            android:text="@string/tourtel_title"
-                            android:id="@+id/tourtel_title"
-                            android:textColor="@color/light_black"
+                            android:layout_marginLeft="@dimen/text_block_padding"
+                            android:layout_marginRight="@dimen/text_block_padding"
+                            android:layout_marginTop="@dimen/text_block_padding"
+                            android:ellipsize="marquee"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:ellipsize="marquee"
-                            android:singleLine="true"
                             android:marqueeRepeatLimit="marquee_forever"
                             android:scrollHorizontally="true"
-                            android:layout_marginLeft="@dimen/text_block_padding"
-                            android:layout_marginTop="@dimen/text_block_padding"
-                            android:layout_marginRight="@dimen/text_block_padding" />
+                            android:singleLine="true"
+                            android:text="@string/tourtel_title"
+                            android:textAppearance="@style/card_title"
+                            android:textColor="@color/light_black" />
 
                         <LinearLayout
-                            android:orientation="horizontal"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:weightSum="3"
+                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
                             android:layout_marginLeft="@dimen/ouput_list_item_padding"
                             android:layout_marginRight="@dimen/ouput_list_item_padding"
-                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
-                            android:transitionGroup="true">
+                            android:orientation="horizontal"
+                            android:transitionGroup="true"
+                            android:weightSum="3">
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="1">
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/standard_text"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_demi"
-                                    android:id="@+id/standard_text"
-                                    android:textStyle="italic"
+                                    android:paddingRight="@dimen/text_block_padding"
                                     android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:text="@string/text_demi"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
 
 
                             </LinearLayout>
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="2"
                                 android:layout_gravity="right"
-                                android:gravity="right">
+                                android:layout_weight="2"
+                                android:gravity="right"
+                                android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/textView632rwr"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/Text_prix_tourtel"
-                                    android:id="@+id/textView632rwr"
                                     android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
                                     android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/Text_prix_tourtel"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
 
                             </LinearLayout>
                         </LinearLayout>
@@ -553,125 +548,136 @@
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/soft_card_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="match_parent"
-                card_view:cardCornerRadius="4dp"
-                android:elevation="5dp"
+                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material"
                 android:background="@color/second_night"
-                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material">
+                android:elevation="5dp"
+                card_view:cardCornerRadius="4dp">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical|left">
+                    android:gravity="center_vertical|left"
+                    android:orientation="horizontal">
 
 
                     <ImageView
+                        android:id="@+id/soft_img"
                         android:layout_width="@dimen/conso_img_height"
                         android:layout_height="@dimen/conso_img_height"
-                        android:id="@+id/soft_img"
                         android:layout_gravity="left|top"
                         android:scaleType="centerCrop"
                         android:src="@drawable/soft" />
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/soft_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/card_title"
-                            android:text="@string/soft_title"
-                            android:id="@+id/soft_title"
-                            android:textColor="@color/light_black"
+                            android:layout_marginLeft="@dimen/text_block_padding"
+                            android:layout_marginRight="@dimen/text_block_padding"
+                            android:layout_marginTop="@dimen/text_block_padding"
+                            android:ellipsize="marquee"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:ellipsize="marquee"
-                            android:singleLine="true"
                             android:marqueeRepeatLimit="marquee_forever"
                             android:scrollHorizontally="true"
-                            android:layout_marginLeft="@dimen/text_block_padding"
-                            android:layout_marginTop="@dimen/text_block_padding"
-                            android:layout_marginRight="@dimen/text_block_padding" />
+                            android:singleLine="true"
+                            android:text="@string/soft_title"
+                            android:textAppearance="@style/card_title"
+                            android:textColor="@color/light_black" />
 
                         <LinearLayout
-                            android:orientation="horizontal"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:weightSum="3"
+                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
                             android:layout_marginLeft="@dimen/ouput_list_item_padding"
                             android:layout_marginRight="@dimen/ouput_list_item_padding"
-                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
-                            android:transitionGroup="true">
+                            android:orientation="horizontal"
+                            android:transitionGroup="true"
+                            android:weightSum="3">
 
-                            <LinearLayout
-                                android:orientation="vertical"
+                            <TableLayout
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="1">
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/canette"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                <TableRow>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingRight="@dimen/text_block_padding"
+                                        android:paddingTop="@dimen/spb_default_stroke_width"
+                                        android:text="@string/canette"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
+                                        android:textStyle="italic" />
+                                    <TextView
+                                        android:id="@+id/cdscs"
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="right"
+                                        android:paddingLeft="@dimen/text_block_padding"
+                                        android:paddingRight="@dimen/text_block_padding"
+                                        android:paddingTop="@dimen/spb_default_stroke_width"
+                                        android:phoneNumber="false"
+                                        android:text="@string/text_prix_2"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
+                                        android:textStyle="italic" />
+                                </TableRow>
 
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/sirop"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                <TableRow>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingRight="@dimen/text_block_padding"
+                                        android:paddingTop="@dimen/spb_default_stroke_width"
+                                        android:text="@string/sirop"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
+                                        android:textStyle="italic" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="right"
+                                        android:paddingLeft="@dimen/text_block_padding"
+                                        android:paddingRight="@dimen/text_block_padding"
+                                        android:paddingTop="@dimen/spb_default_stroke_width"
+                                        android:phoneNumber="false"
+                                        android:text="@string/text_prix_1"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
+                                        android:textStyle="italic" />
+                                </TableRow>
 
-
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:orientation="vertical"
-                                android:layout_width="fill_parent"
-                                android:layout_height="fill_parent"
-                                android:layout_weight="2"
-                                android:layout_gravity="right"
-                                android:gravity="right">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_2"
-                                    android:id="@+id/cdscs"
-                                    android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding"
-                                    android:phoneNumber="false" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_1"
-                                    android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding"
-                                    android:phoneNumber="false" />
-
-                            </LinearLayout>
+                                <TableRow>
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:paddingRight="@dimen/text_block_padding"
+                                        android:paddingTop="@dimen/spb_default_stroke_width"
+                                        android:text="@string/eau_bellecour"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
+                                        android:textStyle="italic" />
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:gravity="right"
+                                        android:paddingLeft="@dimen/text_block_padding"
+                                        android:paddingRight="@dimen/text_block_padding"
+                                        android:paddingTop="@dimen/spb_default_stroke_width"
+                                        android:phoneNumber="false"
+                                        android:text="@string/text_prix_1"
+                                        android:textAppearance="?android:attr/textAppearanceMedium"
+                                        android:textStyle="italic" />
+                                </TableRow>
+                            </TableLayout>
                         </LinearLayout>
 
                     </LinearLayout>
@@ -679,318 +685,315 @@
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/sandwich_card_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="match_parent"
-                card_view:cardCornerRadius="4dp"
-                android:elevation="5dp"
+                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material"
                 android:background="@color/second_night"
-                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material">
+                android:elevation="5dp"
+                card_view:cardCornerRadius="4dp">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left|top">
+                    android:gravity="left|top"
+                    android:orientation="horizontal">
 
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="left|top"
-                        android:background="@color/primary_sub">
+                        android:background="@color/primary_sub"
+                        android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/sandwich_img"
                             android:layout_width="@dimen/conso_img_height"
                             android:layout_height="@dimen/conso_img_height"
-                            android:id="@+id/sandwich_img"
                             android:layout_gravity="left|top"
                             android:scaleType="centerCrop"
                             android:src="@drawable/panini" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
-                        android:background="@color/white">
+                        android:background="@color/white"
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/sand_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/card_title"
-                            android:text="@string/Sandwich_title"
-                            android:id="@+id/sand_title"
-                            android:textColor="@color/light_black"
+                            android:layout_marginLeft="@dimen/text_block_padding"
+                            android:layout_marginRight="@dimen/text_block_padding"
+                            android:layout_marginTop="@dimen/text_block_padding"
+                            android:ellipsize="marquee"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:ellipsize="marquee"
-                            android:singleLine="true"
                             android:marqueeRepeatLimit="marquee_forever"
                             android:scrollHorizontally="true"
-                            android:layout_marginLeft="@dimen/text_block_padding"
-                            android:layout_marginTop="@dimen/text_block_padding"
-                            android:layout_marginRight="@dimen/text_block_padding" />
+                            android:singleLine="true"
+                            android:text="@string/Sandwich_title"
+                            android:textAppearance="@style/card_title"
+                            android:textColor="@color/light_black" />
 
                         <LinearLayout
-                            android:orientation="horizontal"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:weightSum="4"
+                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
                             android:layout_marginLeft="@dimen/ouput_list_item_padding"
                             android:layout_marginRight="@dimen/ouput_list_item_padding"
-                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
-                            android:transitionGroup="true">
+                            android:orientation="horizontal"
+                            android:transitionGroup="true"
+                            android:weightSum="4">
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="1">
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/cscszcasc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/sandwich_type1"
-                                    android:id="@+id/cscszcasc"
-                                    android:textStyle="italic"
+                                    android:paddingRight="@dimen/text_block_padding"
                                     android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:text="@string/sandwich_type1"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
 
                             </LinearLayout>
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="3"
                                 android:layout_gravity="right"
-                                android:gravity="right">
+                                android:layout_weight="3"
+                                android:gravity="right"
+                                android:orientation="vertical">
 
-                                <com.insadelyon.les24heures.view.VerticalTextView
+                                <TextView
+                                    android:id="@+id/csdcscsdfefs43fe"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_4"
-                                    android:id="@+id/csdcscsdfefs43fe"
                                     android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
                                     android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_prix_4"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/hotdog_card_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="match_parent"
-                card_view:cardCornerRadius="4dp"
-                android:elevation="5dp"
+                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material"
                 android:background="@color/second_night"
-                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material">
+                android:elevation="5dp"
+                card_view:cardCornerRadius="4dp">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical|left">
+                    android:gravity="center_vertical|left"
+                    android:orientation="horizontal">
 
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/hotdog_img"
                             android:layout_width="@dimen/conso_img_height"
                             android:layout_height="@dimen/conso_img_height"
-                            android:id="@+id/hotdog_img"
                             android:layout_gravity="left|top"
                             android:scaleType="centerCrop"
                             android:src="@drawable/dog" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/hot_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/card_title"
-                            android:text="@string/hotdog"
-                            android:id="@+id/hot_title"
-                            android:textColor="@color/light_black"
+                            android:layout_marginLeft="@dimen/text_block_padding"
+                            android:layout_marginRight="@dimen/text_block_padding"
+                            android:layout_marginTop="@dimen/text_block_padding"
+                            android:ellipsize="marquee"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:ellipsize="marquee"
-                            android:singleLine="true"
                             android:marqueeRepeatLimit="marquee_forever"
                             android:scrollHorizontally="true"
-                            android:layout_marginLeft="@dimen/text_block_padding"
-                            android:layout_marginTop="@dimen/text_block_padding"
-                            android:layout_marginRight="@dimen/text_block_padding" />
+                            android:singleLine="true"
+                            android:text="@string/hotdog"
+                            android:textAppearance="@style/card_title"
+                            android:textColor="@color/light_black" />
 
                         <LinearLayout
-                            android:orientation="horizontal"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:weightSum="3"
+                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
                             android:layout_marginLeft="@dimen/ouput_list_item_padding"
                             android:layout_marginRight="@dimen/ouput_list_item_padding"
-                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
-                            android:transitionGroup="true">
+                            android:orientation="horizontal"
+                            android:transitionGroup="true"
+                            android:weightSum="3">
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="1">
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/ds"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/dogdetails"
-                                    android:id="@+id/ds"
-                                    android:textStyle="italic"
+                                    android:paddingRight="@dimen/text_block_padding"
                                     android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:text="@string/dogdetails"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
 
                             </LinearLayout>
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="2"
                                 android:layout_gravity="right"
-                                android:gravity="right">
+                                android:layout_weight="2"
+                                android:gravity="right"
+                                android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/dsedds"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix35"
-                                    android:id="@+id/dsedds"
                                     android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
                                     android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_prix35"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
                             </LinearLayout>
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/frites_card_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="match_parent"
-                card_view:cardCornerRadius="4dp"
-                android:elevation="5dp"
+                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material"
                 android:background="@color/second_night"
-                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material">
+                android:elevation="5dp"
+                card_view:cardCornerRadius="4dp">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center_vertical|left">
+                    android:gravity="center_vertical|left"
+                    android:orientation="horizontal">
 
 
                     <ImageView
+                        android:id="@+id/frites_img"
                         android:layout_width="@dimen/conso_img_height"
                         android:layout_height="@dimen/conso_img_height"
-                        android:id="@+id/frites_img"
                         android:layout_gravity="left|top"
                         android:scaleType="centerCrop"
                         android:src="@drawable/frites" />
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="fill_parent">
+                        android:layout_height="fill_parent"
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/frites_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/card_title"
-                            android:text="@string/frites_text"
-                            android:id="@+id/frites_title"
-                            android:textColor="@color/light_black"
+                            android:layout_marginLeft="@dimen/text_block_padding"
+                            android:layout_marginRight="@dimen/text_block_padding"
+                            android:layout_marginTop="@dimen/text_block_padding"
+                            android:ellipsize="marquee"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:ellipsize="marquee"
-                            android:singleLine="true"
                             android:marqueeRepeatLimit="marquee_forever"
                             android:scrollHorizontally="true"
-                            android:layout_marginLeft="@dimen/text_block_padding"
-                            android:layout_marginTop="@dimen/text_block_padding"
-                            android:layout_marginRight="@dimen/text_block_padding" />
+                            android:singleLine="true"
+                            android:text="@string/frites_text"
+                            android:textAppearance="@style/card_title"
+                            android:textColor="@color/light_black" />
 
                         <LinearLayout
-                            android:orientation="horizontal"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
-                            android:weightSum="3"
+                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
                             android:layout_marginLeft="@dimen/ouput_list_item_padding"
                             android:layout_marginRight="@dimen/ouput_list_item_padding"
-                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
-                            android:transitionGroup="true">
+                            android:orientation="horizontal"
+                            android:transitionGroup="true"
+                            android:weightSum="3">
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="1">
+                                android:layout_weight="1"
+                                android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/une_textggeg"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/barquette_text"
-                                    android:id="@+id/une_textggeg"
-                                    android:textStyle="italic"
+                                    android:paddingRight="@dimen/text_block_padding"
                                     android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:text="@string/barquette_text"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
 
                             </LinearLayout>
 
                             <LinearLayout
-                                android:orientation="vertical"
                                 android:layout_width="fill_parent"
                                 android:layout_height="fill_parent"
-                                android:layout_weight="2"
                                 android:layout_gravity="right"
-                                android:gravity="right">
+                                android:layout_weight="2"
+                                android:gravity="right"
+                                android:orientation="vertical">
 
                                 <TextView
+                                    android:id="@+id/geegr5"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_25"
-                                    android:id="@+id/geegr5"
                                     android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
                                     android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding" />
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_prix_25"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
 
                             </LinearLayout>
                         </LinearLayout>
@@ -1000,68 +1003,67 @@
 
             </android.support.v7.widget.CardView>
 
-            <android.support.v7.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
+            <android.support.v7.widget.CardView xmlns:card_view="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/menu_card_view"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:layout_width="match_parent"
-                card_view:cardCornerRadius="4dp"
-                android:elevation="5dp"
+                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material"
                 android:background="@color/second_night"
-                android:layout_margin="@dimen/abc_action_bar_subtitle_bottom_margin_material">
+                android:elevation="5dp"
+                card_view:cardCornerRadius="4dp">
 
                 <LinearLayout
-                    android:orientation="horizontal"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="left|top">
+                    android:gravity="left|top"
+                    android:orientation="horizontal">
 
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="wrap_content"
                         android:layout_height="fill_parent"
                         android:layout_gravity="center_vertical|left"
-                        android:gravity="center_vertical|center_horizontal">
+                        android:gravity="center_vertical|center_horizontal"
+                        android:orientation="vertical">
 
                         <ImageView
+                            android:id="@+id/menu_img"
                             android:layout_width="@dimen/conso_img_height"
                             android:layout_height="220dp"
-                            android:id="@+id/menu_img"
                             android:layout_gravity="left|top"
                             android:scaleType="centerCrop"
                             android:src="@drawable/menu" />
                     </LinearLayout>
 
                     <LinearLayout
-                        android:orientation="vertical"
                         android:layout_width="fill_parent"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
                         <TextView
+                            android:id="@+id/menu_title"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:textAppearance="@style/card_title"
-                            android:text="@string/menu_text"
-                            android:id="@+id/menu_title"
-                            android:textColor="@color/light_black"
+                            android:layout_marginLeft="@dimen/text_block_padding"
+                            android:layout_marginRight="@dimen/text_block_padding"
+                            android:layout_marginTop="@dimen/text_block_padding"
+                            android:ellipsize="marquee"
                             android:focusable="true"
                             android:focusableInTouchMode="true"
-                            android:ellipsize="marquee"
-                            android:singleLine="true"
                             android:marqueeRepeatLimit="marquee_forever"
                             android:scrollHorizontally="true"
-                            android:layout_marginLeft="@dimen/text_block_padding"
-                            android:layout_marginTop="@dimen/text_block_padding"
-                            android:layout_marginRight="@dimen/text_block_padding" />
+                            android:singleLine="true"
+                            android:text="@string/menu_text"
+                            android:textAppearance="@style/card_title"
+                            android:textColor="@color/light_black" />
 
                         <TableLayout
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
+                            android:layout_marginBottom="@dimen/ouput_list_item_padding"
                             android:layout_marginLeft="@dimen/ouput_list_item_padding"
-                            android:layout_marginRight="@dimen/ouput_list_item_padding"
-                            android:layout_marginBottom="@dimen/ouput_list_item_padding">
+                            android:layout_marginRight="@dimen/ouput_list_item_padding">
 
                             <TableRow
                                 android:layout_width="match_parent"
@@ -1069,58 +1071,28 @@
                                 android:layout_marginBottom="5dp">
 
                                 <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/menu1_text"
                                     android:id="@+id/ccdcddc"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding"
-                                    android:layout_weight="1" />
-
-                                <TextView
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/menu1_text"
                                     android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_7"
+                                    android:textStyle="italic" />
+
+                                <TextView
                                     android:id="@+id/geesdvsvcgr5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
                                     android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
                                     android:paddingLeft="@dimen/text_block_padding"
                                     android:paddingRight="@dimen/text_block_padding"
-                                    android:layout_gravity="center_vertical" />
-                            </TableRow>
-
-                            <TableRow
-                                android:layout_width="fill_parent"
-                                android:layout_height="fill_parent"
-                                android:layout_marginBottom="5dp">
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/menu2_text"
-                                    android:id="@+id/ccdsdvdvcddc"
-                                    android:textStyle="italic"
                                     android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingRight="@dimen/text_block_padding"
-                                    android:layout_weight="1" />
-
-                                <TextView
-                                    android:layout_width="wrap_content"
-                                    android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
                                     android:text="@string/text_prix_7"
-                                    android:id="@+id/geesvsedcgr5"
-                                    android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
-                                    android:paddingLeft="@dimen/text_block_padding"
-                                    android:paddingRight="@dimen/text_block_padding"
-                                    android:layout_gravity="center_vertical" />
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
                             </TableRow>
 
                             <TableRow
@@ -1129,28 +1101,58 @@
                                 android:layout_marginBottom="5dp">
 
                                 <TextView
+                                    android:id="@+id/ccdsdvdvcddc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/menu3_text"
-                                    android:id="@+id/ccdcdcsevezddc"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:layout_weight="1"
                                     android:paddingRight="@dimen/text_block_padding"
-                                    android:layout_weight="1" />
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/menu2_text"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
 
                                 <TextView
+                                    android:id="@+id/geesvsedcgr5"
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:textAppearance="?android:attr/textAppearanceMedium"
-                                    android:text="@string/text_prix_5"
-                                    android:id="@+id/geesdcgr5"
+                                    android:layout_gravity="center_vertical"
                                     android:gravity="right"
-                                    android:textStyle="italic"
-                                    android:paddingTop="@dimen/spb_default_stroke_width"
                                     android:paddingLeft="@dimen/text_block_padding"
                                     android:paddingRight="@dimen/text_block_padding"
-                                    android:layout_gravity="center_vertical" />
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_prix_7"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
+                            </TableRow>
+
+                            <TableRow
+                                android:layout_width="fill_parent"
+                                android:layout_height="fill_parent"
+                                android:layout_marginBottom="5dp">
+
+                                <TextView
+                                    android:id="@+id/ccdcdcsevezddc"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_weight="1"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/menu3_text"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
+
+                                <TextView
+                                    android:id="@+id/geesdcgr5"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center_vertical"
+                                    android:gravity="right"
+                                    android:paddingLeft="@dimen/text_block_padding"
+                                    android:paddingRight="@dimen/text_block_padding"
+                                    android:paddingTop="@dimen/spb_default_stroke_width"
+                                    android:text="@string/text_prix_5"
+                                    android:textAppearance="?android:attr/textAppearanceMedium"
+                                    android:textStyle="italic" />
                             </TableRow>
                         </TableLayout>
 

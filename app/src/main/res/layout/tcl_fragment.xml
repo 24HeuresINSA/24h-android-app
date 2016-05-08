@@ -223,7 +223,7 @@
 
                     <TextView
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="samedi 04h26 - dimanche 04h53 - lundi 04h53"
+                        android:text="samedi 03h47 - dimanche 04h26"
                         android:id="@+id/textView25"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
@@ -291,7 +291,7 @@
 
                     <TextView
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="00h30"
+                        android:text="vendredi 00h53 - samedi/dimanche 00h11"
                         android:id="@+id/textView46"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
@@ -320,7 +320,7 @@
 
                     <TextView
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="00h30"
+                        android:text="vendredi 01h15 - samedi/dimanche 00h18"
                         android:id="@+id/textViccew50"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
@@ -349,7 +349,7 @@
 
                     <TextView
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="5h11"
+                        android:text="04h45"
                         android:id="@+id/textView48"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
@@ -448,7 +448,7 @@
 
                     <TextView
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="00h18"
+                        android:text="vendredi 01h03 - samedi/dimanche 00h18"
                         android:id="@+id/textView42"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
@@ -793,7 +793,7 @@
 
                     <TextView
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:text="samedi 06h02  - dimanche 05h56 - lundi 06h56"
+                        android:text="samedi 06h02  - dimanche 06h55 - lundi 06h56"
                         android:id="@+id/textView33dds"
                         android:padding="@dimen/abc_dropdownitem_text_padding_right"
                         android:layout_width="0dp"
