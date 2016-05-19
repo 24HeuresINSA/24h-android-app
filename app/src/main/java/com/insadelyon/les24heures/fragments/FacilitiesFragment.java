@@ -298,8 +298,10 @@ public class FacilitiesFragment extends Fragment implements OnMapReadyCallback {
             iconName = "crossing";
         if (title.toLowerCase().contains("secouriste"))
             iconName = "secours";
-        if (title.toLowerCase().contains("sortie"))
+        if (title.toLowerCase().contains("billeterie"))
             iconName = "billeterie";
+        else if (title.toLowerCase().contains("sortie"))
+            iconName = "exit";
         if (title.toLowerCase().contains("village"))
             iconName = "village";
         if (title.toLowerCase().contains("vention"))

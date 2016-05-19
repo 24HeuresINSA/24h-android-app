@@ -89,6 +89,11 @@ Deux endpoints sont utilises :
 * http://mobile.24heures.org/
 * http://mobile.24heures.org/version
 
+Toutes les fiches anims qui sont "publier sur appli mobile" sont envoyées avec leur categorie.
+
+La categorie "FACILITY_NAME" permet d'ajouter des markers sur l'onglet "lieux utiles". Les icones sont déduits à partir des noms, le mieux est de copier coller les labels
+des anims d'une année sur l'autre. Ce sont toutes les anims de l'équipe "systeme d'information" (qui n'a pas d'autre anims, dont transposer depuis cetaitmieuxavant anims ces anims le nom, le lieu et la categorie "FACILITY_NAME".
+
 ### /
 Recupere toutes les données JSON :
 
