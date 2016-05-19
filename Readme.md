@@ -77,7 +77,7 @@ https://play.google.com/apps/publish
 Ne pas oublier de modifier la description et les captures d'écran.
 
 
-Me (RemiP) contacter pour le easter egg
+Me (RémiP) contacter pour le easter egg (super important quand meme) 
 
 
 ## La connection avec Assomaker
