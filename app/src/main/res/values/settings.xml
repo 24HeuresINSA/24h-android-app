@@ -4,7 +4,7 @@
     <string name="SHARED_PREF_LAST_LIVEUPDATE_SEEN">SHARED_PREF_LAST_LIVEUPDATE_SEEN</string>
     <string name="GCM_SENDER_ID">354094554848</string>
     <integer name="DISPLAY_ARTIST_HOUR">19</integer>
-    <string name="FRIDAY_DATE">13/05/2016</string>
-    <string name="SATURDAY_DATE">14/05/2016</string>
-    <string name="SUNDAY_DATE">15/05/2016</string>
+    <string name="FRIDAY_DATE">19/05/2017</string>
+    <string name="SATURDAY_DATE">20/05/2017</string>
+    <string name="SUNDAY_DATE">21/05/2017</string>
 </resources>
